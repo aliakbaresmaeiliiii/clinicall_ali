@@ -1,4 +1,4 @@
-import fs from 'fs';
+import fs from "fs";
 import handlebars from "handlebars";
 import path from "path";
 import EmailProvider from "../config/email";
@@ -54,44 +54,49 @@ class SendEmail {
 
       const template = handlebars.compile(html);
       const htmlToSend = template(dataTemplate);
-      Email.send(email
-        , subject, htmlToSend);
+      Email.send(email, subject, htmlToSend);
     });
   }
 
-
-  public static sendResetPasswordEmail = async (email: string, userName: string, resetLink: string) => {
+  public static sendResetPasswordEmail = async (
+    email: string,
+    userName: string,
+    resetLink: string
+  ) => {
     // Read the HTML template
-    const templatePath = path.join(__dirname, 'templates', '../public/template/email/reset-password.html');
-    const template = fs.readFileSync(templatePath, 'utf-8');
-  
+    const templatePath = path.join(
+      __dirname,
+      "templates",
+      "../public/template/email/reset-password.html"
+    );
+    const template = fs.readFileSync(templatePath, "utf-8");
+
     // Replace placeholders with actual values
     const htmlContent = template
-      .replace('{{userName}}', userName)
+      .replace("{{userName}}", userName)
       .replace(/{{resetLink}}/g, resetLink);
-  
+
     // Create a transporter
     const transporter = nodemailer.createTransport({
-      host: 'smtp.example.com',
+      host: "smtp.example.com",
       port: 587,
       secure: false, // true for 465, false for other ports
       auth: {
-        user: 'aliakbaresmaeili98@gmail.com', // your SMTP username
-        pass: 'cgop ttip zuqz hqlr', // your SMTP password
+        user: "aliakbaresmaeili98@gmail.com", // your SMTP username
+        pass: "cgop ttip zuqz hqlr", // your SMTP password
       },
     });
-  
+
     // Send email
     const info = await transporter.sendMail({
       from: '"Your Company" <no-reply@yourcompany.com>',
       to: email,
-      subject: 'Reset Your Password',
+      subject: "Reset Your Password",
       html: htmlContent,
     });
-  
-    console.log('Message sent: %s', info.messageId);
+
+    console.log("Message sent: %s", info.messageId);
   };
-  
 }
 
 export default SendEmail;

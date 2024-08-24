@@ -28,7 +28,6 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideToastr(),
     importProvidersFrom(MatSnackBarModule),
-    // provideHttpClient(withFetch(), ),
     provideHttpClient(withFetch(), withInterceptorsFromDi()),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     // Uncomment the following if needed:

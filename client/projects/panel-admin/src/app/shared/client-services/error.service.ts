@@ -43,7 +43,6 @@ export class ErrorService {
   }
 
   getErrorMessage(error: HttpErrorResponse): string {
-    debugger;
     return error.error && error.error.message
       ? error.error.message
       : error.statusText

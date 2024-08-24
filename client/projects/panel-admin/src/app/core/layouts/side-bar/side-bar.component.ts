@@ -114,9 +114,15 @@ export class SideBarComponent
     this.getNavItems();
     this.getUserDataFromLocalStorage();
     const userDataString = localStorage.getItem('userData');
+    if (userDataString) {
+      console.log('storeData🧑‍⚕️',JSON.parse(userDataString))
+    }
+
     let userData;
     if (userDataString) {
       userData = JSON.parse(userDataString);
+      
+
       
     }
   }

@@ -4,7 +4,6 @@ import {
   confirmEmail,
   getOTP,
   getUserInfo,
-  updateProfileUser,
   updateUserVerifyCode,
 } from "../../bin/db";
 import useValidation from "../../helper/use_validation";
@@ -68,38 +67,38 @@ class UserService {
   /**
    * @param userData
    */
-  public static async updateProfileuser(userData: User) {
-    // const currentUser = await UserService.validateUserEmail(userData.email);
-    // if (currentUser) {
-    //   return { message: "the user already exist !", code: 400, currentUser };
-    // }
+  // public static async updateProfileuser(userData: User) {
+  //   // const currentUser = await UserService.validateUserEmail(userData.email);
+  //   // if (currentUser) {
+  //   //   return { message: "the user already exist !", code: 400, currentUser };
+  //   // }
 
-    const generateToken = {
-      code: getUniqueCodev2(),
-    };
+  //   const generateToken = {
+  //     code: getUniqueCodev2(),
+  //   };
 
-    const tokenVerify = jwt.sign(
-      JSON.parse(JSON.stringify(generateToken)),
-      JWT_SECRET_ACCESS_TOKEN,
-      {
-        expiresIn,
-      }
-    );
+  //   const tokenVerify = jwt.sign(
+  //     JSON.parse(JSON.stringify(generateToken)),
+  //     JWT_SECRET_ACCESS_TOKEN,
+  //     {
+  //       expiresIn,
+  //     }
+  //   );
 
-    userData.verify_code = getUniqueCodev3();
-    userData.tokenVerify = tokenVerify;
-    const result = await updateProfileUser(userData);
-    if (!result) {
-      throw new ResponseError.BadRequest("Could not update user!");
-    } else {
-      return {
-        message: null,
-        updateuser: {
-          user: result,
-        },
-      };
-    }
-  }
+  //   userData.verify_code = getUniqueCodev3();
+  //   userData.tokenVerify = tokenVerify;
+  //   const result = await updateProfileUser(userData);
+  //   if (!result) {
+  //     throw new ResponseError.BadRequest("Could not update user!");
+  //   } else {
+  //     return {
+  //       message: null,
+  //       updateuser: {
+  //         user: result,
+  //       },
+  //     };
+  //   }
+  // }
 
 
   /**

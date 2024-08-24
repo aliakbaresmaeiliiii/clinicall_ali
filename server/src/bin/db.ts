@@ -125,18 +125,14 @@ export async function confirmEmail(data: ConfirmEmail) {
   } as AppResponse;
 }
 
-export async function getUserByPassword(
-  email: string,
-  password: string
-): Promise<User | null> {
+export async function getUserByPassword(email: string,password:string): Promise<any> {
   const user = await query<RowDataPacket[]>(
     `SELECT * FROM ${coreSchema}.users WHERE email=?`,
     {
       values: [email],
     }
   );
-
-  return user[0] as User;
+    return user;
 }
 
 export async function getUserByGoogleId(googleId: string) {
@@ -200,36 +196,36 @@ export async function getOTP(email: any, tokenVerify: any) {
   return result[0] as User;
 }
 
-export async function updateProfileUser(data: User): Promise<any> {
-  const updateUsersql = `
-      UPDATE ${coreSchema}.users SET
-        firstName = ?,
-        lastName = ?,
-        email = ?,
-        address = ?,
-        country = ?,
-        city = ?,
-        state = ?,
-        zipcode = ?,
+// export async function updateProfileUser(data: User): Promise<any> {
+//   const updateUsersql = `
+//       UPDATE ${coreSchema}.users SET
+//         firstName = ?,
+//         lastName = ?,
+//         email = ?,
+//         address = ?,
+//         country = ?,
+//         city = ?,
+//         state = ?,
+//         zipcode = ?,
       
-    `;
-  const updateUservalues = [
-    data.firstName,
-    data.lastName,
-    data.email,
-    data.address,
-    data.country,
-    data.city,
-    data.state,
-    data.zipcode,
-  ];
-  const result = await query<RowDataPacket[]>(updateUsersql, updateUservalues);
-  const insertSkillSql = `UPDATE ${coreSchema}.user_skill SET (user_id, skill_name) VALUES (?, ?)`;
-  for (const skill of data.skills) {
-    await query<RowDataPacket[]>(insertSkillSql, [data.user_id, skill]);
-  }
-  return result;
-}
+//     `;
+//   const updateUservalues = [
+//     data.firstName,
+//     data.lastName,
+//     data.email,
+//     data.address,
+//     data.country,
+//     data.city,
+//     data.state,
+//     data.zipcode,
+//   ];
+//   const result = await query<RowDataPacket[]>(updateUsersql, updateUservalues);
+//   const insertSkillSql = `UPDATE ${coreSchema}.user_skill SET (user_id, skill_name) VALUES (?, ?)`;
+//   for (const skill of data.skills) {
+//     await query<RowDataPacket[]>(insertSkillSql, [data.user_id, skill]);
+//   }
+//   return result;
+// }
 
 export async function getNavItems() {
   const getManu = await query<RowDataPacket[]>(`

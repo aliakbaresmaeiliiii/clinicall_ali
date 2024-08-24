@@ -8,6 +8,7 @@ import useValidation from "../../helper/use_validation";
 import ResponseError from "../../modules/error/response_error";
 import { CreateUser, User } from "../../types/user";
 import schemaAuth from "./schema";
+import { AppResponse } from "../../types/response.interface";
 
 const { JWT_SECRET_ACCESS_TOKEN, JWT_SECRET_REFRESH_TOKEN }: any = process.env;
 
@@ -68,21 +69,18 @@ class AuthService {
     );
 
     const match = await new Promise<boolean>((resolve, reject) => {
-      bcrypt.compare(formData.password, userData?.password, (err, isMatch) => {
-        if (err) reject(err);
-        resolve(isMatch);
-      });
+      bcrypt.compare(
+        formData.password,
+        userData[0]?.password,
+        (err, isMatch) => {
+          if (err) reject(err);
+          resolve(isMatch);
+        }
+      );
     });
-    if (!match){
+    if (!match) {
       throw new ResponseError.NotFound("account not found or has been deleted");
-    };
-    // if (!userData) {
-    //   throw new ResponseError.NotFound(
-    //     "account not found or has been deleted"
-    //   );
-    // } else if (userData.emailConfirmed === 0) {
-    //   throw new ResponseError.BadRequest("email is not confirm");
-    // }
+    }
 
     if (!userData) {
       throw new ResponseError.NotFound("account not found or has been deleted");
@@ -92,19 +90,24 @@ class AuthService {
 
     const comparePassword = true;
     if (comparePassword) {
-      const payloadToken = {
-        user_id: userData?.user_id,
-        email: userData?.email,
-        firstName: userData.firstName,
-        lastName: userData.lastName,
-        profileImage: userData.imgUser,
+      const payloadToken: User = {
+        user_id: userData[0].user_id,
+        email: userData[0].email,
+        imgUser: userData[0].imgUser,
+        mobile: userData[0].mobile,
+        address: userData[0].address,
+        tokenVerify: userData[0].tokenVerify,
+
       };
 
       return {
-        message: "Login successfully",
-        token_type: "Bearer",
-        payloadToken: payloadToken,
-      };
+        isSuccessfull: true,
+        showToUser: true,
+        messageCode: "200",
+        messageKind: 1,
+        message: "login is successfully",
+        data: payloadToken,
+      } as AppResponse;
     } else {
       throw new ResponseError.Unauthorized("Invalid password");
     }
