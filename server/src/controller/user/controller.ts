@@ -48,15 +48,15 @@ routes.get(
   })
 );
 // ***** updateProfile
-routes.put(
-  `/user/updateProfile`,
-  asyncHandler(async function updateProfileUser(req: Request, res: Response) {
-    const formData = req.body;
-    const result = await UserService.updateProfileuser(formData);
-    const buildResponse = await BuildResponse.get(result);
-    res.json(buildResponse);
-  })
-);
+// routes.put(
+//   `/user/updateProfile`,
+//   asyncHandler(async function updateProfileUser(req: Request, res: Response) {
+//     const formData = req.body;
+//     const result = await UserService.updateProfileuser(formData);
+//     const buildResponse = await BuildResponse.get(result);
+//     res.json(buildResponse);
+//   })
+// );
 
 // ***** forgot-passsword
 

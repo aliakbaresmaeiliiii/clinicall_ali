@@ -1,27 +1,24 @@
 export interface User {
   user_id: string;
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
   email: string;
-  password: string | any;
-  emailConfirmed: number;
-  signupStatus: number;
-  verify_code: string;
-  address: string;
+  mobile?: string;
+  password?: string | any;
+  emailConfirmed?: number;
+  signupStatus?: number;
+  verify_code?: string;
+  address?: string;
   isActive?: boolean | null | number
-  country: string;
-  city: string;
-  state: string;
-  zipcode: string;
-  skills: Skills[];
+  country?: string;
+  city?: string;
+  state?: string;
+  zipcode?: string;
   tokenVerify?: string | null;
-  imgUser:string;
+  imgUser?:string;
 }
 
-export interface Skills {
-  skill_id: number;
-  skill_name: string;
-}
+
 
 export interface CreateUser {
   user_id: string;

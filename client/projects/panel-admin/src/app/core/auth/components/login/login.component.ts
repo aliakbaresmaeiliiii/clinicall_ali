@@ -124,6 +124,7 @@ export class LoginComponent {
         const stroeDataUser = res;
           const dataJson = JSON.stringify(stroeDataUser);
           localStorage.setItem('userData', dataJson);
+          
           this.#router.navigate(['aliakbar/settings']);
       });
     }
