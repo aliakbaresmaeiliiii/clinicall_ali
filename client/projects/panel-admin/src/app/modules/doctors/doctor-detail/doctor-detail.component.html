@@ -1,0 +1,202 @@
+@for (doctor of doctorInfo; track $index) {
+<div
+  class="desktop:grid desktop:grid-cols-6 mobile:flex justify-center flex-col gap-4">
+  <div class="col-span-2">
+    <div class="card">
+      <div class="card__img bg-gray">
+        <div class="text-center pt-2 text-white text-xl">{{ doctor.name }}</div>
+        <div class="text-center pt-2 text-white text-md font-medium">
+          Senior Docto
+        </div>
+      </div>
+      <div class="card__avatar">
+        <img
+          crossorigin="anonymous"
+          [src]="doctor?.profileImage"
+          width="100%"
+          height="100%"
+          class="rounded-full p-1" />
+      </div>
+      <div class="card__title">{{ doctor.address }}</div>
+      <div class="flex items-center mt-3 font-normal text-base">
+        <mat-icon class="text-base">phone</mat-icon>
+        {{ doctor.mobile }}
+      </div>
+      <div class="grid grid-cols-3 w-full text-center pt-10 pb-2">
+        <div>
+          <p>564</p>
+          <small>Following</small>
+        </div>
+        <div>
+          <p>564</p>
+          <small>Followers</small>
+        </div>
+        <div>
+          <p>564</p>
+          <small>Post</small>
+        </div>
+      </div>
+    </div>
+
+    <mat-card appearance="outlined" class="mt-4">
+      <mat-card-content>
+        <mat-tab-group animationDuration="1000ms">
+          <mat-tab label="About">
+            <div class="mt-6">
+              <small class="text-sm opacity-45">Email address:</small>
+              <p class="text-sm opacity-70">{{ doctor.email }}</p>
+              <hr class="opacity-40 mb-3" />
+
+              <small class="text-sm opacity-45">Phone:</small>
+              <p class="text-sm opacity-70">{{ doctor.mobile }}</p>
+              <hr class="opacity-40 mb-3" />
+
+              <small class="text-sm opacity-45">Address:</small>
+              <p class="text-sm opacity-70">
+                {{ doctor.department }}
+              </p>
+              <hr class="opacity-40" />
+            </div>
+          </mat-tab>
+          <mat-tab label="Skills">
+            <div class="mt-6">
+              <div class="flex justify-between">
+                <p class="font-medium">OPD</p>
+              </div>
+              <mat-progress-bar
+                mode="determinate"
+                value="50"></mat-progress-bar>
+              <div class="flex justify-between mt-5">
+                <p class="font-medium">Operations</p>
+              </div>
+              <mat-progress-bar
+                mode="determinate"
+                value="50"></mat-progress-bar>
+              <div class="flex justify-between mt-5">
+                <p class="font-medium">Patient Visit</p>
+              </div>
+              <mat-progress-bar
+                mode="determinate"
+                value="30"></mat-progress-bar>
+              <div class="flex justify-between mt-5">
+                <p class="font-medium">RND</p>
+              </div>
+              <mat-progress-bar
+                mode="determinate"
+                value="80"></mat-progress-bar>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card appearance="outlined" class="mt-4">
+      <mat-card-content>
+        <div class="h-80">
+          <app-google-map [coordinates]="coordinates" />
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <section class="col-span-4 mobile:flex mobile:flex-col mobile:gap-4">
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <h2 class="">
+          <strong>Education</strong>
+        </h2>
+
+        <div class="grid desktop:grid-cols-4 auto-rows-[minmax(0,_2fr)]">
+          <div>
+            <strong>Full Name</strong>
+            <p class="opacity-55 text-xs pt-2">{{ doctor.name }}</p>
+          </div>
+          <div>
+            <strong>Mobile</strong>
+            <p class="opacity-55 text-xs pt-2">{{ doctor.mobile }}</p>
+          </div>
+          <div>
+            <strong>Email</strong>
+            <p class="opacity-55 text-xs pt-2">{{ doctor.email }}</p>
+          </div>
+          <div>
+            <strong>Location</strong>
+            <p class="opacity-55 text-xs pt-2">{{ doctor.address }}</p>
+          </div>
+        </div>
+
+        <p class="mt-8 text-sm opacity-70 pt-4">
+          Completed my graduation in Arts from the well known and renowned
+          institution of India – SARDAR PATEL ARTS COLLEGE, BARODA in 2000-01,
+          which was affiliated to M.S. University. I ranker in University exams
+          from the same university from 1996-01.
+        </p>
+        <p class="text-sm opacity-70">
+          Worked as Professor and Head of the department at Sarda Collage,
+          Rajkot, Gujarat from 2003-2015
+        </p>
+        <p class="text-sm opacity-70">
+          Lorem Ipsum is simply dummy text of the printing and typesetting
+          industry. Lorem Ipsum has been the industry's standard dummy text ever
+          since the 1500s, when an unknown printer took a galley of type and
+          scrambled it to make a type specimen book. It has survived not only
+          five centuries, but also the leap into electronic typesetting,
+          remaining essentially unchanged.
+        </p>
+        <div>
+          <h2 class="">
+            <strong>Education</strong>
+          </h2>
+          <mat-list>
+            <mat-list-item class="text-sm opacity-70"
+              >M.B.B.S.,Gujarat University, Ahmedabad,India.</mat-list-item
+            >
+            <mat-list-item class="text-sm opacity-70"
+              >M.S.,Gujarat University, Ahmedabad, India.</mat-list-item
+            >
+            <mat-list-item class="text-sm opacity-70"
+              >SPINAL FELLOWSHIP Dr. John Adam, Allegimeines Krakenhaus,
+              Schwerin, Germany.</mat-list-item
+            >
+            <mat-list-item class="text-sm opacity-70"
+              >Fellowship in Endoscopic Spine Surgery Phoenix,
+              USA.</mat-list-item
+            >
+          </mat-list>
+        </div>
+
+        <div>
+          <h2 class="">
+            <strong>Experience</strong>
+          </h2>
+          <mat-list>
+            <mat-list-item class="text-sm opacity-70"
+              >One year rotatory internship from April-2009 to march-2010 at B.
+              J. Medical College, Ahmedabad.</mat-list-item
+            >
+            <mat-list-item class="text-sm opacity-70"
+              >Three year residency at V.S. General Hospital as a resident in
+              orthopedics from April - 2008 to April - 2011.</mat-list-item
+            >
+            <mat-list-item class="text-sm opacity-70"
+              >I have worked as a part time physiotherapist in Apang manav
+              mandal from 1st june 2004 to 31st jan 2005.</mat-list-item
+            >
+            <mat-list-item class="text-sm opacity-70"
+              >Clinical and Research fellowship in Scoliosis at Shaurashtra
+              University and Medical Centre (KUMC) , Krishna Hospital , Rajkot
+              from April 2013 to June 2013.</mat-list-item
+            >
+          </mat-list>
+          <mat-list-item class="text-sm opacity-70"
+            >2.5 Years Worked at Mahatma Gandhi General Hospital,
+            Surendranagar.</mat-list-item
+          >
+          <mat-list-item class="text-sm opacity-70"
+            >Consultant Orthopedics Surgeon Jalna 2 years.</mat-list-item
+          >
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </section>
+</div>
+}

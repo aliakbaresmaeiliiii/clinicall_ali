@@ -1,0 +1,142 @@
+<mat-card-title class="p-5"> Add New Connection</mat-card-title>
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="grid md:grid-cols-2">
+    <!-- *****Facebook Link***** -->
+    <mat-form-field data-testing="facebookLink" appearance="outline">
+      <mat-label>Facebook Link</mat-label>
+      <input
+        type="facebookLink"
+        matInput
+        [errorStateMatcher]="matcher"
+        formControlName="facebookLink"
+        placeholder="Enter old password" />
+      <!-- Error handling -->
+      <mat-error *ngIf="form.controls.facebookLink.hasError('required')"
+        >facebookLink is <strong>required</strong></mat-error
+      >
+      <mat-error *ngIf="form.controls.facebookLink.hasError('minlength')"
+        >facebookLink is too short
+        <strong>{{
+          form.controls.facebookLink.getError('minlength')?.requiredLength
+        }}</strong></mat-error
+      >
+    </mat-form-field>
+    <!-- *****Twitter Link***** -->
+    <mat-form-field data-testing="twitterLink" appearance="outline">
+      <mat-label>Twitter Link</mat-label>
+      <input
+        type="twitterLink"
+        matInput
+        [errorStateMatcher]="matcher"
+        formControlName="twitterLink"
+        placeholder="enter new password" />
+      <!-- Error handling -->
+      <mat-error *ngIf="form.controls.twitterLink.hasError('required')"
+        >twitterLink is <strong>required</strong></mat-error
+      >
+      <mat-error *ngIf="form.controls.twitterLink.hasError('minlength')"
+        >twitterLink is too short
+        <strong>{{
+          form.controls.twitterLink.getError('minlength')?.requiredLength
+        }}</strong></mat-error
+      >
+    </mat-form-field>
+  </div>
+
+  <!-- *****YouTube Link***** -->
+  <div class="grid md:grid-cols-2">
+    <mat-form-field data-testing="youTubeLink" appearance="outline">
+      <mat-label>YouTube Link</mat-label>
+      <input
+        type="youTubeLink"
+        matInput
+        [errorStateMatcher]="matcher"
+        formControlName="youTubeLink"
+        placeholder="enter confirm password" />
+      <!-- Error handling -->
+      <mat-error *ngIf="form.controls.youTubeLink.hasError('required')"
+        >youTubeLink is <strong>required</strong></mat-error
+      >
+      <mat-error *ngIf="form.controls.youTubeLink.hasError('minlength')"
+        >youTubeLink is too short
+        <strong>{{
+          form.controls.youTubeLink.getError('minlength')?.requiredLength
+        }}</strong></mat-error
+      >
+    </mat-form-field>
+    <!-- *****LinkedIn Link***** -->
+    <mat-form-field data-testing="linkedInLink" appearance="outline">
+      <mat-label>LinkedIn Link</mat-label>
+      <input
+        type="linkedInLink"
+        matInput
+        [errorStateMatcher]="matcher"
+        formControlName="linkedInLink"
+        placeholder="enter confirm password" />
+      <!-- Error handling -->
+      <mat-error *ngIf="form.controls.linkedInLink.hasError('required')"
+        >linkedInLink is <strong>required</strong></mat-error
+      >
+      <mat-error *ngIf="form.controls.linkedInLink.hasError('minlength')"
+        >linkedInLink is too short
+        <strong>{{
+          form.controls.linkedInLink.getError('minlength')?.requiredLength
+        }}</strong></mat-error
+      >
+    </mat-form-field>
+  </div>
+  <div class="grid md:grid-cols-2">
+    <!-- *****Dribbble Link***** -->
+    <mat-form-field data-testing="dribbbleLink" appearance="outline">
+      <mat-label>Dribbble Link</mat-label>
+      <input
+        type="dribbbleLink"
+        matInput
+        [errorStateMatcher]="matcher"
+        formControlName="dribbbleLink"
+        placeholder="enter confirm password" />
+      <!-- Error handling -->
+      <mat-error *ngIf="form.controls.dribbbleLink.hasError('required')"
+        >dribbbleLink is <strong>required</strong></mat-error
+      >
+      <mat-error *ngIf="form.controls.dribbbleLink.hasError('minlength')"
+        >dribbbleLink is too short
+        <strong>{{
+          form.controls.dribbbleLink.getError('minlength')?.requiredLength
+        }}</strong></mat-error
+      >
+    </mat-form-field>
+    <!-- *****Twitch Link***** -->
+    <mat-form-field data-testing="twitchLink" appearance="outline">
+      <mat-label>Twitch Link</mat-label>
+      <input
+        type="twitchLink"
+        matInput
+        [errorStateMatcher]="matcher"
+        formControlName="twitchLink"
+        placeholder="enter confirm password" />
+      <!-- Error handling -->
+      <mat-error *ngIf="form.controls.twitchLink.hasError('required')"
+        >twitchLink is <strong>required</strong></mat-error
+      >
+      <mat-error *ngIf="form.controls.twitchLink.hasError('minlength')"
+        >twitchLink is too short
+        <strong>{{
+          form.controls.twitchLink.getError('minlength')?.requiredLength
+        }}</strong></mat-error
+      >
+    </mat-form-field>
+  </div>
+
+  <div class="flex desktop::justify-end w-full">
+    <button
+      class="rounded-full md:w-1/4"
+      data-testid="login-button"
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="!form.valid">
+      Save Information
+    </button>
+  </div>
+</form>

@@ -1,0 +1,21 @@
+button {
+    all: unset;
+    border: solid 1px;
+    font-size: 1em;
+    padding: 0.25em 0.5em;
+  }
+  
+  .success {
+    background: green;
+    color: white;
+    opacity: 0;
+    padding: 1em;
+    scale: 0.5;
+    text-align: center;
+    transition: opacity ease-in 0.25s, scale ease-in 0.25s;
+  }
+  
+  .success.visible {
+    opacity: 1;
+    scale: 1;
+  }

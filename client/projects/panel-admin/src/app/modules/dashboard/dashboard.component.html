@@ -1,0 +1,359 @@
+<!-- <p class="element-description">A simple button component.</p>
+<div class="showcase">
+  <h5>Button Appearance:</h5>
+  <div class="state">
+    <p>Default button</p>
+    <button dfButton>Decoded Frontend</button>
+  </div>
+  <div class="state">
+    <p>Stroked Button</p>
+    <button dfButton appearance="stroked">Decoded Frontend</button>
+  </div>
+  <div class="state">
+    <p>Solid Button</p>
+    <button dfButton appearance="solid">Decoded Frontend</button>
+  </div>
+</div>
+<div class="showcase">
+  <h5>Loading Button:</h5>
+  <div class="state">
+    <p>Stroked Button</p>
+    <button
+      (click)="loading = !loading"
+      dfButton
+      appearance="stroked"
+      style="margin-right: 10px;"
+    >
+      {{ loading ? 'Stop Loading' : 'Start Loading' }}
+    </button>
+    <button dfButton [loading]="loading">Decoded Frontend</button>
+  </div>
+</div>
+<div class="showcase">
+  <h5>Link Button:</h5>
+  <div class="state">
+    <p>Link Button</p>
+    <a href="/" dfButton>🔗 Decoded Frontend</a>
+  </div>
+</div>
+<div class="showcase">
+  <h5>Disabled Button:</h5>
+  <div class="state">
+    <p>Disabled Link Button</p>
+    <a href="/" [disabled]="true" dfButton>🔗 Decoded Frontend</a>
+  </div>
+  <div class="state">
+    <p>Disabled Button</p>
+    <button href="/" [disabled]="true" dfButton>Decoded Frontend</button>
+  </div>
+</div> -->
+
+<!-- <p class="element-description">Chip Component</p>
+<div class="showcase">
+  <h5>Chip Variants:</h5>
+  <div class="state">
+    <p>Default Chip</p>
+    <app-chip value="angular">Angular</app-chip>
+  </div>
+  <div class="state">
+    <p>Removable Chip</p>
+    <app-chip value="reactjs" (removed)="onRemove($event)" [removable]="true"
+      >ReactJS</app-chip
+    >
+  </div>
+</div> -->
+
+<!-- <p class="element-description">
+  This directives allow to copy text of any element
+</p>
+<div class="showcase">
+  <h5>Should copy text provided:</h5>
+  <div class="state">
+    <button
+      dfCanCopyToClipboard
+      #clipboard="dfClipboard"
+      text="https://localhost/demo/product/1"
+      dfButton
+    >
+      {{ (clipboard.copied$ | async) ? 'Copied' : 'Share Product Link' }}
+    </button>
+    <button
+      dfButton
+      appearance="stroked"
+      style="margin-left: 12px"
+      (click)="clipboard.clear()"
+    >
+      Reset Selection
+    </button>
+  </div>
+</div>
+<div class="showcase">
+  <h5>Should copy element content if not text provided:</h5>
+  <div class="state">
+    <button dfCanCopyToClipboard #clipboard2="dfClipboard" dfButton>
+      This text should be copied on click
+    </button>
+    <span class="copied-text" *ngIf="clipboard2.copied$ | async"
+      >Text Copied...</span
+    >
+  </div>
+</div>
+<div class="showcase">
+  <h5>Should copy selected text in textarea:</h5>
+  <div class="state">
+    <input
+      dfCanCopyToClipboard
+      #clipboard3="dfClipboard"
+      value="Click to copy it to clipboard ..."
+    />
+    <span class="copied-text" *ngIf="clipboard3.copied$ | async"
+      >Text Copied...</span
+    >
+  </div>
+</div> -->
+
+<!-- <p class="element-description">
+  It is a <b>Structural Directive</b> which removes view after some period
+  of time and replaces with an alternative view.
+</p>
+<div class="showcase">
+  <h5>Should hide banner after 5 seconds and alt view:</h5>
+  <div class="state">
+    <div
+    class="banner"
+    *hideAfter="12000; then altBanner; let counter = counter"
+    >
+    This Banner will be removed in
+    <span class="counter">{{ counter }}</span> seconds...
+    <h5>Should hide banner after {{counter}} seconds and alt view:</h5>
+  </div>
+    <ng-template #altBanner>
+      <div class="alt-banner">Here was a banner...</div>
+    </ng-template>
+  </div>
+</div> -->
+
+<!-- <p class="element-description">
+  Directive that can disable interactive (focusable) elements and prevents
+  click events on it
+</p>
+<div class="showcase">
+  <h5>Disabled Links & Buttons</h5>
+  <div class="state">
+    <p>Prevent default behavior on click if disabled</p>
+    <button
+      (click)="disabled = !disabled"
+      dfButton
+      appearance="stroked"
+      style="margin-right: 15px;"
+    >
+      {{ disabled ? 'Enable' : 'Disable' }}
+    </button>
+    <a href="/interaction-switcher" dfCanDisable [disabled]="disabled"
+      >Disabled Link</a
+    >
+  </div>
+</div> -->
+
+<!-- <app-item-card [tags]="tags" [item]="product" /> -->
+
+<!-- <p class="element-description">
+  This is pipe which takes a product id and returns the link to the product
+  as a string
+</p>
+<div class="showcase">
+  <h5>Type product ID in the input...</h5>
+  <div class="state">
+    <label>
+      Product Id:
+      <input [(ngModel)]="productId" type="text" />
+    </label>
+    <p style="margin-top: 10px;">
+      Product URL: <b>{{ productId | productUrl }}</b>
+    </p>
+  </div>
+</div> -->
+
+<!-- <list-item-demo /> -->
+<!-- <generic-tab [tabs]="tabs" (selectedIndexChange)="handleTabChange($event)">
+  <ng-template #templateOne let-data="data">
+
+    <app-users />
+
+  </ng-template>
+
+  <ng-template #templateTwo let-data="data">
+
+  </ng-template>
+  <ng-template #templateThree let-data="data">
+    <app-chip value="reactjs" (removed)="onRemove($event)" [removable]="true"
+      >ReactJS</app-chip>
+  </ng-template>
+  <ng-template #templatefour let-data="data">
+    <app-chip value="reactjs" (removed)="onRemove($event)" [removable]="true"
+      >ReactJS</app-chip>
+  </ng-template>
+</generic-tab> -->
+
+<!-- <div class="grid-container">
+  <h1 class="mat-h1">Dashboard</h1>
+  <mat-grid-list cols="4" rowHeight="350px">
+    <mat-card class="dashboard-card">
+      <mat-card-content class="dashboard-card-content">
+        <div class="w-1/4">
+          <app-line-chart>
+            <a mat-fab extended routerLink=".">
+              <span class="material-symbols-outlined"> face </span>
+            </a>
+            <div class="flex-col">
+              <p class="font-medium float-end text-sm">Appointments</p>
+              <h6 class="font-bold mb-0">650</h6>
+            </div>
+          </app-line-chart>
+        </div>
+      </mat-card-content>
+    </mat-card>
+    @for (card of cards | async; track card) {
+      <mat-grid-tile [colspan]="card.cols" [rowspan]="card.rows">
+        <mat-card class="dashboard-card">
+          <mat-card-header>
+            <mat-card-title>
+              {{card.title}}
+              <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
+                <mat-icon>more_vert</mat-icon>
+              </button>
+              <mat-menu #menu="matMenu" xPosition="before">
+                <button mat-menu-item>Expand</button>
+                <button mat-menu-item>Remove</button>
+              </mat-menu>
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="dashboard-card-content">
+            <div>Card Content Here</div>
+          </mat-card-content>
+        </mat-card>
+      </mat-grid-tile>
+    }
+  </mat-grid-list>
+</div> -->
+
+<section class="grid desktop:grid-cols-4 tablet:grid-cols-2 gap-4">
+  <mat-card appearance="outlined">
+    <mat-card-content >
+      <app-line-chart>
+        <a mat-fab extended routerLink=".">
+          <span class="material-symbols-outlined"> face </span>
+        </a>
+        <div class="flex-col">
+          <p class="font-medium float-end text-sm">Appointments</p>
+          <h6 class="font-bold mb-0">650</h6>
+        </div>
+      </app-line-chart>
+    </mat-card-content>
+  </mat-card>
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <app-line-chart>
+        <a mat-fab extended routerLink=".">
+          <span class="material-symbols-outlined"> content_cut </span>
+        </a>
+        <div class="flex-col">
+          <p class="font-medium float-end text-sm">Operations</p>
+          <h6 class="font-bold mb-0">650</h6>
+        </div>
+      </app-line-chart>
+    </mat-card-content>
+  </mat-card>
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <app-line-chart>
+        <a mat-fab extended routerLink=".">
+          <span class="material-symbols-outlined"> person_add </span>
+        </a>
+        <div class="flex-col">
+          <p class="font-medium float-end text-sm">New Patients</p>
+          <h6 class="font-bold mb-0">23</h6>
+        </div>
+      </app-line-chart>
+    </mat-card-content>
+  </mat-card>
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <app-line-chart>
+        <a mat-fab extended routerLink=".">
+          <span class="material-symbols-outlined"> local_activity </span>
+        </a>
+        <div class="flex-col">
+          <p class="font-medium float-end text-sm">Earning</p>
+          <h6 class="font-bold mb-0">123</h6>
+        </div>
+      </app-line-chart>
+    </mat-card-content>
+  </mat-card>
+</section>
+
+<section class="grid desktop:grid-cols-2 tablet:grid tablet:grid-cols-1 gap-4 pt-4">
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <app-line-chart>
+        <a mat-fab extended routerLink=".">
+          <span class="material-symbols-outlined"> face </span>
+        </a>
+        <div class="flex-col">
+          <p class="font-medium float-end text-sm">Appointments</p>
+          <h6 class="font-bold mb-0">650</h6>
+        </div>
+      </app-line-chart>
+    </mat-card-content>
+  </mat-card>
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <app-stacked-chart></app-stacked-chart>
+    </mat-card-content>
+  </mat-card>
+</section>
+
+<section
+  class="grid-cols-2 desktop:grid desktop:grid-cols-3 tablet:grid-cols-1 gap-4 pt-4">
+  <mat-card appearance="outlined" class="desktop:col-span-2">
+    <mat-card-content>
+      <app-patients [title]="'Booked Appointment'"></app-patients>
+    </mat-card-content>
+  </mat-card>
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <app-doctor-list [title]="'Doctor List'"></app-doctor-list>
+    </mat-card-content>
+  </mat-card>
+</section>
+
+<section class="pt-4">
+  <mat-card appearance="outlined">
+    <mat-card-content>
+      <app-operations></app-operations>
+    </mat-card-content>
+  </mat-card>
+</section>
+
+<!-- <div class="col-span-3">
+  <mat-card appearance="outlined" class="mt-4 ml-4">
+    <mat-card-title class="p-4"> Booked Appointment </mat-card-title>
+    <mat-card-content>
+      <app-patients></app-patients>
+    </mat-card-content>
+  </mat-card>
+</div>
+<mat-card appearance="outlined" class="mt-2 mr-4">
+  <mat-card-title class="p-4"> Doctors List </mat-card-title>
+  <mat-card-content class="p-4">
+    <app-doctor-list></app-doctor-list>
+  </mat-card-content>
+</mat-card>
+<div class="col-span-4 mb-4">
+  <mat-card appearance="outlined" class="mt-2 mr-4 ml-4">
+    <mat-card-title class="p-4"> Operations </mat-card-title>
+    <mat-card-content>
+      <app-operations></app-operations>
+    </mat-card-content>
+  </mat-card>
+</div> -->

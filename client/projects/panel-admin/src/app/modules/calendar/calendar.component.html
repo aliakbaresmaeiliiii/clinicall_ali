@@ -1,0 +1,123 @@
+<div class="btn_calendar">
+  <button
+    mat-flat-button
+    class="btn-today"
+    color="primary"
+    (click)="setCurrentMonth()">
+    Today
+  </button>
+  <strong class="displayMonth">
+    {{ displayMonth }}
+  </strong>
+  <div class="example-button-container">
+    <button
+      mat-mini-fab
+      color="primary"
+      aria-label=""
+      (click)="decreaseMonth()">
+      <svg
+        matTooltip="last month"
+        xmlns="http://www.w3.org/2000/svg"
+        height="20px"
+        viewBox="0 -960 960 960"
+        width="20px"
+        fill="#75FBFD">
+        <path
+          d="m330-444 201 201-51 51-288-288 288-288 51 51-201 201h438v72H330Z" />
+      </svg>
+    </button>
+    <button
+      mat-mini-fab
+      color="primary"
+      aria-label=""
+      (click)="increaseMonth()">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="20px"
+        viewBox="0 -960 960 960"
+        width="20px"
+        fill="#75FBFD">
+        <path
+          d="M630-444H192v-72h438L429-717l51-51 288 288-288 288-51-51 201-201Z" />
+      </svg>
+    </button>
+  </div>
+</div>
+<div cdkDropListGroup>
+  <table class="calendar-table">
+    <thead>
+      <tr>
+        @for (weekDay of weekDayNames; track $index) {
+        <th>{{ weekDay }}</th>
+        } @empty {
+        <li>There are no items.</li>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of calendar | chunk : 7; let i = index">
+        <td
+          class="calendar-day"
+          [ngClass]="{ 'past-date': c.isPastDate, today: c.isToday }"
+          *ngFor="let c of row; let j = index"
+          (click)="getValueOfMonth(c)">
+          <div
+            class="calendar-day-header"
+            [ngClass]="{ 'blue-date': c.isToday }"
+            cdkDropList
+            [cdkDropListData]="calendar"
+            (cdkDropListDropped)="drop($event)"
+            (cdkDragEnded)="dragEnded($event)">
+            <strong>{{ c.date.getDate() }} </strong>
+
+            <strong
+              *ngIf="c.isToday || (i == 0 && j == 0) || c.date.getDate() == 1">
+              {{ monthNames[c.date.getMonth()] }}
+            </strong>
+            <div
+              *ngIf="c.dataList"
+              cdkDrag
+              class="body-event"
+              (contextmenu)="onRightClick($event, c)">
+              @for (event of c.dataList; track $index) {
+              <p class="priority" [style.background-color]="event.color"></p>
+              <p *ngFor="let event of c.dataList" class="event_title">
+                <strong>{{ event.event_title }}</strong>
+              </p>
+
+              <!-- <p *ngFor="let event of c.dataList">
+              <strong>{{ event.event_description }}</strong>
+            </p> -->
+              } @empty {
+              <li>There are no items.</li>
+              }
+            </div>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+@if (contextMenuVisible) {
+<div
+  [ngStyle]="{ top: contextMenuPosition.y, left: contextMenuPosition.x }"
+  class="context-menu">
+  <div class="btn_delete">
+    <button
+      mat-button
+      color="primary"
+      class="flat"
+      type="button"
+      (click)="deleteAppointment()">
+      <span class="material-symbols-outlined"> delete </span>
+      <span> Delete </span>
+    </button>
+  </div>
+  <hr />
+  <div>
+    <p
+      class="priority"
+      [style.background-color]="dataContexMenu.dataList[0].color"></p>
+  </div>
+</div>
+}

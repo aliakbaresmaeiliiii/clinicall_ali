@@ -1,0 +1,26 @@
+.sidenav {
+  width: 260px;
+  padding: 0 8px;
+  box-sizing: border-box;
+  top: 60px;
+}
+
+.menu-button {
+  transition: 300ms ease-in-out;
+  transform: rotate(0deg);
+}
+
+
+
+.submenu {
+  overflow-y: hidden;
+  transition: transform 300ms ease;
+  transform: scaleY(0);
+  transform-origin: top;
+  padding-left: 15px;
+}
+
+.submenu.expanded {
+  margin: 20px;
+  transform: scaleY(1);
+}

@@ -1,0 +1,21 @@
+:host {
+    align-items: center;
+    border: solid 2px;
+    display: flex;
+    margin-block-end: 1em;
+    padding: 0.25em 1em;
+    transition: color ease-in 0.25s, scale ease-in 0.15s;
+  }
+  
+  p {
+    margin-inline-start: 0.5em;
+  }
+  
+  div {
+    margin-left: auto;
+  }
+  
+  :host(.complete) {
+    color: green;
+    scale: 0.975;
+  }

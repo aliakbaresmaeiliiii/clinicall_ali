@@ -1,0 +1,32 @@
+.file-input-container {
+  display: flex;
+  align-items: center;
+
+  input[type='file'] {
+    display: none;
+  }
+
+  input[matInput] {
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  button {
+    margin-left: 8px;
+  }
+}
+
+.preview {
+  background-color: #EFE5FF;
+  border-radius: 11px;
+
+  img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    padding: 10px;
+    margin: auto;
+  }
+}

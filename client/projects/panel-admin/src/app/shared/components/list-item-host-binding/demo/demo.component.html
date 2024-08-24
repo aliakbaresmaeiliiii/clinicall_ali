@@ -1,0 +1,27 @@
+<app-list-item-host-binding [step]="1" [isComplete]="step1Complete()">
+  First, do something
+  <button (click)="step1Complete.set(!step1Complete())">
+    {{ step1Complete() ? 'Finished!' : 'Complete Step' }}
+  </button>
+</app-list-item-host-binding>
+
+<app-list-item-host-binding [step]="2" [isComplete]="step2Complete()">
+  Next, do something else
+  <button (click)="step2Complete.set(!step2Complete())">
+    {{ step2Complete() ? 'Finished!' : 'Complete Step' }}
+  </button>
+</app-list-item-host-binding>
+
+<app-list-item-host-binding [step]="3" [isComplete]="step3Complete()">
+  After that, you're finished
+  <button (click)="step3Complete.set(!step3Complete())">
+    {{ step3Complete() ? 'Finished!' : 'Complete Step' }}
+  </button>
+</app-list-item-host-binding>
+
+<div
+  [class.visible]="step1Complete() && step2Complete() && step3Complete()"
+  class="success">
+  <h2>Thank You!</h2>
+  All steps have been completed
+</div>

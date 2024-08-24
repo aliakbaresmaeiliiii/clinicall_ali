@@ -1,0 +1,176 @@
+[33mcommit 8dd9c13ddbb86dee0a7a73cdcfb29d77c86b9ceb[m[33m ([m[1;36mHEAD -> [m[1;32mDev[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m
+Author: alisoft98 <aliakbaresmaeilisoft@gmail.com>
+Date:   Tue Aug 6 16:51:58 2024 +0800
+
+    fix:back to zone.js
+
+[1mdiff --git a/client/angular.json b/client/angular.json[m
+[1mindex 2f7ab7b..891bc15 100644[m
+[1m--- a/client/angular.json[m
+[1m+++ b/client/angular.json[m
+[36m@@ -21,6 +21,7 @@[m
+             "index": "projects/panel-admin/src/index.html",[m
+             "browser": "projects/panel-admin/src/main.ts",[m
+             "polyfills": [[m
+[32m+[m[32m              "zone.js"[m
+             ],[m
+             "tsConfig": "tsconfig.app.json",[m
+             "inlineStyleLanguage": "scss",[m
+[36m@@ -43,7 +44,6 @@[m
+             "server": "projects/panel-admin/src/main.server.ts",[m
+             "prerender": false,[m
+             "ssr": false[m
+[31m-           [m
+           },[m
+           "configurations": {[m
+             "production": {[m
+[36m@@ -94,7 +94,8 @@[m
+           "builder": "@angular-devkit/build-angular:karma",[m
+           "options": {[m
+             "polyfills": [[m
+[31m-            [m
+[32m+[m[32m              "zone.js",[m
+[32m+[m[32m              "zone.js/testing"[m
+             ],[m
+             "tsConfig": "tsconfig.spec.json",[m
+             "inlineStyleLanguage": "scss",[m
+[36m@@ -103,7 +104,6 @@[m
+                 "glob": "**/*",[m
+                 "input": "projects/panel-admin/src/assets",[m
+                 "output": "/assets/"[m
+[31m-[m
+               }[m
+             ],[m
+             "styles": [[m
+[36m@@ -143,7 +143,8 @@[m
+           "options": {[m
+             "tsConfig": "projects/ali-lib/tsconfig.spec.json",[m
+             "polyfills": [[m
+[31m-    [m
+[32m+[m[32m              "zone.js",[m
+[32m+[m[32m              "zone.js/testing"[m
+             ][m
+           }[m
+         }[m
+[1mdiff --git a/client/projects/panel-admin/src/app/app.config.ts b/client/projects/panel-admin/src/app/app.config.ts[m
+[1mindex 977469c..565f9fb 100644[m
+[1m--- a/client/projects/panel-admin/src/app/app.config.ts[m
+[1m+++ b/client/projects/panel-admin/src/app/app.config.ts[m
+[36m@@ -24,8 +24,8 @@[m [mimport { NgApexchartsModule } from 'ng-apexcharts';[m
+ [m
+ export const appConfig: ApplicationConfig = {[m
+   providers: [[m
+[31m-    // provideZoneChangeDetection({ eventCoalescing: true }),[m
+[31m-    provideExperimentalZonelessChangeDetection(),[m
+[32m+[m[32m    provideZoneChangeDetection({ eventCoalescing: true }),[m
+[32m+[m[32m    // provideExperimentalZonelessChangeDetection(),[m
+     provideRouter(routes),[m
+     provideClientHydration(),[m
+     provideAnimationsAsync(),[m
+[1mdiff --git a/client/projects/panel-admin/src/app/core/layouts/side-bar/side-bar.component.html b/client/projects/panel-admin/src/app/core/layouts/side-bar/side-bar.component.html[m
+[1mindex 408bf01..b4b89a8 100644[m
+[1m--- a/client/projects/panel-admin/src/app/core/layouts/side-bar/side-bar.component.html[m
+[1m+++ b/client/projects/panel-admin/src/app/core/layouts/side-bar/side-bar.component.html[m
+[36m@@ -38,7 +38,7 @@[m
+             class="menu-button"[m
+             [@iconRotate]="expandedMenus[item.menu_id] ? 'expanded' : 'collapsed'"[m
+           >[m
+[31m-            add[m
+[32m+[m[32m          chevron_right[m
+           </mat-icon>[m
+           <!-- <mat-icon[m
+             class="menu-button"[m
+[1mdiff --git a/client/projects/panel-admin/src/app/core/layouts/side-bar/side-bar.component.scss b/client/projects/panel-admin/src/app/core/layouts/side-bar/side-bar.component.scss[m
+[1mindex da54b69..ebfc848 100644[m
+[1m--- a/client/projects/panel-admin/src/app/core/layouts/side-bar/side-bar.component.scss[m
+[1m+++ b/client/projects/panel-admin/src/app/core/layouts/side-bar/side-bar.component.scss[m
+[36m@@ -10,7 +10,7 @@[m
+ }[m
+ [m
+ .menu-button.rotated {[m
+[31m-  transform: rotate(180deg);[m
+[32m+[m[32m  transform: rotate(85deg);[m
+ }[m
+ [m
+ .submenu {[m
+[36m@@ -23,5 +23,6 @@[m
+ [m
+ .submenu.expanded {[m
+   margin: 20px;[m
+[32m+[m[32m  animation-duration: 2s;[m
+   transform: scaleY(1);[m
+ }[m
+\ No newline at end of file[m
+[1mdiff --git a/client/projects/panel-admin/src/app/modules/patients/model/patients.model.ts b/client/projects/panel-admin/src/app/modules/patients/model/patients.model.ts[m
+[1mindex 3d2f97d..cef91bd 100644[m
+[1m--- a/client/projects/panel-admin/src/app/modules/patients/model/patients.model.ts[m
+[1m+++ b/client/projects/panel-admin/src/app/modules/patients/model/patients.model.ts[m
+[36m@@ -20,7 +20,7 @@[m [mexport interface PatientDTO {[m
+   description?: string | undefined | null;[m
+   sugarLevel?: string | undefined | null;[m
+   injury?: string | undefined | null;[m
+[31m-  profileImage?: string ;[m
+[32m+[m[32m  profileImage?: string | undefined | any;[m
+   profileImageShow?: string ;[m
+ [m
+ }[m
+[1mdiff --git a/client/projects/panel-admin/src/app/modules/patients/patient-detail/patient-detail.component.html b/client/projects/panel-admin/src/app/modules/patients/patient-detail/patient-detail.component.html[m
+[1mindex 25e4850..05dce66 100644[m
+[1m--- a/client/projects/panel-admin/src/app/modules/patients/patient-detail/patient-detail.component.html[m
+[1m+++ b/client/projects/panel-admin/src/app/modules/patients/patient-detail/patient-detail.component.html[m
+[36m@@ -1,40 +1,28 @@[m
+[31m-<!-- <div *ngFor="let patient of patientDetailSignal()">[m
+[31m-    <h3>{{ patient?.firstName }}</h3>[m
+[31m-    <p>{{ patient?.lastName }}</p>[m
+[31m-  </div> -->[m
+ [m
+[32m+[m[32m@for (patient of patientData; track $index) {[m
+ <div class="grid grid-cols-6 gap-4">[m
+   <div class="col-span-2 p-4">[m
+     <div>[m
+       <img[m
+[31m-        src="../../../../assets/images/usrbig4.jpg[m
+[31m-          "[m
+[31m-        alt=""[m
+[31m-        width="100%"[m
+[31m-        height="100%" />[m
+[32m+[m[32m      crossorigin="anonymous"[m
+[32m+[m[32m      [src]="patient?.profileImage"[m
+[32m+[m[32m      width="100%"[m
+[32m+[m[32m      height="100%" />[m
+     </div>[m
+     <mat-card appearance="outlined" class="mt-4">[m
+       <mat-card-content>[m
+         <h2 class="text-xs font-medium">About Patient</h2>[m
+[31m-        <p class="text-sm opacity-70">[m
+[31m-          Lorem Ipsum is simply dummy text of the printing and typesetting[m
+[31m-          industry. Lorem Ipsum has been the industry's standard dummy text ever[m
+[31m-          since the 1500s, when an unknown printer took a galley of type and[m
+[31m-          scrambled it to make a type specimen book. It has survived not only[m
+[31m-          five centuries, but also the leap into electronic typesetting,[m
+[31m-          remaining essentially unchanged.[m
+[31m-        </p>[m
+         <small class="text-sm opacity-45 mb-3">Email address:</small>[m
+[31m-        <p class="text-sm opacity-70">johngmail.com</p>[m
+[32m+[m[32m        <p class="text-sm opacity-70">{{ patient.email }}</p>[m
+         <hr class="opacity-40 mb-3" />[m
+ [m
+         <small class="text-sm opacity-45">Phone:</small>[m
+[31m-        <p class="text-sm opacity-70">+91 1234567890</p>[m
+[32m+[m[32m        <p class="text-sm opacity-70">{{ patient.mobile }}</p>[m
+         <hr class="opacity-40 mb-3" />[m
+ [m
+         <small class="text-sm opacity-45">Address:</small>[m
+         <p class="text-sm opacity-70">[m
+[31m-          345, Sarju Appt., Mota Varacha, Surat Gujarat, India.[m
+[32m+[m[32m          {{ patient.address }}[m
+         </p>[m
+         <hr class="opacity-40" />[m
+       </mat-card-content>[m
+[36m@@ -45,15 +33,7 @@[m
+       <mat-card-content>[m
+         <h2 class="text-xs font-medium">About</h2>[m
+         <p class="text-sm opacity-70">[m
+[31m-          It is also used to identify any abnormal tissue in the uterine cavity,[m
+[31m-          such as uterine fibroids, endometrial polyps, scar tissue, or retained[m
+[31m-          pregnancy tissue, the presence of which

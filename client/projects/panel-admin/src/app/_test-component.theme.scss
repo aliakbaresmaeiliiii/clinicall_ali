@@ -1,0 +1,12 @@
+@use "@angular/material" as mat;
+
+@mixin themeTest($theme) {
+  .content{
+    background-color: rgba(mat.get-theme-color($theme, primary-container), 0.75);
+  }
+  .content {
+    @media (pointer: fine) {
+        background-color: mat.get-theme-color($theme, primary);
+    }
+  }
+}

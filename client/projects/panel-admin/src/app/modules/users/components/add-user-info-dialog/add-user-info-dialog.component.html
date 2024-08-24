@@ -1,0 +1,227 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit($event)" class="form">
+  <!-- <pre>{{form.value | json}}</pre> -->
+  <div class="form-field">
+    <label for="name">First name</label>
+    <input
+      formControlName="firstName"
+      type="text"
+      id="name"
+      placeholder="Enter your name" />
+    <ng-container *ngIf="form.controls.firstName as firstName">
+      @if(firstName.hasError('required') && firstName.dirty){
+      <div class="input-error">This field is required</div>
+      } @if(firstName.hasError('minlength') && firstName.dirty){
+      <div class="input-error">
+        The name must be at least
+        <strong>{{ firstName.getError('minlength').requiredLength }} </strong
+        >characters
+      </div>
+      } @if(firstName.hasError('banWords') && firstName.dirty){
+      <div class="input-error">
+        The value
+        <strong>{{ firstName.getError('banWords').bannedWord }} </strong>is
+        banned
+      </div>
+      }
+    </ng-container>
+  </div>
+  <div class="form-field">
+    <label for="last_name">Last name</label>
+    <input
+      formControlName="lastName"
+      type="text"
+      id="last_name"
+      placeholder="Enter your last name" />
+    <ng-container *ngIf="form.controls.lastName as lastName">
+      @if(lastName.hasError('required') && lastName.dirty){
+      <div class="input-error">This field is required</div>
+      } @if(lastName.hasError('minlength') && lastName.dirty){
+      <div class="input-error">The name is short</div>
+      } @if(lastName.hasError('banWords') && lastName.dirty){
+      <div class="input-error">
+        The value
+        <strong>{{ lastName.getError('banWords').bannedWord }} </strong>is
+        banned
+      </div>
+      }
+    </ng-container>
+  </div>
+  <div class="form-field">
+    <label for="Nick Name">Nick Name</label>
+    <input
+      formControlName="nikname"
+      type="text"
+      id="Nick Name"
+      placeholder="Enter your Nick Name" />
+    <ng-container *ngIf="form.controls.nikname as nikname">
+      @if(nikname.hasError('required') && nikname.dirty){
+      <div class="input-error">This field is required</div>
+      } @if(nikname.hasError('minlength') && nikname.dirty){
+      <div class="input-error">The nikname is too short</div>
+      }@if(nikname.hasError('banWords') && nikname.dirty){
+      <div class="input-error">
+        The value
+        <strong>{{ nikname.getError('banWords').bannedWord }} </strong>is banned
+      </div>
+      }
+    </ng-container>
+  </div>
+  <div class="form-field">
+    <label for="Email">Email</label>
+    <input
+      formControlName="email"
+      type="text"
+      id="Email"
+      placeholder="Enter your Email" />
+    <ng-container *ngIf="form.controls.email as email">
+      @if(email.hasError('required') && email.dirty){
+      <div class="input-error">This field is required</div>
+      } @if(email.hasError('minlength') && email.dirty){
+      <div class="input-error">The email is not correct</div>
+      }
+    </ng-container>
+  </div>
+  <div class="form-field-inline-group">
+    <div class="form-field form-field--small">
+      <label for="year-of-birth">Year of birth</label>
+      <select formControlName="yearOfBirth" id="year-of-birth">
+        <!-- <option *ngFor="let year of years" [value]="year">{{ year }}</option> -->
+      </select>
+    </div>
+    <div class="form-field form-field--small">
+      <label for="passport">Passport Number</label>
+      <input
+        formControlName="passport"
+        type="text"
+        id="passport"
+        placeholder="Provide Passport Data" />
+      <ng-container *ngIf="form.controls.passport as passport">
+        @if(passport.hasError('pattern') && passport.dirty){
+        <div class="input-error">Allowed format</div>
+        }
+      </ng-container>
+    </div>
+  </div>
+
+  <fieldset formGroupName="address">
+    <legend>Address</legend>
+    <div class="form-field">
+      <label for="full-address">Full Address</label>
+      <input
+        formControlName="fullAddress"
+        type="text"
+        id="full-address"
+        placeholder="Street name and house number" />
+      <ng-container
+        *ngIf="form.controls.address.controls.fullAddress as fullAddress">
+        @if(fullAddress.hasError('required') && fullAddress.dirty){
+        <div class="input-error">This field is required</div>
+        }
+      </ng-container>
+    </div>
+    <div class="form-field">
+      <label for="city">City</label>
+      <input formControlName="city" type="text" id="city" placeholder="City" />
+      <ng-container *ngIf="form.controls.address.controls.city as city">
+        @if(city.hasError('required') && city.dirty){
+        <div class="input-error">This field is required</div>
+        }
+      </ng-container>
+    </div>
+    <div class="form-field">
+      <label for="post-code">Post Code</label>
+      <input
+        formControlName="postCode"
+        type="number"
+        id="post-code"
+        placeholder="Post code" />
+      <ng-container *ngIf="form.controls.address.controls.postCode as postCode">
+        @if(postCode.hasError('required') && postCode.dirty){
+        <div class="input-error">This field is required</div>
+        }
+      </ng-container>
+    </div>
+  </fieldset>
+
+  <fieldset formArrayName="phones">
+    <legend>phones</legend>
+    <div class="control-buttons">
+      <button class="add-button" (click)="addPhone()" type="button">+</button>
+    </div>
+    <div
+      class="form-field"
+      *ngFor="let item of form.controls.phones.controls; index as i"
+      [formGroupName]="i">
+      <label for="phones-{{ i }}"> Phone number </label>
+      <div class="control-container">
+        <select class="phone-label-dropdown" formControlName="label">
+          <!-- <option *ngFor="let label of phoneLabels" [value]="label">
+            {{ label }}
+          </option> -->
+        </select>
+        <input
+          formControlName="phone"
+          type="text"
+          placeholder="Enter Phone Number"
+          id="phones-{{ i }}" />
+        <button class="remove-button" (click)="removePhone(i)" type="button">
+          -
+        </button>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset formGroupName="skills">
+    <legend>User Skills</legend>
+    <ng-container *ngIf="skiil$ | async as skills; else loading">
+      <!-- <div class="skill-container" *ngFor="let skill of skills">
+        <input type="checkbox" [id]="skill" [formGroupName]="skill" />
+        <label [for]="skill">{{ skill | titlecase }}</label>
+      </div> -->
+    </ng-container>000
+  </fieldset>  
+
+  <fieldset formGroupName="password">
+    <legend>Password</legend>
+    <div class="form-field">
+      <label for="password"> Create Password</label>
+      <input
+        formControlName="password"
+        type="password"
+        id="password"
+        placeholder="Enter password..." />
+      <ng-container
+        *ngIf="form.controls.password.controls.password as password">
+        @if(password.dirty && password.hasError('required')){
+        <div class="input-error">This field is required</div>
+        } @if(password.dirty && password.hasError('minlength')){
+        <div class="input-error">
+          Password should be at least
+          <strong>{{ password.getError('minlength').requiredLength }}</strong>
+        </div>
+        }
+      </ng-container>
+    </div>
+    <div class="form-field">
+      <label for="confirm-password">Confirm Password</label>
+      <input
+        formControlName="confirmPassword"
+        type="password"
+        id="confirm-password"
+        placeholder="Enter confirmPassword..." />
+        <ng-container
+        *ngIf="form.controls.password.controls.confirmPassword as confirmPassword">
+        @if(confirmPassword.hasError('passswordShouldMatch')&& confirmPassword.dirty){
+        <div class="input-error">Password doesn't match</div>
+        } 
+      </ng-container>
+    </div>
+  </fieldset>
+
+  <button [disabled]="form.invalid">Save</button>
+  Reset
+</form>
+
+<ng-template #loading>
+  <p>Skills are loading...</p>
+</ng-template>

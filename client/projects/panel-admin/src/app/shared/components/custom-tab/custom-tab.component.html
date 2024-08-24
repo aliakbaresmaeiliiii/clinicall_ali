@@ -1,0 +1,35 @@
+<!-- <mat-tab-group
+animationDuration="2000ms"
+  mat-stretch-tabs="false"
+  mat-align-tabs="start"
+  (selectedTabChange)="onTabChanged($event.tab)">
+  @for (tab of tabs(); track tab) {
+  <mat-tab label="{{ tab }}">
+    <ng-container *ngTemplateOutlet="tabContentTemplate; context: context"></ng-container>
+    <ng-template #context></ng-template>
+    <ng-template #tabContentTemplate></ng-template>
+
+    
+  </mat-tab>
+  }
+</mat-tab-group> -->
+
+<mat-tab-group
+  animationDuration="2000ms"
+  mat-stretch-tabs="false"
+  mat-align-tabs="start"
+  (selectedTabChange)="onTabChanged($event.index)">
+  @for (tab of tabs(); track $index) {
+  <mat-tab [label]="tab.title">
+    <ng-container
+      select=""
+      *ngTemplateOutlet="
+        selectedTemplate;
+        context: context || noContent
+      "></ng-container>
+    <ng-template #noContent> No conent... </ng-template>
+  </mat-tab>
+  } @empty {
+  <li>There are no items.</li>
+  }
+</mat-tab-group>
