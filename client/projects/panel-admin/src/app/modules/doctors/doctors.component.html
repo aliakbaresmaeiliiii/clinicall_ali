@@ -1,0 +1,185 @@
+    <div class="rounded-lg flex justify-between items-center border-0 bg-white">
+      <div class="flex items-center gap-4 pl-4">
+        <h2 class="text-xs font-medium">Doctor</h2>
+        <div class="pt-2">
+          <mat-form-field appearance="outline" class="-mb-3">
+            <mat-label>Filter</mat-label>
+            <input
+            class="w-full"
+            matInput
+            (keyup)="applyFilter($event)"
+            placeholder="Ex. ium"
+            #input />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 pr-4">
+        <button
+          mat-mini-fab
+          matBadge="8"
+          matTooltip="ADD"
+          (click)="addPateint('250ms', '150ms')">
+          <mat-icon>add</mat-icon>
+        </button>
+        <button
+          mat-mini-fab
+          matBadge="8"
+          matTooltip="REFRESH"
+          (click)="refreshGrid()">
+          <mat-icon>refresh</mat-icon>
+        </button>
+        <div matTooltip="XLSX" class="cursor-pointer" (click)="export()">
+          <img
+            src="../../../assets/images/xlsx.png"
+            width="32"
+            height="32"
+            alt="" />
+        </div>
+      </div>
+    </div>
+  
+    <!-- <button class="add-user-info" (click)="addUserInfo()" mat-mini-fab>
+            <mat-icon>add</mat-icon>
+          </button> -->
+    <mat-card appearance="outlined">
+      <mat-card-content>
+        <div class="table-container" fxFlexFill>
+          <table
+            mat-table
+            [dataSource]="dataSource"
+            class="mat-elevation-z8"
+            matSort
+            fxFlexFill>
+            <ng-container matColumnDef="select">
+              <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox
+                  (change)="$event ? toggleAllRows() : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()"
+                  [aria-label]="checkboxLabel()">
+                </mat-checkbox>
+              </th>
+              <td mat-cell *matCellDef="let row">
+                <mat-checkbox
+                  (click)="$event.stopPropagation()"
+                  (change)="$event ? selection.toggle(row) : null"
+                  [checked]="selection.isSelected(row)"
+                  [aria-label]="checkboxLabel(row)">
+                </mat-checkbox>
+              </td>
+            </ng-container>
+            <!-- posidtion Column -->
+            <ng-container matColumnDef="posidtion">
+              <th mat-header-cell *matHeaderCellDef>Posidtion.</th>
+              <td mat-cell *matCellDef="let element">{{ element.posidtion }}</td>
+            </ng-container>
+            <!-- id Column -->
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef>Id.</th>
+              <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+            </ng-container>
+            <!-- profileImage Column -->
+            <ng-container matColumnDef="profileImage">
+              <th mat-header-cell *matHeaderCellDef>ProfileImage</th>
+              <td mat-cell *matCellDef="let element">
+                <div class="imgProfile">
+                  <img
+                    crossorigin="anonymous"
+                    [src]="element.profileImage"
+                    width="50"
+                    height="50" />
+                </div>
+              </td>
+            </ng-container>
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef>Name</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.name }} 
+              </td>
+            </ng-container>
+            <!-- gender Column -->
+            <ng-container matColumnDef="gender">
+              <th mat-header-cell *matHeaderCellDef>Gender</th>
+              <td mat-cell *matCellDef="let element">
+                @if (element.gender === 'Male') {
+                <div class="bg-blue rounded-lg w-16">
+                  <span class="text-white flex justify-center p-1 text-xs">
+                    {{ element.gender }}
+                  </span>
+                </div>
+                }@else {
+                <div class="bg-primary rounded-lg w-16">
+                  <span class="text-white flex justify-center p-1 text-xs">
+                    {{ element.gender }}
+                  </span>
+                </div>
+                }
+              </td>
+            </ng-container>
+            <!-- mobile Column -->
+            <ng-container matColumnDef="mobile">
+              <th mat-header-cell *matHeaderCellDef>Mobile</th>
+              <td mat-cell *matCellDef="let element">{{ element.mobile }}</td>
+            </ng-container>
+            <!-- age Column -->
+            <ng-container matColumnDef="age">
+              <th mat-header-cell *matHeaderCellDef>Age</th>
+              <td mat-cell *matCellDef="let element">{{ element.age }}</td>
+            </ng-container>
+            <!-- email Column -->
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef>Email</th>
+              <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+            </ng-container>
+            <!-- action Column -->
+            <ng-container matColumnDef="action">
+              <th mat-header-cell *matHeaderCellDef>action</th>
+              <td mat-cell *matCellDef="let element">
+                <div class="flex gap-2">
+                  <button
+                    mat-icon-button
+                    matTooltip="View Detail"
+                    (click)="doctorDetial(element.id)">
+                    <span class="material-symbols-outlined text-blue">
+                      Visibility
+                    </span>
+                  </button>
+                  <button
+                    mat-icon-button
+                    matTooltip="Eidt Doctor"
+                    (click)="editDoctor(element, '250ms', '150ms')">
+                    <span class="material-symbols-outlined text-blue">
+                      edit
+                    </span>
+                  </button>
+                  <button
+                    matTooltip="Delete Doctor"
+                    mat-icon-button
+                    (click)="deleteDoctor(element, '250ms', '150ms')">
+                    <span
+                      class="material-symbols-outlined text-red cursor-pointer">
+                      delete
+                    </span>
+                  </button>
+                </div>
+              </td>
+            </ng-container>
+  
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="4">
+                <div class="text-center">{{ input.value }}No results</div>
+              </td>
+            </tr>
+          </table>
+          <mat-paginator
+            [pageSizeOptions]="[5, 10, 25, 100]"
+            aria-label="Select page of users"></mat-paginator>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  

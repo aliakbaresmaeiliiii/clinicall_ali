@@ -1,0 +1,120 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav
+    #drawer
+    class="sidenav"
+    fixedInViewport
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false">
+    <mat-toolbar class="flex justify-center items-center gap-2">
+      <img src="../../../../assets/images/icons/logo.png" alt="" />
+      <strong>Cilivia</strong>
+    </mat-toolbar>
+    <div class="flex flex-col justify-center items-center p-6 gap-4">
+      <div class="w-20 m-auto">
+        <img
+          src="../../../../assets/images/admin.jpg"
+          class="bg-white p-1 shadow-lg rounded-xl"
+          width="100%"
+          height="100%"
+          alt="" />
+      </div>
+      <div>
+        <p class="text-sm font-medium">Aliakbar Esmaeili</p>
+        <p class="text-xs font-medium text-center">Admin</p>
+      </div>
+    </div>
+    <div class="text-xs uppercase ml-4 mb-4">Main</div>
+
+    @for (menuName of getMenuNames(); track $index) { @for (item of
+    groupedData[menuName]; track item ) {
+    <a
+      class="cursor-pointer dark:hover:text-blue"
+      mat-list-item
+      #link="routerLinkActive"
+      routerLinkActive
+      [activated]="link.isActive"
+      (click)="toggleSubmenu(item.menu_id)">
+      <div class="flex items-center justify-between p-2">
+        <div class="flex gap-2">
+          <span class="material-symbols-outlined">
+            {{ item.icon }}
+          </span>
+          <span class="text-base">
+            {{ item.menu_name }}
+          </span>
+        </div>
+        @if(item.submenus.length){
+        <div (click)="toggleMenu(item.menu_id)">
+          <mat-icon
+            class="menu-button"
+            [@iconRotate]="
+              expandedMenus[item.menu_id] ? 'expanded' : 'collapsed'
+            ">
+            chevron_right
+          </mat-icon>
+        </div>
+        }
+      </div>
+    </a>
+
+    <div *ngFor="let sub of item.submenus; let subIndex = index">
+      <div *ngIf="expandedMenus[item.menu_id]">
+        <div
+          class="submenu"
+          [ngClass]="{ expanded: expandedMenus[item.menu_id] }">
+          <a
+            class="dark:hover:text-blue cursor-pointer"
+            mat-list-item
+            [routerLink]="sub.url"
+            href="{{ sub.link }}">
+            <div class="flex gap-2">
+              @if (isActive(sub.url)) {
+              <span
+                class="material-symbols-outlined"
+                [ngClass]="{ 'text-blue': isActive(sub.url) }">
+                chevron_right
+              </span>
+              }
+              <span
+                class="text-base"
+                [ngClass]="{ 'text-blue': isActive(sub.url) }">
+                {{ sub.submenu_name }}
+              </span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+    } }@empty {
+    <div class="flex items-center justify-center">
+      <app-loader />
+    </div>
+    }
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <div class="w-screen flex justify-between">
+        <div>
+          @if (isHandset$ | async) {
+          <button
+            type="button"
+            aria-label="Toggle sidenav"
+            mat-icon-button
+            (click)="drawer.toggle()">
+            <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+          </button>
+          }
+        </div>
+        <div>
+          <app-header />
+        </div>
+      </div>
+    </mat-toolbar>
+    <div class="sidenav-scroll-wrapper p-4">
+      <app-bread-crumb />
+      <ng-content></ng-content>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

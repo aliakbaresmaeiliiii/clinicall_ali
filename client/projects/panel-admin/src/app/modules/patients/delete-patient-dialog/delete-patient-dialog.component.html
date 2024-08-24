@@ -1,0 +1,17 @@
+<h3 mat-dialog-title class="font-extrabold text-center">Are you sure?</h3>
+
+<ul class="font-light text-sm m-auto">
+  <li>
+    <p>
+      <strong>Patient Name :</strong> {{ patientData.firstName
+      }}{{ patientData.lastName }}
+    </p>
+    <p ><strong>Gender :</strong> {{ patientData.gender }}</p>
+    <p><strong>Blood Group :</strong> {{ patientData.bloodGroup }}</p>
+    <p><strong>Mobile :</strong> {{ patientData.mobile }}</p>
+  </li>
+</ul>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button mat-button mat-dialog-close cdkFocusInitial (click)="deletePatient(patientData.id)">Delete</button>
+</mat-dialog-actions>

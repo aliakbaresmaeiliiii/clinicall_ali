@@ -1,0 +1,17 @@
+<h2 class="header">{{ item.name }}</h2>
+<div class="content">
+  <div class="preview">
+    <img class="preview-img" [src]="item.imageURL" [alt]="item.name" />
+  </div>
+  <div class="tags">
+    @for (tag of tags; track $index) {
+    <app-chip [value]="tag">{{ tag }}</app-chip>
+    } @empty {
+    <li>There are no items.</li>
+    }
+  </div>
+</div>
+<div class="footer">
+  <button dfButton (click)="onPurchase()" [loading]="loading">Purchase</button>
+  <div class="price">{{ item.price | currency }}</div>
+</div>

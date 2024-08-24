@@ -1,0 +1,130 @@
+@use '@angular/material' as mat;
+@use '../../../m3-theme.scss';
+@use '../src/app/core/layouts/layout-component.theme';
+@use './app/test-component.theme';
+
+@include mat.core();
+
+$angular-material-3-light-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      use-system-variables: true,
+      primary: mat.$azure-palette,
+      tertiary: mat.$blue-palette,
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
+);
+
+$angular-material-3-dark-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: dark,
+      primary: mat.$magenta-palette,
+      tertiary: mat.$violet-palette,
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
+);
+
+$light-theme: m3-theme.$light-theme;
+$dark-theme: m3-theme.$dark-theme;
+
+:root {
+  @include mat.all-component-themes($light-theme);
+  background: mat.get-theme-color($light-theme, surface);
+  // Components themes
+  @include layout-component.themeLayout($light-theme);
+  @include test-component.themeTest($light-theme);
+
+  &.dark {
+    @include mat.all-component-colors($dark-theme);
+    background: mat.get-theme-color($dark-theme, surface);
+    @include layout-component.themeLayout($dark-theme);
+    @include test-component.themeTest($dark-theme);
+  }
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: CustomFont, 'CustomFont', sans-serif;
+}
+
+
+// regular style toast
+@import 'ngx-toastr/toastr';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+// Style to fix the weird border with angular material
+.mdc-notched-outline__notch {
+  border-right: none !important;
+  border-left: none !important;
+}
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('./assets/fonts/roboto/Roboto-Medium.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('./assets/fonts/Roboto/Roboto-Light.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+// ScrollBar
+*::-webkit-scrollbar {
+  width: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  border-radius: 8px;
+  background-color: #e7e7e7;
+  border: 1px solid #cacaca;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+*::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  background-color: #363636;
+}
+
+.mdc-text-field--outlined {
+  --mdc-outlined-text-field-container-shape: 28px !important;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+h2,
+.mat-header-row {
+  color: #5b626b;
+  font-size: 17px !important;
+  font-weight: 500px;
+}
+

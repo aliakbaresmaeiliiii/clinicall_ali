@@ -1,0 +1,342 @@
+<h2 class="text-xs font-medium">Setting</h2>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="desktop:grid grid-cols-2 gap-3">
+    <!-- *****FirstName***** -->
+    <mat-form-field
+      data-testing="FirstName"
+      appearance="outline"
+      class="w-full">
+      <mat-label>FirstName</mat-label>
+      <input
+        type="text"
+        matInput
+        [errorStateMatcher]="matcher"
+        formControlName="firstName"
+        placeholder="firstName" />
+      <!-- Error handling -->
+      <mat-error
+        *ngIf="
+          firstName?.hasError('firstName') && !firstName?.hasError('required')
+        "
+        >Please enter a valid firstName</mat-error
+      >
+      <mat-error *ngIf="firstName?.hasError('required')"
+        >firstName is <strong>required</strong></mat-error
+      >
+      <mat-error *ngIf="form.controls.firstName.hasError('minlength')"
+        >firstName is too short
+        <strong>{{
+          form.controls.firstName.getError('minlength')?.requiredLength
+        }}</strong></mat-error
+      >
+      <mat-error *ngIf="firstName?.hasError('banWords')"
+        >The value
+        <strong>{{ firstName?.getError('banWords').bannedWord }} </strong>is
+        banned</mat-error
+      >
+    </mat-form-field>
+    <!-- *****lastName***** -->
+    <mat-form-field data-testing="lastName" appearance="outline" class="w-full">
+      <mat-label>lastName</mat-label>
+      <input
+        type="text"
+        matInput
+        [errorStateMatcher]="matcher"
+        formControlName="lastName"
+        placeholder="lastName" />
+      <!-- Error handling -->
+      <mat-error
+        *ngIf="
+          lastName?.hasError('lastName') && !lastName?.hasError('required')
+        "
+        >Please enter a valid lastName</mat-error
+      >
+      <mat-error *ngIf="lastName?.hasError('required')"
+        >lastName is <strong>required</strong></mat-error
+      >
+      <mat-error *ngIf="form.controls.lastName.hasError('minlength')"
+        >lastName is too short
+        <strong>{{
+          form.controls.lastName.getError('minlength')?.requiredLength
+        }}</strong></mat-error
+      >
+      <mat-error *ngIf="lastName?.hasError('banWords')"
+        >The value
+        <strong>{{ lastName?.getError('banWords').bannedWord }} </strong>is
+        banned</mat-error
+      >
+    </mat-form-field>
+  </div>
+  <div class="desktop:grid grid-cols-2 gap-3">
+    <!-- *****nickName***** -->
+    <mat-form-field data-testing="nickName" appearance="outline" class="w-full">
+      <mat-label>nickName</mat-label>
+      <input
+        type="text"
+        matInput
+        [errorStateMatcher]="matcher"
+        formControlName="nickname"
+        placeholder="nickName" />
+      <!-- Error handling -->
+      <mat-error
+        *ngIf="
+          nickname?.hasError('nickname') && !nickname?.hasError('required')
+        "
+        >Please enter a valid nickName</mat-error
+      >
+      <mat-error *ngIf="nickname?.hasError('required')"
+        >nickName is <strong>required</strong></mat-error
+      >
+      <mat-error *ngIf="form.controls.nickname.hasError('minlength')"
+        >nickName is too short
+        <strong>{{
+          form.controls.nickname.getError('minlength')?.requiredLength
+        }}</strong></mat-error
+      >
+      <mat-error *ngIf="nickname?.hasError('banWords')"
+        >The value
+        <strong>{{ nickname?.getError('banWords').bannedWord }} </strong>is
+        banned</mat-error
+      >
+    </mat-form-field>
+    <!-- *****gender***** -->
+    <mat-form-field data-testing="gender" appearance="outline" class="w-full">
+      <mat-label>Gender</mat-label>
+      <mat-select formControlName="gender" name="g">
+        <mat-option *ngFor="let g of genders; trackBy: trackByFn" [value]="g">{{
+          g
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="desktop:grid grid-cols-2 gap-3">
+    <!-- *****Year of birth***** -->
+    <mat-form-field
+      data-testing="yearOfBirth"
+      appearance="outline"
+      class="w-full">
+      <mat-label>Year of birth</mat-label>
+      <mat-select formControlName="yearOfBirth" name="g">
+        <mat-option
+          *ngFor="let year of years; trackBy: trackByFn"
+          [value]="year"
+          >{{ year }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+    <!-- *****email***** -->
+    <mat-form-field data-testing="email" appearance="outline" class="w-full">
+      <mat-label>Email</mat-label>
+      <input
+        type="email"
+        matInput
+        [errorStateMatcher]="matcher"
+        formControlName="email"
+        placeholder="email"
+        class="w-full" />
+      <!-- Error handling -->
+      <mat-error
+        *ngIf="email?.hasError('email') && !email?.hasError('required')"
+        >Please enter a valid email address</mat-error
+      >
+      <mat-error *ngIf="email?.hasError('required')"
+        >email is <strong>required</strong></mat-error
+      >
+    </mat-form-field>
+  </div>
+  <div class="desktop:grid grid-cols-2 gap-3">
+    <!-- *****Contact Number***** -->
+    <mat-form-field
+      data-testing="phoneNumber"
+      appearance="outline"
+      class="w-full">
+      <mat-label>Contact Number</mat-label>
+      <ngx-mat-intl-tel-input
+        [preferredCountries]="['my']"
+        [enablePlaceholder]="true"
+        [enableSearch]="true"
+        name="phoneNumber"
+        formControlName="phoneNumber"></ngx-mat-intl-tel-input>
+      <!-- Error handling -->
+      <mat-error
+        *ngIf="
+          phoneNumber?.hasError('phoneNumber') &&
+          !phoneNumber?.hasError('required')
+        "
+        >Please enter a valid phoneNumber</mat-error
+      >
+      <mat-error *ngIf="phoneNumber?.hasError('required')"
+        >phoneNumber is <strong>required</strong></mat-error
+      >
+    </mat-form-field>
+    <!-- *****Select Country***** -->
+    <mat-form-field data-testing="gender" appearance="outline" class="w-full">
+      <mat-label>Select Country</mat-label>
+      <mat-select formControlName="country" name="g">
+        <mat-option *ngFor="let c of country; trackBy: trackByFn" [value]="c">{{
+          c
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="desktop:w-full">
+    <!-- *****Address***** -->
+    <mat-form-field data-testing="Address" appearance="outline" class="w-full">
+      <mat-label>Address</mat-label>
+      <input
+        type="text"
+        matInput
+        [errorStateMatcher]="matcher"
+        formControlName="address"
+        placeholder="address"
+        (input)="onAddressInput()" />
+      <!-- Error handling -->
+      <mat-error
+        *ngIf="address?.hasError('address') && !address?.hasError('required')"
+        >Please enter a valid address</mat-error
+      >
+      <mat-error *ngIf="address?.hasError('required')"
+        >address is <strong>required</strong></mat-error
+      >
+      <mat-error *ngIf="form.controls.address.hasError('minlength')"
+        >address is too short
+        <strong>{{
+          form.controls.address.getError('minlength')?.requiredLength
+        }}</strong></mat-error
+      >
+      <mat-error *ngIf="address?.hasError('banWords')"
+        >The value
+        <strong>{{ address?.getError('banWords').bannedWord }} </strong>is
+        banned</mat-error
+      >
+    </mat-form-field>
+  </div>
+  <div class="desktop:grid grid-cols-3 gap-3">
+    <!-- *****Town/City***** -->
+    <mat-form-field
+      data-testing="Town/City"
+      appearance="outline"
+      class="w-full">
+      <mat-label>{{ 'Town/City' | titlecase }}</mat-label>
+      <input
+        type="text"
+        matInput
+        [errorStateMatcher]="matcher"
+        formControlName="city"
+        placeholder="City name" />
+      <!-- Error handling -->
+      <mat-error *ngIf="city?.hasError('city') && !city?.hasError('required')"
+        >Please enter a valid city</mat-error
+      >
+      <mat-error *ngIf="city?.hasError('required')"
+        >city is <strong>required</strong></mat-error
+      >
+      <mat-error *ngIf="form.controls.city.hasError('minlength')"
+        >city is too short
+        <strong>{{
+          form.controls.city.getError('minlength')?.requiredLength
+        }}</strong></mat-error
+      >
+      <mat-error *ngIf="city?.hasError('banWords')"
+        >The value
+        <strong>{{ city?.getError('banWords').bannedWord }} </strong>is
+        banned</mat-error
+      >
+    </mat-form-field>
+    <!-- *****State***** -->
+    <mat-form-field data-testing="State" appearance="outline" class="w-full">
+      <mat-label>{{ 'State' | titlecase }}</mat-label>
+      <input
+        type="text"
+        matInput
+        [errorStateMatcher]="matcher"
+        formControlName="state"
+        placeholder="State name" />
+      <!-- Error handling -->
+      <mat-error
+        *ngIf="state?.hasError('state') && !state?.hasError('required')"
+        >Please enter a valid state</mat-error
+      >
+      <mat-error *ngIf="state?.hasError('required')"
+        >state is <strong>required</strong></mat-error
+      >
+      <mat-error *ngIf="form.controls.state.hasError('minlength')"
+        >state is too short
+        <strong>{{
+          form.controls.state.getError('minlength')?.requiredLength
+        }}</strong></mat-error
+      >
+      <mat-error *ngIf="state?.hasError('banWords')"
+        >The value
+        <strong>{{ state?.getError('banWords').bannedWord }} </strong>is
+        banned</mat-error
+      >
+    </mat-form-field>
+    <!-- *****Zip Code***** -->
+    <mat-form-field data-testing="zipcode" appearance="outline" class="w-full">
+      <mat-label>{{ 'Zip Code' | titlecase }}</mat-label>
+      <input
+        type="text"
+        matInput
+        [errorStateMatcher]="matcher"
+        formControlName="zipcode"
+        placeholder="State name" />
+      <!-- Error handling -->
+      <mat-error
+        *ngIf="zipcode?.hasError('zipcode') && !zipcode?.hasError('required')"
+        >Please enter a valid zipcode</mat-error
+      >
+      <mat-error *ngIf="zipcode?.hasError('required')"
+        >zipcode is <strong>required</strong></mat-error
+      >
+      <mat-error *ngIf="form.controls.zipcode.hasError('minlength')"
+        >zipcode is too short
+        <strong>{{
+          form.controls.zipcode.getError('minlength')?.requiredLength
+        }}</strong></mat-error
+      >
+      <mat-error *ngIf="zipcode?.hasError('banWords')"
+        >The value
+        <strong>{{ zipcode?.getError('banWords').bannedWord }} </strong>is
+        banned</mat-error
+      >
+    </mat-form-field>
+  </div>
+  <div class="w-full">
+    <mat-form-field data-testing="skills" appearance="outline" class="w-full">
+      <mat-label>Your Skills</mat-label>
+      <mat-select formControlName="skills" multiple>
+        @for (skill of skills$ | async; track skill) {
+        <mat-option [value]="skill">{{ skill }}</mat-option>
+        } @empty {
+        <li>There are no items.</li>
+        }
+      </mat-select>
+    </mat-form-field>
+    <ng-template #loading>
+      <p>Skills are loading...</p>
+    </ng-template>
+  </div>
+
+  <div class="h-80">
+    <app-google-map
+      [coordinates]="mapCoordinates"
+      (markerMoved)="onMarkerMoved($event)" />
+    <!-- <app-map></app-map> -->
+  </div>
+
+  <div class="desktop:flex desktop:justify-end w-full gap-3 mt-4">
+    <!-- *****CancelBTN***** -->
+    <button mat-stroked-button type="button" class="w-full">Cancel</button>
+    <!-- *****SaveBTN***** -->
+    <button
+      class="w-full desktop:m-0 tablet:mt-2 mobile:mt-2"
+      mat-flat-button
+      data-testid="login-button"
+      color="primary"
+      type="submit">
+      Update Profile
+    </button>
+  </div>
+</form>

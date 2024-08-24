@@ -1,0 +1,8 @@
+<span data-testingId="chip-text" class="chip-text">
+  <ng-content></ng-content>
+</span>
+<i
+  data-testingId="remove"
+  (click)="onClick()"
+  *ngIf="removable"
+  class="chip-remove-icon"></i>

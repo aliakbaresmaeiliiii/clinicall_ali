@@ -1,0 +1,140 @@
+.btn_calendar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.btn-today {
+  border-radius: 25px;
+}
+
+.calendar-table {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: 1rem;
+  border: 1px solid #dee2e6;
+  background-color: #fff;
+}
+
+.calendar-table thead th {
+  vertical-align: bottom;
+  border-bottom: 2px solid #dee2e6;
+  width: 14.2%;
+}
+
+.calendar-table td,
+.calendar-table th {
+  border: 1px solid #dee2e6;
+}
+
+.calendar-table td,
+.calendar-table th {
+  padding: 0.75rem;
+  vertical-align: top;
+  border-top: 1px solid #dee2e6;
+}
+
+.calendar-day {
+  height: 12vh;
+  max-height: 12vh;
+  cursor: pointer;
+}
+
+.calendar-items-wrapper {
+  margin-left: -10px;
+  margin-right: -10px;
+  overflow-y: auto;
+  max-height: calc(100% - 20px);
+}
+
+.calendar-day.past-date {
+  background-color: rgb(248, 248, 248);
+}
+
+.calendar-day:hover {
+  background-color: rgb(248, 248, 248);
+}
+
+.blue-date {
+  color: rgb(16, 110, 190);
+}
+
+.content-schedule {
+  border: 1px solid gray;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+  padding: 6px;
+}
+
+p {
+  margin: 0;
+  color: gray;
+}
+
+.priority {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.event_title {
+  max-width: 113px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+}
+.event_title:hover{
+  color: white;
+}
+.body-event {
+  margin-top: 1rem;
+  display: flex;
+  gap: 11px;
+  
+}
+.body-event:hover{
+  background-color: lightgray;
+  border: 1px solid lightgray;
+  transition: 0.2s;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+
+
+.context-menu {
+  position: absolute;
+  width: 10rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  background: white;
+  border: 1px solid black;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  border-radius: 5px;
+  p{
+    margin: 10px;
+  }
+}
+.btn_delete{
+  display: flex;
+  align-items: center;
+}
+.context-menu li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.context-menu li:hover {
+  background-color: #f1f1f1;
+}
+
+::ng-deep.mdc-button__label{
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}

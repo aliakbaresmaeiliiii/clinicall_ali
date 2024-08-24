@@ -1,0 +1,10 @@
+<mat-form-field appearance="fill">
+    <mat-label>Date time</mat-label>
+    <input matInput [matDatepicker]="picker" />
+    <input matInput class="time-picker" type="time" id="appt" name="appt" />
+  
+    <mat-datepicker-toggle matSuffix [for]="picker">
+      <mat-icon matDatepickerToggleIcon>today</mat-icon>
+    </mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>

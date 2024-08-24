@@ -1,0 +1,53 @@
+<mgl-map
+class="map"
+(zoomEnd)="fixFloatMarkerInCenterOfMap($event)"
+(zoomStart)="fixFloatMarkerInCenterOfMap($event)"
+(mapDrag)="fixFloatMarkerInCenterOfMap($event)"
+(load)="getPublicAddressArray();"
+[attributionControl]="true"
+[fitBounds]="bounds"
+[fitBoundsOptions]="{padding: 100} "
+[style]="'mapbox://styles/mapbox/streets-v9'"
+[zoom]="mapZoomAmount"
+[center]="centerMapLngLat">
+
+<!-- <mgl-control [position]="'top-left'">
+  <app-search-address
+    (setMapZoomAmount)="mapZoomAmount = $event"
+    (setCenterMapLngLat)="centerMapLngLat = $event"
+  ></app-search-address>
+</mgl-control> -->
+
+<!-- <app-edit-on-map
+  (getAddressesInfo)="getAddressesArray()"
+  [selectedMarker]="selectedMarker"
+></app-edit-on-map> -->
+
+<!-- <app-add-on-map
+  (getAddressesInfo)="getAddressesArray()"
+  [selectedMarker]="selectedMarker"
+></app-add-on-map> -->
+
+<!-- <ng-container *ngFor="let address of publicAddressMarkers.geometry">
+  <app-marker
+    [type]="'PUBLIC_ADDRESS_EDITING'"
+    [addressItem]="address"
+    [markerImg]="Images.publicAddressMarkerImg"
+    (updatesSelectedMarker)="updateSelectedMarker($event);"
+    (removeSelectedMarkerOfMakers)="removeSelectedMarkerOfMakers($event)"
+    (getAddressInfoArray)="getPublicAddressArray()"
+  ></app-marker>
+</ng-container> -->
+
+<!-- <ng-container *ngFor="let favouriteAddressInfo of favouriteAddressMarkers.geometry">
+  <app-marker
+    [type]="'FAVOURITE_ADDRESS_EDITING'"
+    [addressItem]="favouriteAddressInfo"
+    [markerImg]="Images.favouriteAddressMarkerImg"
+    (updatesSelectedMarker)="updateSelectedMarker($event);"
+    (removeSelectedMarkerOfMakers)="removeSelectedMarkerOfMakers($event)"
+    (getAddressInfoArray)="getFavouriteAddressArray()"
+  ></app-marker>
+</ng-container> -->
+
+</mgl-map>

@@ -1,0 +1,45 @@
+.content {
+    padding: 2em;
+  
+    background: rgb(2, 0, 36);
+    background: linear-gradient(
+      90deg,
+      rgba(2, 0, 36, 1) 0%,
+      rgba(9, 9, 121, 1) 24%,
+      rgba(0, 212, 255, 1) 100%
+    );
+    margin-top: 5px;
+    border-radius: 5px;
+    display: grid;
+    grid-template-columns: 10% 30% 60%;
+    grid-auto-flow: row;
+  }
+  
+  ::ng-deep .mdc-text-field--outlined {
+    --mdc-outlined-text-field-container-shape: 28px;
+  }
+  
+  .btn_search {
+    border: 1px solid #030231;
+    background-color: #0f2d90;
+  }
+  
+
+
+  
+
+
+
+  
+  .table_info {
+    margin: 1.2rem;
+    border: 2px solid #2b91ec;
+    border-radius: 5px;
+  }
+  
+  button {
+    border-radius: 50px;
+  }
+  
+
+  

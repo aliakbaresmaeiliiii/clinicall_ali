@@ -1,0 +1,20 @@
+<mat-toolbar
+  color="primary"
+  class="main-header mat-elevation-z4"
+  [class.hidden]="toggleSearch">
+  <mat-toolbar-row style="padding: 0 5px">
+    <button mat-icon-button>
+      <mat-icon>menu</mat-icon>
+    </button>
+    <div style="padding: 8px 0 0 10px; flex: 1">
+      <div class="mat-title" style="margin-bottom: 2px">President</div>
+      <div class="mat-subheading-2" style="line-height: 0.6rem">
+        Leader of the Free World
+      </div>
+    </div>
+
+    <button mat-icon-button (click)="openSearch()">
+      <mat-icon>search</mat-icon>
+    </button>
+  </mat-toolbar-row>
+</mat-toolbar>

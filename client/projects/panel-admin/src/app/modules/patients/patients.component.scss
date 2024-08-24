@@ -1,0 +1,37 @@
+.content-toolbar {
+    margin-bottom: 16px;
+  }
+  
+  .table-container {
+      max-height: 500px; /* Set the desired max height */
+      overflow-y: auto; /* Enable vertical scrolling */
+      display: block; /* Ensure the container is a block element */
+  }
+  
+  table {
+    width: 100%;
+  }
+  
+  th.mat-header-cell, td.mat-cell {
+    white-space: nowrap;
+  }
+
+ .imgProfile{
+  border-radius: 5px;
+  width: 33px;
+  background: #EFE5FF;
+  position: inherit;
+  padding: 5px;
+  img{
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+ }
+
+ .xlsx{
+  background-image: url('../../../assets/images/xlsx.png');
+  width: 32px;
+  height: 32px;
+ }

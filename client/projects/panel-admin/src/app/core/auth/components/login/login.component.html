@@ -1,0 +1,112 @@
+<div class="desktop:flex content w-full h-full">
+  <section class="w-1/2">
+    <div class="left-img mobile:hidden"></div>
+  </section>
+
+  <section class="w-1/2 text-center h-screen">
+    <div class="w-2/3 m-auto desktop:mt-20">
+      <h3 class="text-left font-extrabold">Welcome Back</h3>
+      <h2 class="cursor-pointer flex justify-start text-xs sign-up">
+        Need an account?
+        <a (click)="navigateRegister()" class="ml-2"
+          ><strong class="text-blue">Sign up</strong>
+        </a>
+      </h2>
+
+
+      <div class="w-full">
+        <h3 class="text-left font-extrabold text-3xl p-3">Sign in</h3>
+        <form [formGroup]="form" (ngSubmit)="login()">
+          <mat-form-field
+            data-testing="username"
+            appearance="outline"
+            class="w-full">
+            <mat-label>{{ labelUserName }}</mat-label>
+            <input
+              type="text"
+              matInput
+              [errorStateMatcher]="matcher"
+              formControlName="email"
+              placeholder="UserName" />
+
+            @if (email?.hasError('email') && !email?.hasError('required')) {
+            <mat-error>Please enter a valid userName address</mat-error>
+            } @if (email?.hasError('required')) {
+            <mat-error>UserName is <strong>required</strong></mat-error>
+            }
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="w-full pt-2">
+            <mat-label>{{ labelPassword }}</mat-label>
+            <input
+              type="Password"
+              matInput
+              [errorStateMatcher]="matcher"
+              formControlName="password"
+              placeholder="Password" />
+            @if (password?.hasError('password') &&
+            !password?.hasError('required')) {
+            <mat-error>Please enter a valid password address</mat-error>
+            } @if (password?.hasError('required')) {
+            <mat-error>password is <strong>required</strong></mat-error>
+            }
+          </mat-form-field>
+
+          <div class="flex justify-between items-center">
+            <mat-checkbox formControlName="remmeber">Remember me</mat-checkbox>
+            <a
+              [routerLink]="['/auth/forgot-password']"
+              routerLinkActive="router-link-active"
+              class="cursor-pointer flex justify-end text-xs dark:textblu hover:text-blue mt-7 mb-7">
+              Forgot Password?
+            </a>
+          </div>
+
+          <button
+            class="login-button ease-in-out duration-300 w-full desktop:m-0 tablet:mt-2 mobile:mt-2"
+            mat-flat-button
+            data-testid="login-button"
+            color="primary"
+            type="submit"
+            [disabled]="!form.valid">
+            Login
+          </button>
+
+          <asl-google-signin-button type='icon' size='medium'></asl-google-signin-button>
+
+          <h2 class="social-login-title">OR</h2>
+          <div class="flex justify-center items-center gap-3">
+            <button mat-mini-fab>
+              <i class="fab fa-twitter"></i>
+            </button>
+
+            <button mat-mini-fab>
+              <i class="fab fa-linkedin-in"></i>
+            </button>
+          </div>
+          <!-- <div class="pt-3 flex justify-center">
+            <div
+              id="g_id_onload"
+              data-client_id="302618903274-6bfd6agmkoanb474m3e1ii3oc1phjl40.apps.googleusercontent.com"
+              data-context="signin"
+              data-ux_mode="popup"
+              data-login_uri="http://localhost:4200"
+              data-itp_support="true"></div>
+
+            <div
+              class="g_id_signin"
+              data-type="standard"
+              data-shape="pill"
+              data-theme="filled_blue"
+              data-text="signin_with"
+              data-size="medium"
+              data-logo_alignment="left"></div>
+          </div> -->
+        </form>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div>
+  <h4>{{ user | json }}</h4>
+</div>

@@ -1,0 +1,29 @@
+<div class="flex content h-svh">
+  <section class="w-1/2">
+    <div class="left-img"></div>
+  </section>
+
+  <section class="w-1/2 text-center ">
+    <div class="w-2/3 m-auto desktop:mt-20  flex items-center justify-center">
+      <div class="py-12 px-4 sm:px-6 lg:px-8 max-w-md shadow-lg bg-white rounded-lg">
+        <div>
+          <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900">
+            Please check your email and enter your verification code!
+          </h2>
+          <p class="mt-2 text-center text-sm text-gray-600">
+            <a routerLink="/auth/register" class="font-medium text-indigo-600 hover:text-indigo-500">
+              Sign up
+            </a>
+          </p>
+        </div>
+        <app-otp-input
+          #ngOtpInput
+          (onInputChange)="onOtpChange($event)"
+          *ngIf="showOtpComponent"
+          [config]="config"
+          (onCountDown)="getOtp()">
+        </app-otp-input>
+      </div>
+    </div>
+  </section>
+</div>
