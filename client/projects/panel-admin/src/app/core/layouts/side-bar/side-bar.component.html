@@ -24,7 +24,9 @@
         <p class="text-xs font-medium text-center">Admin</p>
       </div>
     </div>
-    <div class="text-xs uppercase ml-4 mb-4">Main</div>
+    @if(hasAccess){
+      <div class="text-xs uppercase ml-4 mb-4">Main</div>
+    }
 
     @for (menuName of getMenuNames(); track $index) { @for (item of
     groupedData[menuName]; track item ) {

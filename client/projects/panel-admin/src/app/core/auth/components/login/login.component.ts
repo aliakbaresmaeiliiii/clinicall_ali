@@ -26,6 +26,7 @@ import {
   GoogleLoginProvider,
   SocialUser,
 } from '@abacritt/angularx-social-login';
+import { PermissionService } from '../../../services/permission.service';
 
 // Client ID
 // 302618903274-6bfd6agmkoanb474m3e1ii3oc1phjl40.apps.googleusercontent.com
@@ -89,6 +90,7 @@ export class LoginComponent {
   #authService = inject(AuthService);
   #toastrService = inject(ToastrService);
   authService = inject(SocialAuthService);
+  permissionService = inject(PermissionService);
 
   private themeManager = inject(ThemeManagerService);
   theme = this.themeManager.theme;
@@ -121,10 +123,10 @@ export class LoginComponent {
     // .subscribe(event => {});
     if (this.form.value) {
       this.#authService.signIn(this.form.value).subscribe((res: any) => {
-        const stroeDataUser = res;
-          const dataJson = JSON.stringify(stroeDataUser);
-          localStorage.setItem('userData', dataJson);
-          
+        this.permissionService.setPermissions(res.data.permissions)
+        // const stroeDataUser = res;
+          // const dataJson = JSON.stringify(stroeDataUser);
+          // localStorage.setItem('userData', dataJson);
           this.#router.navigate(['aliakbar/settings']);
       });
     }

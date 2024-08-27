@@ -9,6 +9,7 @@ import ResponseError from "../../modules/error/response_error";
 import { CreateUser, User } from "../../types/user";
 import schemaAuth from "./schema";
 import { AppResponse } from "../../types/response.interface";
+import UserService from "../user/sercvice";
 
 const { JWT_SECRET_ACCESS_TOKEN, JWT_SECRET_REFRESH_TOKEN }: any = process.env;
 
@@ -20,10 +21,10 @@ const expiresIn = ms(JWT_ACCESS_TOKEN_EXPIRED) / 1000;
 
 class AuthService {
   public static async signUp(formData: CreateUser) {
-    // const currentUser = await UserService.validateUserEmail(formData.email);
-    // if (currentUser) {
-    //   return { message: "the user already exist !", code: 400, currentUser };
-    // }
+    const currentUser = await UserService.validateUserEmail(formData.email);
+    if (currentUser) {
+      return { message: "the user already exist !", code: 400, currentUser };
+    }
 
     // const getNickName = await UserService.checkNickName(formData.email);
     // if (getNickName === formData.email) {
@@ -89,24 +90,36 @@ class AuthService {
     }
 
     const comparePassword = true;
+
     if (comparePassword) {
-      const payloadToken: User = {
+      const user = {
         user_id: userData[0].user_id,
         email: userData[0].email,
         imgUser: userData[0].imgUser,
         mobile: userData[0].mobile,
         address: userData[0].address,
         tokenVerify: userData[0].tokenVerify,
-
+        roles: [] as string[],
+        permissions: [] as string[],
       };
-
+      userData.forEach((element: any) => {
+        if (element.role_name && !user.roles.includes(element.role_name)) {
+          user.roles.push(element.role_name);
+        }
+        if (
+          element.permission_name &&
+          !user.permissions.includes(element.permission_name)
+        ) {
+          user.permissions.push(element.permission_name);
+        }
+      });
       return {
         isSuccessfull: true,
         showToUser: true,
         messageCode: "200",
         messageKind: 1,
         message: "login is successfully",
-        data: payloadToken,
+        data: user,
       } as AppResponse;
     } else {
       throw new ResponseError.Unauthorized("Invalid password");

@@ -41,6 +41,7 @@ import { NavItemsService } from '../../services/nav-items.service';
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
 import { Menu } from '../types/navItem';
+import { PermissionService } from '../../services/permission.service';
 @Component({
   selector: 'side-bar',
   standalone: true,
@@ -79,8 +80,9 @@ export class SideBarComponent
   extends BaseComponent
   implements OnInit, OnDestroy
 {
-  menuItem: NavItem[] = [];
   title = 'material-responsive-sidenav';
+  permissionService = inject(PermissionService);
+  hasAccess: boolean = false;
   @ViewChild(MatSidenav)
   sidenav!: MatSidenav;
   isMobile = true;
@@ -102,7 +104,6 @@ export class SideBarComponent
   rootRoutes = routes.filter(r => r.path);
   navService = inject(NavItemsService);
   observer = inject(BreakpointObserver);
-
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(
@@ -112,22 +113,8 @@ export class SideBarComponent
 
   ngOnInit(): void {
     this.getNavItems();
-    this.getUserDataFromLocalStorage();
-    const userDataString = localStorage.getItem('userData');
-    if (userDataString) {
-      console.log('storeData🧑‍⚕️',JSON.parse(userDataString))
-    }
-
-    let userData;
-    if (userDataString) {
-      userData = JSON.parse(userDataString);
-      
-
-      
-    }
+   
   }
-
-  getUserDataFromLocalStorage() {}
 
   getFirstWord(username: string): string {
     return username.charAt(0);
@@ -194,6 +181,7 @@ export class SideBarComponent
   }
   logout() {
     this.router.navigate(['login']);
+    this.permissionService.clearPermissions()
   }
   ngOnDestroy(): void {
     this.ngUnsubscribe.next(null);

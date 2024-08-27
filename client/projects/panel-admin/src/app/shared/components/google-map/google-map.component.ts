@@ -15,6 +15,9 @@ import * as mapboxGl from 'mapbox-gl';
 import { LngLat } from 'mapbox-gl';
 import { environment } from '../../../environments/environment';
 import { MapService } from './map.service';
+
+
+
 @Component({
   selector: 'app-google-map',
   standalone: true,
@@ -39,7 +42,7 @@ export class GoogleMapComponent implements OnInit {
   cdr = inject(ChangeDetectorRef);
 
   constructor() {
-    this.initializeMap(14);
+    this.initializeMap(0);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -48,7 +51,7 @@ export class GoogleMapComponent implements OnInit {
     }
   }
   ngOnInit(): void {
-    this.setCurrentLocation()
+    this.setCurrentLocation();
   }
 
   initializeMap(zoom: number | null = null): void {
@@ -121,8 +124,8 @@ export class GoogleMapComponent implements OnInit {
 
   updateMapLocation(coordinates: [number, number] | any): void {
     const [lng, lat] = coordinates; // Destructure the array into lng and lat
-    this.map?.flyTo({ center: [lng, lat], zoom: 14 });
-    this.marker.setLngLat({ lng, lat });
+    this.map?.flyTo({ center: [lng, lat], zoom: this.zoomLevel });
+    this.marker?.setLngLat({ lng, lat });
   }
 
   getAddressFromCoordinates(lng: number, lat: number): void {
@@ -149,17 +152,17 @@ export class GoogleMapComponent implements OnInit {
           // Center the map on the user's current location
           this.map.flyTo({
             center: [lng, lat],
-            zoom: 14
+            zoom: 14,
           });
 
           // Place a marker at the user's current location
-          this.marker
-            .setLngLat([lng, lat])
-            .addTo(this.map);
+          this.marker.setLngLat([lng, lat]).addTo(this.map);
         },
         error => {
           console.error('Error getting location:', error);
-          alert('Unable to retrieve your location. Please check your browser settings.');
+          alert(
+            'Unable to retrieve your location. Please check your browser settings.'
+          );
         }
       );
     } else {
