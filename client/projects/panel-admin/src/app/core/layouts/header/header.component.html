@@ -27,7 +27,7 @@
   <div>
     <button mat-button [matMenuTriggerFor]="menu">
       <div class="flex items-center">
-        <img [ngSrc]="showLng.flag" alt="{{ showLng.name }}" class="flag-icon" height="50" width="50" />
+        <img [src]="showLng.flag" alt="{{ showLng.name }}" class="flag-icon" height="50" width="50" />
         <strong class="text-white">{{ showLng.name }}</strong>
       </div>
     </button>
@@ -38,7 +38,7 @@
         class="flex justify-center items-center gap-2"
         (click)="selectedCountry(lng)">
         <div class="flex justify-center items-center">
-          <img [ngSrc]="lng.flag" alt="{{ lng.name }} " class="flag-icon"  width="25" height="25"/>
+          <img [src]="lng.flag" alt="{{ lng.name }} " class="flag-icon"  width="25" height="25"/>
           {{ lng.name }}
         </div>
       </div>

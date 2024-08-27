@@ -16,6 +16,8 @@ export interface User {
   zipcode?: string;
   tokenVerify?: string | null;
   imgUser?:string;
+  role_name:string;
+  permission_name:string;
 }
 
 

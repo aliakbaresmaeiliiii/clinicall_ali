@@ -173,7 +173,10 @@
     <!-- *****Select Country***** -->
     <mat-form-field data-testing="gender" appearance="outline" class="w-full">
       <mat-label>Select Country</mat-label>
-      <mat-select formControlName="country" name="g">
+      <mat-select
+        formControlName="country"
+        name="g"
+        (selectionChange)="onCountryChange($event.value)">
         <mat-option *ngFor="let c of country; trackBy: trackByFn" [value]="c">{{
           c
         }}</mat-option>
@@ -277,6 +280,7 @@
     <mat-form-field data-testing="zipcode" appearance="outline" class="w-full">
       <mat-label>{{ 'Zip Code' | titlecase }}</mat-label>
       <input
+        appNumberOnly
         type="text"
         matInput
         [errorStateMatcher]="matcher"
@@ -303,26 +307,12 @@
       >
     </mat-form-field>
   </div>
-  <div class="w-full">
-    <mat-form-field data-testing="skills" appearance="outline" class="w-full">
-      <mat-label>Your Skills</mat-label>
-      <mat-select formControlName="skills" multiple>
-        @for (skill of skills$ | async; track skill) {
-        <mat-option [value]="skill">{{ skill }}</mat-option>
-        } @empty {
-        <li>There are no items.</li>
-        }
-      </mat-select>
-    </mat-form-field>
-    <ng-template #loading>
-      <p>Skills are loading...</p>
-    </ng-template>
-  </div>
 
   <div class="h-80">
     <app-google-map
       [coordinates]="mapCoordinates"
-      (markerMoved)="onMarkerMoved($event)" />
+      (markerMoved)="onMarkerMoved($event)"
+      [zoomLevel]="zoomlevel" />
     <!-- <app-map></app-map> -->
   </div>
 

@@ -1,7 +1,8 @@
-import { Directive, ElementRef, Input, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, Input, Renderer2 } from "@angular/core";
 
 @Directive({
-  selector: '[appNumberOnly]',
+  selector: "[appNumberOnly]",
+  standalone: true,
 })
 export class NumberOnlyDirective {
   @Input() disabledNumberOnly!: boolean;
@@ -12,8 +13,8 @@ export class NumberOnlyDirective {
     if (!this.disabledNumberOnly) {
       this._renderer.setAttribute(
         this._elRef.nativeElement,
-        'onkeypress',
-        'return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 0'
+        "onkeypress",
+        "return (event.charCode >= 48 && event.charCode <= 57) || event.charCode == 0"
       );
     }
   }

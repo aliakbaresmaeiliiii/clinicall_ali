@@ -10,3 +10,4 @@ export { SelectComponent } from './lib/select/select.component';
 export { OptionComponent } from './lib/select/option/option.component';
 export { NgOtpInputModule } from './lib/otp/otp.module';
 export { OtpInputComponent } from './lib/otp/components/otp-input/otp-input.component';
+export { NumberOnlyDirective } from './lib/directives/number-only.directive';

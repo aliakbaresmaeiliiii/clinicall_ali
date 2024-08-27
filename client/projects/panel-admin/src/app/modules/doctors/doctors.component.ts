@@ -9,6 +9,7 @@ import * as XLSX from 'xlsx';
 import { environment } from '../../environments/environment';
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { EditDoctorComponent } from './edit-doctor/edit-doctor.component';
+import { PermissionService } from '../../core/services/permission.service';
 
 @Component({
   selector: 'app-doctors',
@@ -43,8 +44,29 @@ export class DoctorsComponent extends BaseComponent {
   imgTest: any;
   wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
   fileName: string = 'SheetJS.xlsx';
+  hasAccess!: boolean;
+  role: string = '';
+  permissions: string[] = [];
+  permissionService = inject(PermissionService);
+  tooltipVisibility = 'View Detail';
+
   ngOnInit(): void {
     this.getData();
+    this.hasAccess = this.permissionService.hasAllPermissions([
+      'create',
+      'edit',
+      'delete',
+    ]);
+    debugger;
+    // const userDataString = localStorage.getItem('userData');
+    // if (userDataString) {
+    //   const data = JSON.parse(userDataString).data;
+    //   debugger;
+    //   this.hasAccess = this.permisionService.canAccess(
+    //     data[0].role_name,
+    //     data.permission_name
+    //   );
+    // }
   }
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -108,7 +130,6 @@ export class DoctorsComponent extends BaseComponent {
     //   this.getData();
     // });
   }
-
 
   refreshGrid() {
     this.getData();
