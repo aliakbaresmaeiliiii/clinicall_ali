@@ -7,11 +7,9 @@ import { provideRouter } from '@angular/router';
 
 import {
   HTTP_INTERCEPTORS,
-  HttpClientModule,
   provideHttpClient,
   withFetch,
-  withInterceptorsFromDi,
-  withJsonpSupport,
+  withInterceptorsFromDi
 } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { provideClientHydration } from '@angular/platform-browser';
@@ -30,6 +28,7 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(MatSnackBarModule),
     provideHttpClient(withFetch(), withInterceptorsFromDi()),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    
     // Uncomment the following if needed:
     // { provide: ErrorHandler, useClass: CustomErrorHandler },
     // {

@@ -26,15 +26,15 @@ export class SettingsComponent
   implements OnInit, OnDestroy
 {
   matcher = new ErrorStateMatcher();
+  permissionService = inject(PermissionService);
+  mapService = inject(MapService);
   genders: string[] = ['Man', 'Woman', 'Custom'];
   skills$!: Observable<string[]>;
-  coordinates: { lat: number; lng: number }[];
-  mapService = inject(MapService);
   mapCoordinates = [{ lat: 3.022130075276455, lng: 101.57977844022147 }];
   zoomlevel!: number;
   hasAccess = false;
-  permissionService = inject(PermissionService);
-  country: string[] = [
+  userData: any;
+  countries: string[] = [
     'Spanish',
     'UK',
     'Malaysia',
@@ -45,36 +45,33 @@ export class SettingsComponent
   ];
 
   form = this.fb.group({
-    firstName: [
-      'Aliakbar',
+    userName: [
+      '',
       [
         Validators.required,
         Validators.minLength(4),
         banWords(['test', 'dummy']),
       ],
     ],
-    lastName: ['Esmaeili', [Validators.required, Validators.minLength(2)]],
-    nickname: [
-      '',
-      {
-        validators: [
-          Validators.required,
-          Validators.minLength(2),
-          Validators.pattern(/^[\w.]+$/),
-          banWords(['dummy', 'anonymous']),
-        ],
-        asyncValidators: [
-          this.uniqueNickname.validate.bind(this.uniqueNickname),
-        ],
-        updateOn: 'blur',
-      },
-    ],
+    // lastName: ['', [Validators.required, Validators.minLength(2)]],
+    // nickname: [
+    //   '',
+    //   {
+    //     validators: [
+    //       Validators.required,
+    //       Validators.minLength(2),
+    //       Validators.pattern(/^[\w.]+$/),
+    //       banWords(['dummy', 'anonymous']),
+    //     ],
+    //     asyncValidators: [
+    //       this.uniqueNickname.validate.bind(this.uniqueNickname),
+    //     ],
+    //     updateOn: 'blur',
+    //   },
+    // ],
     gender: 'Man',
-    yearOfBirth: this.fb.nonNullable.control(
-      this.years[this.years.length - 1],
-      Validators.required
-    ),
-    email: ['a@gmail.com', [Validators.required, Validators.email]],
+    yearOfBirth:[''],
+    email: ['', [Validators.required, Validators.email]],
     phoneNumber: [''],
     address: [''],
     country: [''],
@@ -92,17 +89,40 @@ export class SettingsComponent
     private cdr: ChangeDetectorRef
   ) {
     super();
-    this.coordinates = [{ lng: this.lng, lat: this.lat }];
+    this.mapCoordinates;
   }
 
   ngOnInit() {
-    this.getuserSkills();
-  
+    const userDataString = localStorage.getItem('userData');
+    if (userDataString) {
+      const getUserDataFromStore = JSON.parse(userDataString);
+      getUserDataFromStore;
+      this.getUserInfo(getUserDataFromStore.email);
+    }
+  }
+  getUserInfo(email: string) {
+    this.userService.getUserInfo(email).subscribe((data: any) => {
+      this.userName?.patchValue(data[0].userName);
+      this.email?.patchValue(data[0].email);
+      this.phoneNumber?.patchValue(data[0].phoneNumber);
+      this.country?.patchValue(data[0].country);
+      this.address?.patchValue(data[0].address);
+      this.city?.patchValue(data[0].city);
+      this.state?.patchValue(data[0].state);
+      this.zipcode?.patchValue(data[0].zipcode);
+      this.onAddressInput();
+    });
   }
 
   onSubmit() {
     if (this.form.value) {
-      this.userService.updateProfile(this.form.value).subscribe(res => {});
+      this.userService.updateProfile(this.form.value).subscribe(res => {
+        if (res) {
+          this.toastrService.success('Profile updated successfully');
+          this.form.reset()
+
+        }
+      });
     }
   }
 
@@ -122,6 +142,7 @@ export class SettingsComponent
           if (response.features && response.features.length > 0) {
             const coordinates = response.features[0].center;
             this.mapCoordinates = coordinates;
+            this.cdr.detectChanges();
           }
           console.log('👉👉👉', this.mapCoordinates);
         },
@@ -185,8 +206,8 @@ export class SettingsComponent
     return parts[parts.length - 3] || '';
   }
 
-  get firstName() {
-    return this.form.get('firstName');
+  get userName() {
+    return this.form.get('userName');
   }
   get lastName() {
     return this.form.get('lastName');
@@ -208,6 +229,9 @@ export class SettingsComponent
   }
   get address() {
     return this.form.get('address');
+  }
+  get country() {
+    return this.form.get('country');
   }
   get city() {
     return this.form.get('city');

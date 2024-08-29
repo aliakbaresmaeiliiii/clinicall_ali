@@ -93,7 +93,8 @@ class AuthService {
 
     if (comparePassword) {
       const user = {
-        user_id: userData[0].user_id,
+        user_id: userData[0].user_id, 
+        userName: userData[0].userName, 
         email: userData[0].email,
         imgUser: userData[0].imgUser,
         mobile: userData[0].mobile,

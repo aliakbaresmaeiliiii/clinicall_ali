@@ -68,12 +68,9 @@ class UserService {
   /**
    * @param userData
    */
-  public static async updateProfileuser(userData: User) {
-    // const currentUser = await UserService.validateUserEmail(userData.email);
-    // if (currentUser) {
-    //   return { message: "the user already exist !", code: 400, currentUser };
-    // }
 
+ 
+  public static async updateProfileuser(userData: User) {
     const generateToken = {
       code: getUniqueCodev2(),
     };
@@ -90,17 +87,11 @@ class UserService {
     userData.tokenVerify = tokenVerify;
     const result = await updateProfileUser(userData);
     if (!result) {
-      throw new ResponseError.BadRequest("Could not update user!");
-    } else {
-      return {
-        message: null,
-        updateuser: {
-          user: result,
-        },
-      };
+      throw new ResponseError.BadRequest("Can Not Update profile...");
+    }else{
+      return result
     }
   }
-
 
   /**
    * @param email

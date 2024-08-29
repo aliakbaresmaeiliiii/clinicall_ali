@@ -15,16 +15,13 @@ routes.get(
   })
 );
 // ***** getUserInfo
-routes.post(
-  "/getUserInfo",
+routes.get(
+  "/getUserInfo/:email",
   async function getAllUserData(req: Request, res: Response) {
-    try {
-      const data = req.body.email;
-      const userData = await UserService.getUserInfo(data);
-      const buildResponse = await BuildResponse.get(userData);
-      return res.json(buildResponse);
-    } catch (error) {
-    }
+    const data = req.params.email;
+    const userData = await UserService.getUserInfo(data);
+    const buildResponse = await BuildResponse.get(userData);
+    return res.json(buildResponse);
   }
 );
 // ***** confirm
@@ -60,14 +57,11 @@ routes.put(
 
 // ***** forgot-passsword
 
-
-
-  routes.get(
-    '/user/forgot-passsword/:email',
-    asyncHandler(async function forgetPsssword(req: any, res: any) {
-      const email = req.params.email
-      const data = await UserService.sendFrogetPasswordToken(email)
-      return res.json(data)
-    })
-  )
-  
+routes.get(
+  "/user/forgot-passsword/:email",
+  asyncHandler(async function forgetPsssword(req: any, res: any) {
+    const email = req.params.email;
+    const data = await UserService.sendFrogetPasswordToken(email);
+    return res.json(data);
+  })
+);

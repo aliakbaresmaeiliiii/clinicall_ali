@@ -10,7 +10,6 @@ export class PermissionService {
   }
 
   setPermissions(permissionsArray: string[]): void {
-    debugger;
     this.permissions = new Set(permissionsArray);
     this.savePermissionsToStorage();
   }
@@ -24,7 +23,6 @@ export class PermissionService {
   }
 
   hasAllPermissions(permissions: string[]): boolean {
-    debugger;
     return permissions.every(permissions => this.permissions.has(permissions));
   }
 
