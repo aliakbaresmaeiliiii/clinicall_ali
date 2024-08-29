@@ -66,12 +66,12 @@ export class HeaderComponent implements OnInit {
   }
 
   getUserData() {
-    if (typeof localStorage !== 'undefined') {
-      let ali = localStorage.getItem('userData');
-      if (ali) {
-        this.username = JSON.parse(ali);
-      }
-    }
+    // if (typeof localStorage !== 'undefined') {
+    //   let ali = localStorage.getItem('userData');
+    //   if (ali) {
+    //     this.username = JSON.parse(ali);
+    //   }
+    // }
   }
 
   selectedCountry(lng: any) {

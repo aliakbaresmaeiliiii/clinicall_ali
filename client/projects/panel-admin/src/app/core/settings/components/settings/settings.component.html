@@ -2,42 +2,39 @@
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="desktop:grid grid-cols-2 gap-3">
-    <!-- *****FirstName***** -->
-    <mat-form-field
-      data-testing="FirstName"
-      appearance="outline"
-      class="w-full">
-      <mat-label>FirstName</mat-label>
+    <!-- *****userName***** -->
+    <mat-form-field data-testing="userName" appearance="outline" class="w-full">
+      <mat-label>userName</mat-label>
       <input
         type="text"
         matInput
         [errorStateMatcher]="matcher"
-        formControlName="firstName"
-        placeholder="firstName" />
+        formControlName="userName"
+        placeholder="userName" />
       <!-- Error handling -->
       <mat-error
         *ngIf="
-          firstName?.hasError('firstName') && !firstName?.hasError('required')
+          userName?.hasError('userName') && !userName?.hasError('required')
         "
-        >Please enter a valid firstName</mat-error
+        >Please enter a valid userName</mat-error
       >
-      <mat-error *ngIf="firstName?.hasError('required')"
-        >firstName is <strong>required</strong></mat-error
+      <mat-error *ngIf="userName?.hasError('required')"
+        >userName is <strong>required</strong></mat-error
       >
-      <mat-error *ngIf="form.controls.firstName.hasError('minlength')"
-        >firstName is too short
+      <mat-error *ngIf="userName?.hasError('minlength')"
+        >userName is too short
         <strong>{{
-          form.controls.firstName.getError('minlength')?.requiredLength
+          userName?.getError('minlength')?.requiredLength
         }}</strong></mat-error
       >
-      <mat-error *ngIf="firstName?.hasError('banWords')"
+      <mat-error *ngIf="userName?.hasError('banWords')"
         >The value
-        <strong>{{ firstName?.getError('banWords').bannedWord }} </strong>is
+        <strong>{{ userName?.getError('banWords').bannedWord }} </strong>is
         banned</mat-error
       >
     </mat-form-field>
     <!-- *****lastName***** -->
-    <mat-form-field data-testing="lastName" appearance="outline" class="w-full">
+    <!-- <mat-form-field data-testing="lastName" appearance="outline" class="w-full">
       <mat-label>lastName</mat-label>
       <input
         type="text"
@@ -45,7 +42,6 @@
         [errorStateMatcher]="matcher"
         formControlName="lastName"
         placeholder="lastName" />
-      <!-- Error handling -->
       <mat-error
         *ngIf="
           lastName?.hasError('lastName') && !lastName?.hasError('required')
@@ -66,11 +62,11 @@
         <strong>{{ lastName?.getError('banWords').bannedWord }} </strong>is
         banned</mat-error
       >
-    </mat-form-field>
+    </mat-form-field> -->
   </div>
   <div class="desktop:grid grid-cols-2 gap-3">
     <!-- *****nickName***** -->
-    <mat-form-field data-testing="nickName" appearance="outline" class="w-full">
+    <!-- <mat-form-field data-testing="nickName" appearance="outline" class="w-full">
       <mat-label>nickName</mat-label>
       <input
         type="text"
@@ -78,7 +74,6 @@
         [errorStateMatcher]="matcher"
         formControlName="nickname"
         placeholder="nickName" />
-      <!-- Error handling -->
       <mat-error
         *ngIf="
           nickname?.hasError('nickname') && !nickname?.hasError('required')
@@ -99,7 +94,7 @@
         <strong>{{ nickname?.getError('banWords').bannedWord }} </strong>is
         banned</mat-error
       >
-    </mat-form-field>
+    </mat-form-field> -->
     <!-- *****gender***** -->
     <mat-form-field data-testing="gender" appearance="outline" class="w-full">
       <mat-label>Gender</mat-label>
@@ -177,9 +172,11 @@
         formControlName="country"
         name="g"
         (selectionChange)="onCountryChange($event.value)">
-        <mat-option *ngFor="let c of country; trackBy: trackByFn" [value]="c">{{
-          c
-        }}</mat-option>
+        <mat-option
+          *ngFor="let c of countries; trackBy: trackByFn"
+          [value]="c"
+          >{{ c }}</mat-option
+        >
       </mat-select>
     </mat-form-field>
   </div>
@@ -312,7 +309,7 @@
     <app-google-map
       [coordinates]="mapCoordinates"
       (markerMoved)="onMarkerMoved($event)"
-      [zoomLevel]="zoomlevel" />
+      [zoomLevel]="14" />
     <!-- <app-map></app-map> -->
   </div>
 

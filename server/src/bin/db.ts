@@ -125,9 +125,12 @@ export async function confirmEmail(data: ConfirmEmail) {
   } as AppResponse;
 }
 
-export async function getUserByPassword(email: string,password:string): Promise<any> {
+export async function getUserByPassword(
+  email: string,
+  password: string
+): Promise<any> {
   const user = await query<RowDataPacket[]>(
-   ` SELECT u.*, r.*,p.*
+    ` SELECT u.*, r.*,p.*
     FROM ${coreSchema}.users u
     LEFT JOIN ${coreSchema}.user_roles ur ON u.user_id = ur.user_id
     LEFT JOIN ${coreSchema}.roles r ON ur.role_id = r.id
@@ -139,7 +142,7 @@ export async function getUserByPassword(email: string,password:string): Promise<
       values: [email],
     }
   );
-    return user;
+  return user;
 }
 
 export async function getUserByGoogleId(googleId: string) {
@@ -204,33 +207,40 @@ export async function getOTP(email: any, tokenVerify: any) {
 }
 
 export async function updateProfileUser(data: User): Promise<any> {
-  const updateUsersql = `
-      UPDATE ${coreSchema}.users SET
-        firstName = ?,
-        lastName = ?,
-        email = ?,
-        address = ?,
-        country = ?,
-        city = ?,
-        state = ?,
-        zipcode = ?,
-      
-    `;
-  const updateUservalues = [
-    data.firstName,
-    data.lastName,
-    data.email,
-    data.address,
-    data.country,
-    data.city,
-    data.state,
-    data.zipcode,
-  ];
-  const result = await query<RowDataPacket[]>(updateUsersql, updateUservalues);
-  const insertSkillSql = `UPDATE ${coreSchema}.user_skill SET (user_id, skill_name) VALUES (?, ?)`;
-  // for (const skill of data.skills) {
-  //   await query<RowDataPacket[]>(insertSkillSql, [data.user_id, skill]);
-  // }
+  const result = await query<RowDataPacket>(
+    `
+      UPDATE ${coreSchema}.users
+      SET 
+      userName = ?,
+      gender = ?,
+      phoneNumber = ?,
+      yearOfBirth = ?,
+      address = ?,
+      verify_code = ?,
+      tokenVerify = ?,
+      country = ?,
+      city = ?,
+      state = ?,
+      zipcode = ?
+    WHERE email = ?`,
+
+    {
+      values: [
+        data.userName,
+        data.gender,
+        data.phoneNumber,
+        data.yearOfBirth,
+        data.address,
+        data.verify_code,
+        data.tokenVerify,
+        data.country,
+        data.city,
+        data.state,
+        data.zipcode,
+        data.email,
+      ],
+    }
+  );
   return result;
 }
 
@@ -276,7 +286,7 @@ export async function getNavItems() {
 
 export async function getUserInfo(email: string) {
   const data = await query<RowDataPacket[]>(
-    `SELECT * FROM ${coreSchema}.patients WHERE email=?`,
+    `SELECT * FROM ${coreSchema}.users WHERE email=?`,
     {
       values: [email],
     }

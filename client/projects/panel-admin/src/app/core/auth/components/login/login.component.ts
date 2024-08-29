@@ -124,9 +124,9 @@ export class LoginComponent {
     if (this.form.value) {
       this.#authService.signIn(this.form.value).subscribe((res: any) => {
         this.permissionService.setPermissions(res.data.permissions)
-        // const stroeDataUser = res;
-          // const dataJson = JSON.stringify(stroeDataUser);
-          // localStorage.setItem('userData', dataJson);
+        const stroeDataUser = res.data;
+          const dataJson = JSON.stringify(stroeDataUser);
+          localStorage.setItem('userData', dataJson);
           this.#router.navigate(['aliakbar/settings']);
       });
     }

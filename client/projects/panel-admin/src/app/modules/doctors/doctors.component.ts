@@ -57,11 +57,10 @@ export class DoctorsComponent extends BaseComponent {
       'edit',
       'delete',
     ]);
-    debugger;
+  
     // const userDataString = localStorage.getItem('userData');
     // if (userDataString) {
     //   const data = JSON.parse(userDataString).data;
-    //   debugger;
     //   this.hasAccess = this.permisionService.canAccess(
     //     data[0].role_name,
     //     data.permission_name

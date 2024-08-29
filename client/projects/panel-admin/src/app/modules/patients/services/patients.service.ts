@@ -27,6 +27,10 @@ export class PatientsService {
   getFiles(): Observable<any> {
     return this.#http.get(`${this.config}/files`);
   }
+
+  // getDataByEmail(email: string): Observable<string> {
+  //   return this.#http.post<string>(`${this.config}getPatientInfo`, email);
+  // }
   getPatients(): Observable<PatientDTO[]> {
     return this.#http.get<PatientDTO[]>(
       `${environment.apiEndPoint}admin/patients`
