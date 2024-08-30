@@ -14,6 +14,7 @@ import { MapService } from '../../../../shared/components/google-map/map.service
 import { banWords } from '../../../../shared/validators/ban-words.validators';
 import { UniqueNicknameValidator } from '../../../../shared/validators/unique-nickname.validators';
 import { PermissionService } from '../../../services/permission.service';
+import { AgePipe } from '../../../../shared/pipes/age.pipe';
 
 @Component({
   selector: 'app-settings',
@@ -33,6 +34,9 @@ export class SettingsComponent
   mapCoordinates = [{ lat: 3.022130075276455, lng: 101.57977844022147 }];
   zoomlevel!: number;
   hasAccess = false;
+  agePipe = inject(AgePipe);
+  maxDate!: Date;
+  minDate!: Date;
   userData: any;
   countries: string[] = [
     'Spanish',
@@ -70,7 +74,7 @@ export class SettingsComponent
     //   },
     // ],
     gender: 'Man',
-    yearOfBirth:[''],
+    dateOfBirth: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     phoneNumber: [''],
     address: [''],
@@ -78,7 +82,6 @@ export class SettingsComponent
     city: [''],
     state: [''],
     zipcode: [''],
-    skills: [''],
   });
 
   lng: number = 51.375447552429875;
@@ -99,17 +102,39 @@ export class SettingsComponent
       getUserDataFromStore;
       this.getUserInfo(getUserDataFromStore.email);
     }
+    this.minDate = new Date(1940, 1, 1);
+    this.maxDate = new Date(2024, 11, 31);
+    this.dateOfBirth?.valueChanges.subscribe(date => {
+      if (date) {
+        const age = this.agePipe.transform(date);
+        if (age < 30) {
+          this.toastrService.error(
+            `The age ${age} is too young. Must be at least 30 years.`
+          );
+        } else if (age > 80) {
+          this.toastrService.error(
+            `The age ${age} is too old. Must be 80 years or younger.`
+          );
+        } else {
+          // this.toastrService.success(`The age ${age} is within the allowed range.`);
+        }
+      }
+    });
   }
+
   getUserInfo(email: string) {
     this.userService.getUserInfo(email).subscribe((data: any) => {
       this.userName?.patchValue(data[0].userName);
       this.email?.patchValue(data[0].email);
       this.phoneNumber?.patchValue(data[0].phoneNumber);
+      this.dateOfBirth?.patchValue(data[0].dateOfBirth);
       this.country?.patchValue(data[0].country);
       this.address?.patchValue(data[0].address);
       this.city?.patchValue(data[0].city);
       this.state?.patchValue(data[0].state);
       this.zipcode?.patchValue(data[0].zipcode);
+      this.cdr.detectChanges();
+
       this.onAddressInput();
     });
   }
@@ -119,8 +144,6 @@ export class SettingsComponent
       this.userService.updateProfile(this.form.value).subscribe(res => {
         if (res) {
           this.toastrService.success('Profile updated successfully');
-          this.form.reset()
-
         }
       });
     }
@@ -162,7 +185,6 @@ export class SettingsComponent
           if (response.features && response.features.length > 0) {
             const coordinates = response.features[0].center;
             this.mapCoordinates = coordinates;
-            this.zoomlevel = 6;
             this.cdr.detectChanges();
           }
           console.log('👉👉👉', this.mapCoordinates);
@@ -220,6 +242,9 @@ export class SettingsComponent
   }
   get email() {
     return this.form.get('email');
+  }
+  get dateOfBirth() {
+    return this.form.get('dateOfBirth');
   }
   get phoneNumber() {
     return this.form.get('phoneNumber');

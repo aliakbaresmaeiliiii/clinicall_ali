@@ -15,7 +15,6 @@ import { ErrorService } from '../../shared/client-services/error.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  #cookieService = inject(CookieService);
   toast = inject(ToastrService);
   authService = inject(AuthService);
   isRefreshing = false;
@@ -25,15 +24,14 @@ export class AuthInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     handler: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const getDataFromStorage = this.#cookieService.get('userData');
 
-    if (getDataFromStorage) {
-      request = request.clone({
-        setHeaders: {
-          Authorization: `Bearer ${getDataFromStorage}`,
-        },
-      });
-    }
+    // if (getDataFromStorage) {
+    //   request = request.clone({
+    //     setHeaders: {
+    //       Authorization: `Bearer ${getDataFromStorage}`,
+    //     },
+    //   });
+    // }
 
     return handler.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {

@@ -99,6 +99,7 @@ class AuthService {
         imgUser: userData[0].imgUser,
         mobile: userData[0].mobile,
         address: userData[0].address,
+        dateOfBirth: userData[0].dateOfBirth,
         tokenVerify: userData[0].tokenVerify,
         roles: [] as string[],
         permissions: [] as string[],

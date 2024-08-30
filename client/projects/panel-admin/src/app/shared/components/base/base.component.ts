@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/cor
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CookieService } from 'ngx-cookie-service';
 import { ToastrService } from 'ngx-toastr';
 import { TokenPermission } from '../../../core/auth/models/user';
 import { AuthService } from '../../../core/services/auth.service';
@@ -18,7 +17,6 @@ export abstract class BaseComponent  {
   fb = inject(FormBuilder);
   dialog = inject(MatDialog);
   authService = inject(AuthService);
-  cookieService = inject(CookieService);
   userService = inject(UserService);
   activatedRoute = inject(ActivatedRoute)
 

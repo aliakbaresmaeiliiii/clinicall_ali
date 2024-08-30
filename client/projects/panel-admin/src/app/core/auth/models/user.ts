@@ -6,6 +6,7 @@ export interface User {
   password?: string;
   emailConfirmed?: boolean;
   signupStatus?: number;
+  dateOfBirth?: number;
   verify_code?: string;
   address: string;
   country: string;

@@ -31,13 +31,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { AgePipe } from '../../shared/pipes/age.pipe';
 import { DoctorDetailComponent } from './doctor-detail/doctor-detail.component';
 import { DoctorListComponent } from './doctor-list/doctor-list.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { GoogleMapComponent } from '../../shared/components/google-map/google-map.component';
 import { EditDoctorComponent } from './edit-doctor/edit-doctor.component';
 import { AddDoctorComponent } from './add-doctor/add-doctor.component';
+import { AgePipe } from '../../shared/pipes/age.pipe';
 const routes: Routes = [
   {
     path: 'all-doctors',

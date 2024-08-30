@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import {
   RouterLink,
@@ -27,6 +27,8 @@ import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input';
 import { GoogleMapComponent } from '../../shared/components/google-map/google-map.component';
 import { UsersSettingsComponent } from './components/users_settings/users_settings.component';
 import { AddNewConnectionComponent } from './components/add-new-connection/add-new-connection.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { AgePipe } from '../../shared/pipes/age.pipe';
 
 export const routes: Routes = [
   {
@@ -101,8 +103,11 @@ export const routes: Routes = [
     MatIconModule,
     MatCheckboxModule,
     GoogleMapComponent,
+    MatDatepickerModule,
     RouterModule.forChild(routes),
+    
   ],
-  exports:[]
+  exports:[],
+  providers:[AgePipe]
 })
 export class SettingsModule {}
