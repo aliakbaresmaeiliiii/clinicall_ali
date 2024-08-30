@@ -1,7 +1,6 @@
 import { Component, HostListener, inject } from '@angular/core';
 import { UniqueNicknameValidator } from '../../../shared/validators/unique-nickname.validators';
 import { DoctorsService } from '../doctors.service';
-import { AgePipe } from '../../../shared/pipes/age.pipe';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { Validators } from '@angular/forms';
 import { banWords } from '../../../shared/validators/ban-words.validators';
@@ -9,6 +8,7 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { debounceTime, switchMap } from 'rxjs';
 import { DoctorsDTO } from '../models/doctors';
 import { ShareService } from '../../../shared/services/share.service';
+import { AgePipe } from '../../../shared/pipes/age.pipe';
 
 @Component({
   selector: 'app-add-doctor',

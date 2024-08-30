@@ -5,7 +5,7 @@ export interface User {
   gender?: string;
   email: string;
   phoneNumber?: string;
-  yearOfBirth?: string;
+  dateOfBirth?: string;
   password?: string | any;
   emailConfirmed?: number;
   signupStatus?: number;

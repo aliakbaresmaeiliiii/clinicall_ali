@@ -3,12 +3,12 @@ import { Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { debounceTime, switchMap } from 'rxjs';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { AgePipe } from '../../../shared/pipes/age.pipe';
 import { banWords } from '../../../shared/validators/ban-words.validators';
 import { UniqueNicknameValidator } from '../../../shared/validators/unique-nickname.validators';
 import { PatientDTO } from '../model/patients.model';
 import { PatientsService } from '../services/patients.service';
 import { ShareService } from '../../../shared/services/share.service';
+import { AgePipe } from '../../../shared/pipes/age.pipe';
 
 @Component({
   selector: 'app-add-patient',

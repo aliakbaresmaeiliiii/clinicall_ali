@@ -33,6 +33,14 @@
         banned</mat-error
       >
     </mat-form-field>
+    <mat-form-field data-testing="gender" appearance="outline" class="w-full">
+      <mat-label>Gender</mat-label>
+      <mat-select formControlName="gender" name="g">
+        <mat-option *ngFor="let g of genders; trackBy: trackByFn" [value]="g">{{
+          g
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
     <!-- *****lastName***** -->
     <!-- <mat-form-field data-testing="lastName" appearance="outline" class="w-full">
       <mat-label>lastName</mat-label>
@@ -96,29 +104,20 @@
       >
     </mat-form-field> -->
     <!-- *****gender***** -->
-    <mat-form-field data-testing="gender" appearance="outline" class="w-full">
-      <mat-label>Gender</mat-label>
-      <mat-select formControlName="gender" name="g">
-        <mat-option *ngFor="let g of genders; trackBy: trackByFn" [value]="g">{{
-          g
-        }}</mat-option>
-      </mat-select>
-    </mat-form-field>
   </div>
   <div class="desktop:grid grid-cols-2 gap-3">
     <!-- *****Year of birth***** -->
-    <mat-form-field
-      data-testing="yearOfBirth"
-      appearance="outline"
-      class="w-full">
-      <mat-label>Year of birth</mat-label>
-      <mat-select formControlName="yearOfBirth" name="g">
-        <mat-option
-          *ngFor="let year of years; trackBy: trackByFn"
-          [value]="year"
-          >{{ year }}</mat-option
-        >
-      </mat-select>
+    <mat-form-field appearance="outline" class="w-full mb-1">
+      <mat-label>Choose a date</mat-label>
+      <input matInput [matDatepicker]="picker" [max]="maxDate" [min]="minDate" formControlName="dateOfBirth" />
+      <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
+      <mat-datepicker-toggle matIconSuffix [for]="picker">
+        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+      </mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="dateOfBirth?.hasError('dateOfBirth')">
+        Date of birth must be between 30 and 80 years ago.
+      </mat-error>
     </mat-form-field>
     <!-- *****email***** -->
     <mat-form-field data-testing="email" appearance="outline" class="w-full">

@@ -1,4 +1,3 @@
-import * as mapboxgl from 'mapbox-gl';
 import { MapboxMarkers } from '../models/mapbox-marker';
 
 export interface AddressInfo{

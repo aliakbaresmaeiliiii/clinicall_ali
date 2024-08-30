@@ -1,6 +1,5 @@
 import { isPlatformBrowser } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -9,7 +8,7 @@ import {
   OnInit,
   Output,
   PLATFORM_ID,
-  SimpleChanges,
+  SimpleChanges
 } from '@angular/core';
 import * as mapboxGl from 'mapbox-gl';
 import { LngLat } from 'mapbox-gl';
@@ -124,7 +123,7 @@ export class GoogleMapComponent implements OnInit {
 
   updateMapLocation(coordinates: [number, number] | any): void {
     const [lng, lat] = coordinates; // Destructure the array into lng and lat
-    this.map?.flyTo({ center: [lng, lat], zoom: this.zoomLevel });
+    this.map?.flyTo({ center: [lng, lat], zoom: 6 });
     this.marker?.setLngLat({ lng, lat });
   }
 
