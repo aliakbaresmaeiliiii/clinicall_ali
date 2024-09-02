@@ -49,6 +49,7 @@ export class GoogleMapComponent implements OnInit {
       this.updateMapLocation(this.coordinates);
     }
   }
+  
   ngOnInit(): void {
     this.setCurrentLocation();
   }

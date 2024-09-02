@@ -9,10 +9,8 @@ import { AppResponse } from "../types/response.interface";
 import { ConfirmEmail, CreateUser, User } from "../types/user";
 import { RowDataPacket, coreSchema, query } from "./mysql";
 import { DoctorsDTO } from "../models/doctors";
-import ResponseError from "../modules/error/response_error";
 
 // ****** Auth ******
-
 export async function checkUserExist(email: string): Promise<RowDataPacket[]> {
   const user = await query<RowDataPacket[]>(
     `SELECT user_id,email FROM  ${coreSchema}.users
@@ -322,6 +320,7 @@ export async function getAppointment() {
   );
   return getEventData;
 }
+
 export async function updateAppointment(
   data: IAppointment
 ): Promise<IAppointment[] | undefined> {
@@ -337,6 +336,7 @@ export async function updateAppointment(
     return result as IAppointment[];
   }
 }
+
 export async function deleteAppointment(event_id: string) {
   const result = await query<RowDataPacket[]>(
     `DELETE FROM ${coreSchema}.calendar_events
@@ -347,7 +347,6 @@ export async function deleteAppointment(event_id: string) {
   );
   return result;
 }
-
 // ****** Patients ******
 export async function getPatients() {
   const patients = await query<RowDataPacket[]>(`
@@ -469,7 +468,6 @@ export async function getDoctors(): Promise<DoctorsDTO[]> {
     SELECT * FROM ${coreSchema}.doctor`);
   return doctors as DoctorsDTO[];
 }
-
 export async function checkDoctorPhoneNumberExists(mobile: string) {
   const result = await query<RowDataPacket>(
     `
@@ -482,7 +480,6 @@ export async function checkDoctorPhoneNumberExists(mobile: string) {
   );
   return result;
 }
-
 export async function addDoctor(doctorInfo: DoctorsDTO) {
   try {
     const result = await query<RowDataPacket[]>(
@@ -549,6 +546,43 @@ export async function updateDoctor(doctortData: DoctorsDTO): Promise<any> {
         doctortData.address,
         doctortData.id,
       ],
+    }
+  );
+  return result;
+}
+
+export async function comparePassword(data: any): Promise<any> {
+  const result = await query<RowDataPacket[]>(
+    `
+    SELECT password FROM ${coreSchema}.users
+    WHERE email=?
+    `,
+    {
+      values: [data],
+    }
+  );
+  return result;
+}
+
+export async function changePassword(data: any) {
+  const { newPassword } = data;
+  const { confirmPassword } = data;
+  const fdPassword = { newPassword, confirmPassword };
+  const validPassword = schemaUser.createPassword.validateSyncAt(
+    "confirmPassword",
+    fdPassword
+  );
+  const saltRounds = 10;
+  const hash = bcrypt.hashSync(validPassword, saltRounds);
+
+  const result = await query<RowDataPacket[]>(
+    `
+    UPDATE ${coreSchema}.users
+    SET password=?,updatedAt=?
+    WHERE email=?
+    `,
+    {
+      values: [hash, new Date(), data.email],
     }
   );
   return result;

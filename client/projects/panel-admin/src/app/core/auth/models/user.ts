@@ -14,6 +14,7 @@ export interface User {
   state: string;
   zipcode: string;
   skills: Skills;
+
 }
 ``;
 export interface Skills {
