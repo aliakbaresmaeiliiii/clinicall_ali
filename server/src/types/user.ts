@@ -5,24 +5,25 @@ export interface User {
   gender?: string;
   email: string;
   phoneNumber?: string;
+  newPassword:string;
+  confirmPassword:string;
   dateOfBirth?: string;
   password?: string | any;
   emailConfirmed?: number;
   signupStatus?: number;
   verify_code?: string;
   address?: string;
-  isActive?: boolean | null | number
+  isActive?: boolean | null | number;
   country?: string;
   city?: string;
   state?: string;
   zipcode?: string;
   tokenVerify?: string | null;
-  imgUser?:string;
-  role_name:string;
-  permission_name:string;
+  imgUser?: string;
+  role_name: string;
+  permission_name: string;
+  oldPassword: string;
 }
-
-
 
 export interface CreateUser {
   user_id: string;
@@ -44,12 +45,10 @@ export interface Register {
   confirmPassword: string;
 }
 
-
 export interface LoginAttributes {
-  email: string
-  password: string
+  email: string;
+  password: string;
 }
-
 
 export interface ConfirmEmail {
   email: string;

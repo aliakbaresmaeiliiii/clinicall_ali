@@ -62,6 +62,17 @@ routes.get(
   asyncHandler(async function forgetPsssword(req: any, res: any) {
     const email = req.params.email;
     const data = await UserService.sendFrogetPasswordToken(email);
-    return res.json(data);
+    const buildResponse = await BuildResponse.get(data);
+    res.json(buildResponse);
+  })
+);
+
+routes.post(
+  `/user/change-password`,
+  asyncHandler(async (req: Request, res: Response) => {
+    const data = req.body;
+    const getData = await UserService.changePassword(data);
+    const buildResponse = BuildResponse.get(getData);
+    res.json(buildResponse);
   })
 );

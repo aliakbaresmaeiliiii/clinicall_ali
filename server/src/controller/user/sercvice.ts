@@ -1,6 +1,8 @@
 import {
+  changePassword,
   checkNickName,
   checkUserExist,
+  comparePassword,
   confirmEmail,
   getOTP,
   getUserInfo,
@@ -16,6 +18,7 @@ import { getUniqueCodev2, getUniqueCodev3 } from "../../helper/common";
 import jwt from "jsonwebtoken";
 import ms from "ms";
 import ResponseError from "../../modules/error/response_error";
+import bcrypt from "bcrypt";
 
 const { JWT_SECRET_ACCESS_TOKEN, JWT_SECRET_REFRESH_TOKEN }: any = process.env;
 const JWT_ACCESS_TOKEN_EXPIRED = process.env.JWT_ACCESS_TOKEN_EXPIRED || "1d"; // 1 Days
@@ -62,14 +65,20 @@ class UserService {
   /**
    * @param email
    */
-  public static async changePassword(email: string) {
-    const userEmail = email;
+  public static async changePassword(formData: User) {
+    const getNewPassword = await comparePassword(formData.email);
+    const pass = getNewPassword[0].password;
+    const getComparePassword = await bcrypt.compare(formData.oldPassword, pass);
+
+    if (getComparePassword) {
+      const getNewPassword = await changePassword(formData);
+      return getNewPassword
+    }
   }
   /**
    * @param userData
    */
 
- 
   public static async updateProfileuser(userData: User) {
     const generateToken = {
       code: getUniqueCodev2(),
@@ -88,8 +97,8 @@ class UserService {
     const result = await updateProfileUser(userData);
     if (!result) {
       throw new ResponseError.BadRequest("Can Not Update profile...");
-    }else{
-      return result
+    } else {
+      return result;
     }
   }
 

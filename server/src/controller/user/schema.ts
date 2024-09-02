@@ -19,14 +19,14 @@ const create = yup.object().shape({
     .oneOf([yup.ref("password")], "passwords are not the same"),
 });
 const createPassword = yup.object().shape({
-  password: yup
+  newPassword: yup
     .string()
     .min(8, "at least 8 characters")
     .oneOf([yup.ref("confirmPassword")], "passwords are not the same"),
   confirmPassword: yup
     .string()
     .min(8, "at least 8 characters")
-    .oneOf([yup.ref("password")], "passwords are not the same"),
+    .oneOf([yup.ref("newPassword")], "passwords are not the same"),
 });
 const userRoles = yup
   .object()
