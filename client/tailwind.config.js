@@ -2,7 +2,7 @@
 module.exports = {
   content: [
     // "./src/**/*.{html,ts}",
-    "./projects/panel-admin/src/**/*.{html,ts}",
+    "./src/**/*.{html,ts}",
     "./node_modules/flowbite/**/*.js"
   ],
   theme: {
@@ -26,7 +26,8 @@ module.exports = {
       white:'#fff',
       gray:'#97A2B4',
       red:'#E95210',
-      blueLight:'#DAE1F3'
+      blueLight:'#DAE1F3',
+      blueSky:'#EFF8FF'
    },
   },
   plugins: [],
