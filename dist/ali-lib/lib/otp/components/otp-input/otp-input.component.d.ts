@@ -1,0 +1,38 @@
+import { EventEmitter } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Config } from '../../models/config';
+import { KeysPipe } from '../../pipes/keys.pipe';
+import * as i0 from "@angular/core";
+export declare class OtpInputComponent {
+    private keysPipe;
+    private platformId;
+    config: Config;
+    onInputChange: EventEmitter<string>;
+    onCountDown: EventEmitter<any>;
+    otpForm: any;
+    inputControls: FormControl[];
+    componentKey: string;
+    inputType: string;
+    isTimeDone: boolean;
+    constructor(keysPipe: KeysPipe, platformId: any);
+    ngOnInit(): void;
+    ngAfterViewInit(): void;
+    private getControlName;
+    ifLeftArrow(event: any): boolean;
+    ifRightArrow(event: any): boolean;
+    ifBackspaceOrDelete(event: any): boolean;
+    ifKeyCode(event: any, targetCode: any): boolean;
+    onKeyDown($event: any): any;
+    onKeyUp($event: any, inputIdx: any): void;
+    appendKey(id: any): string;
+    setSelected(eleId: any): void;
+    ifValidEntry(event: any): boolean;
+    focusTo(eleId: any): void;
+    setValue(value: any): void;
+    rebuildValue(): void;
+    getInputType(): string;
+    onCount(e: any): void;
+    resendCode(e: Event): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<OtpInputComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<OtpInputComponent, "app-otp-input", never, { "config": { "alias": "config"; "required": false; }; }, { "onInputChange": "onInputChange"; "onCountDown": "onCountDown"; }, never, never, false, never>;
+}

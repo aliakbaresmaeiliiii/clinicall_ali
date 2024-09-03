@@ -1,0 +1,87 @@
+import { animate, state, style, transition, trigger, } from '@angular/animations';
+import { Component, ContentChildren, EventEmitter, HostListener, Input, Output, } from '@angular/core';
+import { OptionComponent } from './option/option.component';
+import { SelectionModel } from '@angular/cdk/collections';
+import * as i0 from "@angular/core";
+import * as i1 from "@angular/common";
+import * as i2 from "@angular/cdk/overlay";
+export class SelectComponent {
+    set value(value) {
+        this.selectionModel.clear();
+        if (value) {
+            this.selectionModel.select(value);
+        }
+    }
+    get value() {
+        return this.selectionModel.selected[0] || null;
+    }
+    open() {
+        this.isOpen = !this.isOpen;
+    }
+    close() {
+        this.isOpen = false;
+    }
+    constructor() {
+        this.label = '';
+        this.selectionModel = new SelectionModel();
+        this.opened = new EventEmitter();
+        this.closed = new EventEmitter();
+        this.isOpen = false;
+    }
+    ngAfterContentInit() {
+        this.highlightSelectedOptions(this.value);
+    }
+    onPanelAnimationDone({ fromState, toState }) {
+        if (fromState === 'void' && toState === null && this.isOpen) {
+            this.opened.emit();
+        }
+        if (fromState === null && toState === 'void' && !this.isOpen) {
+            this.closed.emit();
+        }
+    }
+    highlightSelectedOptions(value) {
+        this.findOptionsByValue(value)?.highlightAsSelected;
+    }
+    findOptionsByValue(value) {
+        return this.options && this.options.find((o) => o.value === value);
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "18.0.0", ngImport: i0, type: SelectComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "18.0.0", type: SelectComponent, selector: "lib-select", inputs: { label: "label", value: "value" }, outputs: { opened: "opened", closed: "closed" }, host: { listeners: { "click": "open()" } }, queries: [{ propertyName: "options", predicate: OptionComponent, descendants: true }], ngImport: i0, template: "<div class=\"label\">{{ label }}</div>\n<div class=\"control\" cdkOverlayOrigin #origin=\"cdkOverlayOrigin\">\n  <span class=\"selected-value\" [ngClass]=\"{ emty: !value }\">{{\n    value || \"Nothing is selected...\"\n  }}</span>\n  <span class=\"drop-down-icon\">\uD83D\uDC47</span>\n</div>\n\n<ng-template\n  cdkConnectedOverlay\n  [cdkConnectedOverlayOrigin]=\"origin\"\n  [cdkConnectedOverlayOpen]=\"isOpen\"\n  [cdkConne\n  ctedOverlayOffsetY]=\"8\"\n  [cdkConnectedOverlayOffsetX]=\"-11\"\n  cdkConnectedOverlayHasBackdrop\n  cdkConnectedOverlayBackdropClass=\"cdk-overlay-transparent-backdrop\"\n  (backdropClick)=\"close()\"\n  (detach)=\"close()\"\n>\n  <div\n    class=\"panel\"\n    [@dropDown]\n    (@dropDown.done)=\"onPanelAnimationDone($event)\"\n  >\n    <ng-content ></ng-content>\n  </div>\n</ng-template>\n", styles: [":host{display:flex;justify-content:flex-start;flex-direction:column;border:var(--color-text, #ccc) solid 2px;padding:5px 10px;box-sizing:border-box;border-radius:var(--border-radius, 10px);min-width:250px}:host:hover{cursor:pointer;background-color:var(--color-background, #eceff1)}:host:hover .selected-value{transform:scale(.9)}:host.select-panel-open{position:relative;z-index:1001}:host.disabled{opacity:.5;pointer-events:none;-webkit-user-select:none;user-select:none}.label{font-size:13px;font-weight:800;color:var(--color-text)}.control{width:100%;display:flex;justify-content:space-between;align-items:center}.selected-value{font-size:16px;margin-right:15px;transition:transform .2s;transform-origin:left;width:100%}.selected-value.empty{opacity:.6}.select-search{border:none;padding:0;background:transparent;outline:none}.panel{min-width:250px;padding:5px 10px;box-sizing:border-box;border-radius:var(--border-radius, 10px);border:var(--color-text, #ccc) solid 2px;background-color:#fff;transform-origin:top;min-height:45px;max-height:180px;overflow:auto}.clear-button{font-size:10px;background-color:transparent;padding:1px 3px;border:none;width:40px;margin:0 3px;font-weight:300;opacity:.7}.clear-button:hover{background-color:var(--color-backgroud-darker, #cfd8dc);opacity:1}\n"], dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i2.CdkConnectedOverlay, selector: "[cdk-connected-overlay], [connected-overlay], [cdkConnectedOverlay]", inputs: ["cdkConnectedOverlayOrigin", "cdkConnectedOverlayPositions", "cdkConnectedOverlayPositionStrategy", "cdkConnectedOverlayOffsetX", "cdkConnectedOverlayOffsetY", "cdkConnectedOverlayWidth", "cdkConnectedOverlayHeight", "cdkConnectedOverlayMinWidth", "cdkConnectedOverlayMinHeight", "cdkConnectedOverlayBackdropClass", "cdkConnectedOverlayPanelClass", "cdkConnectedOverlayViewportMargin", "cdkConnectedOverlayScrollStrategy", "cdkConnectedOverlayOpen", "cdkConnectedOverlayDisableClose", "cdkConnectedOverlayTransformOriginOn", "cdkConnectedOverlayHasBackdrop", "cdkConnectedOverlayLockPosition", "cdkConnectedOverlayFlexibleDimensions", "cdkConnectedOverlayGrowAfterOpen", "cdkConnectedOverlayPush", "cdkConnectedOverlayDisposeOnNavigation"], outputs: ["backdropClick", "positionChange", "attach", "detach", "overlayKeydown", "overlayOutsideClick"], exportAs: ["cdkConnectedOverlay"] }, { kind: "directive", type: i2.CdkOverlayOrigin, selector: "[cdk-overlay-origin], [overlay-origin], [cdkOverlayOrigin]", exportAs: ["cdkOverlayOrigin"] }], animations: [
+            trigger('dropDown', [
+                state('void', style({ transform: 'scaleY(0)', opacity: 0 })),
+                state('*', style({ transform: 'scaleY(1)', opacity: 1 })),
+                transition(':enter', [animate('320ms cubic-bezier(0, 1, 0.45, 1.34)')]),
+                transition(':leave', [
+                    animate('420ms cubic-bezier(0.88,-0.7, 0.86, 0.85)'),
+                ]),
+            ]),
+        ] }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "18.0.0", ngImport: i0, type: SelectComponent, decorators: [{
+            type: Component,
+            args: [{ selector: 'lib-select', standalone: false, animations: [
+                        trigger('dropDown', [
+                            state('void', style({ transform: 'scaleY(0)', opacity: 0 })),
+                            state('*', style({ transform: 'scaleY(1)', opacity: 1 })),
+                            transition(':enter', [animate('320ms cubic-bezier(0, 1, 0.45, 1.34)')]),
+                            transition(':leave', [
+                                animate('420ms cubic-bezier(0.88,-0.7, 0.86, 0.85)'),
+                            ]),
+                        ]),
+                    ], template: "<div class=\"label\">{{ label }}</div>\n<div class=\"control\" cdkOverlayOrigin #origin=\"cdkOverlayOrigin\">\n  <span class=\"selected-value\" [ngClass]=\"{ emty: !value }\">{{\n    value || \"Nothing is selected...\"\n  }}</span>\n  <span class=\"drop-down-icon\">\uD83D\uDC47</span>\n</div>\n\n<ng-template\n  cdkConnectedOverlay\n  [cdkConnectedOverlayOrigin]=\"origin\"\n  [cdkConnectedOverlayOpen]=\"isOpen\"\n  [cdkConne\n  ctedOverlayOffsetY]=\"8\"\n  [cdkConnectedOverlayOffsetX]=\"-11\"\n  cdkConnectedOverlayHasBackdrop\n  cdkConnectedOverlayBackdropClass=\"cdk-overlay-transparent-backdrop\"\n  (backdropClick)=\"close()\"\n  (detach)=\"close()\"\n>\n  <div\n    class=\"panel\"\n    [@dropDown]\n    (@dropDown.done)=\"onPanelAnimationDone($event)\"\n  >\n    <ng-content ></ng-content>\n  </div>\n</ng-template>\n", styles: [":host{display:flex;justify-content:flex-start;flex-direction:column;border:var(--color-text, #ccc) solid 2px;padding:5px 10px;box-sizing:border-box;border-radius:var(--border-radius, 10px);min-width:250px}:host:hover{cursor:pointer;background-color:var(--color-background, #eceff1)}:host:hover .selected-value{transform:scale(.9)}:host.select-panel-open{position:relative;z-index:1001}:host.disabled{opacity:.5;pointer-events:none;-webkit-user-select:none;user-select:none}.label{font-size:13px;font-weight:800;color:var(--color-text)}.control{width:100%;display:flex;justify-content:space-between;align-items:center}.selected-value{font-size:16px;margin-right:15px;transition:transform .2s;transform-origin:left;width:100%}.selected-value.empty{opacity:.6}.select-search{border:none;padding:0;background:transparent;outline:none}.panel{min-width:250px;padding:5px 10px;box-sizing:border-box;border-radius:var(--border-radius, 10px);border:var(--color-text, #ccc) solid 2px;background-color:#fff;transform-origin:top;min-height:45px;max-height:180px;overflow:auto}.clear-button{font-size:10px;background-color:transparent;padding:1px 3px;border:none;width:40px;margin:0 3px;font-weight:300;opacity:.7}.clear-button:hover{background-color:var(--color-backgroud-darker, #cfd8dc);opacity:1}\n"] }]
+        }], ctorParameters: () => [], propDecorators: { label: [{
+                type: Input
+            }], value: [{
+                type: Input
+            }], opened: [{
+                type: Output
+            }], closed: [{
+                type: Output
+            }], open: [{
+                type: HostListener,
+                args: ['click']
+            }], options: [{
+                type: ContentChildren,
+                args: [OptionComponent, { descendants: true }]
+            }] } });
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoic2VsZWN0LmNvbXBvbmVudC5qcyIsInNvdXJjZVJvb3QiOiIiLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uL2NsaWVudC9hbGktbGliL3NyYy9saWIvc2VsZWN0L3NlbGVjdC5jb21wb25lbnQudHMiLCIuLi8uLi8uLi8uLi8uLi9jbGllbnQvYWxpLWxpYi9zcmMvbGliL3NlbGVjdC9zZWxlY3QuY29tcG9uZW50Lmh0bWwiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUEsT0FBTyxFQUNMLE9BQU8sRUFDUCxLQUFLLEVBQ0wsS0FBSyxFQUNMLFVBQVUsRUFDVixPQUFPLEdBQ1IsTUFBTSxxQkFBcUIsQ0FBQztBQUM3QixPQUFPLEVBRUwsU0FBUyxFQUNULGVBQWUsRUFDZixZQUFZLEVBQ1osWUFBWSxFQUNaLEtBQUssRUFFTCxNQUFNLEdBRVAsTUFBTSxlQUFlLENBQUM7QUFDdkIsT0FBTyxFQUFFLGVBQWUsRUFBRSxNQUFNLDJCQUEyQixDQUFDO0FBQzVELE9BQU8sRUFBRSxjQUFjLEVBQUUsTUFBTSwwQkFBMEIsQ0FBQzs7OztBQWtCMUQsTUFBTSxPQUFPLGVBQWU7SUFJMUIsSUFDSSxLQUFLLENBQUMsS0FBb0I7UUFDNUIsSUFBSSxDQUFDLGNBQWMsQ0FBQyxLQUFLLEVBQUUsQ0FBQztRQUM1QixJQUFJLEtBQUssRUFBRSxDQUFDO1lBQ1YsSUFBSSxDQUFDLGNBQWMsQ0FBQyxNQUFNLENBQUMsS0FBSyxDQUFDLENBQUM7UUFDcEMsQ0FBQztJQUNILENBQUM7SUFDRCxJQUFJLEtBQUs7UUFDUCxPQUFPLElBQUksQ0FBQyxjQUFjLENBQUMsUUFBUSxDQUFDLENBQUMsQ0FBQyxJQUFJLElBQUksQ0FBQztJQUNqRCxDQUFDO0lBVUQsSUFBSTtRQUNGLElBQUksQ0FBQyxNQUFNLEdBQUcsQ0FBQyxJQUFJLENBQUMsTUFBTSxDQUFDO0lBQzdCLENBQUM7SUFFRCxLQUFLO1FBQ0gsSUFBSSxDQUFDLE1BQU0sR0FBRyxLQUFLLENBQUM7SUFDdEIsQ0FBQztJQU1E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QUFFLElBQUksRUFBRSIsInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7XG4gIGFuaW1hdGUsXG4gIHN0YXRlLFxuICBzdHlsZSxcbiAgdHJhbnNpdGlvbixcbiAgdHJpZ2dlcixcbn0gZnJvbSAnQGFuZ3VsYXIvYW5pbWF0aW9ucyc7XG5pbXBvcnQge1xuICBBZnRlckNvbnRlbnRJbml0LFxuICBDb21wb25lbnQsXG4gIENvbnRlbnRDaGlsZHJlbixcbiAgRXZlbnRFbWl0dGVyLFxuICBIb3N0TGlzdGVuZXIsXG4gIElucHV0LFxuICBPbkluaXQsXG4gIE91dHB1dCxcbiAgUXVlcnlMaXN0LFxufSBmcm9tICdAYW5ndWxhci9jb3JlJztcbmltcG9ydCB7IE9wdGlvbkNvbXBvbmVudCB9IGZyb20gJy4vb3B0aW9uL29wdGlvbi5jb21wb25lbnQnO1xuaW1wb3J0IHsgU2VsZWN0aW9uTW9kZWwgfSBmcm9tICdAYW5ndWxhci9jZGsvY29sbGVjdGlvbnMnO1xuXG5AQ29tcG9uZW50KHtcbiAgc2VsZWN0b3I6ICdsaWItc2VsZWN0JyxcbiAgc3RhbmRhbG9uZTogZmFsc2UsXG4gIHRlbXBsYXRlVXJsOiAnLi9zZWxlY3QuY29tcG9uZW50Lmh0bWwnLFxuICBzdHlsZVVybDogJy4vc2VsZWN0LmNvbXBvbmVudC5zY3NzJyxcbiAgYW5pbWF0aW9uczogW1xuICAgIHRyaWdnZXIoJ2Ryb3BEb3duJywgW1xuICAgICAgc3RhdGUoJ3ZvaWQnLCBzdHlsZSh7IHRyYW5zZm9ybTogJ3NjYWxlWSgwKScsIG9wYWNpdHk6IDAgfSkpLFxuICAgICAgc3RhdGUoJyonLCBzdHlsZSh7IHRyYW5zZm9ybTogJ3NjYWxlWSgxKScsIG9wYWNpdHk6IDEgfSkpLFxuICAgICAgdHJhbnNpdGlvbignOmVudGVyJywgW2FuaW1hdGUoJzMyMG1zIGN1YmljLWJlemllcigwLCAxLCAwLjQ1LCAxLjM0KScpXSksXG4gICAgICB0cmFuc2l0aW9uKCc6bGVhdmUnLCBbXG4gICAgICAgIGFuaW1hdGUoJzQyMG1zIGN1YmljLWJlemllcigwLjg4LC0wLjcsIDAuODYsIDAuODUpJyksXG4gICAgICBdKSxcbiAgICBdKSxcbiAgXSxcbn0pXG5leHBvcnQgY2xhc3MgU2VsZWN0Q29tcG9uZW50IGltcGxlbWVudHMgQWZ0ZXJDb250ZW50SW5pdCB7XG4gIEBJbnB1dCgpXG4gIGxhYmVsID0gJyc7XG5cbiAgQElucHV0KClcbiAgc2V0IHZhbHVlKHZhbHVlOiBzdHJpbmcgfCBudWxsKSB7XG4gICAgdGhpcy5zZWxlY3Rpb25Nb2RlbC5jbGVhcigpO1xuICAgIGlmICh2YWx1ZSkge1xuICAgICAgdGhpcy5zZWxlY3Rpb25Nb2RlbC5zZWxlY3QodmFsdWUpO1xuICAgIH1cbiAgfVxuICBnZXQgdmFsdWUoKSB7XG4gICAgcmV0dXJuIHRoaXMuc2VsZWN0aW9uTW9kZWwuc2VsZWN0ZWRbMF0gfHwgbnVsbDtcbiAgfVxuXG4gIHByaXZhdGUgc2VsZWN0aW9uTW9kZWwgPSBuZXcgU2VsZWN0aW9uTW9kZWw8c3RyaW5nPigpO1xuICBcbiAgQE91dHB1dCgpXG4gIHJlYWRvbmx5IG9wZW5lZCA9IG5ldyBFdmVudEVtaXR0ZXI8dm9pZD4oKTtcbiAgQE91dHB1dCgpXG4gIHJlYWRvbmx5IGNsb3NlZCA9IG5ldyBFdmVudEVtaXR0ZXI8dm9pZD4oKTtcblxuICBASG9zdExpc3RlbmVyKCdjbGljaycpXG4gIG9wZW4oKSB7XG4gICAgdGhpcy5pc09wZW4gPSAhdGhpcy5pc09wZW47XG4gIH1cblxuICBjbG9zZSgpIHtcbiAgICB0aGlzLmlzT3BlbiA9IGZhbHNlO1xuICB9XG5cbiAgQENvbnRlbnRDaGlsZHJlbihPcHRpb25Db21wb25lbnQsIHsgZGVzY2VuZGFudHM6IHRydWUgfSlcbiAgb3B0aW9ucyE6IFF1ZXJ5TGlzdDxPcHRpb25Db21wb25lbnQ+O1xuICBpc09wZW4gPSBmYWxzZTtcblxuICBjb25zdHJ1Y3RvcigpIHt9XG5cbiAgbmdBZnRlckNvbnRlbnRJbml0KCk6IHZvaWQge1xuICAgIHRoaXMuaGlnaGxpZ2h0U2VsZWN0ZWRPcHRpb25zKHRoaXMudmFsdWUpO1xuICB9XG5cbiAgb25QYW5lbEFuaW1hdGlvbkRvbmUoeyBmcm9tU3RhdGUsIHRvU3RhdGUgfTogQW5pbWF0aW9uRXZlbnQgfCBhbnkpIHtcbiAgICBpZiAoZnJvbVN0YXRlID09PSAndm9pZCcgJiYgdG9TdGF0ZSA9PT0gbnVsbCAmJiB0aGlzLmlzT3Blbikge1xuICAgICAgdGhpcy5vcGVuZWQuZW1pdCgpO1xuICAgIH1cbiAgICBpZiAoZnJvbVN0YXRlID09PSBudWxsICYmIHRvU3RhdGUgPT09ICd2b2lkJyAmJiAhdGhpcy5pc09wZW4pIHtcbiAgICAgIHRoaXMuY2xvc2VkLmVtaXQoKTtcbiAgICB9XG4gIH1cblxuICBwcml2YXRlIGhpZ2hsaWdodFNlbGVjdGVkT3B0aW9ucyh2YWx1ZTogc3RyaW5nIHwgbnVsbCkge1xuICAgIHRoaXMuZmluZE9wdGlvbnNCeVZhbHVlKHZhbHVlKT8uaGlnaGxpZ2h0QXNTZWxlY3RlZDtcbiAgfVxuXG4gIHByaXZhdGUgZmluZE9wdGlvbnNCeVZhbHVlKHZhbHVlOiBzdHJpbmcgfCBudWxsKSB7XG4gICAgcmV0dXJuIHRoaXMub3B0aW9ucyAmJiB0aGlzLm9wdGlvbnMuZmluZCgobykgPT4gby52YWx1ZSA9PT0gdmFsdWUpO1xuICB9XG59XG4iLCI8ZGl2IGNsYXNzPVwibGFiZWxcIj57eyBsYWJlbCB9fTwvZGl2PlxuPGRpdiBjbGFzcz1cImNvbnRyb2xcIiBjZGtPdmVybGF5T3JpZ2luICNvcmlnaW49XCJjZGtPdmVybGF5T3JpZ2luXCI+XG4gIDxzcGFuIGNsYXNzPVwic2VsZWN0ZWQtdmFsdWVcIiBbbmdDbGFzc109XCJ7IGVtdHk6ICF2YWx1ZSB9XCI+e3tcbiAgICB2YWx1ZSB8fCBcIk5vdGhpbmcgaXMgc2VsZWN0ZWQuLi5cIlxuICB9fTwvc3Bhbj5cbiAgPHNwYW4gY2xhc3M9XCJkcm9wLWRvd24taWNvblwiPvCfkYc8L3NwYW4+XG48L2Rpdj5cblxuPG5nLXRlbXBsYXRlXG4gIGNka0Nvbm5lY3RlZE92ZXJsYXlcbiAgW2Nka0Nvbm5lY3RlZE92ZXJsYXlPcmlnaW5dPVwib3JpZ2luXCJcbiAgW2Nka0Nvbm5lY3RlZE92ZXJsYXlPcGVuXT1cImlzT3BlblwiXG4gIFtjZGtDb25uZVxuICBjdGVkT3ZlcmxheU9mZnNldFldPVwiOFwiXG4gIFtjZGtDb25uZWN0ZWRPdmVybGF5T2Zmc2V0WF09XCItMTFcIlxuICBjZGtDb25uZWN0ZWRPdmVybGF5SGFzQmFja2Ryb3BcbiAgY2RrQ29ubmVjdGVkT3ZlcmxheUJhY2tkcm9wQ2xhc3M9XCJjZGstb3ZlcmxheS10cmFuc3BhcmVudC1iYWNrZHJvcFwiXG4gIChiYWNrZHJvcENsaWNrKT1cImNsb3NlKClcIlxuICAoZGV0YWNoKT1cImNsb3NlKClcIlxuPlxuICA8ZGl2XG4gICAgY2xhc3M9XCJwYW5lbFwiXG4gICAgW0Bkcm9wRG93bl1cbiAgICAoQGRyb3BEb3duLmRvbmUpPVwib25QYW5lbEFuaW1hdGlvbkRvbmUoJGV2ZW50KVwiXG4gID5cbiAgICA8bmctY29udGVudCA+PC9uZy1jb250ZW50PlxuICA8L2Rpdj5cbjwvbmctdGVtcGxhdGU+XG4iXX0=
