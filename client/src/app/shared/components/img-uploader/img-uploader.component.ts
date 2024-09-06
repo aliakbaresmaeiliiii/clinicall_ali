@@ -4,7 +4,10 @@ import {
   ChangeDetectorRef,
   Component,
   inject,
+  input,
   NgZone,
+  signal,
+  WritableSignal,
 } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
@@ -18,10 +21,12 @@ import {
   NgxImageCaptureModule,
   NgxImageCompressService,
 } from 'ngx-image-compress';
-import { Observable } from 'rxjs';
+import { delay, Observable } from 'rxjs';
 import { PatientsService } from '../../../modules/patients/services/patients.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { ShareService } from '../../services/share.service';
+import { LoaderComponent } from '../loader/loader.component';
+import { HttpEventType } from '@angular/common/http';
 
 @Component({
   selector: 'app-img-uploader',
@@ -38,6 +43,7 @@ import { ShareService } from '../../services/share.service';
     MatInputModule,
     MatIconModule,
     MatTooltipModule,
+    LoaderComponent,
   ],
   templateUrl: './img-uploader.component.html',
   styleUrl: './img-uploader.component.scss',
@@ -51,13 +57,10 @@ export class ImgUploaderComponent {
 
   progressInfos: any[] = [];
   message: string[] = [];
-
   previews: string[] = [];
   imageInfos?: Observable<any>;
 
-  constructor(private zone:NgZone) {
- 
-  }
+  constructor(private zone: NgZone) {}
 
   ngOnInit(): void {
     // this.imageInfos = this.uploadService.getFiles();
@@ -88,10 +91,15 @@ export class ImgUploaderComponent {
   upload(idx: number, file: File): void {
     this.progressInfos[idx] = { value: 0, fileName: file };
     if (file) {
-      this.service.storeProfileImg.next(file)
-      // this.service.uploadImgPateint(file).subscribe((res)=>{
-        
-      // })
+      this.service.storeProfileImg.next(file);
+      this.service.uploadImg(file).subscribe(
+        (event:any)=>{
+          if(event.type === HttpEventType.UploadProgress){
+          }
+        }
+      )
+
+
       // this.uploadService.upload(file).subscribe(
       //   (event: any) => {
       //     if (event.type === HttpEventType.UploadProgress) {
@@ -116,8 +124,12 @@ export class ImgUploaderComponent {
     }
   }
 
+  isLoading() {
+    return this.service.isLoading();
+  }
 
   uploadFiles(): void {
+    this.service.setLoading(true);
     this.message = [];
     if (this.selectedFiles) {
       for (let i = 0; i < this.selectedFiles.length; i++) {

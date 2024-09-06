@@ -4,6 +4,20 @@ import { getUniqueCodev3 } from "../../helper/common";
 import BuildResponse from "../../modules/response/app_response";
 import routes from "../../routes/public";
 import UserService from "./sercvice";
+import multer from "multer";
+
+
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/imgProfile");
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.originalname);
+  },
+});
+
+const uploadImgProfile = multer({ storage });
 
 // ***** checkNickName
 routes.get(
@@ -75,4 +89,21 @@ routes.post(
     const buildResponse = BuildResponse.get(getData);
     res.json(buildResponse);
   })
+);
+
+// **** uploadImage
+routes.post(
+  "/admin/uploadImage",
+  uploadImgProfile.single("file"),
+  (req, res) => {
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+    res.json({
+      message: "File uploaded seccessfully",
+      filename: req.file.filename,
+    });
+    const imagePath = req.file.path;
+    res.json({ imagePath });
+  }
 );

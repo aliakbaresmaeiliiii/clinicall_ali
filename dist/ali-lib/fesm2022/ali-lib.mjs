@@ -260,14 +260,27 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "18.0.0", ngImpor
 
 class NgOtpInputModule {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "18.0.0", ngImport: i0, type: NgOtpInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "18.0.0", ngImport: i0, type: NgOtpInputModule, declarations: [OtpInputComponent, KeysPipe], imports: [CommonModule, FormsModule, ReactiveFormsModule, CountdownComponent, NumberOnlyDirective], exports: [OtpInputComponent] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "18.0.0", ngImport: i0, type: NgOtpInputModule, providers: [KeysPipe], imports: [CommonModule, FormsModule, ReactiveFormsModule, CountdownComponent] }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "18.0.0", ngImport: i0, type: NgOtpInputModule, declarations: [OtpInputComponent, KeysPipe], imports: [CommonModule,
+            FormsModule,
+            ReactiveFormsModule,
+            CountdownComponent,
+            NumberOnlyDirective], exports: [OtpInputComponent] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "18.0.0", ngImport: i0, type: NgOtpInputModule, providers: [KeysPipe], imports: [CommonModule,
+            FormsModule,
+            ReactiveFormsModule,
+            CountdownComponent] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "18.0.0", ngImport: i0, type: NgOtpInputModule, decorators: [{
             type: NgModule,
             args: [{
-                    imports: [CommonModule, FormsModule, ReactiveFormsModule, CountdownComponent, NumberOnlyDirective],
-                    declarations: [OtpInputComponent, KeysPipe,],
+                    imports: [
+                        CommonModule,
+                        FormsModule,
+                        ReactiveFormsModule,
+                        CountdownComponent,
+                        NumberOnlyDirective,
+                    ],
+                    declarations: [OtpInputComponent, KeysPipe],
                     exports: [OtpInputComponent],
                     providers: [KeysPipe],
                 }]

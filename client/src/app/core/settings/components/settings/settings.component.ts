@@ -102,6 +102,10 @@ export class SettingsComponent
       getUserDataFromStore;
       this.getUserInfo(getUserDataFromStore.email);
     }
+    this.validationAge()
+  }
+
+  validationAge() {
     this.minDate = new Date(1940, 1, 1);
     this.maxDate = new Date(2024, 11, 31);
     this.dateOfBirth?.valueChanges.subscribe(date => {

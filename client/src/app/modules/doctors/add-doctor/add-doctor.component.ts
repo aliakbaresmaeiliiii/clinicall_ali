@@ -1,21 +1,32 @@
-import { Component, HostListener, inject } from '@angular/core';
+import {
+  AfterViewChecked,
+  AfterViewInit,
+  Component,
+  ComponentRef,
+  HostListener,
+  inject,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
 import { UniqueNicknameValidator } from '../../../shared/validators/unique-nickname.validators';
 import { DoctorsService } from '../doctors.service';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { Validators } from '@angular/forms';
+import { AbstractControl, Validators } from '@angular/forms';
 import { banWords } from '../../../shared/validators/ban-words.validators';
 import { BaseComponent } from '../../../shared/components/base/base.component';
-import { debounceTime, switchMap } from 'rxjs';
+import { debounceTime, min, switchMap } from 'rxjs';
 import { DoctorsDTO } from '../models/doctors';
 import { ShareService } from '../../../shared/services/share.service';
 import { AgePipe } from '../../../shared/pipes/age.pipe';
+import { ImgUploaderComponent } from '../../../shared/components/img-uploader/img-uploader.component';
 
 @Component({
   selector: 'app-add-doctor',
   templateUrl: './add-doctor.component.html',
   styleUrl: './add-doctor.component.scss',
 })
-export class AddDoctorComponent extends BaseComponent {
+export class AddDoctorComponent extends BaseComponent implements AfterViewInit{
+
   uniqueNickname = inject(UniqueNicknameValidator);
   service = inject(DoctorsService);
   shareService = inject(ShareService);
@@ -31,7 +42,8 @@ export class AddDoctorComponent extends BaseComponent {
   profileImg: File | null = null;
   textDirection: 'ltr' | 'rtl' = 'ltr';
   phoneExists: boolean | null | unknown = null;
-
+  maxDate!: Date;
+  minDate!: Date;
   form = this.fb.group({
     name: [
       '',
@@ -41,16 +53,15 @@ export class AddDoctorComponent extends BaseComponent {
         banWords(['test', 'dummy']),
       ],
     ],
-    gender: ['Man'],
+    gender: ['', Validators.required],
     mobile: ['', Validators.required],
-    dateOfBirth: ['', Validators.required],
-    age: [null],
-    email: ['a@gmail.com', [Validators.required, Validators.email]],
-    maritalStatus: ['Single'],
-    address: [''],
-    specialization: [''],
-    department: [''],
-    degree: [''],
+    dateOfBirth: ['', [Validators.required, this.ageValidator.bind(this)]],
+    age: [{ value: '', disabled: true }],
+    email: ['', [Validators.required, Validators.email]],
+    address: ['', Validators.required],
+    specialization: ['', Validators.required],
+    department: ['', Validators.required],
+    degree: ['', Validators.required],
   });
 
   onTouch!: () => void;
@@ -59,17 +70,41 @@ export class AddDoctorComponent extends BaseComponent {
   phoneChecked() {
     this.onTouch();
   }
+
+
+
   ngOnInit(): void {
+    
+
+    this.validationAge();
+  }
+  ngAfterViewInit(): void {
     this.shareService.getStoreProfileImg$.subscribe(res => {
+      
       this.profileImg = res;
-      console.log(this.profileImg);
+      this.shareService.setLoading(false);
+      console.log('File:📁',this.profileImg);
     });
-    this.dateOfBirth?.valueChanges.subscribe(date => {
-      if (date) {
-        const age = this.agePipe.transform(date);
-        this.form.get('age')?.setValue(age, { emitEvent: false });
+  }
+
+  // setValidationAgeForDisable
+  validationAge() {
+    this.minDate = new Date();
+    this.minDate.setFullYear(this.minDate?.getFullYear() - 80);
+    this.maxDate = new Date();
+    this.maxDate.setFullYear(this.maxDate?.getFullYear() - 30);
+  }
+
+  ageValidator(control: AbstractControl): { [key: string]: any } | null {
+    const date = control.value;
+    if (date) {
+      const age = this.agePipe.transform(date);
+      this.age?.setValue(age);
+      if (age < 30 || age > 80) {
+        return { invalidAge: true }; // Return an error if age is not valid
       }
-    });
+    }
+    return null;
   }
 
   onAutofill(event: any) {
@@ -96,7 +131,7 @@ export class AddDoctorComponent extends BaseComponent {
         gender: this.form.value.gender,
         mobile: this.form.value.mobile,
         specialization: this.form.value.specialization,
-        dateOfBirth: this.form.value.dateOfBirth as String,
+        dateOfBirth: this.form.value.dateOfBirth,
         address: this.form.value.address,
         department: this.form.value.department,
         degree: this.form.value.degree,
@@ -115,6 +150,7 @@ export class AddDoctorComponent extends BaseComponent {
     }
   }
   trackByFn() {}
+
   get name() {
     return this.form.get('name');
   }

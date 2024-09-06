@@ -115,10 +115,10 @@
         <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
       </mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
-      <mat-error *ngIf="dateOfBirth?.hasError('dateOfBirth')">
-        Date of birth must be between 30 and 80 years ago.
-      </mat-error>
     </mat-form-field>
+    <mat-error *ngIf="dateOfBirth?.hasError('dateOfBirth')">
+      Date of birth must be between 30 and 80 years ago.
+    </mat-error>
     <!-- *****email***** -->
     <mat-form-field data-testing="email" appearance="outline" class="w-full">
       <mat-label>Email</mat-label>

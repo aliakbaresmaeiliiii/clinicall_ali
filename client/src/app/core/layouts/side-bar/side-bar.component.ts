@@ -8,12 +8,11 @@ import {
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import {
-  ChangeDetectorRef,
   Component,
   OnDestroy,
   OnInit,
   ViewChild,
-  inject,
+  inject
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -33,15 +32,12 @@ import { routes } from '../../../app.routes';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { BreadCrumbComponent } from '../../../shared/components/bread-crumb/bread-crumb.component';
 import { LoaderComponent } from '../../../shared/components/loader/loader.component';
-import { BreadcrumbDTO } from '../../../shared/models/breadcrumb';
-import { NavItem } from '../../../shared/models/nav-items';
-import { BreadCrumbService } from '../../../shared/services/bread-crumb.service';
 import { User } from '../../auth/models/user';
 import { NavItemsService } from '../../services/nav-items.service';
+import { PermissionService } from '../../services/permission.service';
 import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
 import { Menu } from '../types/navItem';
-import { PermissionService } from '../../services/permission.service';
 @Component({
   selector: 'side-bar',
   standalone: true,

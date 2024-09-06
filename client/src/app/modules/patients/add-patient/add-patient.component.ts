@@ -31,6 +31,8 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
   profileImg: File | null = null;
   textDirection: 'ltr' | 'rtl' = 'ltr';
   phoneExists: boolean | null = null;
+  maxDate!: Date;
+  minDate!: Date;
 
   form = this.fb.group({
     firstName: [
@@ -71,12 +73,27 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
     this.shareService.getStoreProfileImg$.subscribe(res => {
       this.profileImg = res;
       console.log(this.profileImg);
-
     });
+    this.validationAge();
+  }
+
+  validationAge() {
+    this.minDate = new Date(1940, 1, 1);
+    this.maxDate = new Date(2024, 11, 31);
     this.dateOfBirth?.valueChanges.subscribe(date => {
       if (date) {
         const age = this.agePipe.transform(date);
-        this.form.get('age')?.setValue(age, { emitEvent: false });
+        if (age < 30) {
+          this.toastrService.error(
+            `The age ${age} is too young. Must be at least 30 years.`
+          );
+        } else if (age > 80) {
+          this.toastrService.error(
+            `The age ${age} is too old. Must be 80 years or younger.`
+          );
+        } else {
+          // this.toastrService.success(`The age ${age} is within the allowed range.`);
+        }
       }
     });
   }
