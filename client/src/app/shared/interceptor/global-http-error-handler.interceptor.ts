@@ -23,7 +23,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, catchError, throwError } from 'rxjs';
 import { ErrorService } from '../client-services/error.service';
 
-@Injectable()
+@Injectable({
+  providedIn:"root"
+})
 export class GlobalHttpErrorHandler implements HttpInterceptor {
   snackBar = inject(MatSnackBar);
   isRefreshing = false;

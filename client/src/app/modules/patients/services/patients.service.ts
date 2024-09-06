@@ -51,12 +51,7 @@ export class PatientsService {
       formData
     );
   }
-  uploadImgPateint(file: File) {
-    const fileToUpload = file as File;
-    const formData = new FormData();
-    formData.append('file', fileToUpload, fileToUpload.name);
-    return this.#http.post(`${this.config}admin/uploadImage`, formData);
-  }
+
   updatePatient(formData: PatientDTO): Observable<PatientDTO[]> {
     return this.#http.put<PatientDTO[]>(
       `${this.config}admin/updatePatient`,

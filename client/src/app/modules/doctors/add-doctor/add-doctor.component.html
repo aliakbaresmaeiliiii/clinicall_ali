@@ -123,6 +123,8 @@
         <mat-form-field appearance="outline" class="w-full mb-1">
           <mat-label>Choose a date</mat-label>
           <input
+            [max]="maxDate"
+            [min]="minDate"
             matInput
             [matDatepicker]="picker"
             formControlName="dateOfBirth" />
@@ -131,7 +133,14 @@
             <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
           </mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
+          <mat-error *ngIf="form.get('dateOfBirth')?.hasError('required')">
+            Date of birth is required.
+          </mat-error>
+          <mat-error *ngIf="form.get('dateOfBirth')?.hasError('invalidAge')">
+            Date of birth must be between 30 and 80 years ago.
+          </mat-error>
         </mat-form-field>
+
         <!-- *****Age***** -->
         <mat-form-field data-testing="Age" appearance="outline" class="w-full">
           <mat-label>Age</mat-label>
@@ -298,6 +307,7 @@
         <!-- *****SaveBTN***** -->
         <button
           class="w-full desktop:m-0 tablet:mt-2 mobile:mt-2"
+          [disabled]="!form.valid"
           mat-flat-button
           data-testid="login-button"
           color="primary"

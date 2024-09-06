@@ -38,6 +38,7 @@ import { GoogleMapComponent } from '../../shared/components/google-map/google-ma
 import { EditDoctorComponent } from './edit-doctor/edit-doctor.component';
 import { AddDoctorComponent } from './add-doctor/add-doctor.component';
 import { AgePipe } from '../../shared/pipes/age.pipe';
+import { AgeValidatorDirective } from '../../shared/directives/age-validator/age-validator.directive';
 const routes: Routes = [
   {
     path: 'all-doctors',
@@ -101,6 +102,7 @@ const routes: Routes = [
     MatProgressBarModule,
     MatMenuModule,
     MatTabsModule,
+    AgeValidatorDirective,
     GoogleMapComponent,
   ],
   exports: [DoctorListComponent],

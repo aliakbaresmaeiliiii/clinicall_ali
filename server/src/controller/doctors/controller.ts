@@ -1,8 +1,12 @@
+import multer from "multer";
 import asyncHandler from "../../helper/async-handler";
 import BuildResponse from "../../modules/response/app_response";
 import routes from "../../routes/public";
 import { DoctorsService } from "./service";
 import { Request, Response } from "express";
+
+
+
 
 // **** GetAll
 routes.get(
@@ -61,22 +65,7 @@ routes.get(
 );
 
 
-// **** uploadImage
-// routes.post(
-//   "/admin/uploadImage",
-//   uploadImgProfile.single("file"),
-//   (req, res) => {
-//     if (!req.file) {
-//       return res.status(400).json({ error: "No file uploaded" });
-//     }
-//     res.json({
-//       message: "File uploaded seccessfully",
-//       filename: req.file.filename,
-//     });
-//     const imagePath = req.file.path;
-//     res.json({ imagePath });
-//   }
-// );
+
 // **** updatePatient
 routes.put(
   "/admin/updateDoctor",

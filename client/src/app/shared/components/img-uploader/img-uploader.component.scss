@@ -1,32 +1,102 @@
-.file-input-container {
+// .file-input-container {
+//   display: flex;
+//   align-items: center;
+
+//   input[type='file'] {
+//     display: none;
+//   }
+
+//   input[matInput] {
+//     cursor: pointer;
+//     white-space: nowrap;
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+//   }
+
+//   button {
+//     margin-left: 8px;
+//   }
+// }
+
+// .preview {
+//   background-color: #EFE5FF;
+//   border-radius: 11px;
+
+//   img {
+//     width: 150px;
+//     height: 150px;
+//     border-radius: 50%;
+//     padding: 10px;
+//     margin: auto;
+//   }
+// }
+
+
+/* From Uiverse.io by Yaya12085 */ 
+.container {
+  min-height: 300px;
+  height: fit-content;
+  width: 256px;
+  border-radius: 10px;
+  box-shadow: 4px 4px 30px rgba(0, 0, 0, .2);
   display: flex;
+  flex-direction: column;
   align-items: center;
-
-  input[type='file'] {
-    display: none;
-  }
-
-  input[matInput] {
-    cursor: pointer;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  button {
-    margin-left: 8px;
-  }
+  justify-content: space-between;
+  padding: 10px;
+  gap: 5px;
+  background-color: rgba(0, 110, 255, 0.041);
 }
 
-.preview {
-  background-color: #EFE5FF;
-  border-radius: 11px;
+.header {
+  flex: 1;
+  width: 100%;
+  border: 2px dashed royalblue;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
 
-  img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    padding: 10px;
-    margin: auto;
-  }
+.header svg {
+  height: 100px;
+}
+
+.header p {
+  text-align: center;
+  color: black;
+}
+
+.footer {
+  background-color: rgba(0, 110, 255, 0.075);
+  width: 100%;
+  height: 40px;
+  padding: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  color: black;
+  border: none;
+}
+
+.footer svg {
+  height: 130%;
+  fill: royalblue;
+  background-color: rgba(70, 66, 66, 0.103);
+  border-radius: 50%;
+  padding: 2px;
+  cursor: pointer;
+  box-shadow: 0 2px 30px rgba(0, 0, 0, 0.205);
+}
+
+.footer p {
+  flex: 1;
+  text-align: center;
+}
+
+#file {
+  display: none;
 }

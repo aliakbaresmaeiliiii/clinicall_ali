@@ -104,9 +104,7 @@
             [required]="true"
             formControlName="mobile"
             (cdkAutofill)="onAutofill($event)"
-            [dir]="textDirection"
-
-            ></ngx-mat-intl-tel-input>
+            [dir]="textDirection"></ngx-mat-intl-tel-input>
 
           <!-- Error handling -->
           <mat-error
@@ -130,6 +128,8 @@
         <mat-form-field appearance="outline" class="w-full mb-1">
           <mat-label>Choose a date</mat-label>
           <input
+            [max]="maxDate"
+            [min]="minDate"
             matInput
             [matDatepicker]="picker"
             formControlName="dateOfBirth" />
