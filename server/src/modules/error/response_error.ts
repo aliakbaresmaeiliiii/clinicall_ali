@@ -5,7 +5,7 @@ import {Forbidden} from './forbidden';
 import {NotFound} from './not_found';
 import {BadRequest} from './bad_request';
 
-const ResponseError = {
+export const ResponseError = {
     BaseResponse,
     BadRequest,
     NotFound,
@@ -14,4 +14,3 @@ const ResponseError = {
     InternalServer,
 }
 
-export default ResponseError

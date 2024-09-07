@@ -17,7 +17,7 @@ export class DoctorDetailComponent extends BaseComponent {
   breakPointObserver = inject(BreakpointObserver);
   doctorId!: number;
   coordinates: { lat: number; lng: number }[] = [];
-  DATA_KEY = makeStateKey<any>('dataKey');
+  DATA_KEY = makeStateKey<any>('doctorInfo');
   transferState = inject(TransferState);
 
   constructor() {
@@ -34,20 +34,12 @@ export class DoctorDetailComponent extends BaseComponent {
     });
   }
   fetchData(doctorId: number) {
+
+    this.transferState.remove(this.DATA_KEY)
     const storedData = this.transferState.get(this.DATA_KEY, null);
-    if (storedData) {
-      this.doctorInfo = storedData;
-      this.coordinates = this.doctorInfo
-      .filter(item => item.location)
-      .map((loc: any) => {
-        console.log('📌', loc.location);
-        return {
-          lng: loc.location.x,
-          lat: loc.location.y,
-        };
-      });
-      return;
-    } else {
+
+    debugger;
+    if (!storedData) {
       this.service.doctorDetial(doctorId).subscribe({
         next: (response: any) => {
           if (response && response.length > 0) {
@@ -59,6 +51,11 @@ export class DoctorDetailComponent extends BaseComponent {
             });
             this.doctorInfo = newData;
             this.transferState.set(this.DATA_KEY, this.doctorInfo);
+            console.log(
+              'this.DATA_KEY',
+              this.transferState.get(this.DATA_KEY, null)
+            );
+
             this.coordinates = this.doctorInfo
               .filter(item => item.location)
               .map((loc: any) => {
@@ -69,13 +66,24 @@ export class DoctorDetailComponent extends BaseComponent {
                 };
               });
           }
-          console.log('response',response);
-          
+          console.log('response', response);
         },
 
         error: e => console.error(e),
         complete: () => console.info('complete'),
       });
+    } else {
+      this.doctorInfo = storedData;
+      this.coordinates = this.doctorInfo
+        .filter(item => item.location)
+        .map((loc: any) => {
+          console.log('📌', loc.location);
+          return {
+            lng: loc.location.x,
+            lat: loc.location.y,
+          };
+        });
+      return;
     }
   }
 

@@ -1,6 +1,6 @@
 import * as yup from "yup";
 
-const create = yup.object().shape({
+export const createSchema = yup.object().shape({
   fistName: yup.string().required("fistName is required"),
   lastName: yup.string().required("lastName is required"),
   nickName: yup.string().required("nickName is required"),
@@ -18,7 +18,7 @@ const create = yup.object().shape({
     .min(8, "at least 8 characters")
     .oneOf([yup.ref("password")], "passwords are not the same"),
 });
-const createPassword = yup.object().shape({
+export const createPasswordSchema = yup.object().shape({
   newPassword: yup
     .string()
     .min(8, "at least 8 characters")
@@ -28,21 +28,21 @@ const createPassword = yup.object().shape({
     .min(8, "at least 8 characters")
     .oneOf([yup.ref("newPassword")], "passwords are not the same"),
 });
-const userRoles = yup
+export const userRolesSchema = yup
   .object()
   .shape({
     userId: yup.string().required("userId is required"),
   })
   .required();
 
-const latestTemplates = yup
+  export  const latestTemplatesSchema = yup
   .object()
   .shape({
     userId: yup.string().required("userId is required"),
   })
   .required();
 
-const confirmEmail = yup.object().shape({
+  export  const confirmEmailSchema = yup.object().shape({
   email: yup.string().required("email is required"),
   // id: yup.string().required("user id is required"),
   verify_code: yup
@@ -52,15 +52,8 @@ const confirmEmail = yup.object().shape({
     .max(4, "verify code should be 4 chr"),
 });
 
-const checkEmail = yup.object().shape({
+export const checkEmailSchema = yup.object().shape({
   email: yup.string().required("email is required!"),
 });
 
-export default {
-  userRoles,
-  latestTemplates,
-  create,
-  createPassword,
-  confirmEmail,
-  checkEmail
-};
+

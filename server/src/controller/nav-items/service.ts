@@ -1,6 +1,6 @@
 import { getNavItems } from "../../bin/db";
 
-class NavItemService {
+export class NavItemService {
   public static async getAllNavItems() {
     const data = await getNavItems();
     if (data) {
@@ -11,4 +11,3 @@ class NavItemService {
 }
 
 
-export {  NavItemService  };

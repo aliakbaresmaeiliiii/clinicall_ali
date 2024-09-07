@@ -2,11 +2,10 @@
 
 
 
-const models = {
+export const models = {
 
 }
 
-export default models
 
 export type MyModels = typeof models
 

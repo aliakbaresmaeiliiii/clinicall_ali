@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { ValidationError } from "yup";
 
-async function ExpressErrorYup(
+export async function ExpressErrorYup(
     err: any,
     req: Request,
     res: Response,
@@ -25,5 +25,3 @@ async function ExpressErrorYup(
     next(err)
 
 }
-
-export default ExpressErrorYup

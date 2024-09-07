@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, TransferState } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { DoctorsDTO } from './models/doctors';
@@ -8,7 +8,6 @@ import { DoctorsDTO } from './models/doctors';
   providedIn: 'root',
 })
 export class DoctorsService {
-  
   checkPhoneNumberExists(value: string | null): any {
     throw new Error('Method not implemented.');
   }
@@ -18,9 +17,7 @@ export class DoctorsService {
   doctorImg$ = this.doctorImg.asObservable();
 
   getDoctors(): Observable<DoctorsDTO[]> {
-    return this.#http.get<DoctorsDTO[]>(
-      `${this.config}admin/doctors`
-    );
+    return this.#http.get<DoctorsDTO[]>(`${this.config}admin/doctors`);
   }
 
   addDoctor(formData: DoctorsDTO): Observable<DoctorsDTO[]> {
@@ -29,15 +26,16 @@ export class DoctorsService {
       formData
     );
   }
-  doctorDetial(id: number):Observable<DoctorsDTO[]> {
+
+  doctorDetial(id: number): Observable<DoctorsDTO[]> {
     return this.#http
       .get<{ data: DoctorsDTO[] }>(`${this.config}admin/doctor-detial/${id}`)
       .pipe(map(response => response.data));
     // Extract the array from the response
   }
 
-  getAddresses(): Observable<{ lat: number, lng: number }[]> {
-    return this.#http.get<{ lat: number, lng: number }[]>(this.config);
+  getAddresses(): Observable<{ lat: number; lng: number }[]> {
+    return this.#http.get<{ lat: number; lng: number }[]>(this.config);
   }
 
   uploadImgDoctor(file: File) {

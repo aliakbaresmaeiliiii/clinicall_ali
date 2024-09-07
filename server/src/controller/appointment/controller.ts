@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from "express";
-import asyncHandler from "../../helper/async-handler";
-import BuildResponse from "../../modules/response/app_response";
-import routes from "../../routes/public";
-import CalendarService from "./service";
+import {asyncHandler} from "../../helper/async-handler";
+import {BuildResponse} from "../../modules/response/app_response";
+import {router} from "../../routes/public";
+import {CalendarService} from "./service";
 
-routes.post(
+router.post(
   "/insertAppointment",
   asyncHandler(async function insertEvent(req: any, res: any) {
     const eventData = req.body;
@@ -16,7 +16,7 @@ routes.post(
   })
 );
 
-routes.get(
+router.get(
   "/getAppointment",
   asyncHandler(async function getEventData(req: any, res: any) {
     const data = await CalendarService.getEventData();
@@ -27,7 +27,7 @@ routes.get(
   })
 );
 
-routes.delete(
+router.delete(
   "/deleteAppointment/delete/:id",
   asyncHandler(async function deleteAppointment(
     req: Request,
@@ -41,7 +41,7 @@ routes.delete(
   })
 );
 
-routes.put(
+router.put(
   "/updateAppointment/update",
   asyncHandler(async function updateAppointmentItem(
     req: Request,

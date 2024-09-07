@@ -1,9 +1,9 @@
-import asyncHandler from "../../helper/async-handler";
-import routes from "../../routes/public";
+import {asyncHandler} from "../../helper/async-handler";
+import {router} from "../../routes/public";
 import { NavItemService } from "./service";
-import BuildResponse from "../../modules/response/app_response";
+import {BuildResponse} from "../../modules/response/app_response";
 
-routes.get(
+router.get(
   "/navItem",
   asyncHandler(async function getNavItems(req: any, res: any) {
     const data = await NavItemService.getAllNavItems();

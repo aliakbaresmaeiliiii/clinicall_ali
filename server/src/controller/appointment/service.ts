@@ -6,7 +6,7 @@ import {
 } from "../../bin/db";
 import { IAppointment } from "../../types/appointment.interface";
 
-class CalendarService {
+export class CalendarService {
   public static async insertEvent(eventData: IAppointment) {
     const data = await saveAppointment(eventData);
     if (data) {
@@ -33,4 +33,4 @@ class CalendarService {
     data;
   }
 }
-export default CalendarService;
+

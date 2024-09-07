@@ -1,8 +1,8 @@
-import asyncHandler from "../../helper/async-handler";
-import routes from "../../routes/public";
+import {asyncHandler} from "../../helper/async-handler";
+import {router} from "../../routes/public";
 import { Request, Response } from "express";
-import PatientService from "./services";
-import BuildResponse from "../../modules/response/app_response";
+import {PatientService} from "./services";
+import {BuildResponse} from "../../modules/response/app_response";
 import multer from "multer";
 
 const storage = multer.diskStorage({
@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 const uploadImgProfile = multer({ storage });
 
 // **** GetAll
-routes.get(
+router.get(
   "/admin/patients",
   asyncHandler(async function getNavItems(req: any, res: any) {
     const data = await PatientService.getPatients();
@@ -29,7 +29,7 @@ routes.get(
 );
 
 // **** checkPhoneNumberExists
-routes.get(
+router.get(
   "/admin/check-phone/:phone",
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const mobile = req.params.mobile;
@@ -44,7 +44,7 @@ routes.get(
 );
 
 // **** add-patient
-routes.post(
+router.post(
   `/admin/add-patient`,
   asyncHandler(async function addPatient(req: Request, res: Response) {
     const formData = req.body;
@@ -58,7 +58,7 @@ routes.post(
 );
 
 // **** GetPatientDetial
-routes.get(
+router.get(
   `/admin/patient-detial/:patientId`,
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const patientId = +req.params.patientId;
@@ -87,7 +87,7 @@ routes.get(
 //   }
 // );
 // **** updatePatient
-routes.put(
+router.put(
   "/admin/updatePatient",
   asyncHandler(async function updatePatient(req: Request, res: Response) {
     const formData = req.body;
@@ -100,7 +100,7 @@ routes.put(
   })
 );
 // **** deletePatient
-routes.delete(
+router.delete(
   "/admin/deletePatient/:idPateint",
   asyncHandler(async function deletePatient(
     req: Request,

@@ -7,8 +7,7 @@ import {
   updatePatient,
 } from "../../bin/db";
 import { PatientDTO } from "../../models/patients";
-
-class PatientService {
+export class PatientService {
   public static async getPatients() {
     const data = await getPatients();
     if (data) {
@@ -63,4 +62,3 @@ class PatientService {
   }
 }
 
-export default PatientService;

@@ -1,6 +1,6 @@
-import { get, isNil } from "lodash";
+import { get, isNil } from "lodash-es";
 
-function getterObject<
+export function getterObject<
     TObject extends object, TKey extends keyof TObject, TDefult>
     (object: TObject | null | undefined,
         path?: TKey | [TKey] | string,
@@ -12,5 +12,3 @@ function getterObject<
     return get(object, path, defaultValue)
 
 }
-
-export default getterObject

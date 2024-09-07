@@ -1,19 +1,14 @@
-import multer from "multer";
-import asyncHandler from "../../helper/async-handler";
-import BuildResponse from "../../modules/response/app_response";
-import routes from "../../routes/public";
+import {asyncHandler} from "../../helper/async-handler";
+import {BuildResponse} from "../../modules/response/app_response";
+import {router} from "../../routes/public";
 import { DoctorsService } from "./service";
 import { Request, Response } from "express";
 
-
-
-
 // **** GetAll
-routes.get(
+router.get(
   "/admin/doctors",
   asyncHandler(async function getNavItems(req: any, res: any) {
-    const data = 
-    await DoctorsService.getDoctors();
+    const data = await DoctorsService.getDoctors();
     const buildResponse = BuildResponse.get(data);
     if (buildResponse) {
       return res.status(200).json(buildResponse);
@@ -22,7 +17,7 @@ routes.get(
 );
 
 // **** checkPhoneNumberExists
-routes.get(
+router.get(
   "/admin/check-phone/:phone",
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const mobile = req.params.mobile;
@@ -30,14 +25,14 @@ routes.get(
     const buildResponse = BuildResponse.get(data);
     if (buildResponse) {
       return buildResponse;
-    }else{
-      return false
+    } else {
+      return false;
     }
   })
 );
 
 // **** add-doctor
-routes.post(
+router.post(
   `/admin/add-doctor`,
   asyncHandler(async function addDocror(req: Request, res: Response) {
     const formData = req.body;
@@ -50,24 +45,18 @@ routes.post(
   })
 );
 
-
-routes.get(
+router.get(
   `/admin/doctor-detial/:doctorId`,
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const doctorId = +req.params.doctorId;
     const data = await DoctorsService.doctorDetial(doctorId);
     const buildResponse = BuildResponse.get(data);
-    if (buildResponse) {
-      return res.status(200).json(buildResponse);
-    }
-    return;
+    res.status(200).json(buildResponse);
   })
 );
 
-
-
 // **** updatePatient
-routes.put(
+router.put(
   "/admin/updateDoctor",
   asyncHandler(async function updateDocror(req: Request, res: Response) {
     const formData = req.body;

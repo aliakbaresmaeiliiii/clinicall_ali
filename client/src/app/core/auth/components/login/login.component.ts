@@ -20,10 +20,10 @@ import { ThemeManagerService } from '../../../../shared/client-services/theme-ma
 import { AuthService } from '../../../services/auth.service';
 
 import {
-  SocialLoginModule,
-  SocialAuthServiceConfig,
-  SocialAuthService,
   GoogleLoginProvider,
+  SocialAuthService,
+  SocialAuthServiceConfig,
+  SocialLoginModule,
   SocialUser,
 } from '@abacritt/angularx-social-login';
 import { PermissionService } from '../../../services/permission.service';
@@ -88,7 +88,6 @@ export class LoginComponent {
 
   #router = inject(Router);
   #authService = inject(AuthService);
-  #toastrService = inject(ToastrService);
   authService = inject(SocialAuthService);
   permissionService = inject(PermissionService);
 

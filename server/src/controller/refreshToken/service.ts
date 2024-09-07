@@ -1,7 +1,7 @@
 // import { verifyRefreshToken } from "../../helper/token";
 // import ResponseError from "../../modules/error/response_error";
 
-import useValidation from "../../helper/use_validation";
+import {useValidation} from "../../helper/use_validation";
 import { RefreshTokenAttributes } from "../../models/refreshToken";
 import schema from "./schema";
 

@@ -4,7 +4,7 @@ import jwt, {
   JsonWebTokenError,
   NotBeforeError,
 } from 'jsonwebtoken'
-import { isEmpty } from 'lodash'
+import { isEmpty } from 'lodash-es'
 
 require('dotenv').config()
 

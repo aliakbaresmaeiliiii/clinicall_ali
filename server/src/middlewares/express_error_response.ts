@@ -1,13 +1,14 @@
 import multer from 'multer';
-import { isObject } from 'lodash';
+import _ from 'lodash';
+
 import { NextFunction, Request, Response } from 'express';
-import ResponseError from '../modules/error/response_error';
+import {ResponseError} from '../modules/error/response_error';
 
 function generateErrorResponseError(e: Error, code: Number) {
-  return isObject(e.message) ? e.message : { code, message: e.message }
+  return _.isObject(e.message) ? e.message : { code, message: e.message }
 }
 
-async function ExpressErrorResponse(
+export async function ExpressErrorResponse(
   err: any,
   req: Request,
   res: Response,
@@ -25,4 +26,3 @@ async function ExpressErrorResponse(
   next(err)
 }
 
-export default ExpressErrorResponse

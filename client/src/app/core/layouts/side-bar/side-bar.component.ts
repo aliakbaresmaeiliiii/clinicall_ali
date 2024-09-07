@@ -26,7 +26,7 @@ import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { groupBy } from 'lodash';
+import { groupBy } from 'lodash-es';
 import { Observable, Subject, map, shareReplay } from 'rxjs';
 import { routes } from '../../../app.routes';
 import { BaseComponent } from '../../../shared/components/base/base.component';
