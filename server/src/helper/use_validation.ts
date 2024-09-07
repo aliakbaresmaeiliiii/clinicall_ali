@@ -2,7 +2,7 @@
 import { Schema, ValidateOptions } from 'yup'
 
 
-function useValidation<T>(
+export function useValidation<T>(
   schema: Schema<T>,
   value: T | any,
   options?: ValidateOptions
@@ -14,4 +14,3 @@ function useValidation<T>(
   })
 }
 
-export default useValidation

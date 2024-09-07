@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
-import asyncHandler from "../../helper/async-handler";
+import {asyncHandler} from "../../helper/async-handler";
 import { getUniqueCodev3 } from "../../helper/common";
-import BuildResponse from "../../modules/response/app_response";
-import routes from "../../routes/public";
-import UserService from "./sercvice";
+import {BuildResponse} from "../../modules/response/app_response";
+import {router} from "../../routes/public";
+import {UserService} from "./sercvice";
 import multer from "multer";
 
 
@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
 const uploadImgProfile = multer({ storage });
 
 // ***** checkNickName
-routes.get(
+router.get(
   "/user/checkNickName/:nickname",
   asyncHandler(async function checkNickName(req: Request, res: Response) {
     const formData = req.params.nickname;
@@ -29,7 +29,7 @@ routes.get(
   })
 );
 // ***** getUserInfo
-routes.get(
+router.get(
   "/getUserInfo/:email",
   async function getAllUserData(req: Request, res: Response) {
     const data = req.params.email;
@@ -39,7 +39,7 @@ routes.get(
   }
 );
 // ***** confirm
-routes.post(
+router.post(
   "/user/confirm",
   asyncHandler(async function confirmEmail(req: Request, res: Response) {
     const formData = req.body;
@@ -48,7 +48,7 @@ routes.post(
   })
 );
 // ***** getOTP
-routes.get(
+router.get(
   "/user/getOTP/:email",
   asyncHandler(async function getOTP(req: Request, res: Response) {
     const formData = req.params.email;
@@ -59,7 +59,7 @@ routes.get(
   })
 );
 // ***** updateProfile
-routes.put(
+router.put(
   `/user/updateProfile`,
   asyncHandler(async function updateProfileUser(req: Request, res: Response) {
     const formData = req.body;
@@ -71,7 +71,7 @@ routes.put(
 
 // ***** forgot-passsword
 
-routes.get(
+router.get(
   "/user/forgot-passsword/:email",
   asyncHandler(async function forgetPsssword(req: any, res: any) {
     const email = req.params.email;
@@ -81,7 +81,7 @@ routes.get(
   })
 );
 
-routes.post(
+router.post(
   `/user/change-password`,
   asyncHandler(async (req: Request, res: Response) => {
     const data = req.body;
@@ -92,7 +92,7 @@ routes.post(
 );
 
 // **** uploadImage
-routes.post(
+router.post(
   "/admin/uploadImage",
   uploadImgProfile.single("file"),
   (req, res) => {

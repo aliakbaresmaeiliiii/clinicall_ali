@@ -1,15 +1,15 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import ms from "ms";
-import { createUser, getUserByPassword } from "../../bin/db";
 import { getUniqueCodev2, getUniqueCodev3 } from "../../helper/common";
-import SendMail from "../../helper/send_email";
-import useValidation from "../../helper/use_validation";
-import ResponseError from "../../modules/error/response_error";
+import {SendEmail} from "../../helper/send_email";
+import {useValidation} from "../../helper/use_validation";
+import {ResponseError} from "../../modules/error/response_error";
 import { CreateUser, User } from "../../types/user";
-import schemaAuth from "./schema";
+import {loginSchema, registerSchema} from "./schema";
 import { AppResponse } from "../../types/response.interface";
-import UserService from "../user/sercvice";
+import {UserService} from "../user/sercvice";
+import { createUser, getUserByPassword } from "../../bin/db";
 
 const { JWT_SECRET_ACCESS_TOKEN, JWT_SECRET_REFRESH_TOKEN }: any = process.env;
 
@@ -19,7 +19,7 @@ const JWT_REFRESH_TOKEN_EXPIRED =
 
 const expiresIn = ms(JWT_ACCESS_TOKEN_EXPIRED) / 1000;
 
-class AuthService {
+export class AuthService {
   public static async signUp(formData: CreateUser) {
     const currentUser = await UserService.validateUserEmail(formData.email);
     if (currentUser) {
@@ -47,11 +47,11 @@ class AuthService {
 
     formData.verify_code = getUniqueCodev3();
     formData.tokenVerify = tokenVerify;
-    useValidation(schemaAuth.register, formData);
+    useValidation(registerSchema, formData);
     const newUserId = await createUser(formData);
     if (!newUserId)
       throw new ResponseError.BadRequest("Cannot add user in the database !");
-    SendMail.AccountRegister(formData);
+    SendEmail.AccountRegister(formData);
     return {
       message: null,
       newUser: {
@@ -62,7 +62,7 @@ class AuthService {
   }
 
   public static async signIn(formData: User) {
-    const checkValidation = useValidation(schemaAuth.login, formData);
+    const checkValidation = useValidation(loginSchema, formData);
 
     const userData = await getUserByPassword(
       checkValidation.email,
@@ -129,4 +129,3 @@ class AuthService {
   }
 }
 
-export default AuthService;

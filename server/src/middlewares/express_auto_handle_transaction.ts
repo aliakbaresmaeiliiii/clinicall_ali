@@ -1,7 +1,7 @@
-import { Transaction } from 'sequelize'
-import { NextFunction, Response, Request } from 'express'
+import { Transaction } from "sequelize";
+import { NextFunction, Response, Request } from "express";
 
-async function ExpressAutoHandleTransaction(
+export async function ExpressAutoHandleTransaction(
   req: any,
   res: Response,
   next: NextFunction
@@ -9,7 +9,7 @@ async function ExpressAutoHandleTransaction(
   // Ensure _transaction is initialized
   req._transaction = req._transaction || {};
 
-  res.once('finish', () => {
+  res.once("finish", () => {
     const { _transaction } = req;
 
     if (!_transaction) {
@@ -24,7 +24,7 @@ async function ExpressAutoHandleTransaction(
       if (!txn?.finished) {
         const endpoint = req.originalUrl;
         console.warn(`endpoint ${endpoint} potentially can lead to bug`);
-        console.log('AUTO COMMIT!!!');
+        console.log("AUTO COMMIT!!!");
         txn.commit();
       }
     }
@@ -32,5 +32,3 @@ async function ExpressAutoHandleTransaction(
 
   next();
 }
-
-export default ExpressAutoHandleTransaction;

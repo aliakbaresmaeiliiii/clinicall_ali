@@ -7,7 +7,7 @@ type DataResponse =
     }
   | any;
 
-class BuildResponse {
+export class BuildResponse {
   private static baseResponse(dataResponse: DataResponse) {
     const {
       message = "data has been received!",
@@ -75,4 +75,3 @@ class BuildResponse {
   }
 }
 
-export default BuildResponse;

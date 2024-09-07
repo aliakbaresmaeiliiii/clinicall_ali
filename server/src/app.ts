@@ -7,13 +7,13 @@ import requestIp from 'request-ip';
 import compression from 'compression';
 import createError from 'http-errors';
 import cookieParser from 'cookie-parser';
-import indexRouter from './routes/index';
+import {routes} from './routes/index';
 import userAgent from 'express-useragent';
-import ExpressErrorYup from './middlewares/express_error_yup';
+import {ExpressErrorYup} from './middlewares/express_error_yup';
 import express, { NextFunction, Request, Response } from 'express';
-import allowedOrigins from './constants/constants_allowed_orginal';
-import ExpressErrorResponse from './middlewares/express_error_response';
-import ExpressAutoHandleTransaction from './middlewares/express_auto_handle_transaction';
+import {allowedOrigins} from './constants/constants_allowed_orginal';
+import {ExpressErrorResponse} from './middlewares/express_error_response';
+import {ExpressAutoHandleTransaction} from './middlewares/express_auto_handle_transaction';
 
 // TODO: change to .ts
 const optCors: cors.CorsOptions = {
@@ -47,7 +47,7 @@ app.use(requestIp.mw())
 
 
 // Initial Route
-app.use(indexRouter)
+app.use(routes)
 
 // app.use('/v1', handleRollbackTransaction)
 app.use('/v1', ExpressErrorYup)

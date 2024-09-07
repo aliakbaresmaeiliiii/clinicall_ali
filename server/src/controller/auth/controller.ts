@@ -1,10 +1,11 @@
 import { Request, Response } from "express";
-import BuildResponse from "../../modules/response/app_response";
-import routes from "../../routes/public";
-import AuthService from "./service";
-import asyncHandler from "../../helper/async-handler";
+import {BuildResponse} from "../../modules/response/app_response";
 
-routes.post(
+import {AuthService} from "./service";
+import {asyncHandler} from "../../helper/async-handler";
+import { router } from "../../routes/public";
+
+router.post(
   `/auth/sign-up`,
   asyncHandler(async function signUp(req: Request, res: Response) {
     const formData = req.body;
@@ -14,7 +15,7 @@ routes.post(
   })
 );
 
-routes.post(
+router.post(
   "/auth/sign-in",
   asyncHandler(async function getNavItems(req: any, res: any) {
     const formData = req.body;
@@ -24,7 +25,7 @@ routes.post(
   })
 );
 
-// routes.post(
+// router.post(
 //   `/auth/refresh-token`,
 //   Authorization,
 //   asyncHandler(async function authRefreshToken(req: Request, res: Response) {

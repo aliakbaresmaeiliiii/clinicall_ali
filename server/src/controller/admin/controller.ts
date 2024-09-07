@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import { UserAdmin } from "./service";
-import BuildResponse from "../../modules/response/app_response";
-import routes from "../../routes/public";
+import {BuildResponse} from "../../modules/response/app_response";
+import {router} from "../../routes/public";
 
 
-routes.get(
+router.get(
   `/getUserAdmin`,
   async function userAdmin(req: Request, res: Response) {
     const data = await UserAdmin.getUserAdmin();

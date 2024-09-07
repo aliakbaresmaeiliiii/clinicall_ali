@@ -1,4 +1,4 @@
-import { isEmpty } from "lodash";
+import _ from 'lodash';
 import nodemailer from "nodemailer";
 import mg from "nodemailer-mailgun-transport";
 
@@ -18,9 +18,9 @@ const {
   OAUTH_REDIRECT_URL,
 } = process.env;
 
-const isMailgunAPI = !isEmpty(MAILGUN_API_KEY) || !isEmpty(MAILGUN_DOMAIN);
+const isMailgunAPI = !_.isEmpty(MAILGUN_API_KEY) || !_.isEmpty(MAILGUN_DOMAIN);
 
-class EmailProvider {
+export class EmailProvider {
   private mailConfig: nodemailer.SentMessageInfo;
   private mailOptions: nodemailer.SendMailOptions | undefined;
 
@@ -40,7 +40,7 @@ class EmailProvider {
     // const gmailEmail = "aliakbaresmaeili98@gmail.com";
     // const gmailAppPassword = "nffx hrgb xolq vsfa";
 
-     const gmailEmail = "aliakbaresmaeili98@gmail.com";
+    const gmailEmail = "aliakbaresmaeili98@gmail.com";
     const gmailAppPassword = "cgop ttip zuqz hqlr";
     const configTransport: nodemailer.SentMessageInfo = {
       service: MAIL_DRIVER,
@@ -101,5 +101,3 @@ class EmailProvider {
     );
   };
 }
-
-export default EmailProvider;

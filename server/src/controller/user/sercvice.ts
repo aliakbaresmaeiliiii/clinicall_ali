@@ -9,23 +9,23 @@ import {
   updateProfileUser,
   updateUserVerifyCode,
 } from "../../bin/db";
-import useValidation from "../../helper/use_validation";
-import BuildResponse from "../../modules/response/app_response";
+import {useValidation} from "../../helper/use_validation";
+import {BuildResponse} from "../../modules/response/app_response";
 import { ConfirmEmail, User } from "../../types/user";
-import schemaUser from "./schema";
-import SendMail from "../../helper/send_email";
+import {SendEmail} from "../../helper/send_email";
 import { getUniqueCodev2, getUniqueCodev3 } from "../../helper/common";
 import jwt from "jsonwebtoken";
 import ms from "ms";
-import ResponseError from "../../modules/error/response_error";
+import {ResponseError} from "../../modules/error/response_error";
 import bcrypt from "bcrypt";
+import { checkEmailSchema, confirmEmailSchema } from "./schema";
 
 const { JWT_SECRET_ACCESS_TOKEN, JWT_SECRET_REFRESH_TOKEN }: any = process.env;
 const JWT_ACCESS_TOKEN_EXPIRED = process.env.JWT_ACCESS_TOKEN_EXPIRED || "1d"; // 1 Days
 
 const expiresIn = ms(JWT_ACCESS_TOKEN_EXPIRED) / 1000;
 
-class UserService {
+export class UserService {
   public static async getUserInfo(email: string) {
     return await getUserInfo(email);
   }
@@ -45,7 +45,7 @@ class UserService {
    * @param formData
    */
   public static async confrimEmail(formData: ConfirmEmail) {
-    const userData = useValidation(schemaUser.confirmEmail, formData);
+    const userData = useValidation(confirmEmailSchema, formData);
     const confirmEmailResult = await confirmEmail(userData);
     return BuildResponse.appResponse(confirmEmailResult);
   }
@@ -55,7 +55,7 @@ class UserService {
   public static async getVerifyCode(userData: any, tokenVerify: any) {
     // const userData = useValidation(schemaUser.confirmEmail,userData)
     const result = await getOTP(userData, tokenVerify);
-    SendMail.AccountRegister(result);
+    SendEmail.AccountRegister(result);
 
     if (result) {
       return result;
@@ -115,7 +115,7 @@ class UserService {
   }
 
   public static async sendFrogetPasswordToken(email: string) {
-    useValidation(schemaUser.checkEmail, { email: email });
+    useValidation(checkEmailSchema, { email: email });
     const currentUser = await UserService.validateUserEmail(email);
     if (!currentUser) return { status: 1, message: "email is not valid !" };
 
@@ -137,4 +137,3 @@ class UserService {
   }
 }
 
-export default UserService;

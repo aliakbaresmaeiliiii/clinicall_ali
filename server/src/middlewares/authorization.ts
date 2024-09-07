@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
+import { isEmpty } from "lodash-es";
 import { currentToken, verifyAccessToken } from "../helper/token";
-import { isEmpty } from "lodash";
 
-async function Authorization(req: any, res: Response, next: NextFunction) {
+export async function Authorization(req: any, res: Response, next: NextFunction) {
   const getToken = currentToken(req);
   const token = verifyAccessToken(getToken);
 
@@ -16,4 +16,3 @@ async function Authorization(req: any, res: Response, next: NextFunction) {
   req.setState({ userLogin: token?.data })
   next()
 }
-export default Authorization

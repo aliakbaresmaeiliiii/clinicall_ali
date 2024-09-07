@@ -1,4 +1,4 @@
-const allowedOrigins = [
+export const allowedOrigins = [
     'http://localhost:4200', // Frontend Web
     'http://localhost:3000', // Frontend Web
     "http://181.215.68.165",
@@ -9,5 +9,4 @@ const allowedOrigins = [
     // "https://mindupapp.com"
   ]
   
-  export default allowedOrigins
   

@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
-import schemaUser from "../controller/user/schema";
+import {} from "../controller/user/schema";
 import { AdminDTO } from "../models/admin";
 import { PatientDTO } from "../models/patients";
 import { IAppointment } from "../types/appointment.interface";
@@ -9,6 +9,7 @@ import { AppResponse } from "../types/response.interface";
 import { ConfirmEmail, CreateUser, User } from "../types/user";
 import { RowDataPacket, coreSchema, query } from "./mysql";
 import { DoctorsDTO } from "../models/doctors";
+import { createPasswordSchema } from "../controller/user/schema";
 
 // ****** Auth ******
 export async function checkUserExist(email: string): Promise<RowDataPacket[]> {
@@ -31,7 +32,7 @@ export async function createUser(data: any) {
   const { password } = data;
   const { confirmPassword } = data;
   const fdPassword = { password, confirmPassword };
-  const validPassword = schemaUser.createPassword.validateSyncAt(
+  const validPassword = createPasswordSchema.validateSyncAt(
     "confirmPassword",
     fdPassword
   );
@@ -568,7 +569,7 @@ export async function changePassword(data: any) {
   const { newPassword } = data;
   const { confirmPassword } = data;
   const fdPassword = { newPassword, confirmPassword };
-  const validPassword = schemaUser.createPassword.validateSyncAt(
+  const validPassword = createPasswordSchema.validateSyncAt(
     "confirmPassword",
     fdPassword
   );

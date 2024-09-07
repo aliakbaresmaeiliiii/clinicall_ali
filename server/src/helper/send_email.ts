@@ -1,14 +1,14 @@
 import fs from "fs";
 import handlebars from "handlebars";
 import path from "path";
-import EmailProvider from "../config/email";
+import {EmailProvider} from "../config/email";
 import { readHTMLFile } from "../helper/file";
-import ResponseError from "../modules/error/response_error";
+import {ResponseError} from "../modules/error/response_error";
 import { User } from "../types/user";
 const { APP_NAME } = process.env;
 import nodemailer from "nodemailer";
 
-class SendEmail {
+export class SendEmail {
   public static AccountRegister(formData: any) {
     const { email } = formData;
     const TOKEN = formData.verify_code;
@@ -99,4 +99,3 @@ class SendEmail {
   };
 }
 
-export default SendEmail;

@@ -1,6 +1,6 @@
 // /* eslint-disable no-param-reassign */
 // import { Request, Express } from 'express'
-// import { set, get } from 'lodash'
+// import { set, get } from 'lodash-es'
 // import { Transaction } from 'sequelize'
 // import getterObject from './getter_object'
 // import Multers from './Multer'
