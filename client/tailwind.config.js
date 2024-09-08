@@ -23,12 +23,23 @@ module.exports = {
     colors: {
       primary: "#9cd67d",
       blue: "#8116f3",
-      white:'#fff',
-      gray:'#97A2B4',
-      red:'#E95210',
-      blueLight:'#DAE1F3',
-      blueSky:'#EFF8FF'
-   },
+      white: '#fff',
+      gray: '#97A2B4',
+      red: '#E95210',
+      blueLight: '#DAE1F3',
+      blueSky: '#EFF8FF',
+      lightGray: '#D4E5F9'
+    },
+
+    keyframes: {
+      moveLeftRight: {
+        '0%, 100%': { transform: 'translateX(0)' },
+        '50%': { transform: 'translateX(-20px)' },
+      },
+    },
+    animation: {
+      moveLeftRight: 'moveLeftRight 2s ease-in-out infinite',
+    },
   },
   plugins: [],
 }

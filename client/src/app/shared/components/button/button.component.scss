@@ -1,57 +1,130 @@
-:host {
-  display: inline-flex;
-  padding: 7px 13px;
+// :host {
+//   display: inline-flex;
+//   padding: 7px 13px;
+//   align-items: center;
+//   box-sizing: border-box;
+//   border: solid 2px;
+//   border-radius: 5px;
+//   font-size: 16px;
+//   transition: border-radius 0.2s ease-in-out;
+//   text-decoration: none;
+//   justify-content: center;
+//   &:hover {
+//     opacity: 0.9;
+//     cursor: pointer;
+//   }
+//   &.solid-button {
+//     background-color: var(--df-color-primary, #1098c8);
+//     border-color: var(--df-color-primary, #1098c8);
+//     color: white;
+//     .loader {
+//       border-color: var(--df-color-surface, white);
+//       border-bottom-color: transparent;
+//     }
+//   }
+//   &.stroked-button {
+//     background-color: var(--df-color-surface, white);
+//     border-color: var(--df-color-primary, #1098c8);
+//     color: var(--df-color-primary, #1098c8);
+//     .loader {
+//       border-color: var(--df-color-primary, #1098c8);
+//       border-bottom-color: transparent;
+//     }
+//   }
+//   &:disabled,
+//   &.disabled {
+//     opacity: 0.6;
+//   }
+// }
+// .loader {
+//   width: 16px;
+//   height: 16px;
+//   border: 2px solid var(--df-color-primary, #1098c8);
+//   border-bottom-color: transparent;
+//   border-radius: 50%;
+//   display: inline-block;
+//   box-sizing: border-box;
+//   animation: rotation 1s linear infinite;
+//   margin-left: 10px;
+// }
+// @keyframes rotation {
+//   0% {
+//     transform: rotate(0deg);
+//   }
+//   100% {
+//     transform: rotate(360deg);
+//   }
+// }
+
+
+
+/* From Uiverse.io by satyamchaudharydev */ 
+.button {
+  position: relative;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
+  padding-block: 0.5rem;
+  padding-inline: 1.25rem;
+  background-color: rgb(0 107 179);
+  border-radius: 9999px;
+  display: flex;
   align-items: center;
-  box-sizing: border-box;
-  border: solid 2px;
-  border-radius: 5px;
-  font-size: 16px;
-  transition: border-radius 0.2s ease-in-out;
-  text-decoration: none;
   justify-content: center;
-  &:hover {
-    opacity: 0.9;
-    cursor: pointer;
-  }
-  &.solid-button {
-    background-color: var(--df-color-primary, #1098c8);
-    border-color: var(--df-color-primary, #1098c8);
-    color: white;
-    .loader {
-      border-color: var(--df-color-surface, white);
-      border-bottom-color: transparent;
-    }
-  }
-  &.stroked-button {
-    background-color: var(--df-color-surface, white);
-    border-color: var(--df-color-primary, #1098c8);
-    color: var(--df-color-primary, #1098c8);
-    .loader {
-      border-color: var(--df-color-primary, #1098c8);
-      border-bottom-color: transparent;
-    }
-  }
-  &:disabled,
-  &.disabled {
-    opacity: 0.6;
-  }
+  color: #ffff;
+  gap: 10px;
+  font-weight: bold;
+  border: 3px solid #ffffff4d;
+  outline: none;
+  overflow: hidden;
+  font-size: 15px;
+  cursor: pointer;
 }
-.loader {
-  width: 16px;
-  height: 16px;
-  border: 2px solid var(--df-color-primary, #1098c8);
-  border-bottom-color: transparent;
-  border-radius: 50%;
-  display: inline-block;
-  box-sizing: border-box;
-  animation: rotation 1s linear infinite;
-  margin-left: 10px;
+
+.icon {
+  width: 24px;
+  height: 24px;
+  transition: all 0.3s ease-in-out;
 }
-@keyframes rotation {
+
+.button:hover {
+  transform: scale(1.05);
+  border-color: #fff9;
+}
+
+.button:hover .icon {
+  transform: translate(4px);
+}
+
+.button:hover::before {
+  animation: shine 1.5s ease-out infinite;
+}
+
+.button::before {
+  content: "";
+  position: absolute;
+  width: 100px;
+  height: 100%;
+  background-image: linear-gradient(
+    120deg,
+    rgba(255, 255, 255, 0) 30%,
+    rgba(255, 255, 255, 0.8),
+    rgba(255, 255, 255, 0) 70%
+  );
+  top: 0;
+  left: -100px;
+  opacity: 0.6;
+}
+
+@keyframes shine {
   0% {
-    transform: rotate(0deg);
+    left: -100px;
   }
-  100% {
-    transform: rotate(360deg);
+
+  60% {
+    left: 100%;
+  }
+
+  to {
+    left: 100%;
   }
 }
