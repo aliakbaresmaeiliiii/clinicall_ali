@@ -1,5 +1,10 @@
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { Component, CUSTOM_ELEMENTS_SCHEMA, inject } from '@angular/core';
+import {
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  inject,
+  Renderer2,
+} from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -27,6 +32,15 @@ import {
   SocialUser,
 } from '@abacritt/angularx-social-login';
 import { PermissionService } from '../../../services/permission.service';
+import {
+  animate,
+  keyframes,
+  style,
+  transition,
+  trigger,
+  AnimationEvent
+
+} from '@angular/animations';
 
 // Client ID
 // 302618903274-6bfd6agmkoanb474m3e1ii3oc1phjl40.apps.googleusercontent.com
@@ -75,6 +89,7 @@ import { PermissionService } from '../../../services/permission.service';
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   styleUrl: './login.component.scss',
+
 })
 export class LoginComponent {
   title: string = 'Angular';
@@ -90,7 +105,8 @@ export class LoginComponent {
   #authService = inject(AuthService);
   authService = inject(SocialAuthService);
   permissionService = inject(PermissionService);
-
+  renderer = inject(Renderer2);
+  protected wobbleField = false;
   private themeManager = inject(ThemeManagerService);
   theme = this.themeManager.theme;
   toggleTheme() {
@@ -99,7 +115,7 @@ export class LoginComponent {
 
   createForm() {
     this.form = new FormGroup({
-      email: new FormControl('', [Validators.required, Validators.email]),
+      email: new FormControl('', [ Validators.required, Validators.email]),
       password: new FormControl('', Validators.required),
       remmeber: new FormControl(false),
     });
@@ -116,17 +132,19 @@ export class LoginComponent {
     // });
   }
 
-  login() {
+
+  login(event: AnimationEvent) {
     // this.form.events
     // .pipe(filter(event => event instanceof TouchEvent))
     // .subscribe(event => {});
+  
     if (this.form.value) {
       this.#authService.signIn(this.form.value).subscribe((res: any) => {
-        this.permissionService.setPermissions(res.data.permissions)
+        this.permissionService.setPermissions(res.data.permissions);
         const stroeDataUser = res.data;
-          const dataJson = JSON.stringify(stroeDataUser);
-          localStorage.setItem('userData', dataJson);
-          this.#router.navigate(['aliakbar/settings']);
+        const dataJson = JSON.stringify(stroeDataUser);
+        localStorage.setItem('userData', dataJson);
+        this.#router.navigate(['aliakbar/settings']);
       });
     }
   }

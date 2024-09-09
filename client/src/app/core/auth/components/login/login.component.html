@@ -13,16 +13,17 @@
         </a>
       </h2>
 
-
       <div class="w-full">
         <h3 class="text-left font-extrabold text-3xl p-3">Sign in</h3>
-        <form [formGroup]="form" (ngSubmit)="login()">
+        <form [formGroup]="form" (ngSubmit)="login($event)">
           <mat-form-field
             data-testing="username"
             appearance="outline"
-            class="w-full">
+            class="w-full"
+            >
             <mat-label>{{ labelUserName }}</mat-label>
             <input
+         
               type="text"
               matInput
               [errorStateMatcher]="matcher"
@@ -67,11 +68,14 @@
             data-testid="login-button"
             color="primary"
             type="submit"
-            [disabled]="!form.valid">
+
+            >
             Login
           </button>
 
-          <asl-google-signin-button type='icon' size='medium'></asl-google-signin-button>
+          <asl-google-signin-button
+            type="icon"
+            size="medium"></asl-google-signin-button>
 
           <h2 class="social-login-title">OR</h2>
           <div class="flex justify-center items-center gap-3">

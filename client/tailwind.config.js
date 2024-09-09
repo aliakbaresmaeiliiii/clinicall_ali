@@ -36,10 +36,18 @@ module.exports = {
         '0%, 100%': { transform: 'translateX(0)' },
         '50%': { transform: 'translateX(-20px)' },
       },
+      animation: {
+        moveLeftRight: 'moveLeftRight 2s ease-in-out infinite',
+      },
+      fadeInUp: {
+        '0%': { opacity: '0', transform: 'translateY(50px)' },
+        '100%': { opacity: '1', transform: 'translateY(0)' },
+      },
+      animationFade: {
+        fadeInUp: 'fadeInUp 1s ease-out forwards',
+      },
     },
-    animation: {
-      moveLeftRight: 'moveLeftRight 2s ease-in-out infinite',
-    },
+
   },
   plugins: [],
 }

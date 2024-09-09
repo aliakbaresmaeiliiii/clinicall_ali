@@ -70,14 +70,17 @@
     </div>
   </div>
 </div>
-<div class="relative bg-center bg-no-repeat">
+<div
+  class="relative bg-center bg-no-repeat"
+  appScrollAnimation
+  animationClass="animate-fadeInUp">
   <div class="flex justify-center items-center h-full">
     <img
       class="object-center"
       src="../../../assets/images/ui/slider/counter-bg.png"
       alt="Counter Image" />
     <div class="absolute flex justify-between items-center gap-4 w-3/4">
-      <div class="flex items-center gap-4">
+      <div [@foobar]="state" class="flex items-center gap-4">
         <div>
           <img src="../../../assets/images/ui/counter-img.png" alt="" />
         </div>
@@ -87,12 +90,12 @@
         </div>
       </div>
       <div class="flex justify-between items-center gap-20">
-        <div>
+        <div [@foobar]="state">
           <p class="text-white text-5xl font-bold">12+</p>
           <hr class="text-white" />
           <p class="text-white text-xl font-medium">Satisfied Patients</p>
         </div>
-        <div>
+        <div [@foobar]="state">
           <p class="text-white text-5xl font-bold">100%</p>
           <hr class="text-white" />
           <p class="text-white text-xl font-medium">Satisfaction Rates</p>
