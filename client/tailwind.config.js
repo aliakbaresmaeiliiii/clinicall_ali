@@ -28,7 +28,10 @@ module.exports = {
       red: '#E95210',
       blueLight: '#DAE1F3',
       blueSky: '#EFF8FF',
-      lightGray: '#D4E5F9'
+      blueTextLight:'#2B7EFF',
+      lightGray: '#D4E5F9',
+      bgUi:'#E6F1FF',
+      blueText:'#002570'
     },
 
     keyframes: {

@@ -27,7 +27,6 @@ export class ScrollAnimationDirective implements OnInit {
 
   constructor() {
     effect(() => {
-      debugger;
       if (this.isVisible() && !this.hasAnimated()) {
         this.renderer.removeClass(this.el.nativeElement, 'hidden');
         this.renderer.addClass(this.el.nativeElement, this.animationClass);
