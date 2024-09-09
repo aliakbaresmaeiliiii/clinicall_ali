@@ -17,5 +17,4 @@ import { Component, ElementRef, HostListener } from '@angular/core';
 
 })
 export class FeatureSectionComponent {
- 
 }
