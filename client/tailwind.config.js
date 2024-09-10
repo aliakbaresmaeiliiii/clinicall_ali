@@ -28,10 +28,11 @@ module.exports = {
       red: '#E95210',
       blueLight: '#DAE1F3',
       blueSky: '#EFF8FF',
+      blueSkyDark:'#CADFF9',
       blueTextLight:'#2B7EFF',
       lightGray: '#D4E5F9',
       bgUi:'#E6F1FF',
-      blueText:'#002570'
+      blueDark:'#002570'
     },
 
     keyframes: {
@@ -48,6 +49,10 @@ module.exports = {
       },
       animationFade: {
         fadeInUp: 'fadeInUp 1s ease-out forwards',
+      },
+      animationRotate: {
+        'spin-slow': 'spin 3s linear infinite',
+        'spin-fast': 'spin 1s linear infinite',
       },
     },
 

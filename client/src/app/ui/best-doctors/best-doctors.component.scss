@@ -1,0 +1,85 @@
+.swiper {
+    width: 100%;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    margin: auto
+}
+
+.swiper-slide {
+    background-position: center;
+    background-size: cover;
+    width: 300px;
+    height: 300px;
+}
+
+.swiper-slide img {
+    display: block;
+    width: 100%;
+}
+
+.swiper-slide img :hover {
+    border: 1px solid blue;
+
+}
+
+
+/* From Uiverse.io by prashantj510 */
+.card {
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(163deg, #007EFF 0%, #002570 100%);
+    border-radius: 20px;
+    transition: all .3s;
+}
+
+.card2 {
+    width: 100%;
+    height: 100%;
+    background-color: #1a1a1a;
+    border-radius: 10px;
+    transition: all .2s;
+}
+
+.card2 img {
+    width: 100%;
+    height: 100%;
+
+}
+
+.card2 img:hover {
+    border-radius: 20px;
+ 
+}
+
+.card2:hover {
+    transform: scale(0.98);
+    border-radius: 20px;
+    // transition-duration: 0ms;
+    // transform: translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg) scale(1);
+
+}
+
+.card:hover {
+    box-shadow: 0px 0px 30px 1px rgba(39, 1, 250, 0.3);
+    // animation: circle 5s linear infinite;
+
+}
+
+@keyframes circle {
+    0% {
+        transform: rotate(0deg);
+        /* Start position */
+    }
+
+    100% {
+        transform:
+            rotate(-360deg);
+        /* Complete rotation */
+    }
+}
+
+// width: 420px;
+// transition-duration: 0ms;
+// transform: translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg) scale(1);
+// z-index: 1;
+// margin-right: 30px;
