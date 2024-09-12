@@ -3,7 +3,12 @@
 @use '../src/app/core/layouts/layout-component.theme';
 @use './app/test-component.theme';
 @use 'swiper/swiper-bundle.min.css';
+// regular style toast
+@import 'ngx-toastr/toastr';
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 @include mat.core();
 
@@ -61,12 +66,7 @@ body {
 }
 
 
-// regular style toast
-@import 'ngx-toastr/toastr';
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 
 

@@ -14,6 +14,7 @@ import { MatListModule } from '@angular/material/list';
 import { ServiceSectionComponent } from './service-section/service-section.component';
 import Swiper from 'swiper/bundle';
 import { BestDoctorsComponent } from './best-doctors/best-doctors.component';
+import { BlogComponent } from './blog/blog.component';
 
 const routes: Routes = [{ path: '', component: HomeComponent }];
 
@@ -24,7 +25,8 @@ const routes: Routes = [{ path: '', component: HomeComponent }];
     SliderComponent,
     FeatureSectionComponent,
     ServiceSectionComponent,
-    BestDoctorsComponent
+    BestDoctorsComponent,
+    BlogComponent
   ],
   imports: [
     CommonModule,
@@ -36,6 +38,7 @@ const routes: Routes = [{ path: '', component: HomeComponent }];
     SocialMediaIconComponent,
     CustomCardComponent,
     MatListModule,
+    
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
