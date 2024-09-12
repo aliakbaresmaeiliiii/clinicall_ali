@@ -6,80 +6,377 @@
 }
 
 .swiper-slide {
-    background-position: center;
-    background-size: cover;
-    width: 300px;
-    height: 300px;
+    width: 420px;
+    transition-duration: 0ms;
+    transform: translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg) scale(1);
+    z-index: 1;
+    margin-right: 30px;
 }
 
-.swiper-slide img {
+.swiper-slide.swiper-slide-active .team-single-box::before {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    border-radius: 20px;
+}
+
+.swiper-slide.swiper-slide-active .team-single-box::after {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    border-radius: 20px;
+}
+
+.team-single-box::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: 0;
+    height: 0;
+    z-index: 2;
+    opacity: 0;
+    border-top: 2px solid #2B7EFF;
+    border-left: 2px solid #2B7EFF;
+    transition: all linear 1s;
+    bottom: calc(-5% + 5px);
+}
+
+
+.team-single-box::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 0;
+    height: 0;
+    z-index: 2;
+    opacity: 0;
+    border-bottom: 2px solid #2B7EFF;
+    border-right: 2px solid #2B7EFF;
+    transition: all linear 0.5s;
+}
+
+.team-thumb {
+    position: relative;
+    z-index: 21;
+}
+
+.team-thumb img {
+    border-radius: 20px;
     display: block;
+}
+
+.team-thumb::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: calc(-5% + 5px);
     width: 100%;
+    height: 50%;
+    background: linear-gradient(to top, #007eff, #fff);
+    opacity: 0;
+    z-index: 1;
+    transition: all 0.5s;
 }
 
-.swiper-slide img :hover {
-    border: 1px solid blue;
-
+.team-thumb:hover::before {
+    bottom: 0;
+    opacity: 0.70;
 }
 
 
-/* From Uiverse.io by prashantj510 */
-.card {
+.team-single-box {
+    padding: 30px 30px 32px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.30196078431372547);
+    border: 2px solid #ffffff;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+.social-icon {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0;
+    transition: 0.5s;
+    z-index: 1;
+}
+
+.social-icon {.swiper {
+    width: 100%;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    margin: auto
+}
+
+.swiper-slide {
+    width: 420px;
+    transition-duration: 0ms;
+    transform: translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg) scale(1);
+    z-index: 1;
+    margin-right: 30px;
+}
+
+.swiper-slide.swiper-slide-active .team-single-box::before {
     width: 100%;
     height: 100%;
-    background-image: linear-gradient(163deg, #007EFF 0%, #002570 100%);
+    opacity: 1;
     border-radius: 20px;
-    transition: all .3s;
 }
 
-.card2 {
+.swiper-slide.swiper-slide-active .team-single-box::after {
     width: 100%;
     height: 100%;
-    background-color: #1a1a1a;
-    border-radius: 10px;
-    transition: all .2s;
+    opacity: 1;
+    border-radius: 20px;
 }
 
-.card2 img {
+.team-single-box::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: 0;
+    height: 0;
+    z-index: 2;
+    opacity: 0;
+    border-top: 2px solid #2B7EFF;
+    border-left: 2px solid #2B7EFF;
+    transition: all linear 1s;
+    bottom: calc(-5% + 5px);
+}
+
+
+.team-single-box::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 0;
+    height: 0;
+    z-index: 2;
+    opacity: 0;
+    border-bottom: 2px solid #2B7EFF;
+    border-right: 2px solid #2B7EFF;
+    transition: all linear 0.5s;
+}
+
+.team-thumb {
+    position: relative;
+    z-index: 21;
+}
+
+.team-thumb img {
+    border-radius: 20px;
+    display: block;
+}
+
+.team-thumb::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: calc(-5% + 5px);
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to top, #007eff, #fff);
+    opacity: 0;
+    z-index: 1;
+    transition: all 0.5s;
+}
+
+.team-thumb:hover::before {
+    bottom: 0;
+    opacity: 0.70;
+}
+
+
+.team-single-box {
+    padding: 30px 30px 32px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.30196078431372547);
+    border: 2px solid #ffffff;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+
+.social-icon {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    bottom: 50px;
+    right: 104px;
+    position: absolute;
+    z-index: 0;
+}
+
+.swiper-slide:hover .social-icon {
+    opacity: 1;
+}
+
+.social-icon span {
+    background-color: white;
+    padding: 8px;
+    border-radius: 25px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+
+}
+
+.social-icon span:hover {
+    background-color: #007eff;
+    transition: all 0.8s;
+    color: white;
+
+
+}
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}.swiper {
+    width: 100%;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    margin: auto
+}
+
+.swiper-slide {
+    width: 420px;
+    transition-duration: 0ms;
+    transform: translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg) scale(1);
+    z-index: 1;
+    margin-right: 30px;
+}
+
+.swiper-slide.swiper-slide-active .team-single-box::before {
     width: 100%;
     height: 100%;
-
-}
-
-.card2 img:hover {
+    opacity: 1;
     border-radius: 20px;
- 
 }
 
-.card2:hover {
-    transform: scale(0.98);
+.swiper-slide.swiper-slide-active .team-single-box::after {
+    width: 100%;
+    height: 100%;
+    opacity: 1;
     border-radius: 20px;
-    // transition-duration: 0ms;
-    // transform: translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg) scale(1);
+}
+
+.team-single-box::before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    width: 0;
+    height: 0;
+    z-index: 2;
+    opacity: 0;
+    border-top: 2px solid #2B7EFF;
+    border-left: 2px solid #2B7EFF;
+    transition: all linear 1s;
+    bottom: calc(-5% + 5px);
+}
+
+
+.team-single-box::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 0;
+    height: 0;
+    z-index: 2;
+    opacity: 0;
+    border-bottom: 2px solid #2B7EFF;
+    border-right: 2px solid #2B7EFF;
+    transition: all linear 0.5s;
+}
+
+.team-thumb {
+    position: relative;
+    z-index: 21;
+}
+
+.team-thumb img {
+    border-radius: 20px;
+    display: block;
+}
+
+.team-thumb::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: calc(-5% + 5px);
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(to top, #007eff, #fff);
+    opacity: 0;
+    z-index: 1;
+    transition: all 0.5s;
+}
+
+.team-thumb:hover::before {
+    bottom: 0;
+    opacity: 0.70;
+}
+
+
+.team-single-box {
+    padding: 30px 30px 32px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.30196078431372547);
+    border: 2px solid #ffffff;
+    text-align: center;
+    position: relative;
+    z-index: 1;
+}
+
+
+.social-icon {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    bottom: 50px;
+    position: absolute;
+    opacity: 0;
+}
+
+.swiper-slide:hover .social-icon {
+    opacity: 1;
+}
+
+.social-icon span {
+    background-color: white;
+    padding: 8px;
+    border-radius: 25px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
 
 }
 
-.card:hover {
-    box-shadow: 0px 0px 30px 1px rgba(39, 1, 250, 0.3);
-    // animation: circle 5s linear infinite;
-
+.social-icon span:hover {
+    background-color: #007eff;
+    transition: all 0.8s;
+    color: white;
 }
 
-@keyframes circle {
-    0% {
-        transform: rotate(0deg);
-        /* Start position */
-    }
-
-    100% {
-        transform:
-            rotate(-360deg);
-        /* Complete rotation */
-    }
-}
-
-// width: 420px;
-// transition-duration: 0ms;
-// transform: translate3d(0px, 0px, 0px) rotateX(0deg) rotateY(0deg) scale(1);
-// z-index: 1;
-// margin-right: 30px;

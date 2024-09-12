@@ -1,40 +1,40 @@
 <div class="swiper mySwiper">
   <div class="swiper-wrapper">
+    @for (image of images; track $index) {
     <div class="swiper-slide">
-      <div class="card">
-        <div class="card2">
-          <img src="../../../assets/images/ui/doctors/team2.jpg" />
+      <div class="team-single-box">
+        <div (mouseenter)="showIcon($event)" (mouseleave)="hideIcon($event)">
+          <div>
+            <div class="team-thumb">
+              <div class="social-icon " #iconOverlay>
+                <span>
+                  <i class="fa-brands fa-linkedin-in text-1xl text-blueDark"></i>
+                </span>
+                <span>
+                  <i class="fa-brands fa-facebook-f text-1xl text-blueDark"></i>
+                </span>
+                <span>
+                  <i
+                    class="fa-brands fa-instagram text-2xl text-blueDark"></i>
+                </span>
+              </div>
+              <img [src]="image.src" />
+            </div>
+          </div>
+          <!-- <div class="icon-overlay" #iconOverlay>
+            <button dfButton appearance="solid" class="flex">
+              See Detail
+              <i class="fa-solid fa-circle-info"></i>
+            </button>
+          </div> -->
+        </div>
+        <div class="flex justify-center items-center flex-col pt-6">
+          <p class="text-blueDark text-2xl">Dentist</p>
+          <p class="text-blueDark text-3xl font-medium">DR.Aliakbar Esmaieli</p>
         </div>
       </div>
     </div>
-    <div class="swiper-slide">
-      <div class="card">
-        <div class="card2">
-          <img src="../../../assets/images/ui/doctors/team3.jpg" />
-        </div>
-      </div>
-    </div>
-    <div class="swiper-slide">
-      <div class="card">
-        <div class="card2">
-          <img src="../../../assets/images/ui/slider/hero-img.png" />
-        </div>
-      </div>
-    </div>
-    <div class="swiper-slide">
-      <div class="card">
-        <div class="card2">
-          <img src="../../../assets/images/ui/doctors/team2.jpg" />
-        </div>
-      </div>
-    </div>
-    <div class="swiper-slide">
-      <div class="card">
-        <div class="card2">
-          <img src="../../../assets/images/ui/doctors/team3.jpg" />
-        </div>
-      </div>
-    </div>
+    }
   </div>
   <div class="swiper-pagination"></div>
 </div>

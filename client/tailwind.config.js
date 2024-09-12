@@ -29,10 +29,10 @@ module.exports = {
       blueLight: '#DAE1F3',
       blueSky: '#EFF8FF',
       blueSkyDark:'#CADFF9',
-      blueTextLight:'#2B7EFF',
+      blueTextLight:'#007eff',
       lightGray: '#D4E5F9',
+      blueDark:'#002570',
       bgUi:'#E6F1FF',
-      blueDark:'#002570'
     },
 
     keyframes: {

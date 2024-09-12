@@ -4,11 +4,11 @@ import {
   Component,
   HostBinding,
   Input,
+  signal,
 } from '@angular/core';
 import { CanDisableDirective } from '../../directives/can-disable/can-disable.directive';
 import { HasTabIndexDirective } from '../../directives/has-disable/has-tab-index.directive';
 import { toBooleanProperty } from '../../utils/type-coercion';
-
 
 export const BUTTON_CLASESS = {
   solid: 'solid-button',
@@ -41,6 +41,8 @@ export class ButtonComponent {
   @Input()
   appearance: 'solid' | 'stroked' | 'dashed' = 'solid';
 
+
+
   @Input()
   set loading(value: any) {
     this.#loading = toBooleanProperty(value);
@@ -56,4 +58,6 @@ export class ButtonComponent {
   protected get buttonTypeHostClass(): ButtonClasses {
     return BUTTON_CLASESS[this.appearance];
   }
+
+ 
 }
