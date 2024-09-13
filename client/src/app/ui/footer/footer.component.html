@@ -1,0 +1,160 @@
+<div class="footer-section bg-blueDark">
+  <div class="container mx-auto grid grid-cols-6 gap-8">
+    <div class="col-span-3">
+      <div class="company-logo cursor-scale small">
+        <img src="../../../assets/images/icons/ui/logo2.png" alt="" />
+      </div>
+      <div class="company-info-desc pt-10">
+        <h6 class="text-white">
+          Completely promote interdependent systems for Latest update news this
+          Medical.
+        </h6>
+      </div>
+      <form class="subscribe_form w-11/12">
+        <mat-form-field
+          data-testing="username"
+          appearance="outline"
+          class="w-full flex">
+          <mat-label class="text-white">Enter Your E-Mail</mat-label>
+
+          <input
+            type="text"
+            matInput
+            formControlName="email"
+            placeholder="UserName" />
+          <button matSuffix mat-icon-button aria-label="Clear" class="mr-2">
+            <i class="fa-solid fa-paper-plane text-white"></i>
+            <!-- <mat-icon>close</mat-icon> -->
+          </button>
+
+          @if (email?.hasError('email') && !email?.hasError('required')) {
+          <mat-error>Please enter a valid userName address</mat-error>
+          } @if (email?.hasError('required')) {
+          <mat-error>UserName is <strong>required</strong></mat-error>
+          }
+        </mat-form-field>
+        <p>
+          <mat-checkbox formControlName="condition"
+            ><span class="text-white"
+              >Agree Terms and Condition</span
+            ></mat-checkbox
+          >
+        </p>
+      </form>
+    </div>
+
+    <div>
+      <h6 class="text-white">Company</h6>
+      <div>
+        <ul class="flex flex-col gap-3">
+          <li>
+            <a href="" class="text-white">Home</a>
+          </li>
+          <li>
+            <a class="hover:text-blueTextLight" href="" class="text-white"
+              >About</a
+            >
+          </li>
+          <li>
+            <a class="hover:text-blueTextLight" href="" class="text-white"
+              >Services</a
+            >
+          </li>
+          <li>
+            <a class="hover:text-blueTextLight" href="" class="text-white"
+              >Blod</a
+            >
+          </li>
+          <li>
+            <a class="hover:text-blueTextLight" href="" class="text-white"
+              >Contact</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div>
+      <h6
+        class="hover:text-blueTextLight"
+        class="text-white hover:text-blueTextLight">
+        Useful Links
+      </h6>
+      <ul class="flex flex-col gap-3">
+        <li>
+          <a
+            class="hover:text-blueTextLight"
+            class="hover:text-blueTextLight"
+            href=""
+            class="text-white"
+            >Partners</a
+          >
+        </li>
+        <li>
+          <a class="hover:text-blueTextLight" href="" class="text-white"
+            >Testimonial</a
+          >
+        </li>
+        <li>
+          <a class="hover:text-blueTextLight" href="" class="text-white"
+            >Appoinment</a
+          >
+        </li>
+        <li>
+          <a class="hover:text-blueTextLight" href="" class="text-white"
+            >Privacy</a
+          >
+        </li>
+        <li>
+          <a class="hover:text-blueTextLight" href="" class="text-white">FAQ</a>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <h6 class="text-white">Contacts</h6>
+      <div>
+        <ul class="flex flex-col gap-3">
+          <li>
+            <a
+              class="hover:text-blueTextLight"
+              class="hover:text-blueTextLight"
+              href=""
+              class="text-white"
+              >102/ B Street, New Elephant Road, Sandigo, USA</a
+            >
+          </li>
+          <li>
+            <a class="hover:text-blueTextLight" href="" class="text-white"
+              >Email-US</a
+            >
+            <span class="hover:text-blueTextLight text-white">
+              examplegmail.com
+            </span>
+          </li>
+          <li>
+            <a class="hover:text-blueTextLight text-white" href="">Call Now</a>
+            <span class="hover:text-blueTextLight text-white">
+              +123 (4567) - 890
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="w-9/12 mx-auto mt-24">
+    <hr class="text-blueTextLight   opacity-45" />
+    <div class="flex justify-between mt-20 bottom-0">
+      <div class="flex gap-4">
+        <i class="fa-brands fa-facebook-f text-white"></i>
+        <i class="fa-brands fa-linkedin-in text-white"></i>
+        <i class="fa-brands fa-twitter text-white"></i>
+        <i class="fa-brands fa-instagram text-white"></i>
+      </div>
+      <div>
+        <p class="text-gray">
+          This is a sample website - mediic ©2024 - All Rights Reserved
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
