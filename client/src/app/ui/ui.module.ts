@@ -19,8 +19,21 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
+import { DoctorsComponent } from './doctors/doctors.component';
 
-const routes: Routes = [{ path: '', component: HomeComponent }];
+const routes: Routes = [
+  {
+    path: '',
+    component: HomeComponent,
+    children: [
+      {
+        path: 'home',
+        component: FeatureSectionComponent,
+      },
+      { path: 'doctors', component: DoctorsComponent },
+    ],
+  },
+];
 
 @NgModule({
   declarations: [
@@ -31,7 +44,8 @@ const routes: Routes = [{ path: '', component: HomeComponent }];
     ServiceSectionComponent,
     BestDoctorsComponent,
     BlogComponent,
-    FooterComponent
+    FooterComponent,
+    DoctorsComponent,
   ],
   imports: [
     CommonModule,
@@ -46,8 +60,7 @@ const routes: Routes = [{ path: '', component: HomeComponent }];
     MatFormFieldModule,
     MatInputModule,
     MatCheckboxModule,
-    MatButtonModule
-    
+    MatButtonModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

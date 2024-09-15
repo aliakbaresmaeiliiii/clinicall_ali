@@ -1,0 +1,74 @@
+.breatcome-section {
+    background: url(../../../assets/images/ui/breatcome.png);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 420px;
+    margin-top: 100px;
+    position: relative;
+}
+
+.team-thumb {
+    position: relative;
+}
+.team-thumb::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(127deg, rgba(0, 125, 255, 1) 0%, rgba(0, 125, 255, 1) 20%, rgba(0, 125, 255, 0) 50%, rgba(0, 125, 255, 0) 100%);
+    opacity: 0;
+    border-radius: 20px;
+    z-index: 1;
+    transition: all 0.5s;
+}
+
+.team-thumb:hover::before {
+    opacity: 1;
+}
+.team-thumb:hover .social-icon {
+    opacity: 1;
+}
+
+.team-content{
+    padding: 16px 0 65px;
+    background-color: rgba(255, 255, 255, 0.30196078431372547);
+    border: 2px solid #ffffff;
+    border-radius: 20px;
+    margin-bottom: -34px;
+}
+
+.social-icon {
+    position: absolute;
+    flex-direction: column;
+    display: flex;
+    left: 10px;
+    opacity: 0;
+    transition: 0.5s;
+    z-index: 1;
+    gap: 10px;
+    top: 10px;
+}
+
+.social-icon span {
+    background-color: white;
+    padding: 8px;
+    border-radius: 25px;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+
+}
+
+.social-icon span:hover {
+    background-color: #002570;
+    transition: all 0.8s;
+    color: white;
+
+
+}
