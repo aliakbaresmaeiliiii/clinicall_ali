@@ -66,11 +66,5 @@ export class BestDoctorsComponent implements OnInit {
     if (this.socialIcon) {
       this.renderer.setStyle(this.socialIcon.nativeElement, 'opacity', '0');
     }
-    // const socialIcon = (event.target as HTMLElement).querySelector(
-    //   '.social-icon'
-    // );
-    // if (socialIcon) {
-    //   this.renderer.setStyle(socialIcon, 'display', 'none');
-    // }
   }
 }

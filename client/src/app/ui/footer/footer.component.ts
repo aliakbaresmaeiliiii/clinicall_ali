@@ -12,6 +12,9 @@ export class FooterComponent {
     condition: new FormControl(''),
   });
 
+  onSubmit(){
+    
+  }
   get email() {
     return this.form.get('email');
   }

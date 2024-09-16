@@ -20,6 +20,13 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
 import { DoctorsComponent } from './doctors/doctors.component';
+import { ServicesDoctorComponent } from './services-doctor/services-doctor.component';
+import { MatCardModule } from '@angular/material/card';
+import { MediicAppointmentComponent } from './mediic-appointment/mediic-appointment.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input';
+import { ContactUsComponent } from './contact-us/contact-us.component';
+import { GoogleMapComponent } from '../shared/components/google-map/google-map.component';
 
 const routes: Routes = [
   {
@@ -31,6 +38,8 @@ const routes: Routes = [
         component: FeatureSectionComponent,
       },
       { path: 'doctors', component: DoctorsComponent },
+      { path: 'services', component: ServicesDoctorComponent },
+      { path: 'contact-us', component: ContactUsComponent },
     ],
   },
 ];
@@ -46,11 +55,16 @@ const routes: Routes = [
     BlogComponent,
     FooterComponent,
     DoctorsComponent,
+    ServicesDoctorComponent,
+    MediicAppointmentComponent,
+    ContactUsComponent
   ],
   imports: [
     CommonModule,
     RouterOutlet,
     RouterModule.forChild(routes),
+    FormsModule,
+    ReactiveFormsModule,
     MatMenuModule,
     ButtonComponent,
     ScrollAnimationDirective,
@@ -61,6 +75,11 @@ const routes: Routes = [
     MatInputModule,
     MatCheckboxModule,
     MatButtonModule,
+    MatCardModule, 
+    NgxMatIntlTelInputComponent,
+    GoogleMapComponent,
+
+
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
