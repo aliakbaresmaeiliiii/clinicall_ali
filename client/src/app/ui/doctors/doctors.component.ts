@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   inject,
@@ -10,6 +11,8 @@ import {
   selector: 'app-doctors',
   templateUrl: './doctors.component.html',
   styleUrl: './doctors.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush
+
 })
 export class DoctorsComponent {
   renderer = inject(Renderer2);
