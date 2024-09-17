@@ -1,30 +1,119 @@
-// .breatcome-section {
-//     background: url(../../../assets/images/ui/breatcome.png);
-//     background-size: contain;
-//     background-position: center;
-//     background-repeat: no-repeat;
-//     height: 420px;
-//     margin-top: 100px;
-//     position: relative;
-// }
+.breatcome-section {
+    background: url(../../../assets/images/ui/breatcome.png);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 420px;
+    margin-top: 100px;
+    position: relative;
+}
 
-// ul.about-mediic-services li:before {
-//     position: absolute;
-//     content: "";
-//     left: 0;
-//     top: 8px;
-//     width: 10px;
-//     height: 10px;
-//     border-radius: 5px;
-//     background-color: #002570;
-//     opacity: 20;
-// }
-// .counter-right-side {
-//     display: flex;
-//     background: #0c5dff;
-//     justify-content: center;
-//     gap: 35px;
-//     width: 549px;
-//     padding: 30px 0 20px;
-//     border-radius: 0 0 30px 30px;
-// }
+ul.about-mediic-services li:before {
+    position: absolute;
+    content: "";
+    left: 0;
+    top: 8px;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: #002570;
+    opacity: 20;
+}
+
+.counter-right-side {
+    display: flex;
+    background: #0c5dff;
+    justify-content: center;
+    gap: 35px;
+    width: 549px;
+    padding: 30px 0 20px;
+    border-radius: 0 0 30px 30px;
+}
+
+
+.mission-vission-single-box {
+    padding: 38px 35px 20px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.30196078431372547);
+    border: 2px solid #ffffff;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 1;
+    transition: 0.5s;
+}
+
+.m_v-ssion-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-right: 15px;
+    width: 65px;
+    height: 65px;
+    line-height: 60px;
+    text-align: center;
+    border-radius: 32px;
+    background-color: rgba(255, 255, 255, 0.30196078431372547);
+    border: 2px solid #ffffff;
+    transition: 0.5s;
+}
+
+.m_v-ssion-desc p {
+    font-size: 17px;
+    color: #65677a;
+    font-family: "DM Sans";
+    display: inline-block;
+    padding: 25px 0 0;
+    transition: 0.5s;
+}
+
+
+
+.mediic-hover-box {
+    background-color: #007eff;
+    height: 100%;
+    top: 0;
+    opacity: 0;
+    position: absolute;
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    -webkit-transition: all 0.5s ease 0s;
+    transition: all 0.5s ease 0s;
+    width: 25%;
+    z-index: -1;
+}
+
+.m_v-ssion-title h3{
+    color: #002570;
+    font-size: x-large;
+    font-weight: 700;
+    margin: 0;
+}
+
+
+
+
+.swiper {
+    width: 100%;
+    height: 50%;
+    border-radius: 20px;
+    border: 2px solid #fff;
+    margin: inherit;
+
+  }
+
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #E6F1FF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
