@@ -6,6 +6,8 @@ import {
   trigger,
 } from '@angular/animations';
 import { Component, ElementRef, HostListener } from '@angular/core';
+import AOS from 'aos'; 
+
 
 const style1 = style({
   opacity: 1,
@@ -34,6 +36,11 @@ export class SliderComponent {
   state = 'hide';
 
   constructor(public el: ElementRef) {}
+
+  ngOninit(){
+    AOS.init({disable: 'mobile'});
+    AOS.refresh();
+  }
 
 
   @HostListener('window:scroll', ['$event'])

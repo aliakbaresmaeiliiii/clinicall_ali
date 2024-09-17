@@ -1,11 +1,5 @@
-import {
-  style,
-  trigger,
-  state,
-  transition,
-  animate,
-} from '@angular/animations';
-import { Component, ElementRef, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import AOS from 'aos'; 
 
 
 
@@ -15,7 +9,7 @@ import { Component, ElementRef, HostListener } from '@angular/core';
   styleUrl: './feature-section.component.scss',
 
 })
-export class FeatureSectionComponent {
+export class FeatureSectionComponent implements OnInit {
   shoes: any[] = [
     {value: 'boots', name: 'Boots'},
     {value: 'clogs', name: 'Clogs'},
@@ -23,4 +17,9 @@ export class FeatureSectionComponent {
     {value: 'moccasins', name: 'Moccasins'},
     {value: 'sneakers', name: 'Sneakers'},
   ];
+
+  ngOnInit() {
+    AOS.init({disable: 'mobile'});
+    AOS.refresh();
+  }
 }

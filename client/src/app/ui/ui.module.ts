@@ -35,7 +35,7 @@ const routes: Routes = [
     component: HomeComponent,
     children: [
       {
-        path: 'home',
+        path: '',
         component: FeatureSectionComponent,
       },
       { path: 'doctors', component: DoctorsComponent },

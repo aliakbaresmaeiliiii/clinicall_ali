@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import AOS from 'aos'; 
 
 @Component({
   selector: 'app-service-section',
@@ -8,6 +9,11 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   changeDetection:ChangeDetectionStrategy.OnPush
 
 })
-export class ServiceSectionComponent {
+export class ServiceSectionComponent implements OnInit{
 
+
+  ngOnInit() {
+    AOS.init({disable: 'mobile'});
+    AOS.refresh();
+  }
 }

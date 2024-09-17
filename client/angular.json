@@ -36,11 +36,13 @@
             "styles": [
               "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.scss",
+              "node_modules/aos/dist/aos.css",
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
                "node_modules/swiper/swiper-bundle.min.css"
             ],
             "scripts": [
+              "node_modules/aos/dist/aos.js", 
               "node_modules/apexcharts/dist/apexcharts.min.js"
             ],
             "server": "src/main.server.ts",
@@ -111,9 +113,12 @@
             ],
             "styles": [
               "@angular/material/prebuilt-themes/azure-blue.css",
-              "src/styles.scss"
+              "src/styles.scss",
+              "node_modules/aos/dist/aos.css"
             ],
             "scripts": [
+              "node_modules/aos/dist/aos.js", 
+              "node_modules/jquery/dist/jquery.min.js",
               "node_modules/apexcharts/dist/apexcharts.min.js"
             ]
           }
