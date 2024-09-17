@@ -1,23 +1,27 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { banWords } from '../../shared/validators/ban-words.validators';
 import { debounceTime, switchMap } from 'rxjs';
 import { DoctorsService } from '../../modules/doctors/doctors.service';
+import AOS from 'aos'; 
 
 @Component({
   selector: 'app-mediic-appointment',
   templateUrl: './mediic-appointment.component.html',
   styleUrl: './mediic-appointment.component.scss',
 })
-export class MediicAppointmentComponent {
+export class MediicAppointmentComponent implements OnInit {
   fb = inject(FormBuilder);
   matcher = new ErrorStateMatcher();
   phoneExists: boolean | null | unknown = null;
   textDirection: 'ltr' | 'rtl' = 'ltr';
   service = inject(DoctorsService);
   
-
+  ngOnInit() {
+    AOS.init({disable: 'mobile'});
+    AOS.refresh();
+  }
 
   form = this.fb.group({
     name: [
