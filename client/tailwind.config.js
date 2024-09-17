@@ -3,7 +3,7 @@ module.exports = {
   content: [
     // "./src/**/*.{html,ts}",
     "./src/**/*.{html,ts}",
-    "./node_modules/flowbite/**/*.js"
+    "./node_modules/flowbite/**/*.js",
   ],
   theme: {
     // screens: {
@@ -18,7 +18,10 @@ module.exports = {
       // => @media (min-width: 1024px) { ... }
       'desktop': '1280px',
       // => @media (min-width: 1280px) { ... }
+
+      
     },
+
     extend: {},
     colors: {
       primary: "#9cd67d",
@@ -34,6 +37,8 @@ module.exports = {
       blueDark:'#002570',
       bgUi:'#E6F1FF',
     },
+
+    
 
     keyframes: {
       moveLeftRight: {

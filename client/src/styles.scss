@@ -10,6 +10,14 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@layer base {
+  h1 {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+}
+
 @include mat.core();
 
 $angular-material-3-light-theme: mat.define-theme(
