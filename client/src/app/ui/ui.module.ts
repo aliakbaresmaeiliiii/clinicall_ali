@@ -27,6 +27,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { GoogleMapComponent } from '../shared/components/google-map/google-map.component';
+import { AboutUsComponent } from './about-us/about-us.component';
 
 const routes: Routes = [
   {
@@ -40,6 +41,7 @@ const routes: Routes = [
       { path: 'doctors', component: DoctorsComponent },
       { path: 'services', component: ServicesDoctorComponent },
       { path: 'contact-us', component: ContactUsComponent },
+      { path: 'about-us', component: AboutUsComponent },
     ],
   },
 ];
