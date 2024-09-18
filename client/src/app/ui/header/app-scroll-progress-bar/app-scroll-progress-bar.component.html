@@ -1,0 +1,20 @@
+<div
+  id="progress"
+  class="progress-bar"
+  [ngStyle]="{
+    background:
+      'conic-gradient(rgb(1, 173, 239) ' +
+      scrollPercentage +
+      '%, rgb(192, 192, 255) ' +
+      scrollPercentage +
+      '%)'
+  }">
+  @if(scrollPercentage === 100){
+  <div (click)="scrollToTop()" class="flex flex-col justify-center items-center font-medium text-white">
+    <i class="fa-solid fa-chevron-up"></i>
+    <span>GoUp</span>
+    </div>
+  }@else {
+  <div id="progress-value">{{ scrollPercentage }}%</div>
+  }
+</div>

@@ -5,10 +5,8 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import {
-  Component,
-  signal
-} from '@angular/core';
+import { Component, EventEmitter, output, Output, signal } from '@angular/core';
+import { fromEvent, map, tap } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -16,44 +14,50 @@ import {
   styleUrl: './header.component.scss',
   animations: [
     trigger('openClose', [
-      state('open', style({
-        opacity: 1,
-        transform: 'translateY(0)',
-        transition: '500ms',
-      })),
-      state('closed', style({
-        opacity: 0,
-        transform: 'translateY(-100%)', 
-        transition: '500ms',
-
-      })),
-      transition('open => closed', [
-        animate('1s ease-in-out')
-      ]),
-      transition('closed => open', [
-        animate('1s ease-in-out')
-      ]),
+      state(
+        'open',
+        style({
+          opacity: 1,
+          transform: 'translateY(0)',
+          transition: '500ms',
+        })
+      ),
+      state(
+        'closed',
+        style({
+          opacity: 0,
+          transform: 'translateY(-100%)',
+          transition: '500ms',
+        })
+      ),
+      transition('open => closed', [animate('1s ease-in-out')]),
+      transition('closed => open', [animate('1s ease-in-out')]),
     ]),
     trigger('bgColorChange', [
-      state('default', style({
-        backgroundColor: '#fff'
-      })),
-      state('scrolled', style({
-        backgroundColor: '#002570'
-      })),
-      transition('default => scrolled', [
-        animate('1s ease')
-      ]),
-      transition('scrolled => default', [
-        animate('1s ease')
-      ])
-    ])
-  ]
+      state(
+        'default',
+        style({
+          backgroundColor: '#fff',
+        })
+      ),
+      state(
+        'scrolled',
+        style({
+          backgroundColor: '#002570',
+        })
+      ),
+      transition('default => scrolled', [animate('1s ease')]),
+      transition('scrolled => default', [animate('1s ease')]),
+    ]),
+  ],
 })
 export class HeaderComponent {
   navbarVisible = signal(true);
   private lastScrollPosition = 0;
   bgColor: string = 'default';
+
+  progressValue = output<number | string>();
+  progressValue$: any;
 
   ngOnInit(): void {
     window.addEventListener('scroll', this.onWindowScroll.bind(this));
@@ -71,7 +75,9 @@ export class HeaderComponent {
     this.lastScrollPosition = currentScrollPosition;
   }
 
+
   ngOnDestroy(): void {
     window.removeEventListener('scroll', this.onWindowScroll.bind(this));
   }
+
 }
