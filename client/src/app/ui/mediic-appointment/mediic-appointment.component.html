@@ -4,21 +4,24 @@
     <img src="../../../assets/images/ui/appoinment.png" alt="" width="100%" />
 
     <!-- Form inside the image -->
-    <div 
+    <div
     data-aos="fade-up-left"
       class="absolute top-0 right-44 h-full flex items-center justify-end w-2/6">
       <div>
-        <div>
-          <p class="uppercase text-blueTextLight ">Online Appintment</p>
+        <div >
+          <p class="uppercase text-blueTextLight">Online Appintment</p>
         </div>
         <div class="text-3xl font-normal text-blueDark pb-6">
           Make an Online Appoinemnt Booking For Treatment Patients
         </div>
-      
+
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
           <div class="flex gap-5">
             <!-- *****Name***** -->
-            <mat-form-field data-testing="Name" appearance="outline" class="w-full">
+            <mat-form-field
+              data-testing="Name"
+              appearance="outline"
+              class="w-full">
               <mat-label>Your Name</mat-label>
               <input
                 type="text"
@@ -27,7 +30,8 @@
                 formControlName="name"
                 placeholder="Your Name" />
               <!-- Error handling -->
-              <mat-error *ngIf="name?.hasError('name') && !name?.hasError('required')"
+              <mat-error
+                *ngIf="name?.hasError('name') && !name?.hasError('required')"
                 >Please enter a valid name</mat-error
               >
               <mat-error *ngIf="name?.hasError('required')"
@@ -46,7 +50,10 @@
               >
             </mat-form-field>
             <!-- *****email***** -->
-            <mat-form-field data-testing="email" appearance="outline" class="w-full">
+            <mat-form-field
+              data-testing="email"
+              appearance="outline"
+              class="w-full">
               <mat-label>Email</mat-label>
               <input
                 type="email"
@@ -79,14 +86,17 @@
                 formControlName="subject"
                 placeholder="Subject" />
               <!-- Error handling -->
-      
+
               <mat-error *ngIf="name?.hasError('required')"
                 >name is <strong>required</strong></mat-error
               >
             </mat-form-field>
-      
+
             <!-- *****Phone***** -->
-            <mat-form-field data-testing="Phone" appearance="outline" class="w-full">
+            <mat-form-field
+              data-testing="Phone"
+              appearance="outline"
+              class="w-full">
               <mat-label>Phone</mat-label>
               <ngx-mat-intl-tel-input
                 [preferredCountries]="['my']"
@@ -98,7 +108,7 @@
                 formControlName="phone"
                 (cdkAutofill)="onAutofill($event)"
                 [dir]="textDirection"></ngx-mat-intl-tel-input>
-      
+
               <!-- Error handling -->
               <mat-error
                 *ngIf="phone?.hasError('phone') && !phone?.hasError('required')"
@@ -107,7 +117,7 @@
               <mat-error *ngIf="phone?.hasError('required')"
                 >phone is <strong>required</strong></mat-error
               >
-      
+
               <mat-error *ngIf="phoneExists === true" class="error">
                 This phone number already exists.
               </mat-error>
@@ -116,11 +126,14 @@
               </mat-error>
             </mat-form-field>
           </div>
-      
+
           <!-- *****Message***** -->
           <mat-form-field appearance="outline" class="w-full">
             <mat-label>Leave a comment</mat-label>
-            <textarea matInput placeholder="Ex. It makes me feel..." formControlName="message"></textarea>
+            <textarea
+              matInput
+              placeholder="Ex. It makes me feel..."
+              formControlName="message"></textarea>
           </mat-form-field>
           <button dfButton>
             Send Now
@@ -131,6 +144,3 @@
     </div>
   </div>
 </div>
-
-
-
