@@ -1,10 +1,11 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
   inject,
   OnInit,
   Renderer2,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import Swiper from 'swiper';
 
@@ -13,7 +14,7 @@ import Swiper from 'swiper';
 
   templateUrl: './best-doctors.component.html',
   styleUrl: './best-doctors.component.scss',
-
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BestDoctorsComponent implements OnInit {
   renderer = inject(Renderer2);
@@ -34,10 +35,10 @@ export class BestDoctorsComponent implements OnInit {
       grabCursor: true,
       centeredSlides: true,
       slidesPerView: 'auto',
-      autoplay: {
-        delay: 2500,
-        disableOnInteraction: false,
-      },
+      // autoplay: {
+      //   delay: 2500,
+      //   disableOnInteraction: false,
+      // },
       coverflowEffect: {
         rotate: 50,
         stretch: 0,
