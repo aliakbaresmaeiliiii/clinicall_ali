@@ -1,18 +1,18 @@
-<div class="flex justify-center gap-8">
+<div class="flex justify-center gap-8" data-aos="fade-up">
   @for (post of posts; track $index) {
   <div class="card">
     <div class="top-card">
       <img [src]="post.img" alt="" />
     </div>
     <div class="px-6">
-      <span class="title text-2xl font-semibold text-blueDark">{{
+      <span class="title text-2xl font-medium text-blueDark">{{
         post.title
       }}</span>
     </div>
     <div class="bottom-card">
       <div class="card-content">
         <span
-          class="card-title font-bold text-1xl leading-8 whitespace-nowrap w-80 overflow-hidden text-ellipsis text-blueDark">
+          class="card-title font-medium text-1xl leading-8 whitespace-nowrap w-80 overflow-hidden text-ellipsis text-blueDark">
           {{ post.body }}
         </span>
         <div class="flex justify-between w-4/5 absolute text-xs text-blueDark">
