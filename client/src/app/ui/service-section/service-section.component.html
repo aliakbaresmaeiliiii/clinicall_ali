@@ -1,4 +1,4 @@
-<div class="bg-blueDark">
+<div class="bg-blueDark p-7">
   <div
     class="grid grid-cols-3 w-10/12 m-auto pt-28 border-b-2 border-lightGray">
     <div class="text-white" data-aos="fade-up">
@@ -13,32 +13,30 @@
       <button dfButton>View All Service</button>
     </div>
   </div>
+  <div class="swiper serviceSwiper w-10/12 mt-10">
+    <div class="swiper-wrapper">
+      @for (image of images; track $index) {
+      <div class="swiper-slide">
+        <div class="single-service-box aos-init aos-animate">
+          <div class="service-thumb">
+            <img class="relative" [src]="image.src" />
+            <div class="service-icon cursor-scale small">
+              <a href="">
+                <i class="fa-solid fa-arrow-trend-up text-2xl"></i>
+              </a>
+            </div>
+          </div>
+          <div class="service-content">
+            <h6 class="text-2xl">Dentist</h6>
+            <h2 class="text-blueDark">
+              <a href=""> Dental Fixing </a>
+            </h2>
+          </div>
+        </div>
+      </div>
 
-  <swiper-container
-  data-aos="zoom-in" 
-    loop="true"
-    navigation="true"
-    slides-per-view="4"
-    speed="1500"
-    pagination="true"
-    class="w-10/12 flex justify-center items-center pt-14 pb-24">
-    <swiper-slide lazy="true">
-      <img src="../../../assets/images/ui/srvce2.png" loading="lazy" alt="" />
-    </swiper-slide>
-    <swiper-slide lazy="true">
-      <img src="../../../assets/images/ui/srvce.png" loading="lazy" alt="" />
-    </swiper-slide>
-    <swiper-slide lazy="true">
-      <img src="../../../assets/images/ui/srvce3.png" alt="" />
-    </swiper-slide>
-    <swiper-slide lazy="true">
-      <img src="../../../assets/images/ui/srvce4.png" alt="" />
-    </swiper-slide>
-    <swiper-slide lazy="true">
-      <img src="../../../assets/images/ui/srvce4.png" alt="" />
-    </swiper-slide>
-    <swiper-slide lazy="true">
-      <img src="../../../assets/images/ui/srvce4.png" loading="lazy" alt="" />
-    </swiper-slide>
-  </swiper-container>
+      }
+    </div>
+    <div class="swiper-pagination"></div>
+  </div>
 </div>
