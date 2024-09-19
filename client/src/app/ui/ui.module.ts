@@ -29,6 +29,7 @@ import { MediicAppointmentComponent } from './mediic-appointment/mediic-appointm
 import { ServiceSectionComponent } from './service-section/service-section.component';
 import { ServicesDoctorComponent } from './services-doctor/services-doctor.component';
 import { SliderComponent } from './slider/slider.component';
+import { DrProjectsComponent } from './dr-projects/dr-projects.component';
 
 
 const routes: Routes = [
@@ -44,6 +45,7 @@ const routes: Routes = [
       { path: 'services', component: ServicesDoctorComponent },
       { path: 'contact-us', component: ContactUsComponent },
       { path: 'about-us', component: AboutUsComponent },
+      { path: 'dr-projects', component: DrProjectsComponent },
     ],
   },
 ];
@@ -61,7 +63,8 @@ const routes: Routes = [
     DoctorsComponent,
     ServicesDoctorComponent,
     MediicAppointmentComponent,
-    ContactUsComponent
+    ContactUsComponent,
+    DrProjectsComponent
   ],
   imports: [
     CommonModule,
