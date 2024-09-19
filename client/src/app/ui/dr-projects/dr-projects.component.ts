@@ -8,6 +8,14 @@ import AOS from 'aos';
   styleUrl: './dr-projects.component.scss',
 })
 export class DrProjectsComponent {
+  brands: any[] = [
+    { src: '../../../assets/images/ui/brands/brand.png' },
+    { src: '../../../assets/images/ui/brands/brand3.png' },
+    { src: '../../../assets/images/ui/brands/brand4.png' },
+    { src: '../../../assets/images/ui/brands/brand5.png' },
+    { src: '../../../assets/images/ui/brands/breatcome.png' },
+  ];
+
   data = [
     {
       title: 'Frustation',
