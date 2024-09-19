@@ -1,0 +1,20 @@
+.breatcome-section {
+    background: url(../../../assets/images/ui/breatcome.png);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 420px;
+    margin-top: 100px;
+    position: relative;
+}
+
+.mission-vission-single-box {
+    padding: 38px 35px 20px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.30196078431372547);
+    border: 2px solid #ffffff;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 1;
+    transition: 0.5s;
+}

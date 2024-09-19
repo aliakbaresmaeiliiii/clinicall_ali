@@ -1,0 +1,114 @@
+<div class="pt-4">
+  <div class="breatcome-section">
+    <div class="container mx-auto">
+      <h1
+        class="font-semibold text-white flex justify-center items-center pt-36 uppercase">
+        Projects Details
+      </h1>
+      <div class="text-white flex justify-center items-center uppercase">
+        mediic / Projects Details
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mx-auto pt-20 pb-20">
+  <div class="grid grid-cols-12 gap-4">
+    <div class="col-span-8">
+      <img
+        src="../../../assets/images/ui/service.jpg"
+        class="w-full rounded-3xl"
+        alt="" />
+      <div class="pt-4">
+        <h3 class="text-blue-950">Delivering world class medical care</h3>
+        <p class="text-gray-500">
+          Alternative innovation to ethical network environmental whiteboard
+          pursue compelling results for premier methods empowerment.
+          Dramatically architect go forward opportunities before user-centric
+          partnerships. Credibly implement exceptional Continually fashion
+          orthogonal leadership skills whereas wireless metrics. Uniquely
+          syndicate exceptional opportunities with interdependent users.
+          Globally enhance fully tested meta-services rather than pandemic
+          solutions. Proactively integrate client-integrate go forward
+          architectures and turnkey meta-services. Interactively harness
+          integrated ROI whereas frictionless products.
+        </p>
+        <div class="flex gap-4 pt-8">
+          <div class="mission-vission-single-box">
+            <div class="mission-vission-content">
+              <div class="flex items-center">
+                <div class="m_v-ssion-icon">
+                  <img
+                    src="../../../assets/images/ui/m-icon2.png"
+                    alt="a canyon"
+                    alt="" />
+                </div>
+                <div class="m_v-ssion-title">
+                  <h3 class="pt-3">Our Mission</h3>
+                </div>
+              </div>
+              <div class="pt-5">
+                <p>
+                  Professional mision capital without enterp medical users pros
+                  value added e-enable creative technology via team.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="mission-vission-single-box">
+            <div class="mission-vission-content">
+              <div class="flex items-center">
+                <div class="m_v-ssion-icon">
+                  <img
+                    src="../../../assets/images/ui/m-icon2.png"
+                    alt="a canyon"
+                    alt="" />
+                </div>
+                <div class="m_v-ssion-title">
+                  <h3 class="pt-3">Our Mission</h3>
+                </div>
+              </div>
+              <div class="pt-5">
+                <p>
+                  Professional mision capital without enterp medical users pros
+                  value added e-enable creative technology via team.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="flex gap-3 p-4 bg-blue-600  mb-4 rounded-xl hover:bg-blue-950 duration-500">
+          <div class="flex gap-4">
+
+            <div class="border-r-2 border-white flex justify-center items-center pr-7 mr-7 ">
+
+                <img src="../../../assets/images/ui/doctors/icons.png" alt="">
+            </div>
+                <p class="text-white text-2xl font-medium leading-7 p-2">
+              Competently architect intermandated deliverables client niches
+              continually underwhelm
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-span-4 flex flex-col border-2 rounded-2xl border-white">
+      <h3 class="text-blue-950 pl-8 pt-8">Categories</h3>
+
+      @for (dr of doctors; track $index) {
+
+      <div
+        class="flex gap-3 p-4 border-2 rounded-2xl border-white ml-6 mr-6 mb-4">
+        <div>
+          <i class="fa-solid fa-stethoscope text-blue-600"></i>
+        </div>
+        <div class="flex flex-col">
+          <span class="text-blue-950">Doctor Name:</span>
+          <span class="text-blue-950 font-bold">{{ dr.name }}</span>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</div>
