@@ -1,4 +1,4 @@
-<div class="mt-20">
+<div>
   <div class="relative mx-auto pl-32 pr-32 pb-10">
     <!-- Image -->
     <img src="../../../assets/images/ui/appoinment.png" alt="" width="100%" />
@@ -9,9 +9,9 @@
       class="absolute top-0 right-44 h-full flex items-center justify-end w-2/6">
       <div>
         <div>
-          <p class="uppercase text-blueTextLight">Online Appintment</p>
+          <p class="uppercase text-blue-600">Online Appintment</p>
         </div>
-        <div class="text-3xl font-normal text-blueDark pb-6">
+        <div class="text-3xl font-normal text-blue-950 pb-6">
           Make an Online Appoinemnt Booking For Treatment Patients
         </div>
 
@@ -22,7 +22,7 @@
               data-testing="Name"
               appearance="outline"
               class="w-full">
-              <mat-label>Your Name</mat-label>
+              <mat-label class="text-blue-950">Your Name</mat-label>
               <input
                 type="text"
                 matInput
@@ -54,7 +54,7 @@
               data-testing="email"
               appearance="outline"
               class="w-full">
-              <mat-label>Email</mat-label>
+              <mat-label class="text-blue-950">Email</mat-label>
               <input
                 type="email"
                 matInput
@@ -78,7 +78,7 @@
               data-testing="Subject"
               appearance="outline"
               class="w-full">
-              <mat-label>Subject</mat-label>
+              <mat-label class="text-blue-950">Subject</mat-label>
               <input
                 type="text"
                 matInput
@@ -97,7 +97,7 @@
               data-testing="Phone"
               appearance="outline"
               class="w-full">
-              <mat-label>Phone</mat-label>
+              <mat-label class="text-blue-950">Phone</mat-label>
               <ngx-mat-intl-tel-input
                 [preferredCountries]="['my']"
                 [enablePlaceholder]="true"
@@ -129,13 +129,13 @@
 
           <!-- *****Message***** -->
           <mat-form-field appearance="outline" class="w-full">
-            <mat-label>Leave a comment</mat-label>
+            <mat-label class="text-blue-950">Leave a comment</mat-label>
             <textarea
               matInput
               placeholder="Ex. It makes me feel..."
               formControlName="message"></textarea>
           </mat-form-field>
-          <button dfButton>
+          <button dfButton >
             Send Now
             <i class="fa-solid fa-arrow-trend-up text-2xl"></i>
           </button>

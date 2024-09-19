@@ -1,0 +1,151 @@
+.breatcome-section {
+    background: url(../../../assets/images/ui/breatcome.png);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 420px;
+    margin-top: 100px;
+    position: relative;
+}
+
+.swiper {
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    overflow: hidden;
+    list-style: none;
+    padding: 0;
+    z-index: 1;
+    display: block;
+  }
+  
+  .swiper-slide {
+    width: 350px !important;
+    height: 413px !important;
+    flex-shrink: 0;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition-property: transform;
+    display: block;
+  }
+  
+//   .single-service-box {
+//     position: relative;
+//     z-index: 1;
+//     margin-bottom: 30px;
+//     transition: 0.5s;
+//     overflow: hidden;
+//   }
+  
+//   .service-thumb {
+//     position: relative;
+//     background-image: linear-gradient(0deg, rgba(0, 37, 111, 0.9999999999999999) 0%, rgba(0, 37, 111, 0.7999999999999999) 20%, rgba(0, 37, 111, 0) 50%, rgba(0, 37, 111, 0) 100%);
+//     transition: 0.5s;
+//     border-radius: 18px;
+//   }
+  
+//   .service-thumb:before {
+//     position: absolute;
+//     content: "";
+//     right: -256px;
+//     top: -40px;
+//     text-align: right;
+//     background: url(../../../assets/images/ui/srvce-shp.png);
+//     width: 100%;
+//     height: 100%;
+//     background-repeat: no-repeat;
+//     opacity: 0;
+//     transition: 0.5s;
+//   }
+//   .single-service-box:hover .service-thumb:after {
+//     height: 100%;
+//   }
+//   .service-thumb img {
+//     position: relative;
+//     z-index: -1;
+//     width: 100%;
+//     border-radius: 20px;
+//   }
+  
+//   .single-service-box:hover .service-icon a i {
+//     opacity: 1;
+//     right: 0;
+//   }
+  
+
+//   .single-service-box:hover .service-thumb:before {
+//     opacity: 1;
+//     top: -0px;
+//   }
+  
+  
+//   .service-icon a i {
+//     width: 60px;
+//     height: 60px;
+//     line-height: 60px;
+//     border-radius: 30px;
+//     text-align: center;
+//     background-color: #007eff;
+//     display: inline-block;
+//     font-size: 20px;
+//     position: absolute;
+//     z-index: 1;
+//     top: 0;
+//     right: 40px;
+//     color: #fff;
+//     transition: 0.5s;
+//     opacity: 0;
+//     transform: rotate(-4deg);
+//   }
+  
+//   .service-thumb:after {
+//     position: absolute;
+//     content: "";
+//     left: 0;
+//     bottom: 0;
+//     width: 100%;
+//     transition: 0.5s;
+//     border-radius: 18px;
+//     border: 1px solid rgba(0, 125, 255, 0.9999999999999999);
+//   }
+
+//   .service-content {
+//     position: absolute;
+//     z-index: 1;
+//     bottom: 40px;
+//     left: 40px;
+//   }
+  
+//   .service-content h6 {
+//     font-size: 16px;
+//     font-weight: 500;
+//     text-transform: uppercase;
+//     color: #fff;
+//   }
+  
+//   .service-content h2 a {
+//     font-size: 28px;
+//     font-weight: 600;
+//     color: #ffff;
+//     display: inline-block;
+//     transition: 0.5s;
+//   }
+
+
+// .swiper-button-prev, .swiper-button-next {
+//     background-color: gray;
+//     padding: 31px;
+//     border-radius: 43px;
+//     opacity: 0.8;
+//     transition: all 0.3s ease; /* Apply transition to all properties */
+// }
+
+// .swiper-button-prev:hover, .swiper-button-next:hover {
+//     padding: 35px;
+//     background-color: #082C73;
+//     color: white;
+//     transform: scale(1.05); /* Slight scale-up effect for the hover */
+//     opacity: 1; /* Increase opacity on hover for better visibility */
+// }
+

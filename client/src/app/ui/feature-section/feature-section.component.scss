@@ -11,27 +11,12 @@
 .header_card {
     font-size: x-large !important;
     font-weight: 500;
-    color: #0A2570;
 }
 
-
-
-.blue {
-    color: #0A2570;
-}
-
-.lightBlue {
-    color: #2A7BFB;
-}
-
-p {
-    color: #65677a;
-}
 
 .card:hover .header_card {
     color: white;
     transition: 0.5s;
-
 }
 
 .card:hover .hoverWhite {
@@ -50,7 +35,7 @@ p {
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    background-color: #2A7BFB;
+    background-color: #0052b3;
     z-index: -1;
     transition: all 0.5s;
 }
@@ -106,7 +91,6 @@ p {
     line-height: 200px;
     text-align: center;
     border-radius: 30px;
-    background-color: #007eff;
     display: flex;
     justify-content: center;
     align-items: center;
