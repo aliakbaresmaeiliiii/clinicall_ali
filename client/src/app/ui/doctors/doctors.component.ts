@@ -3,18 +3,22 @@ import {
   Component,
   ElementRef,
   inject,
+  OnInit,
   Renderer2,
   ViewChild,
 } from '@angular/core';
+import { interval, takeWhile } from 'rxjs';
 
 @Component({
   selector: 'app-doctors',
   templateUrl: './doctors.component.html',
   styleUrl: './doctors.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush
-
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DoctorsComponent {
+export class DoctorsComponent implements OnInit {
+  counter = 0;
+  maxCounter = 50;
+
   renderer = inject(Renderer2);
   @ViewChild('socialIcon') socialIcon!: ElementRef;
 
@@ -28,6 +32,18 @@ export class DoctorsComponent {
     { src: '../../../assets/images/ui/doctors/8.jpg' },
     { src: '../../../assets/images/ui/doctors/9.jpg' },
   ];
+
+  ngOnInit(): void {
+    this.incrememntCounter();
+  }
+
+  incrememntCounter() {
+    interval(80)
+      .pipe(takeWhile(() => this.counter < this.maxCounter))
+      .subscribe(() => {
+        this.counter++;
+      });
+  }
 
   shoIcon() {
     this.renderer.setStyle(this.socialIcon.nativeElement, 'opacity', '1');

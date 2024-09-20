@@ -31,8 +31,8 @@ import { ServicesDoctorComponent } from './services-doctor/services-doctor.compo
 import { SliderComponent } from './slider/slider.component';
 import { DrProjectsComponent } from './dr-projects/dr-projects.component';
 import { DetailDrProjectComponent } from './detail-dr-project/detail-dr-project.component';
-
-
+import { CounterDirective } from '../shared/directives/counter-number/counter.directive';
+import { PlaceholderComponent } from './shared-ui/components/placeholder/placeholder.component';
 const routes: Routes = [
   {
     path: '',
@@ -67,7 +67,8 @@ const routes: Routes = [
     MediicAppointmentComponent,
     ContactUsComponent,
     DrProjectsComponent,
-    DetailDrProjectComponent
+    DetailDrProjectComponent,
+    PlaceholderComponent
   ],
   imports: [
     CommonModule,
@@ -88,8 +89,8 @@ const routes: Routes = [
     MatCardModule, 
     NgxMatIntlTelInputComponent,
     GoogleMapComponent,
-    AppScrollProgressBarComponent
-    
+    AppScrollProgressBarComponent,
+    CounterDirective,
 
 
   ],

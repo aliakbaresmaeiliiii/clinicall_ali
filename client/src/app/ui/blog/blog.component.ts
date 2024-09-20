@@ -6,6 +6,9 @@ import { Component } from '@angular/core';
   styleUrl: './blog.component.scss',
 })
 export class BlogComponent {
+  array=3
+
+
   posts = [
     {
       title: 'what do you want to know about UI',
