@@ -98,7 +98,8 @@
   <div class="w-48" data-aos="zoom-in">
     <span class="text-blue-950 flex">
       <span class="font-bold text-4xl flex items-center">
-        10<i class="fa-solid fa-plus text-1xl text-blue-950"></i>
+        {{ counter }}
+        <i class="fa-solid fa-plus text-1xl text-blue-950"></i>
       </span>
       <span class="text-center">YEARS OF EXPERIENCE</span>
     </span>
@@ -340,32 +341,30 @@
 
 <div class="relative mx-auto pl-32 pr-32 pb-10">
   <!-- Image -->
-  <img
-    src="../../../assets/images/ui/appoinment.png"
-    alt=""
-    width="100%"
-   />
+  <img src="../../../assets/images/ui/appoinment.png" alt="" width="100%" />
 
   <!-- Form inside the image -->
   <div
-    class="absolute top-0 right-44  h-full flex items-center justify-end w-2/6">
-      <app-mediic-appointment/>
+    class="absolute top-0 right-44 h-full flex items-center justify-end w-2/6">
+    <app-mediic-appointment />
   </div>
 </div>
 
 <!---------------- start best-doctors ---------------------->
 <section>
-  <div class="flex items-center justify-between pt-12 m-auto gap-20 w-9/12 border-b-2 border-gray-300">
+  <div
+    class="flex items-center justify-between pt-12 m-auto gap-20 w-9/12 border-b-2 border-gray-300">
     <div class="flex items-center gap-4">
       <h1 class="text-4xl text-blue-950 pt-4">MEET OUR BEST DOCTORS</h1>
       <span class="animate-spin">
         <i class="fa-solid fa-star-of-life text-5xl text-blue-700 rotate"></i>
       </span>
     </div>
-    <div class="w-48 ">
-      <span class="text-blue-950 flex ">
+    <div class="w-48">
+      <span class="text-blue-950 flex">
         <span class="font-bold text-4xl flex items-center">
-          38<i class="fa-solid fa-plus text-1xl text-blue-950"></i>
+          {{ counter }}
+          <i class="fa-solid fa-plus text-1xl text-blue-950"></i>
         </span>
         <span class="text-center uppercase">Professional Doctors</span>
       </span>
@@ -378,7 +377,8 @@
 </section>
 
 <!---------------- start Blog section ---------------------->
-<div class="flex items-center justify-between pt-12 m-auto gap-20 w-9/12">
+<div
+  class="flex items-center justify-between pt-12 m-auto gap-20 w-9/12 border-b-2 border-gray-300">
   <div class="flex items-center gap-4" data-aos="zoom-out">
     <h1 class="text-4xl text-blue-950 pt-4 uppercase">Read Our Latest Blog</h1>
     <span class="animate-spin">
@@ -398,5 +398,3 @@
 <div class="m-auto w-9/12 pt-12 pb-7">
   <app-blog />
 </div>
-
-
