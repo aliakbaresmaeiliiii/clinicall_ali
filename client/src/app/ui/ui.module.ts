@@ -8,18 +8,22 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterModule, RouterOutlet, Routes } from '@angular/router';
 import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input';
 import { ButtonComponent } from '../shared/components/button/button.component';
 import { CustomCardComponent } from '../shared/components/custom-card/custom-card.component';
 import { GoogleMapComponent } from '../shared/components/google-map/google-map.component';
 import { SocialMediaIconComponent } from '../shared/components/social-media-icon/social-media-icon.component';
-import { ScrollAnimationDirective } from '../shared/directives/scroll-animation/scoll-animation.directive';
+import { CounterDirective } from '../shared/directives/counter-number/counter.directive';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { BestDoctorsComponent } from './best-doctors/best-doctors.component';
 import { BlogComponent } from './blog/blog.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
+import { DetailDrProjectComponent } from './detail-dr-project/detail-dr-project.component';
 import { DoctorsComponent } from './doctors/doctors.component';
+import { DrProjectsComponent } from './dr-projects/dr-projects.component';
 import { FeatureSectionComponent } from './feature-section/feature-section.component';
 import { FooterComponent } from './footer/footer.component';
 import { AppScrollProgressBarComponent } from './header/app-scroll-progress-bar/app-scroll-progress-bar.component';
@@ -28,11 +32,10 @@ import { HomeComponent } from './home/home.component';
 import { MediicAppointmentComponent } from './mediic-appointment/mediic-appointment.component';
 import { ServiceSectionComponent } from './service-section/service-section.component';
 import { ServicesDoctorComponent } from './services-doctor/services-doctor.component';
-import { SliderComponent } from './slider/slider.component';
-import { DrProjectsComponent } from './dr-projects/dr-projects.component';
-import { DetailDrProjectComponent } from './detail-dr-project/detail-dr-project.component';
-import { CounterDirective } from '../shared/directives/counter-number/counter.directive';
 import { PlaceholderComponent } from './shared-ui/components/placeholder/placeholder.component';
+import { SliderComponent } from './slider/slider.component';
+import { MenuComponent } from './mobile/menu/menu.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -68,7 +71,7 @@ const routes: Routes = [
     ContactUsComponent,
     DrProjectsComponent,
     DetailDrProjectComponent,
-    PlaceholderComponent
+    PlaceholderComponent,
   ],
   imports: [
     CommonModule,
@@ -78,7 +81,6 @@ const routes: Routes = [
     ReactiveFormsModule,
     MatMenuModule,
     ButtonComponent,
-    ScrollAnimationDirective,
     SocialMediaIconComponent,
     CustomCardComponent,
     MatListModule,
@@ -86,13 +88,14 @@ const routes: Routes = [
     MatInputModule,
     MatCheckboxModule,
     MatButtonModule,
-    MatCardModule, 
+    MatCardModule,
     NgxMatIntlTelInputComponent,
     GoogleMapComponent,
     AppScrollProgressBarComponent,
     CounterDirective,
-
-
+    MatSidenavModule,
+    MatRadioModule,
+    MenuComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

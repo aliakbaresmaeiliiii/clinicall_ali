@@ -5,8 +5,11 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { Component, EventEmitter, output, Output, signal } from '@angular/core';
-import { fromEvent, map, tap } from 'rxjs';
+import {
+  Component,
+  output,
+  signal
+} from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -53,8 +56,10 @@ import { fromEvent, map, tap } from 'rxjs';
 })
 export class HeaderComponent {
   navbarVisible = signal(true);
+
   private lastScrollPosition = 0;
   bgColor: string = 'default';
+  drawer = output<boolean>();
 
   progressValue = output<number | string>();
   progressValue$: any;
@@ -75,9 +80,8 @@ export class HeaderComponent {
     this.lastScrollPosition = currentScrollPosition;
   }
 
-
+  
   ngOnDestroy(): void {
     window.removeEventListener('scroll', this.onWindowScroll.bind(this));
   }
-
 }

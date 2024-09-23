@@ -1,5 +1,27 @@
-import { style, trigger, state, transition, animate } from '@angular/animations';
-import { Component, ElementRef, HostListener } from '@angular/core';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger,
+} from '@angular/animations';
+import {
+  Component,
+  effect,
+  ElementRef,
+  HostListener,
+  inject,
+  OnInit,
+  signal,
+  ViewChild,
+  viewChild,
+  WritableSignal,
+} from '@angular/core';
+import { map, Observable, shareReplay, startWith } from 'rxjs';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { MatSidenav } from '@angular/material/sidenav';
+
 const style1 = style({
   opacity: 1,
   transform: 'translateX(0)',
@@ -25,9 +47,26 @@ const style2 = style({
 })
 export class HomeComponent {
   state = 'hide';
+  el = inject(ElementRef);
+  fb = inject(FormBuilder);
+  private breakpointObserver = inject(BreakpointObserver);
+  @ViewChild('drawer') drawer!: MatSidenav;
+  events: string[] = [];
+  opened!: boolean;
+  isDrawerOpen = signal(true);
+  isDesktopMode = true;
 
-  constructor(public el: ElementRef) {}
+  isHandset$: Observable<boolean> = this.breakpointObserver
+    .observe(Breakpoints.Handset)
+    .pipe(
+      map(result => result.matches),
+      shareReplay()
+    );
 
+  form = this.fb.group({
+    city: [''],
+    school: [''],
+  });
 
   @HostListener('window:scroll', ['$event'])
   checkScroll() {
@@ -38,5 +77,9 @@ export class HomeComponent {
     } else {
       this.state = 'hide';
     }
+  }
+
+  toggleDrawer(): void {
+    this.drawer.toggle();
   }
 }
