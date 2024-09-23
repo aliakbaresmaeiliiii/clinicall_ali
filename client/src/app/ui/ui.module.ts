@@ -35,6 +35,7 @@ import { ServicesDoctorComponent } from './services-doctor/services-doctor.compo
 import { PlaceholderComponent } from './shared-ui/components/placeholder/placeholder.component';
 import { SliderComponent } from './slider/slider.component';
 import { MenuComponent } from './mobile/menu/menu.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 const routes: Routes = [
   {
@@ -72,6 +73,7 @@ const routes: Routes = [
     DrProjectsComponent,
     DetailDrProjectComponent,
     PlaceholderComponent,
+    MenuComponent
   ],
   imports: [
     CommonModule,
@@ -95,7 +97,7 @@ const routes: Routes = [
     CounterDirective,
     MatSidenavModule,
     MatRadioModule,
-    MenuComponent,
+    MatExpansionModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
