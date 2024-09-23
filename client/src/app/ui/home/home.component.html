@@ -1,4 +1,4 @@
-<mat-sidenav-container >
+<mat-sidenav-container>
   <mat-sidenav
     class="bg-black mt-32 h-fit z-1"
     #drawer
@@ -102,9 +102,9 @@
     <div>
       <div>
         @if (isHandset$ | async) {
-          <app-menu/>
+        <app-menu/>
         }@else {
-          <app-header (drawer)="toggleDrawer()" />
+        <app-header (drawer)="toggleDrawer()" />
         }
       </div>
       <router-outlet />
