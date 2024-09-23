@@ -1,9 +1,5 @@
 import {
-  Component,
-  effect,
-  ElementRef,
-  Renderer2,
-  signal,
+  Component
 } from '@angular/core';
 import Swiper from 'swiper';
 

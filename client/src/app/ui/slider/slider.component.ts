@@ -5,7 +5,13 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { Component, ElementRef, HostListener, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  inject,
+  OnInit,
+} from '@angular/core';
 import AOS from 'aos';
 import { fromEvent, interval, map, take, takeWhile } from 'rxjs';
 
@@ -36,16 +42,13 @@ export class SliderComponent implements OnInit {
   state = 'hide';
   counter: number = 0;
   maxCounter: number = 20;
+  el = inject(ElementRef);
 
-  constructor(public el: ElementRef) {
-  }
   ngOnInit(): void {
-    this.incrementCounter()
+    this.incrementCounter();
     AOS.init({ disable: 'mobile' });
     AOS.refresh();
   }
-
-  
 
   @HostListener('window:scroll', ['$event'])
   checkScroll() {
@@ -60,11 +63,9 @@ export class SliderComponent implements OnInit {
 
   incrementCounter(): void {
     interval(80)
-    .pipe(
-      takeWhile(() => this.counter < this.maxCounter)
-    ).subscribe(() => {
-      this.counter++;
-    });
-
+      .pipe(takeWhile(() => this.counter < this.maxCounter))
+      .subscribe(() => {
+        this.counter++;
+      });
   }
 }

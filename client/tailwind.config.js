@@ -22,7 +22,11 @@ module.exports = {
       
     },
 
-    extend: {},
+    extend: {
+      zIndex: {
+        '1': '1',
+      }
+    },
     // colors: {
     //   primary: "#9cd67d",
     //   blue: "#8116f3",

@@ -1,0 +1,84 @@
+<div class="flex justify-between p-4 bg-blue-950">
+  <a href="/">
+    <img
+      src="../../../assets/images/icons/ui/logo2.png"
+      width="100%"
+      height="100%"
+      alt="" />
+  </a>
+  <label class="hamburger">
+    <input type="checkbox"  (change)="toggleMenu($event)"/>
+    <svg viewBox="0 0 32 32">
+      <path
+        class="line line-top-bottom"
+        d="M27 10 13 10C10.8 10 9 8.2 9 6 9 3.5 10.8 2 13 2 15.2 2 17 3.8 17 6L17 26C17 28.2 18.8 30 21 30 23.2 30 25 28.2 25 26 25 23.8 23.2 22 21 22L7 22"></path>
+      <path class="line" d="M7 16 27 16"></path>
+    </svg>
+  </label>
+</div>
+
+@if (isShowMenu) {
+<div  @menuState>Hi menu</div>
+}
+
+<!-- 
+<div class="menu bg-gray-200 rounded-2xl">
+  <div class="item">
+    <a class="link">
+      <span> Services </span>
+      <svg viewBox="0 0 360 360" xml:space="preserve">
+        <g id="SVGRepo_iconCarrier">
+          <path
+            id="XMLID_225_"
+            d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393 c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393 s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"></path>
+        </g>
+      </svg>
+    </a>
+    <div class="submenu">
+      <div class="submenu-item">
+        <a routerLink="/services" class="submenu-link"> Our Services </a>
+      </div>
+      <div class="submenu-item">
+        <a href="#" class="submenu-link"> Design </a>
+      </div>
+      <div class="submenu-item">
+        <a href="#" class="submenu-link"> Marketing </a>
+      </div>
+      <div class="submenu-item">
+        <a href="#" class="submenu-link"> SEO </a>
+      </div>
+    </div>
+  </div>
+  <div class="item">
+    <a routerLink="/about-us" class="link">
+      <span> About Us </span>
+    </a>
+  </div>
+  <div class="item">
+    <a href="#" class="link">
+      <span> Our Services </span>
+      <svg viewBox="0 0 360 360" xml:space="preserve">
+        <g id="SVGRepo_iconCarrier">
+          <path
+            id="XMLID_225_"
+            d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393 c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393 s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"></path>
+        </g>
+      </svg>
+    </a>
+    <div class="submenu">
+      <div class="submenu-item">
+        <a href="#" class="submenu-link"> Development </a>
+      </div>
+      <div class="submenu-item">
+        <a href="#" class="submenu-link"> Design </a>
+      </div>
+      <div class="submenu-item">
+        <a href="#" class="submenu-link"> Marketing </a>
+      </div>
+      <div class="submenu-item">
+        <a href="#" class="submenu-link"> SEO </a>
+      </div>
+    </div>
+  </div>
+
+</div> -->
