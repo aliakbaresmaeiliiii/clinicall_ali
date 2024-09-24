@@ -22,10 +22,14 @@ export class ServiceSectionComponent implements OnInit {
   ngOnInit(): void {
     var swiper = new Swiper(".serviceSwiper", {
       slidesPerView: 3,
-      spaceBetween: 30,
+      spaceBetween: 20,
       pagination: {
         el: ".swiper-pagination",
         clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
       },
     });
     AOS.init({ disable: 'mobile' });

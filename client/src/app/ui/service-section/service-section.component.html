@@ -1,19 +1,19 @@
 <div class="bg-blue-950 p-7">
   <div
-    class="grid grid-cols-3 w-10/12 m-auto pt-28 border-b-2 border-lightGray">
+    class="desktop:grid grid-cols-3 w-10/12 m-auto pt-28 border-b-2 border-lightGray">
     <div class="text-gray-100" data-aos="fade-up">
-      <h1>PROVIDES BEST SERVICE</h1>
+      <div class="mobile:text-2xl mobile:font-semibold desktop:text-5xl ">PROVIDES BEST SERVICE</div>
     </div>
-    <div class="text-gray-100" data-aos="fade-down">
+    <div class="text-gray-100 mobile:pt-4"  data-aos="fade-down">
       Enthusiastically orchestrate competitive e-services whereas superior
       Conveniently disintermediate innovative solutions through impactfuls
       tailers without seamless markets network .
     </div>
-    <div class="flex justify-end" data-aos="fade-up">
+    <div class="flex justify-end mobile:pt-4 mobile:pb-4" data-aos="fade-up">
       <button dfButton>View All Service</button>
     </div>
   </div>
-  <div class="swiper serviceSwiper w-10/12 mt-10">
+  <div class="swiper serviceSwiper mobile:w-full desktop:w-10/12 mt-10">
     <div class="swiper-wrapper">
       @for (image of images; track $index) {
       <div class="swiper-slide">
@@ -38,5 +38,7 @@
       }
     </div>
     <div class="swiper-pagination"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
   </div>
 </div>

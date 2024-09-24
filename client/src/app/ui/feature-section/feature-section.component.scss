@@ -1,3 +1,6 @@
+
+ 
+
 .card {
     position: relative;
     height: 25rem;
@@ -6,6 +9,7 @@
     z-index: 1;
     border: 2px solid white;
     padding: 1rem;
+    width: 100%;
 }
 
 .header_card {
@@ -60,14 +64,8 @@
     height: 100%;
     border-radius: 15px;
     transition: all 0.5s;
-
 }
 
-
-
-// .card:hover:after {
-//     content: "HELLO";
-// }
 
 @keyframes rotate {
     0% {
@@ -83,18 +81,7 @@
     animation: rotate 8s linear infinite;
 }
 
-.thumbs-bxs {
-    top: 0;
-    right: 183px;
-    width: 200px;
-    height: 200px;
-    line-height: 200px;
-    text-align: center;
-    border-radius: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
+
 
 .text-circle {
     position: absolute;
@@ -111,8 +98,44 @@
     word-spacing: 10px;
     transform: rotate(0) scaleX(1) scaleY(1);
     animation: rotate 8s linear infinite;
-
 }
+
+@media (min-width: 320px) {
+    .thumbs-bxs {
+        top: 0;
+        right: 0;
+        width: 140px;
+        height: 146px;
+        line-height: 100px;
+        text-align: center;
+        border-radius: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .text-circle svg {
+        width: 109px;
+    }
+}
+
+
+@media (min-width: 1024px) {
+    .thumbs-bxs {
+            top: 0;
+            right: 183px;
+            width: 200px;
+            height: 200px;
+            line-height: 200px;
+            text-align: center;
+            border-radius: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+    .text-circle svg {
+        width: 97px;
+    }
 
 .svgCircle {
     vertical-align: middle !important;
@@ -147,7 +170,7 @@
     }
 }
 
-.slider{
+.slider {
     flex-shrink: 0;
     display: -webkit-box;
     display: flex;
@@ -156,6 +179,7 @@
     justify-content: space-around;
     animation: slider 30s linear infinite;
 }
+
 @keyframes slider {
     0% {
         transform: translateX(0);
@@ -174,4 +198,4 @@
     right: 0;
     margin: 10px;
     z-index: 9999;
-  }
+}

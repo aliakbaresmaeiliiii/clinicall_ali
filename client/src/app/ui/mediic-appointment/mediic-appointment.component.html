@@ -1,20 +1,19 @@
-<div>
-  <div class="relative mx-auto pl-32 pr-32 pb-10">
+  <div class="desktop:relative mx-auto desktop:pl-32 desktop:pr-32 desktop:pb-10">
 
     <!-- Form inside the image -->
     <div
       data-aos="fade-up"
-      class="absolute top-0 right-44 h-full flex items-center justify-end w-2/6">
+      class="desktop:absolute top-0  h-full desktop:flex desktop:items-center desktop:justify-end mobile:w-full desktop:w-2/6">
       <div>
         <div>
           <p class="uppercase text-blue-600">Online Appintment</p>
         </div>
-        <div class="text-3xl font-normal text-blue-950 pb-6">
+        <div class="desktop:text-3xl mobile:text-xl font-normal text-blue-950 pb-6">
           Make an Online Appoinemnt Booking For Treatment Patients
         </div>
 
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
-          <div class="flex gap-5">
+          <div class="desktop:flex gap-5">
             <!-- *****Name***** -->
             <mat-form-field
               data-testing="Name"
@@ -70,7 +69,7 @@
               >
             </mat-form-field>
           </div>
-          <div class="flex gap-5">
+          <div class="desktop:flex gap-5">
             <!-- *****Subject***** -->
             <mat-form-field
               data-testing="Subject"
@@ -141,4 +140,3 @@
       </div>
     </div>
   </div>
-</div>
