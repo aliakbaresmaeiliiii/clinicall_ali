@@ -1,8 +1,9 @@
 <app-slider />
 
 <!---------------- start mediic center cards  --------------->
-<section class="flex items-center pt-12 m-auto gap-20 w-9/12">
-  <div class="card w-1/3" data-aos="fade-up">
+<section
+  class="grid desktop:grid-flow-col desktop:auto-rows-max desktop:mx-auto desktop:gap-20 gap-10 mobile:mx-4 mx-auto pt-14 desktop:pt-28 desktop:w-9/12">
+  <div class="card" data-aos="fade-up">
     <div class="w-10/12 m-auto pt-4">
       <div class="flex justify-between items-center">
         <h2 class="header_card text-blue-950">Our Professionals</h2>
@@ -31,7 +32,7 @@
     </div>
   </div>
 
-  <div class="card w-1/3" data-aos="fade-down">
+  <div class="card" data-aos="fade-down">
     <div class="w-10/12 m-auto pt-4">
       <div class="flex justify-between items-center">
         <button class="rounded-full text-blue-950 hoverWhite p-2 pl-4 pr-4">
@@ -56,7 +57,7 @@
     </div>
   </div>
 
-  <div class="card w-1/3" data-aos="fade-up">
+  <div class="card" data-aos="fade-up">
     <div class="w-10/12 m-auto pt-4">
       <div class="flex justify-between items-center">
         <h2 class="header_card text-blue-950">Locations</h2>
@@ -88,28 +89,33 @@
 </section>
 
 <!------------------- About Medical  ------------------------>
-<section class="flex items-center justify-between pt-12 m-auto gap-20 w-9/12">
-  <div class="flex items-center gap-4" data-aos="zoom-in">
-    <h1 class="text-6xl text-blue-950 pt-4">About Medical</h1>
+<section
+  class="desktop:flex items-center justify-between mobile:pl-4 pt-12 m-auto gap-20 w-full desktop:w-9/12 border-b-2 border-gray-300">
+  <div class="flex items-center gap-4 pt-4" data-aos="zoom-in">
+    <div class="desktop:text-6xl mobile:text-base text-blue-950">
+      About Medical
+    </div>
     <span class="animate-spin">
-      <i class="fa-solid fa-star-of-life text-5xl text-blue-500 rotate"></i>
+      <i
+        class="fa-solid fa-star-of-life desktop:text-5xl mobile:text-2xl text-blue-500 rotate"></i>
     </span>
   </div>
-  <div class="w-48" data-aos="zoom-in">
+  <div class="w-48 mobile:pt-4 mobile:pb-8" data-aos="zoom-in">
     <span class="text-blue-950 flex">
       <span class="font-bold text-4xl flex items-center">
         {{ counter }}
         <i class="fa-solid fa-plus text-1xl text-blue-950"></i>
       </span>
-      <span class="text-center">YEARS OF EXPERIENCE</span>
+      <span class="text-center mobile:text-sm">YEARS OF EXPERIENCE</span>
     </span>
   </div>
 </section>
 <hr class="text-blue-950 m-auto w-9/12" />
 
 <!----------- start mediic marquee section  ---------------->
-<section class="flex gap-10 m-auto w-9/12 pt-12">
-  <div class="w-7/12">
+<section
+  class="desktop:flex gap-10 mobile:mx-4 desktop:mx-auto desktop:w-9/12 mobile:full pt-12">
+  <div class="desktop:w-7/12">
     <div data-aos="fade-up-right">
       <div class="about-thumb relative">
         <span>
@@ -151,9 +157,13 @@
     </div>
   </div>
 
-  <div class="w-5/12 flex flex-col justify-center" data-aos="fade-up-left">
-    <div class="uppercase text-blue-700 text-sm pb-6">About Company</div>
-    <span class="text-blue-950 text-3xl font-bold">
+  <div
+    class="desktop:w-5/12 desktop:flex flex-col justify-center"
+    data-aos="fade-up-left">
+    <div class="uppercase text-blue-700 text-sm pb-6 mobile:pt-4">
+      About Company
+    </div>
+    <span class="text-blue-950 desktop:text-3xl mobile:text-xl font-bold">
       Since 2007 We’re working Medical group of more than 1200+ Patients help
       from our medical
     </span>
@@ -163,7 +173,7 @@
     <ul>
       <li>
         <div
-          class="flex justify-between border-dashed border-t-2 border-blueDark">
+          class="flex justify-between border-b-2 border-dashed border-blue-600">
           <span class="flex items-center gap-1 pt-6 pb-6">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -188,13 +198,13 @@
               <path
                 d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
             </svg>
-            <span class="text-blue-950"> Completely to syndicate </span>
+            <span class="text-blue-950"> 24 Hrs Aumbulance Service </span>
           </span>
         </div>
       </li>
       <li>
         <div
-          class="flex justify-between border-dashed border-t-2 border-blueDark">
+          class="flex justify-between border-blueDark border-b-2 border-dashed border-blue-600">
           <span class="flex items-center gap-1 pt-6 pb-6">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -219,13 +229,13 @@
               <path
                 d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
             </svg>
-            <span class="text-blue-950"> Completely to syndicate </span>
+            <span class="text-blue-950"> 100% Satisfaction </span>
           </span>
         </div>
       </li>
       <li>
         <div
-          class="flex justify-between border-dashed border-t-2 border-b-2 border-blueDark">
+          class="flex justify-between border-b-2 border-dashed border-blue-600">
           <span class="flex items-center gap-1 pt-6 pb-6">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -237,7 +247,7 @@
               <path
                 d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
             </svg>
-            <span class="text-blue-950"> Completely to syndicate </span>
+            <span class="text-blue-950"> Instant Operations System </span>
           </span>
           <span class="flex items-center gap-1 text-blue-950 pt-6 pb-6">
             <svg
@@ -250,7 +260,7 @@
               <path
                 d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
             </svg>
-            <span class="text-blue-950"> Completely to syndicate </span>
+            <span class="text-blue-950"> Professional </span>
           </span>
         </div>
       </li>
@@ -278,54 +288,54 @@
 
 <div class="w-full pt-12">
   <div class="flex items-center overflow-hidden gap-4 bg-blue-200">
-    <div class="marquee-content slider gap-5 pt-4">
-      <h1
+    <div class="marquee-content slider gap-5 py-4">
+      <div
         data-aos="zoom-out"
-        class="flex items-center gap-5 text-6xl font-bold uppercase text-blue-950">
+        class="flex items-center gap-5 desktop:text-6xl mobile:py-4 mobile:text-base font-bold uppercase text-blue-950">
         Cardiologist
         <span class="animate-spin">
           <i class="fa-solid fa-star-of-life text-5xl text-blue-700 rotate"></i>
         </span>
-      </h1>
-      <h1
+      </div>
+      <div
         data-aos="zoom-out"
-        class="flex items-center gap-5 text-6xl font-bold uppercase text-blue-950">
+        class="flex items-center gap-5 desktop:text-6xl mobile:py-4 mobile:text-base font-bold uppercase text-blue-950">
         Cardiologist
         <span class="animate-spin">
           <i class="fa-solid fa-star-of-life text-5xl text-blue-700 rotate"></i>
         </span>
-      </h1>
-      <h1
+      </div>
+      <div
         data-aos="zoom-out"
-        class="flex items-center gap-5 text-6xl font-bold uppercase text-blue-950">
+        class="flex items-center gap-5 desktop:text-6xl mobile:py-4 mobile:text-base font-bold uppercase text-blue-950">
         Cardiologist
         <span class="animate-spin">
           <i class="fa-solid fa-star-of-life text-5xl text-blue-700 rotate"></i>
         </span>
-      </h1>
+      </div>
     </div>
     <div class="marquee-content slider gap-5 pt-4">
-      <h1
-        class="flex items-center gap-5 text-6xl font-bold uppercase text-blue-950">
+      <div
+        class="flex items-center gap-5 desktop:text-6xl mobile:py-4 mobile:text-base font-bold uppercase text-blue-950">
         Cardiologist
         <span class="animate-spin">
           <i class="fa-solid fa-star-of-life text-5xl text-blue-700 rotate"></i>
         </span>
-      </h1>
-      <h1
-        class="flex items-center gap-5 text-6xl font-bold uppercase text-blue-950">
+      </div>
+      <div
+        class="flex items-center gap-5 desktop:text-6xl mobile:py-4 mobile:text-base font-bold uppercase text-blue-950">
         Cardiologist
         <span class="animate-spin">
           <i class="fa-solid fa-star-of-life text-5xl text-blue-700 rotate"></i>
         </span>
-      </h1>
-      <h1
-        class="flex items-center gap-5 text-6xl font-bold uppercase text-blue-950">
+      </div>
+      <div
+        class="flex items-center gap-5 desktop:text-6xl mobile:py-4 mobile:text-base font-bold uppercase text-blue-950">
         Cardiologist
         <span class="animate-spin">
           <i class="fa-solid fa-star-of-life text-5xl text-blue-700 rotate"></i>
         </span>
-      </h1>
+      </div>
     </div>
   </div>
 </div>
@@ -333,35 +343,43 @@
 <app-service-section />
 
 <!------------- start mediic-appointment  ------------------>
-<div class="mt-24 flex justify-center">
-  <h1 class="text-4xl font-bold text-blue-950">
-    <span class="font-bold">MAKE APPOINMENT</span>
-  </h1>
-</div>
-
-<div class="relative mx-auto pl-32 pr-32 pb-10">
-  <!-- Image -->
-  <img src="../../../assets/images/ui/appoinment.png" alt="" width="100%" />
-
-  <!-- Form inside the image -->
-  <div
-    class="absolute top-0 right-44 h-full flex items-center justify-end w-2/6">
-    <app-mediic-appointment />
+<section>
+  <div class="py-20 text-center">
+    <div class="desktop:text-4xl mobile:text-2xl font-bold text-blue-950">
+      <span class="font-bold">MAKE APPOINMENT</span>
+    </div>
   </div>
-</div>
 
+  <div
+    class="mediic-appoinment relative mx-auto desktop:pl-32 desktop:pr-32 pb-10">
+    <img
+      src="../../../assets/images/ui/appoinment.png"
+      class="mobile:hidden desktop:block"
+      alt=""
+      width="100%" />
+
+    <div
+      class="desktop:absolute top-0 mobile:px-4 desktop:right-44 h-full desktop:flex desktop:items-center desktop:justify-end desktop:w-2/6 mobile:w-full">
+      <app-mediic-appointment />
+    </div>
+  </div>
+</section>
 <!---------------- start best-doctors ---------------------->
 <section>
   <div
-    class="flex items-center justify-between pt-12 m-auto gap-20 w-9/12 border-b-2 border-gray-300">
-    <div class="flex items-center gap-4">
-      <h1 class="text-4xl text-blue-950 pt-4">MEET OUR BEST DOCTORS</h1>
+    class="desktop:flex desktop:items-center desktop:justify-between pt-12 m-auto gap-20 desktop:w-9/12 border-b-2 border-gray-300 pl-4">
+    <div class="flex items-center gap-2">
+      <div
+        class="desktop:text-4xl mobile:text-2xl text-blue-950 desktop:pt-4 uppercase">
+        MEET OUR BEST DOCTORS
+      </div>
       <span class="animate-spin">
-        <i class="fa-solid fa-star-of-life text-5xl text-blue-700 rotate"></i>
+        <i
+          class="fa-solid fa-star-of-life desktop:text-5xl mobile:text-2xl text-blue-700 rotate"></i>
       </span>
     </div>
-    <div class="w-48">
-      <span class="text-blue-950 flex">
+    <div class="desktop:w-48 mobile:py-4 mobile:gap-4">
+      <span class="text-blue-950 flex items-center">
         <span class="font-bold text-4xl flex items-center">
           {{ counter }}
           <i class="fa-solid fa-plus text-1xl text-blue-950"></i>
@@ -378,15 +396,18 @@
 
 <!---------------- start Blog section ---------------------->
 <div
-  class="flex items-center justify-between pt-12 m-auto gap-20 w-9/12 border-b-2 border-gray-300">
+  class="desktop:flex desktop:items-center desktop:justify-between pt-12 m-auto gap-20 desktop:w-9/12 border-b-2 border-gray-300 pl-4">
   <div class="flex items-center gap-4" data-aos="zoom-out">
-    <h1 class="text-4xl text-blue-950 pt-4 uppercase">Read Our Latest Blog</h1>
+    <div class="desktop:text-4xl mobile:text-2xl text-blue-950 desktop:pt-4">
+      Read Our Latest Blog
+    </div>
     <span class="animate-spin">
-      <i class="fa-solid fa-star-of-life text-5xl text-blue-700 rotate"></i>
+      <i
+        class="fa-solid fa-star-of-life desktop:text-5xl mobile:text-2xl text-blue-700 rotate"></i>
     </span>
   </div>
-  <div class="w-48">
-    <span class="text-blue-950 flex" data-aos="zoom-out">
+  <div class="desktop:w-48 mobile:py-4 mobile:gap-4">
+    <span class="text-blue-950 flex items-cente" data-aos="zoom-out">
       <span class="font-bold text-4xl flex items-center">
         38<i class="fa-solid fa-plus text-1xl text-blue-950"></i>
       </span>
@@ -394,7 +415,7 @@
     </span>
   </div>
 </div>
-<hr class="text-blue-950 m-auto w-9/12" />
-<div class="m-auto w-9/12 pt-12 pb-7">
+<hr class="text-blue-950 mx-auto desktop:w-9/12" />
+<div class="mx-auto desktop:w-9/12 pt-12 pb-7">
   <app-blog />
 </div>

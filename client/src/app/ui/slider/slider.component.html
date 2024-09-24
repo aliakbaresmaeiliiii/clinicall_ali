@@ -1,32 +1,33 @@
-
-
 <div class="bg-slider w-full desktop:mt-32">
-  <div class="mx-auto slider-content w-full">
-    <h1 class="flex gap-6 uppercase text-white pt-52">
-      Healthcare
-      <span>
+  <div class="mx-auto slider-content w-full desktop:w-[37%]">
+    <div class="flex pt-52 gap-2 mobile:justify-center">
+      <div class="flex">
+        <h1 class="uppercase text-white desktop:!text-8xl mobile:!text-2xl">
+          Healthcare
+        </h1>
+      </div>
+      <div>
         <img
           class="animate"
           src="../../../assets/images/ui/slider/heart.png"
-          width="100%"
-          height="100%"
+          width="50"
+          height="50"
           alt="" />
-      </span>
-    </h1>
-    <h1
-      class="relative z-1 flex items-center justify-center gap-9 uppercase text-white font-semibold">
-      <span class="team-mbr">
-        <img
-          src="../../../assets/images/ui/slider/team-img.png"
-          width="100%"
-          height="100%"
-          alt="" />
+      </div>
+    </div>
+    <div
+      class="relative z-1 flex items-center justify-center gap-9 uppercase text-white font-semibold mobile:pt-2">
+      <span
+        class="flex items-center gap-2 py-2 desktop:px-10 rounded-full bg-[rgba(255, 255, 255, 0.2)] text-lg font-semibold desktop:backdrop-blur-lg mobile:backdrop-blur-sm">
+        <img src="../../../assets/images/ui/slider/team-img.png" alt="" />
         memeber
       </span>
-      <span class="font-semibold"> Doctor </span>
-    </h1>
+      <span class="font-semibold desktop:!text-8xl mobile:!text-xl">
+        Doctor
+      </span>
+    </div>
 
-    <div class="absolute top-4">
+    <div class="absolute top-4 mobile:hidden desktop:block">
       <img
         src="../../../assets/images/ui/slider/hero-img.png"
         alt="doctor"
@@ -35,10 +36,10 @@
     </div>
   </div>
 
-  <div class="flex justify-between items-center w-3/4 mx-auto">
+  <div
+    class="desktop:flex justify-between items-center desktop:w-3/4 mobile:pl-4 mx-auto mobile:pt-24">
     <div class="mediic-hero-content">
       <div class="flex gap-4">
-
         <img src="../../../assets/images/ui/slider/tick.png" alt="icon" />
         <h4>Best Medical</h4>
       </div>
@@ -52,59 +53,64 @@
         <i class="fa-solid fa-arrow-trend-up text-2xl"></i>
       </button>
     </div>
-    <div class="hero-cnct-nmbr cursor-scale small">
+    <div class="hero-cnct-nmbr cursor-scale small desktop:block mobile:hidden">
       <h4>+980 123 (4567) 890</h4>
     </div>
-    <div class="hero-socail-icon cursor-scale small">
+    <div
+      class="hero-socail-icon cursor-scale small desktop:block mobile:hidden">
       <a href="" class="">
         <i class="fa-brands fa-facebook-f hover:text-blue-600 text-white"></i>
-
       </a>
       <a href="" class="">
         <i class="fa-brands fa-linkedin-in hover:text-blue-600 text-white"></i>
-
       </a>
-      <a href="" >
+      <a href="">
         <i class="fa-brands fa-twitter hover:text-blue-600 text-white"></i>
-
       </a>
-      <a href="" >
+      <a href="">
         <i class="fa-brands fa-instagram hover:text-red-600 text-white"></i>
-
       </a>
-      
     </div>
   </div>
 </div>
-<div class="relative bg-center bg-no-repeat">
-  <div class="flex justify-center items-center h-full">
-    <img
-      class="object-center"
-      src="../../../assets/images/ui/slider/counter-bg.png"
-      alt="Counter Image" />
-    <div class="absolute flex justify-between items-center gap-4 w-3/4">
-      <div  class="flex items-center gap-4" data-aos="fade-up"  data-aos-duration="1000">
-        <div>
-          <img src="../../../assets/images/ui/counter-img.png" alt="" />
 
-        </div>
-        <div class="flex flex-col">
-          <div class="text-white text-4xl font-semibold" >Medical Achivment</div>
-          <div class="text-white text-4xl font-semibold">Health Protection</div>
-        </div>
+
+  <div
+    class="bg-blue-600 desktop:ml-6 desktop:mr-6 desktop:flex text-center  justify-around  items-center  pt-9 pb-8">
+    <div
+      class="desktop:flex items-center text-center gap-4  mobile:pl-2 mobile:pr-2"
+      data-aos="fade-up"
+      data-aos-duration="1000">
+      <div>
+
+        <img
+        class=" mobile:pl-2 mobile:pr-2 mx-auto "
+        width="100%"
+        src="../../../assets/images/ui/counter-img.png"
+        alt="" />
       </div>
-      <div class="flex justify-between items-center gap-20" data-aos="fade-down" data-aos-duration="1000">
-        <div >
-          <p class="text-white text-5xl font-bold counter">{{counter}}+</p>
-          <hr class="text-white" />
-          <p class="text-white text-xl font-medium">Satisfied Patients</p>
+      <div class="flex flex-col mobile:pt-4">
+        <div class="text-white desktop:text-4xl mobile:text-lg font-semibold">
+          Medical Achivment
         </div>
-        <div >
-          <p class="text-white text-5xl font-bold">100%</p>
-          <hr class="text-white" />
-          <p class="text-white text-xl font-medium">Satisfaction Rates</p>
+        <div class="text-white desktop:text-4xl mobile:text-lg font-semibold">
+          Health Protection
         </div>
       </div>
     </div>
-  </div>
+    <div
+      class="flex justify-between items-center gap-20 mobile:pt-4"
+      data-aos="fade-down"
+      data-aos-duration="1000">
+      <div class="mobile:pl-4">
+        <p class="text-white text-5xl font-bold counter">{{ counter }}+</p>
+        <hr class="text-white" />
+        <p class="text-white text-xl font-medium">Satisfied Patients</p>
+      </div>
+      <div class="mobile:pr-4">
+        <p class="text-white text-5xl font-bold">100%</p>
+        <hr class="text-white" />
+        <p class="text-white text-xl font-medium">Satisfaction Rates</p>
+      </div>
+    </div>
 </div>
