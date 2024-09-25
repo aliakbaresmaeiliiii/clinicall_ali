@@ -1,19 +1,20 @@
-<div class="pt-4">
-  <div class="breatcome-section">
+<div class="desktop:pt-4">
+  <div class="breatcome-section desktop:mt-28">
     <div class="container mx-auto">
-      <h1
-        class="font-semibold text-white flex justify-center items-center pt-36 uppercase">
+      <div
+        class="font-semibold text-white flex justify-center items-center desktop:pt-36 mobile:text-3xl mobile:pt-32 uppercase">
         mediic Doctors
-      </h1>
+      </div>
       <div class="text-white flex justify-center items-center uppercase">
         mediic / mediic Doctors
       </div>
     </div>
   </div>
   <!-- team-section -->
-  <div class="container mx-auto flex flex-wrap gap-6 pt-24 pr-0 pb-32">
-    @for (image of images; track $index) {
-    <div class="flex-col">
+  <div
+    class="desktop:container desktop:m-auto flex justify-center flex-wrap gap-6 desktop:pt-24 desktop:pr-0 desktop:pb-32 mobile:pt-6 mobile:mx-4">
+     @for (image of images; track $index) {
+    <div class="flex-col mobile:w-full desktop:w-1/4">
       <div class="team-content">
         <div
           class="flex justify-center items-center text-blueDark font-semibold text-3xl">
@@ -23,47 +24,49 @@
           class="flex justify-center items-center text-blueDark font-thin pt-3">
           DENTIST
         </div>
-        
       </div>
       <div class="team-thumb">
         <div (mouseenter)="shoIcon()" (mouseleave)="hideIcon()">
           <div class="social-icon" #iconOverlay>
             <span>
-              <i class="fa-brands fa-linkedin-in text-1xl "></i>
+              <i class="fa-brands fa-linkedin-in text-1xl"></i>
             </span>
             <span>
-              <i class="fa-brands fa-facebook-f text-1xl "></i>
+              <i class="fa-brands fa-facebook-f text-1xl"></i>
             </span>
             <span>
-              <i class="fa-brands fa-instagram text-2xl "></i>
+              <i class="fa-brands fa-instagram text-2xl"></i>
             </span>
           </div>
-          <img [src]="image.src" />
+          <img [src]="image.src" class="mobile:w-full" />
         </div>
       </div>
     </div>
     }
   </div>
 
-  <div class="flex items-center justify-between pt-12 m-auto gap-20 w-9/12">
-    <div class="flex items-center gap-4">
-      <h1 class="text-4xl text-blueDark pt-4 uppercase">Read Our Latest Blog</h1>
-      <span class="animate-spin">
-        <i
-          class="fa-solid fa-star-of-life text-5xl text-blueTextLight rotate"></i>
-      </span>
+<!---------------- start Blog section ---------------------->
+<div
+  class="desktop:flex desktop:items-center desktop:justify-between pt-12 m-auto gap-20 desktop:w-9/12 border-b-2 border-gray-300 pl-4">
+  <div class="flex items-center gap-4" data-aos="zoom-out">
+    <div class="desktop:text-4xl mobile:text-2xl text-blue-950 desktop:pt-4">
+      Read Our Latest Blog
     </div>
-    <div class="w-48">
-      <span class="text-blueDark flex">
-        <span class="font-bold text-4xl flex items-center">
-          {{counter}}<i class="fa-solid fa-plus text-1xl text-blueDark"></i>
-        </span>
-        <span class="text-center uppercase">Professional Doctors</span>
+    <span class="animate-spin">
+      <i
+        class="fa-solid fa-star-of-life desktop:text-4xl mobile:text-2xl text-blue-700 rotate"></i>
+    </span>
+  </div>
+  <div class="desktop:w-48 mobile:py-4 mobile:gap-4">
+    <span class="text-blue-950 flex items-cente" data-aos="zoom-out">
+      <span class="font-bold text-4xl flex items-center">
+        38<i class="fa-solid fa-plus text-1xl text-blue-950"></i>
       </span>
-    </div>
+      <span class="text-center uppercase">Professional Doctors</span>
+    </span>
   </div>
-  <hr class="text-blueDark m-auto w-9/12" />
-  <div class="m-auto w-9/12 pt-12 pb-7">
-    <app-blog />
-  </div>
+</div>
+<hr class="text-blue-950 mx-auto desktop:w-9/12" />
+<div class="mx-auto desktop:w-9/12 pt-12 pb-7">
+  <app-blog />
 </div>

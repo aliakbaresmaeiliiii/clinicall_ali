@@ -4,10 +4,17 @@
     background-position: center;
     background-repeat: no-repeat;
     height: 420px;
-    margin-top: 100px;
     position: relative;
 }
 
+@media screen and (min-width: 320px) {
+    .breatcome-section {
+        background: url(../../../assets/images/ui/breatcome.png);
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+    }
+  }
 .team-thumb {
     position: relative;
 }
