@@ -1,4 +1,4 @@
-.sidenav {
+  .sidenav {
   width: 260px;
   padding: 0 8px;
   box-sizing: border-box;
@@ -8,9 +8,8 @@
 .menu-button {
   transition: 300ms ease-in-out;
   transform: rotate(0deg);
+  display: flex;
 }
-
-
 
 .submenu {
   overflow-y: hidden;
@@ -21,6 +20,5 @@
 }
 
 .submenu.expanded {
-  margin: 20px;
   transform: scaleY(1);
 }

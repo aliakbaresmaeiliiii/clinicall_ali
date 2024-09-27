@@ -13,82 +13,85 @@
     <div class="flex flex-col justify-center items-center p-6 gap-4">
       <div class="w-20 m-auto">
         <img
-          src="../../../../assets/images/admin.jpg"
+          [src]="userImg"
           class="bg-white p-1 shadow-lg rounded-xl"
           width="100%"
           height="100%"
           alt="" />
       </div>
       <div>
-        <p class="text-sm font-medium">Aliakbar Esmaeili</p>
+        <p class="text-sm font-medium">{{ username }}</p>
         <p class="text-xs font-medium text-center">Admin</p>
       </div>
     </div>
     @if(hasAccess){
-      <div class="text-xs uppercase ml-4 mb-4">Main</div>
-    }
-
-    @for (menuName of getMenuNames(); track $index) { @for (item of
+    <div class="text-xs uppercase ml-4 mb-4">Main</div>
+    } @for (menuName of getMenuNames(); track $index) { @for (item of
     groupedData[menuName]; track item ) {
-    <a
-      class="cursor-pointer dark:hover:text-blue"
-      mat-list-item
-      #link="routerLinkActive"
-      routerLinkActive
-      [activated]="link.isActive"
-      (click)="toggleSubmenu(item.menu_id)">
-      <div class="flex items-center justify-between p-2">
-        <div class="flex gap-2">
-          <span class="material-symbols-outlined">
-            {{ item.icon }}
-          </span>
-          <span class="text-base">
-            {{ item.menu_name }}
-          </span>
-        </div>
-        @if(item.submenus.length){
-        <div (click)="toggleMenu(item.menu_id)">
-          <mat-icon
-            class="menu-button"
-            [@iconRotate]="
-              expandedMenus[item.menu_id] ? 'expanded' : 'collapsed'
-            ">
-            chevron_right
-          </mat-icon>
-        </div>
-        }
-      </div>
-    </a>
-
-    <div *ngFor="let sub of item.submenus; let subIndex = index">
-      <div *ngIf="expandedMenus[item.menu_id]">
+    <div
+      class="w-full bg-cover hover:bg-blue-100 hover:shadow-inner focus:bg-white transition-all rounded-2xl ease-linear duration-500">
+      <a
+        class="cursor-pointer dark:hover:text-blue-300 mb-4 w-5/6 flex flex-col"
+        mat-list-item
+        #link="routerLinkActive"
+        routerLinkActive
+        [activated]="link.isActive"
+        (click)="toggleSubmenu(item.menu_id)">
         <div
-          class="submenu"
-          [ngClass]="{ expanded: expandedMenus[item.menu_id] }">
-          <a
-            class="dark:hover:text-blue cursor-pointer"
-            mat-list-item
-            [routerLink]="sub.url"
-            href="{{ sub.link }}">
-            <div class="flex gap-2">
-              @if (isActive(sub.url)) {
-              <span
-                class="material-symbols-outlined"
-                [ngClass]="{ 'text-blue': isActive(sub.url) }">
-                chevron_right
-              </span>
-              }
-              <span
-                class="text-base"
-                [ngClass]="{ 'text-blue': isActive(sub.url) }">
-                {{ sub.submenu_name }}
-              </span>
-            </div>
-          </a>
+          class="focus:text-black flex items-center justify-between hover:text-blue-950 p-1">
+          <!-- Flex container for icon and text -->
+          <div class="flex items-center">
+            <i [ngClass]="['fa-solid', item.icon]" class="mr-2"></i>
+            <span>
+              {{ item.menu_name }}
+            </span>
+          </div>
+
+          <!-- Chevron icon -->
+          <div *ngIf="item.submenus.length" (click)="toggleMenu(item.menu_id)">
+            <mat-icon
+              class="menu-button hover:text-blue-950"
+              [@iconRotate]="
+                expandedMenus[item.menu_id] ? 'expanded' : 'collapsed'
+              ">
+              chevron_right
+            </mat-icon>
+          </div>
         </div>
+      </a>
+    </div>
+
+    @for (sub of item.submenus;; track $index) { @if
+    (expandedMenus[item.menu_id]) {
+    <div
+      class="submenu mb-4"
+      [ngClass]="{ expanded: expandedMenus[item.menu_id] }">
+      <div
+        class="w-full bg-cover hover:bg-blue-100 hover:shadow-inner p-1 focus:bg-white transition-all rounded-2xl ease-linear duration-500">
+        <a
+          class="hover:text-blue-950"
+          mat-list-item
+          [routerLink]="sub.url"
+          href="{{ sub.link }}">
+          <div class="flex gap-2">
+            @if (isActive(sub.url)) {
+            <span
+              class="material-symbols-outlined"
+              [ngClass]="{ 'text-blue': isActive(sub.url) }">
+              chevron_right
+            </span>
+            }
+            <span
+              class="text-base"
+              [ngClass]="{ 'text-blue': isActive(sub.url) }">
+              {{ sub.submenu_name }}
+            </span>
+          </div>
+        </a>
       </div>
     </div>
-    } }@empty {
+
+    } } } }@empty {
     <div class="flex items-center justify-center">
       <app-loader />
     </div>

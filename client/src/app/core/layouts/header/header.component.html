@@ -65,13 +65,13 @@
       <div class="flex items-center gap-4 p-5">
         <img
           class="w-10 h-10 rounded-full"
-          src="assets/images/ali.jpg"
+          [src]="imageUser"
           alt=""
           width="100%"
           height="100%" />
         <div class="font-medium">
           <div class="text-blue">
-            {{ username?.firstName }}&nbsp;-{{ username?.lastName }}
+            {{username}}
           </div>
           <div class="text-sm text-blue">Admin</div>
         </div>

@@ -38,9 +38,9 @@ export class HeaderComponent implements OnInit {
   @Output() onToggleMenu = new EventEmitter<any>();
   matcher = new MyErrorStateMatcher();
   today: number = Date.now();
-  imageUser:any
+  imageUser: any;
   showLng: any;
-  username: any;
+  username: string = '';
   languages = [
     { name: 'ENG', flag: 'assets/flags/ad.svg' },
     { name: 'CA', code: 'ca', flag: 'assets/flags/ca.svg' },
@@ -59,8 +59,10 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
     this.showLng = this.languages.find(lng => lng.name === 'ENG');
     const loggedInUser = sessionStorage.getItem('loggedInUser');
-    const getUserImg = loggedInUser ? JSON.parse(loggedInUser) : null;
-    this.imageUser = getUserImg.picture
+    const getUserInfo = loggedInUser ? JSON.parse(loggedInUser) : null;
+    this.imageUser = getUserInfo.picture;
+    this.username = getUserInfo.name
+
     this.getUserData();
   }
 

@@ -94,6 +94,8 @@ export class SideBarComponent
   rootRoutes = routes.filter(r => r.path);
   navService = inject(NavItemsService);
   observer = inject(BreakpointObserver);
+  userImg: any;
+
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
     .pipe(
@@ -103,6 +105,10 @@ export class SideBarComponent
 
   ngOnInit(): void {
     this.getNavItems();
+    const loggedInUser = sessionStorage.getItem('loggedInUser');
+    const getUserInfo = loggedInUser ? JSON.parse(loggedInUser) : null;
+    this.userImg = getUserInfo.picture;
+    this.username = getUserInfo.name;
   }
 
   getFirstWord(username: string): string {
@@ -172,7 +178,7 @@ export class SideBarComponent
     this.router.navigate(['login']);
     localStorage.removeItem('userData');
     console.log(localStorage.removeItem('userData'));
-    
+
     this.permissionService.clearPermissions();
   }
   ngOnDestroy(): void {
