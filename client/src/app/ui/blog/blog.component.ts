@@ -6,8 +6,7 @@ import { Component } from '@angular/core';
   styleUrl: './blog.component.scss',
 })
 export class BlogComponent {
-  array=3
-
+  array = 3;
 
   posts = [
     {
