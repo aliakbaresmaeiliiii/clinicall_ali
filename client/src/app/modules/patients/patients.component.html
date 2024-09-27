@@ -183,23 +183,21 @@
                 mat-icon-button
                 matTooltip="View Detail"
                 (click)="patientDetial(element.id)">
-                <span class="material-symbols-outlined text-blue">
-                  Visibility
-                </span>
+                <i class="fa-regular fa-eye text-blue-900 text-xl"></i>
               </button>
               <button
                 mat-icon-button
                 matTooltip="Eidt Patient"
                 (click)="editPatient(element, '250ms', '150ms')">
-                <span class="material-symbols-outlined text-blue"> edit </span>
+                <!-- <i class="fa-regular fa-pen-to-square text-blue-500"></i> -->
+                <i class="fa-solid fa-user-pen text-blue-500 text-xl"></i>
               </button>
               <button
                 matTooltip="Delete Patient"
                 mat-icon-button
                 (click)="deletePatient(element, '250ms', '150ms')">
-                <span class="material-symbols-outlined text-red cursor-pointer">
-                  delete
-                </span>
+        
+                <i class="fa-regular fa-trash-can text-red-500 text-xl"></i>
               </button>
             </div>
           </td>

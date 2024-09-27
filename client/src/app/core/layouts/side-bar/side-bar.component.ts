@@ -7,13 +7,7 @@ import {
 } from '@angular/animations';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AsyncPipe, CommonModule } from '@angular/common';
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-  inject
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -109,7 +103,6 @@ export class SideBarComponent
 
   ngOnInit(): void {
     this.getNavItems();
-   
   }
 
   getFirstWord(username: string): string {
@@ -177,7 +170,10 @@ export class SideBarComponent
   }
   logout() {
     this.router.navigate(['login']);
-    this.permissionService.clearPermissions()
+    localStorage.removeItem('userData');
+    console.log(localStorage.removeItem('userData'));
+    
+    this.permissionService.clearPermissions();
   }
   ngOnDestroy(): void {
     this.ngUnsubscribe.next(null);

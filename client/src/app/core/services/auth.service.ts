@@ -36,9 +36,7 @@ export class AuthService {
   }
 
   logout() {
-    // Implement logout logic, like removing cookies, clearing local storage, etc.
-
-    // Additional logic to navigate to login page or show a message
+  
   }
 
   getToken(): string | null {

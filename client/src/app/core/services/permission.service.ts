@@ -5,6 +5,8 @@ import { Injectable } from '@angular/core';
 })
 export class PermissionService {
   private permissions: Set<string> = new Set();
+  
+
   constructor() {
     this.loadPermissionsFromStorage();
   }
