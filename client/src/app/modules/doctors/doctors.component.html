@@ -138,36 +138,30 @@
           <td mat-cell *matCellDef="let element">
             <div class="flex gap-2">
               <button
-                [disabled]="!hasAccess"
                 class="pointer"
-                mat-mini-fab
+                mat-icon-button
                 [matTooltip]="tooltipVisibility"
                 (click)="doctorDetial(element.id)">
-                <!-- <span class="material-symbols-outlined text-blue">
-                  Visibility
-                </span> -->
-                <mat-icon>visibility</mat-icon>
+           
+                <i class="fa-regular fa-eye text-blue-900 text-xl"></i>
+
               </button>
               <button
                 class="pointer"
-                [disabled]="!hasAccess"
-                mat-mini-fab
+                mat-icon-button
                 matTooltip="Eidt Doctor"
                 (click)="editDoctor(element, '250ms', '150ms')">
-                <!-- <span class="material-symbols-outlined text-blue"> edit </span> -->
-                <mat-icon>edit</mat-icon>
+                <i class="fa-solid fa-user-pen text-blue-500 text-xl"></i>
+
               </button>
               <button
                 class="pointer"
-                [disabled]="!hasAccess"
                 matTooltip="Delete Doctor"
-                mat-mini-fab
+                mat-icon-button
                 (click)="deleteDoctor(element, '250ms', '150ms')">
-                <mat-icon>delete</mat-icon>
+                <i class="fa-regular fa-trash-can text-red-500 text-xl"></i>
 
-                <!-- <span class="material-symbols-outlined text-red cursor-pointer">
-                  delete
-                </span> -->
+
               </button>
             </div>
           </td>

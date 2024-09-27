@@ -1,3 +1,4 @@
+declare var google: any;
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import {
   Component,
@@ -20,27 +21,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterLink, RouterModule } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { ThemeManagerService } from '../../../../shared/client-services/theme-manager.service';
 import { AuthService } from '../../../services/auth.service';
 
 import {
   GoogleLoginProvider,
-  SocialAuthService,
-  SocialAuthServiceConfig,
   SocialLoginModule,
   SocialUser,
 } from '@abacritt/angularx-social-login';
+import { AnimationEvent } from '@angular/animations';
 import { PermissionService } from '../../../services/permission.service';
-import {
-  animate,
-  keyframes,
-  style,
-  transition,
-  trigger,
-  AnimationEvent
-
-} from '@angular/animations';
 
 // Client ID
 // 302618903274-6bfd6agmkoanb474m3e1ii3oc1phjl40.apps.googleusercontent.com
@@ -66,91 +56,116 @@ import {
     MatCheckboxModule,
     SocialLoginModule,
   ],
-  providers: [
-    SocialAuthService,
-    {
-      provide: 'SocialAuthServiceConfig',
-      useValue: {
-        autoLogin: false,
-        lang: 'en',
-        providers: [
-          {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(
-              '302618903274-6bfd6agmkoanb474m3e1ii3oc1phjl40.apps.googleusercontent.com'
-            ),
-          },
-        ],
-        onError: err => {
-          console.error('❌❌❌', err);
-        },
-      } as SocialAuthServiceConfig,
-    },
-  ],
+  // providers: [
+  //   SocialAuthService,
+  //   {
+  //     provide: 'SocialAuthServiceConfig',
+  //     useValue: {
+  //       autoLogin: false,
+  //       lang: 'en',
+  //       providers: [
+  //         {
+  //           id: GoogleLoginProvider.PROVIDER_ID,
+  //           provider: new GoogleLoginProvider(
+  //             '302618903274-6bfd6agmkoanb474m3e1ii3oc1phjl40.apps.googleusercontent.com'
+  //           ),
+  //         },
+  //       ],
+  //       onError: err => {
+  //         console.error('❌❌❌', err);
+  //       },
+  //     } as SocialAuthServiceConfig,
+  //   },
+  // ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   styleUrl: './login.component.scss',
-
 })
 export class LoginComponent {
+  router = inject(Router);
+  #authService = inject(AuthService);
+  permissionService = inject(PermissionService);
+  renderer = inject(Renderer2);
+  matcher = new ErrorStateMatcher();
+  private themeManager = inject(ThemeManagerService);
+
   title: string = 'Angular';
   labelUserName: string = 'UserName';
   labelPassword: string = 'password';
-  matcher = new ErrorStateMatcher();
   form!: FormGroup;
   role!: string;
   user!: SocialUser;
   loggedIn!: boolean;
-
-  #router = inject(Router);
-  #authService = inject(AuthService);
-  authService = inject(SocialAuthService);
-  permissionService = inject(PermissionService);
-  renderer = inject(Renderer2);
   protected wobbleField = false;
-  private themeManager = inject(ThemeManagerService);
   theme = this.themeManager.theme;
+
   toggleTheme() {
     this.themeManager.toggleTheme();
   }
 
   createForm() {
     this.form = new FormGroup({
-      email: new FormControl('', [ Validators.required, Validators.email]),
+      email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', Validators.required),
       remmeber: new FormControl(false),
     });
   }
+
   refreshToken(): void {
-    this.authService.refreshAuthToken(GoogleLoginProvider.PROVIDER_ID);
+    // this.authService.refreshAuthToken(GoogleLoginProvider.PROVIDER_ID);
   }
 
   ngOnInit(): void {
     this.createForm();
-    // this.authService.authState.subscribe(user => {
-    //   this.user = user;
-    //   this.login();
-    // });
+    google.accounts.id.initialize({
+      client_id:
+        '940657570058-gpm7buu1t25nlls0pcbs95c6t2bf4rg4.apps.googleusercontent.com',
+      callback: (resp: any) => {
+       this.handleLogin(resp)
+      },
+    });
+    google.accounts.id.renderButton(document.getElementById('google-btn'), {
+      theme: 'filled_blue',
+      size: 'large',
+      shape: 'rectangle',
+    });
   }
 
+  private decodeToken(token: any) {
+    return JSON.parse(atob(token.split(".")[1]));
+  }
+
+  handleLogin(response: any) {
+    if (response) {
+      //decode the token
+      const payload = this.decodeToken(response.credential);
+      console.log('payload',payload);
+      this.email?.setValue(payload.email);
+      this.password?.setValue(payload.password)
+      
+      //stroe in session
+      sessionStorage.setItem('loggedInUser', JSON.stringify(payload));
+      // navigate to home
+      this.router.navigate(['aliakbar/settings']);
+
+    }
+  }
+
+  // ****login Google
 
   login(event: AnimationEvent) {
-    // this.form.events
-    // .pipe(filter(event => event instanceof TouchEvent))
-    // .subscribe(event => {});
-  
     if (this.form.value) {
       this.#authService.signIn(this.form.value).subscribe((res: any) => {
         this.permissionService.setPermissions(res.data.permissions);
         const stroeDataUser = res.data;
         const dataJson = JSON.stringify(stroeDataUser);
         localStorage.setItem('userData', dataJson);
-        this.#router.navigate(['aliakbar/settings']);
+        this.router.navigate(['aliakbar/settings']);
       });
     }
   }
 
   navigateRegister() {
-    this.#router.navigate(['auth/register']);
+    this.router.navigate(['auth/register']);
   }
 
   onAdminRol(data: string) {

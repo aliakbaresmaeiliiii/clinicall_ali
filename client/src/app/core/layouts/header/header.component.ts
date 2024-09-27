@@ -1,9 +1,6 @@
 import { AsyncPipe, CommonModule, NgOptimizedImage } from '@angular/common';
 import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
-import {
-  FormsModule,
-  ReactiveFormsModule
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -32,7 +29,7 @@ import { MyErrorStateMatcher } from '../../../shared/input-validation/input-vali
     AsyncPipe,
     MatButtonModule,
     MatBadgeModule,
-    NgOptimizedImage
+    NgOptimizedImage,
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
@@ -41,6 +38,7 @@ export class HeaderComponent implements OnInit {
   @Output() onToggleMenu = new EventEmitter<any>();
   matcher = new MyErrorStateMatcher();
   today: number = Date.now();
+  imageUser:any
   showLng: any;
   username: any;
   languages = [
@@ -58,10 +56,11 @@ export class HeaderComponent implements OnInit {
     this.themeManager.toggleTheme();
   }
 
-  
   ngOnInit(): void {
     this.showLng = this.languages.find(lng => lng.name === 'ENG');
-
+    const loggedInUser = sessionStorage.getItem('loggedInUser');
+    const getUserImg = loggedInUser ? JSON.parse(loggedInUser) : null;
+    this.imageUser = getUserImg.picture
     this.getUserData();
   }
 
