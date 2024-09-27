@@ -1,10 +1,18 @@
-import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  OnInit,
+} from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { banWords } from '../../shared/validators/ban-words.validators';
 import { debounceTime, switchMap } from 'rxjs';
 import { DoctorsService } from '../../modules/doctors/doctors.service';
-import AOS from 'aos'; 
+import AOS from 'aos';
+import { AngularFireFunctions } from '@angular/fire/compat/functions';
+import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-mediic-appointment',
@@ -13,13 +21,18 @@ import AOS from 'aos';
 })
 export class MediicAppointmentComponent implements OnInit {
   fb = inject(FormBuilder);
+  fn = inject(AngularFireFunctions);
+  toast = inject(ToastrService);
   matcher = new ErrorStateMatcher();
+
+
+
   phoneExists: boolean | null | unknown = null;
   textDirection: 'ltr' | 'rtl' = 'ltr';
   service = inject(DoctorsService);
-  
+
   ngOnInit() {
-    AOS.init({disable: 'mobile'});
+    AOS.init({ disable: 'mobile' });
     AOS.refresh();
   }
 
@@ -38,7 +51,22 @@ export class MediicAppointmentComponent implements OnInit {
     message: [''],
   });
 
-  onSubmit() {}
+  onSubmit() {
+    if (this.form.value) {
+      const bookingData = this.form.value;
+      this.fn
+        .httpsCallable('sendEmail')(bookingData)
+        .subscribe({
+          next: (result) => {
+            this.toast.success(`Email sent successfully,${result}`,);
+          },
+          error:(errro)=>{
+            this.toast.error(`Error sending email,${errro}`,);
+
+          }
+        });
+    }
+  }
   onAutofill(event: any) {
     console.log('Autofilled:', event.isAutofilled);
     this.phone?.valueChanges

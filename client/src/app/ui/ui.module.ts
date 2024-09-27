@@ -36,6 +36,10 @@ import { PlaceholderComponent } from './shared-ui/components/placeholder/placeho
 import { SliderComponent } from './slider/slider.component';
 import { MenuComponent } from './mobile/menu/menu.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { AngularFireFunctionsModule } from '@angular/fire/compat/functions';
+import { environment } from '../environments/environment';
+import { AngularFireModule } from '@angular/fire/compat';
+import { provideFirebaseApp } from '@angular/fire/app';
 
 const routes: Routes = [
   {
@@ -79,6 +83,9 @@ const routes: Routes = [
     CommonModule,
     RouterOutlet,
     RouterModule.forChild(routes),
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+
+    AngularFireFunctionsModule,
     FormsModule,
     ReactiveFormsModule,
     MatMenuModule,

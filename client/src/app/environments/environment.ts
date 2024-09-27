@@ -5,8 +5,18 @@ export interface Config {
   neshanBaseUrl: any;
   neshanApiKey: string;
   mapboxToken: string;
+  firebaseConfig: {};
 }
 export const environment: Config = {
+  firebaseConfig: {
+    apiKey: 'AIzaSyBaQzqPdV4Z5hHmN_GTZHbaSkXWhKAlbIA',
+    authDomain: 'clinic-55f53.firebaseapp.com',
+    projectId: 'clinic-55f53',
+    storageBucket: 'clinic-55f53.appspot.com',
+    messagingSenderId: '357428854325',
+    appId: '1:357428854325:web:04fd91819ab7e8945a3b7c',
+    measurementId: 'G-Y8RLZHZ7NM',
+  },
   production: true,
   // SERVER_API: 'https://api.example.com',
   apiEndPoint: 'http://localhost:8080/v1/',
