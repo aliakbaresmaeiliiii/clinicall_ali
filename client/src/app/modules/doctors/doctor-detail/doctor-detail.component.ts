@@ -38,7 +38,6 @@ export class DoctorDetailComponent extends BaseComponent {
     this.transferState.remove(this.DATA_KEY)
     const storedData = this.transferState.get(this.DATA_KEY, null);
 
-    debugger;
     if (!storedData) {
       this.service.doctorDetial(doctorId).subscribe({
         next: (response: any) => {
