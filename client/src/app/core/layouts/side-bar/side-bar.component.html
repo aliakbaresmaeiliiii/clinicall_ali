@@ -66,29 +66,25 @@
     <div
       class="submenu mb-4"
       [ngClass]="{ expanded: expandedMenus[item.menu_id] }">
-      <div
-        class="w-full bg-cover hover:bg-blue-100 hover:shadow-inner p-1 focus:bg-white transition-all rounded-2xl ease-linear duration-500">
         <a
-          class="hover:text-blue-950"
+        class="hover:bg-blue-300 bg-cover  cursor-pointer hover:shadow-inner flex items-center rounded-3xl transition-all ease-linear duration-500 gap-2 p-1"
+        [ngClass]="{ 
+          'selected-menu-item': isRouteActive(sub.url),
+          'focused-item': focusedRoute === sub.url
+        }"
+        (click)="setFocus(sub.url)"
           mat-list-item
           [routerLink]="sub.url"
           href="{{ sub.link }}">
           <div class="flex gap-2">
             @if (isActive(sub.url)) {
-            <span
-              class="material-symbols-outlined"
-              [ngClass]="{ 'text-blue': isActive(sub.url) }">
-              chevron_right
-            </span>
+            <span class="material-symbols-outlined"> chevron_right </span>
             }
-            <span
-              class="text-base"
-              [ngClass]="{ 'text-blue': isActive(sub.url) }">
+            <span class="text-base">
               {{ sub.submenu_name }}
             </span>
           </div>
         </a>
-      </div>
     </div>
 
     } } } }@empty {

@@ -4,6 +4,7 @@ import {
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
   inject,
+  OnInit,
   Renderer2,
 } from '@angular/core';
 import {
@@ -80,7 +81,7 @@ import { PermissionService } from '../../../services/permission.service';
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   styleUrl: './login.component.scss',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   router = inject(Router);
   #authService = inject(AuthService);
   permissionService = inject(PermissionService);
@@ -114,20 +115,45 @@ export class LoginComponent {
     // this.authService.refreshAuthToken(GoogleLoginProvider.PROVIDER_ID);
   }
 
+  // ngOnInit(): void {
+  //   google.accounts.id.initialize({
+  //     client_id:
+  //       '940657570058-gpm7buu1t25nlls0pcbs95c6t2bf4rg4.apps.googleusercontent.com',
+  //     callback: (resp: any) => {
+  //     console.log('resposend',resp);
+
+  //      this.handleLogin(resp)
+  //     },
+  //   });
+  //   google.accounts.id.renderButton(document.getElementById('google-btn'), {
+  //     theme: 'filled_blue',
+  //     size: 'large',
+  //     shape: 'rectangle',
+  //   });
+  //   this.createForm();
+
+  // }
+
+
   ngOnInit(): void {
-    this.createForm();
     google.accounts.id.initialize({
-      client_id:
-        '940657570058-gpm7buu1t25nlls0pcbs95c6t2bf4rg4.apps.googleusercontent.com',
+      client_id: '940657570058-gpm7buu1t25nlls0pcbs95c6t2bf4rg4.apps.googleusercontent.com',
       callback: (resp: any) => {
-       this.handleLogin(resp)
+        console.log('Google Response:', resp);
+        this.handleLogin(resp);
       },
     });
-    google.accounts.id.renderButton(document.getElementById('google-btn'), {
-      theme: 'filled_blue',
-      size: 'large',
-      shape: 'rectangle',
-    });
+  
+    google.accounts.id.renderButton(
+      document.getElementById('google-btn'),
+      {
+        theme: 'filled_blue',
+        size: 'large',
+        shape: 'rectangle',
+      }
+    );
+  
+    this.createForm();
   }
 
   private decodeToken(token: any) {
@@ -135,20 +161,21 @@ export class LoginComponent {
   }
 
   handleLogin(response: any) {
-    if (response) {
-      //decode the token
+    if (response && response.credential) {
+      // Decode the token
       const payload = this.decodeToken(response.credential);
-      console.log('payload',payload);
-      this.email?.setValue(payload.email);
-      this.password?.setValue(payload.password)
+      console.log('payload', payload);
       
-      //stroe in session
+      // Store in session
       sessionStorage.setItem('loggedInUser', JSON.stringify(payload));
-      // navigate to home
-      this.router.navigate(['aliakbar/settings']);
-
+      
+      // Navigate to home
+      this.router.navigate(['aliakbar/dashboard']);
+    } else {
+      console.error('Invalid response or missing credential');
     }
   }
+  
 
   // ****login Google
 

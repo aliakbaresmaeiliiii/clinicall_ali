@@ -9,6 +9,9 @@ import { routes } from '../../settings.module';
 })
 export class UsersSettingsComponent extends BaseComponent implements OnInit {
   temp: any;
+  userImg: any;
+  username: string='';
+  focusedRoute: string | null = null;
   // settingsRoutes = routes.filter(r => r.path);
   settingsRoutes = routes
     .flatMap(route => route.children)
@@ -18,7 +21,11 @@ export class UsersSettingsComponent extends BaseComponent implements OnInit {
     super();
   }
   ngOnInit(): void {
-    
+    const loggedInUser = sessionStorage.getItem('loggedInUser');
+    const getUserInfo = loggedInUser ? JSON.parse(loggedInUser) : null;
+    this.userImg = getUserInfo.picture;
+    debugger;
+    this.username = getUserInfo.name;
   }
   isRouteActive(routePath: any): boolean {
     return this.router.isActive(routePath, false);
@@ -27,4 +34,10 @@ export class UsersSettingsComponent extends BaseComponent implements OnInit {
   trackByFn(index: number, route: any): any {
     return route.path; // or any unique identifier
   }
+
+  setFocus(routePath: any) {
+    this.focusedRoute = routePath;
+  }
+
+
 }
