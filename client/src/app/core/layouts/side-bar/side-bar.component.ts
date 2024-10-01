@@ -128,6 +128,7 @@ export class SideBarComponent
   getNavItems() {
     this.navService.getNavItems().subscribe({
       next: (res: any) => {
+        debugger;
         this.groupedData = this.groupByMenu(res.data, 'menu_name');
       },
       error: e => console.error(e),
@@ -178,8 +179,11 @@ export class SideBarComponent
     return this.expandedMenus[menuId];
   }
   logout() {
+    debugger;
     this.router.navigate(['login']);
     localStorage.removeItem('userData');
+    localStorage.clear();
+    sessionStorage.clear()
     console.log(localStorage.removeItem('userData'));
 
     this.permissionService.clearPermissions();
