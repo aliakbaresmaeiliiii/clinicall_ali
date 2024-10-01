@@ -38,14 +38,15 @@
         [activated]="link.isActive"
         (click)="toggleSubmenu(item.menu_id)">
         <div
-          class="focus:text-black flex items-center justify-between hover:text-blue-950 p-1">
-          <!-- Flex container for icon and text -->
-          <div class="flex items-center">
-            <i [ngClass]="['fa-solid', item.icon]" class="mr-2"></i>
-            <span>
+          class="focus:text-black flex items-center justify-between hover:text-blue-950 text-blue-950 p-1">
+          <div class="flex items-center cursor-pointer gap-2">
+            <i [ngClass]="['fa-solid ', item.icon]" class="text-xl"></i>
+            <span >
               {{ item.menu_name }}
             </span>
           </div>
+     
+
 
           <!-- Chevron icon -->
           <div *ngIf="item.submenus.length" (click)="toggleMenu(item.menu_id)">
@@ -66,25 +67,27 @@
     <div
       class="submenu mb-4"
       [ngClass]="{ expanded: expandedMenus[item.menu_id] }">
-        <a
-        class="hover:bg-blue-300 bg-cover  cursor-pointer hover:shadow-inner flex items-center rounded-3xl transition-all ease-linear duration-500 gap-2 p-1"
-        [ngClass]="{ 
+      <a
+        class="hover:bg-blue-300 hover:text-blue-950 bg-cover cursor-pointer hover:shadow-inner flex items-center rounded-3xl transition-all ease-linear duration-500 gap-2 p-1"
+        [ngClass]="{
           'selected-menu-item': isRouteActive(sub.url),
           'focused-item': focusedRoute === sub.url
         }"
         (click)="setFocus(sub.url)"
-          mat-list-item
-          [routerLink]="sub.url"
-          href="{{ sub.link }}">
-          <div class="flex gap-2">
-            @if (isActive(sub.url)) {
-            <span class="material-symbols-outlined"> chevron_right </span>
-            }
-            <span class="text-base">
-              {{ sub.submenu_name }}
-            </span>
-          </div>
-        </a>
+        mat-list-item
+        [routerLink]="sub.url"
+        href="{{ sub.link }}">
+        <div class="flex gap-2">
+          @if (isActive(sub.url)) {
+          <span class="material-symbols-outlined text-blue-950">
+            chevron_right
+          </span>
+          }
+          <span class="text-base text-blue-950">
+            {{ sub.submenu_name }}
+          </span>
+        </div>
+      </a>
     </div>
 
     } } } }@empty {
@@ -92,6 +95,9 @@
       <app-loader />
     </div>
     }
+    <span (click)="logout()">
+      logout
+    </span>
   </mat-sidenav>
 
   <mat-sidenav-content>
@@ -104,7 +110,9 @@
             aria-label="Toggle sidenav"
             mat-icon-button
             (click)="drawer.toggle()">
-            <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+            <mat-icon aria-label="Side nav toggle icon text-blue-950"
+              >menu</mat-icon
+            >
           </button>
           }
         </div>

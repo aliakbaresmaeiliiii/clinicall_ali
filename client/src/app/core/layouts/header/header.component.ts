@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ThemeManagerService } from '../../../shared/client-services/theme-manager.service';
 import { MyErrorStateMatcher } from '../../../shared/input-validation/input-validation';
 @Component({
@@ -38,6 +38,7 @@ export class HeaderComponent implements OnInit {
   @Output() onToggleMenu = new EventEmitter<any>();
   matcher = new MyErrorStateMatcher();
   today: number = Date.now();
+  router = inject(Router);
   imageUser: any;
   showLng: any;
   username: string = '';
@@ -61,7 +62,7 @@ export class HeaderComponent implements OnInit {
     const loggedInUser = sessionStorage.getItem('loggedInUser');
     const getUserInfo = loggedInUser ? JSON.parse(loggedInUser) : null;
     this.imageUser = getUserInfo.picture;
-    this.username = getUserInfo.name
+    this.username = getUserInfo.name;
 
     this.getUserData();
   }
@@ -80,5 +81,13 @@ export class HeaderComponent implements OnInit {
   }
   toggleSide(event: Event) {
     this.onToggleMenu.emit(event);
+  }
+
+  logout() {
+    this.router.navigate(['login']);
+    localStorage.removeItem('userData');
+    localStorage.clear();
+    sessionStorage.clear();
+    console.log(localStorage.removeItem('userData'));
   }
 }

@@ -27,8 +27,13 @@
   <div>
     <button mat-button [matMenuTriggerFor]="menu">
       <div class="flex items-center">
-        <img [src]="showLng.flag" alt="{{ showLng.name }}" class="flag-icon" height="50" width="50" />
-        <strong class="text-white">{{ showLng.name }}</strong>
+        <img
+          [src]="showLng.flag"
+          alt="{{ showLng.name }}"
+          class="flag-icon"
+          height="50"
+          width="50" />
+        <strong class="text-blue-950">{{ showLng.name }}</strong>
       </div>
     </button>
     <mat-menu #menu="matMenu">
@@ -38,8 +43,15 @@
         class="flex justify-center items-center gap-2"
         (click)="selectedCountry(lng)">
         <div class="flex justify-center items-center">
-          <img [src]="lng.flag" alt="{{ lng.name }} " class="flag-icon"  width="25" height="25"/>
-          {{ lng.name }}
+          <img
+            [src]="lng.flag"
+            alt="{{ lng.name }} "
+            class="flag-icon"
+            width="25"
+            height="25" />
+          <span class="text-blue-950">
+            {{ lng.name }}
+          </span>
         </div>
       </div>
 
@@ -71,7 +83,7 @@
           height="100%" />
         <div class="font-medium">
           <div class="text-blue">
-            {{username}}
+            {{ username }}
           </div>
           <div class="text-sm text-blue">Admin</div>
         </div>
@@ -101,7 +113,7 @@
         </button>
         <button
           mat-menu-item
-          [routerLink]="['/login']"
+          (click)="logout()"
           class="flex items-center rounded-3xl">
           <div class="flex items-center gap-2">
             <span class="material-symbols-outlined"> logout </span>
