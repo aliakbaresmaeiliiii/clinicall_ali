@@ -1,3 +1,5 @@
-.selected-menu-item {
-    background-color: red; /* Example background color */
-  }
+.focused-item {
+  outline: 2px solid #3182ce; 
+  background-color: #3182ce; 
+  color: white; 
+}

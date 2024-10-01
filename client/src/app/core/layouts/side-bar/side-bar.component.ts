@@ -95,6 +95,8 @@ export class SideBarComponent
   navService = inject(NavItemsService);
   observer = inject(BreakpointObserver);
   userImg: any;
+  focusedRoute: string | null = null;
+
 
   isHandset$: Observable<boolean> = this.breakpointObserver
     .observe(Breakpoints.Handset)
@@ -108,6 +110,7 @@ export class SideBarComponent
     const loggedInUser = sessionStorage.getItem('loggedInUser');
     const getUserInfo = loggedInUser ? JSON.parse(loggedInUser) : null;
     this.userImg = getUserInfo.picture;
+    debugger;
     this.username = getUserInfo.name;
   }
 
@@ -181,6 +184,15 @@ export class SideBarComponent
 
     this.permissionService.clearPermissions();
   }
+
+  isRouteActive(routePath: any): boolean {
+    return this.router.isActive(routePath, false);
+  }
+
+  setFocus(routePath: any) {
+    this.focusedRoute = routePath;
+  }
+
   ngOnDestroy(): void {
     this.ngUnsubscribe.next(null);
     this.ngUnsubscribe.complete();

@@ -22,3 +22,18 @@
 .submenu.expanded {
   transform: scaleY(1);
 }
+
+.active-menu-item {
+  background-color: #2196f3; /* Blue background */
+  color: white; /* White text */
+}
+
+.active-menu-item:hover {
+  background-color: #1e88e5; /* Darker blue on hover when active */
+}
+
+.focused-item {
+  background-color: #3182ce; 
+  border-radius: 25px;
+  color: white; 
+}
