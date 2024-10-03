@@ -115,46 +115,46 @@ export class LoginComponent implements OnInit{
     // this.authService.refreshAuthToken(GoogleLoginProvider.PROVIDER_ID);
   }
 
-  // ngOnInit(): void {
-  //   google.accounts.id.initialize({
-  //     client_id:
-  //       '940657570058-gpm7buu1t25nlls0pcbs95c6t2bf4rg4.apps.googleusercontent.com',
-  //     callback: (resp: any) => {
-  //     console.log('resposend',resp);
-
-  //      this.handleLogin(resp)
-  //     },
-  //   });
-  //   google.accounts.id.renderButton(document.getElementById('google-btn'), {
-  //     theme: 'filled_blue',
-  //     size: 'large',
-  //     shape: 'rectangle',
-  //   });
-  //   this.createForm();
-
-  // }
-
-
   ngOnInit(): void {
     google.accounts.id.initialize({
-      client_id: '940657570058-gpm7buu1t25nlls0pcbs95c6t2bf4rg4.apps.googleusercontent.com',
+      client_id:
+        '940657570058-gpm7buu1t25nlls0pcbs95c6t2bf4rg4.apps.googleusercontent.com',
       callback: (resp: any) => {
-        console.log('Google Response:', resp);
-        this.handleLogin(resp);
+      console.log('resposend',resp);
+
+       this.handleLogin(resp)
       },
     });
-  
-    google.accounts.id.renderButton(
-      document.getElementById('google-btn'),
-      {
-        theme: 'filled_blue',
-        size: 'large',
-        shape: 'rectangle',
-      }
-    );
-  
+    google.accounts.id.renderButton(document.getElementById('google-btn'), {
+      theme: 'filled_blue',
+      size: 'large',
+      shape: 'rectangle',
+    });
     this.createForm();
+
   }
+
+
+  // ngOnInit(): void {
+  //   google.accounts.id.initialize({
+  //     client_id: '940657570058-gpm7buu1t25nlls0pcbs95c6t2bf4rg4.apps.googleusercontent.com',
+  //     callback: (resp: any) => {
+  //       console.log('Google Response:', resp);
+  //       this.handleLogin(resp);
+  //     },
+  //   });
+  
+  //   google.accounts.id.renderButton(
+  //     document.getElementById('google-btn'),
+  //     {
+  //       theme: 'filled_blue',
+  //       size: 'large',
+  //       shape: 'rectangle',
+  //     }
+  //   );
+  
+  //   this.createForm();
+  // }
 
   private decodeToken(token: any) {
     return JSON.parse(atob(token.split(".")[1]));
