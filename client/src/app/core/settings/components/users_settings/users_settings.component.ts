@@ -23,8 +23,7 @@ export class UsersSettingsComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     const loggedInUser = sessionStorage.getItem('loggedInUser');
     const getUserInfo = loggedInUser ? JSON.parse(loggedInUser) : null;
-    this.userImg = getUserInfo.picture;
-    debugger;
+    this.userImg = getUserInfo?.picture;
     this.username = getUserInfo.name;
   }
   isRouteActive(routePath: any): boolean {

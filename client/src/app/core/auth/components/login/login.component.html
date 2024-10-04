@@ -1,11 +1,11 @@
 <div class="desktop:flex content w-full h-full">
-  <section class="w-1/2">
-    <div class="left-img mobile:hidden"></div>
+  <section class="w-1/2 desktop:block mobile:hidden">
+    <div class="left-img "></div>
   </section>
 
-  <section class="w-1/2 text-center h-screen">
-    <div class="w-2/3 m-auto desktop:mt-20">
-      <h3 class="text-left font-extrabold">Welcome Back</h3>
+  <section class="desktop:w-1/2 text-center h-screen mt-28 w-full">
+    <div class="desktop:w-2/3 m-auto desktop:mt-20 mobile:p-8">
+      <h3 class="desktop:text-left font-extrabold mobile:text-center">Welcome Back</h3>
       <h2 class="cursor-pointer flex justify-start text-xs sign-up">
         Need an account?
         <a (click)="navigateRegister()" class="ml-2"
@@ -97,6 +97,3 @@
   </section>
 </div>
 
-<div>
-  <h4>{{ user | json }}</h4>
-</div>

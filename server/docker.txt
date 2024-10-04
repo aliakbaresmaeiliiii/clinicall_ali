@@ -1,0 +1,5 @@
+Build Image :
+docker image build -t support:v1 .
+
+Run The Image in port 7000
+docker run -d -p 7000:7000 --restart=always --name app support:v1

@@ -16,7 +16,7 @@ router.post(
 );
 
 router.post(
-  "/auth/sign-in",
+  "/sign-in",
   asyncHandler(async function getNavItems(req: any, res: any) {
     const formData = req.body;
     const data = await AuthService.signIn(formData);
