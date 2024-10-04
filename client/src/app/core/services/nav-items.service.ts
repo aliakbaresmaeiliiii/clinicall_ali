@@ -14,6 +14,7 @@ export class NavItemsService {
   constructor() {}
 
   getNavItems(): Observable<NavItem[]> {
+    debugger;
     return this.#http.get<NavItem[]>(`${this.config}navItem`);
   }
 

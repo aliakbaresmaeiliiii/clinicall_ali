@@ -116,6 +116,8 @@ export class LoginComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.createForm();
+
     google.accounts.id.initialize({
       client_id:
         '940657570058-gpm7buu1t25nlls0pcbs95c6t2bf4rg4.apps.googleusercontent.com',
@@ -130,7 +132,6 @@ export class LoginComponent implements OnInit{
       size: 'large',
       shape: 'rectangle',
     });
-    this.createForm();
 
   }
 

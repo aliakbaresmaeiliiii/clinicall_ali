@@ -109,8 +109,7 @@ export class SideBarComponent
     this.getNavItems();
     const loggedInUser = sessionStorage.getItem('loggedInUser');
     const getUserInfo = loggedInUser ? JSON.parse(loggedInUser) : null;
-    this.userImg = getUserInfo.picture;
-    debugger;
+    this.userImg = getUserInfo?.picture;
     this.username = getUserInfo.name;
   }
 
@@ -179,7 +178,6 @@ export class SideBarComponent
     return this.expandedMenus[menuId];
   }
   logout() {
-    debugger;
     this.router.navigate(['login']);
     localStorage.removeItem('userData');
     localStorage.clear();

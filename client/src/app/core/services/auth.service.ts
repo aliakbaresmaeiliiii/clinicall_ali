@@ -25,7 +25,7 @@ export class AuthService {
   }
 
   signIn(userData: User): Observable<User> {
-    return this.#http.post<User>(`${this.config}auth/sign-in`, userData);
+    return this.#http.post<User>(`${this.config}sign-in`, userData);
   }
 
   signUp(userData: any): Observable<SignupResponse> {

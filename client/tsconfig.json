@@ -1,4 +1,3 @@
-/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
   "compileOnSave": false,
   "compilerOptions": {
@@ -7,7 +6,7 @@
         "./ali-lib/src/public-api.ts"
       ]
     },
-    "outDir": "./dist/out-tsc",
+    "outDir": "../server/dist/project",
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
@@ -18,10 +17,10 @@
     "sourceMap": true,
     "declaration": false,
     "experimentalDecorators": true,
-    "moduleResolution": "bundler",
+    "moduleResolution": "node", // Changed to "node" for better compatibility
     "importHelpers": true,
-    "target": "ES2022",
-    "module": "ES2022",
+    "target": "ES2022", // Adjust based on compatibility needs
+    "module": "ES2022", // Adjust based on compatibility needs
     "useDefineForClassFields": false,
     "lib": [
       "ES2022",

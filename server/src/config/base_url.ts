@@ -1,7 +1,7 @@
 const URL_CLIENT = {
     development: 'http://localhost:4200',
     staging: '',
-    production: 'https://example.com',
+    production: 'http://172.20.10.5:8000',
 }
 
 const URL_SERVER = {

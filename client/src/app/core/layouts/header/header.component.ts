@@ -61,7 +61,7 @@ export class HeaderComponent implements OnInit {
     this.showLng = this.languages.find(lng => lng.name === 'ENG');
     const loggedInUser = sessionStorage.getItem('loggedInUser');
     const getUserInfo = loggedInUser ? JSON.parse(loggedInUser) : null;
-    this.imageUser = getUserInfo.picture;
+    this.imageUser = getUserInfo?.picture;
     this.username = getUserInfo.name;
 
     this.getUserData();
