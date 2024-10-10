@@ -86,7 +86,6 @@ export const routes: Routes = [
     MatSelectModule,
     MatCardModule,
     NgxMatIntlTelInputComponent,
-    AsyncPipe,
     MatDatepickerModule,
     MatIconModule,
     MatButtonModule,

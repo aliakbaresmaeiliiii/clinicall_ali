@@ -588,3 +588,11 @@ export async function changePassword(data: any) {
   );
   return result;
 }
+
+export async function getMedicine() {
+  const result = query<RowDataPacket[]>(`
+    SELECT * FROM ${coreSchema}.medicine
+    `);
+
+  return result;
+}

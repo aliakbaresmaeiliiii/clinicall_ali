@@ -1,4 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,20 +17,19 @@ import { UserService } from '../../../core/services/user.service';
   template: '',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export abstract class BaseComponent  {
+export abstract class BaseComponent {
   router = inject(Router);
   toastrService = inject(ToastrService);
   fb = inject(FormBuilder);
   dialog = inject(MatDialog);
   authService = inject(AuthService);
   userService = inject(UserService);
-  activatedRoute = inject(ActivatedRoute)
+  activatedRoute = inject(ActivatedRoute);
 
   roles!: TokenPermission[];
   years = this.getYears();
 
-  constructor() {
-  }
+  constructor() {}
 
   // ngOnInit(): void {
   //   // this.authService?.permissions.subscribe(data => (this.roles = data));
