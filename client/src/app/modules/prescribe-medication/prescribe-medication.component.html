@@ -1,0 +1,180 @@
+<section class="w-full">
+  <mat-card appearance="outlined" class="p-4">
+    <h2 class="text-xs font-medium">{{ title }}</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-4">
+      <div class="desktop:grid grid-cols-2 gap-3">
+        <!-- *****Patient Name***** -->
+        <mat-form-field
+          data-testing="gender"
+          appearance="outline"
+          class="w-full">
+          <mat-label>Patient Name</mat-label>
+          <mat-select formControlName="patientName" name="g">
+            <mat-option
+              *ngFor="let patient of patientData; trackBy: trackByFn"
+              [value]="patient"
+              >{{ patient.firstName }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+
+
+        <ali-select
+          label="Pick the User"
+          multiple
+          [searchable]="true"
+          [compareWith]="compareWithFn"
+          [displayWith]="displayWithFn"
+          formControlName="selectValue"
+          (closed)="onSearchChanged('')"
+          (searchChanged)="onSearchChanged($event)">
+          <app-option *ngFor="let user of filteredUsers" [value]="user">{{
+            user.drug_name
+          }}</app-option>
+        </ali-select>
+      </div>
+
+      <div class="desktop:grid grid-cols-3 gap-3">
+        <!-- *****email***** -->
+        <mat-form-field
+          data-testing="email"
+          appearance="outline"
+          class="w-full">
+          <mat-label>Email</mat-label>
+          <input
+            type="email"
+            matInput
+            [errorStateMatcher]="matcher"
+            formControlName="email"
+            placeholder="email"
+            class="w-full" />
+          <!-- Error handling -->
+          <mat-error
+            *ngIf="email?.hasError('email') && !email?.hasError('required')"
+            >Please enter a valid email address</mat-error
+          >
+          <mat-error *ngIf="email?.hasError('required')"
+            >email is <strong>required</strong></mat-error
+          >
+        </mat-form-field>
+        <!-- *****department***** -->
+        <mat-form-field
+          data-testing="department"
+          appearance="outline"
+          class="w-full">
+          <mat-label>department</mat-label>
+          <input
+            type="text"
+            matInput
+            [errorStateMatcher]="matcher"
+            formControlName="department"
+            placeholder="department" />
+          <!-- Error handling -->
+          <mat-error
+            *ngIf="
+              department?.hasError('department') &&
+              !department?.hasError('required')
+            "
+            >Please enter a valid department</mat-error
+          >
+          <mat-error *ngIf="department?.hasError('required')"
+            >department is <strong>required</strong></mat-error
+          >
+          <mat-error *ngIf="form.controls.department.hasError('minlength')"
+            >department is too short
+            <strong>{{
+              form.controls.department.getError('minlength')?.requiredLength
+            }}</strong></mat-error
+          >
+          <mat-error *ngIf="department?.hasError('banWords')"
+            >The value
+            <strong>{{ department?.getError('banWords').bannedWord }} </strong
+            >is banned</mat-error
+          >
+        </mat-form-field>
+        <!-- *****degree***** -->
+        <mat-form-field
+          data-testing="degree"
+          appearance="outline"
+          class="w-full">
+          <mat-label>degree</mat-label>
+          <input
+            type="text"
+            matInput
+            [errorStateMatcher]="matcher"
+            formControlName="degree"
+            placeholder="degree" />
+          <!-- Error handling -->
+          <mat-error
+            *ngIf="degree?.hasError('degree') && !degree?.hasError('required')"
+            >Please enter a valid degree</mat-error
+          >
+          <mat-error *ngIf="degree?.hasError('required')"
+            >degree is <strong>required</strong></mat-error
+          >
+          <mat-error *ngIf="form.controls.degree.hasError('minlength')"
+            >degree is too short
+            <strong>{{
+              form.controls.degree.getError('minlength')?.requiredLength
+            }}</strong></mat-error
+          >
+          <mat-error *ngIf="degree?.hasError('banWords')"
+            >The value
+            <strong>{{ degree?.getError('banWords').bannedWord }} </strong>is
+            banned</mat-error
+          >
+        </mat-form-field>
+      </div>
+      <div class="desktop:grid grid-cols-1 gap-3">
+        <!-- *****Address***** -->
+        <mat-form-field
+          data-testing="Address"
+          appearance="outline"
+          class="w-full">
+          <mat-label>Address</mat-label>
+          <input
+            type="text"
+            matInput
+            [errorStateMatcher]="matcher"
+            formControlName="address"
+            placeholder="address" />
+          <!-- Error handling -->
+          <mat-error
+            *ngIf="
+              address?.hasError('address') && !address?.hasError('required')
+            "
+            >Please enter a valid address</mat-error
+          >
+          <mat-error *ngIf="address?.hasError('required')"
+            >address is <strong>required</strong></mat-error
+          >
+          <mat-error *ngIf="form.controls.address.hasError('minlength')"
+            >address is too short
+            <strong>{{
+              form.controls.address.getError('minlength')?.requiredLength
+            }}</strong></mat-error
+          >
+          <mat-error *ngIf="address?.hasError('banWords')"
+            >The value
+            <strong>{{ address?.getError('banWords').bannedWord }} </strong>is
+            banned</mat-error
+          >
+        </mat-form-field>
+      </div>
+
+      <div class="desktop:flex desktop:justify-end w-full gap-3">
+        <!-- *****CancelBTN***** -->
+        <button mat-stroked-button type="button" class="w-full">Cancel</button>
+        <!-- *****SaveBTN***** -->
+        <button
+          class="w-full desktop:m-0 tablet:mt-2 mobile:mt-2"
+          [disabled]="!form.valid"
+          mat-flat-button
+          data-testid="login-button"
+          type="submit">
+          Add Doctor
+        </button>
+      </div>
+    </form>
+  </mat-card>
+</section>
