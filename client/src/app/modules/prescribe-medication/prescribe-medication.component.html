@@ -18,7 +18,6 @@
           </mat-select>
         </mat-form-field>
 
-
         <ali-select
           label="Pick the User"
           multiple
@@ -28,7 +27,9 @@
           formControlName="selectValue"
           (closed)="onSearchChanged('')"
           (searchChanged)="onSearchChanged($event)">
-          <app-option *ngFor="let user of filteredUsers" [value]="user">{{
+          <app-option *ngFor="let user of filteredUsers" [value]="user">
+            <i class="fa-solid fa-tablets"></i>
+            {{
             user.drug_name
           }}</app-option>
         </ali-select>
