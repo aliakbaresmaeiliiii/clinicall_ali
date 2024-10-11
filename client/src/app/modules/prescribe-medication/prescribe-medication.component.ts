@@ -75,6 +75,7 @@ export class PrescribeMedicationComponent
   }
   getMedicine() {
     this.medicService.getDrugData().subscribe(res => {
+      debugger;
       this.medicData = res.result;
     });
   }
