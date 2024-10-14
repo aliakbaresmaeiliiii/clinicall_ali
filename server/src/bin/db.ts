@@ -590,9 +590,16 @@ export async function changePassword(data: any) {
 }
 
 export async function getMedicine() {
-  const result = query<RowDataPacket[]>(`
+  const result = await query<RowDataPacket[]>(`
     SELECT * FROM ${coreSchema}.medicine
     `);
 
+  return result;
+}
+
+export async function getDisease() {
+  const result = await query<RowDataPacket[]>(
+    `SELECT * FROM ${coreSchema}.diseases`
+  );
   return result;
 }

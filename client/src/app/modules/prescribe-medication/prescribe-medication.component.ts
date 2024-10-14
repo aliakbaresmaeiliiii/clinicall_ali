@@ -72,11 +72,17 @@ export class PrescribeMedicationComponent
     this.form
       .get('selectValue')
       ?.valueChanges.subscribe(this.onSelectionChanged);
+      this.getDiseases()
   }
   getMedicine() {
     this.medicService.getDrugData().subscribe(res => {
-      debugger;
       this.medicData = res.result;
+    });
+  }
+
+  getDiseases() {
+    this.medicService.getDiseases().subscribe(res => {
+      console.log('getDiseases',res);
     });
   }
 
