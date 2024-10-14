@@ -17,4 +17,8 @@ export class PrescribeMedicationService {
   getDrugData(): Observable<any> {
     return this.http.get(`${this.config}medicine`);
   }
+  
+  getDiseases() {
+    return this.http.get(`${this.config}getAllDiseases`);
+  }
 }

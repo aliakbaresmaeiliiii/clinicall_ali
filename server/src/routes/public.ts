@@ -11,5 +11,6 @@ require("../controller/admin/controller");
 require("../controller/patients/controller");
 require("../controller/doctors/controller");
 require("../controller/medicine/controller");
+require("../controller/diseases/controller");
 
 

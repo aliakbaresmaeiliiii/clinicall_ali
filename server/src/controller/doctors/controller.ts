@@ -1,13 +1,13 @@
-import {asyncHandler} from "../../helper/async-handler";
-import {BuildResponse} from "../../modules/response/app_response";
-import {router} from "../../routes/public";
+import { asyncHandler } from "../../helper/async-handler";
+import { BuildResponse } from "../../modules/response/app_response";
+import { router } from "../../routes/public";
 import { DoctorsService } from "./service";
 import { Request, Response } from "express";
 
 // **** GetAll
 router.get(
   "/admin/doctors",
-  asyncHandler(async function getNavItems(req: any, res: any) {
+  asyncHandler(async (req: any, res: any) => {
     const data = await DoctorsService.getDoctors();
     const buildResponse = BuildResponse.get(data);
     if (buildResponse) {
