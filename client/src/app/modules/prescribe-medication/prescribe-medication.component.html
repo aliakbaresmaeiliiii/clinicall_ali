@@ -4,7 +4,7 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-4">
       <div class="desktop:grid grid-cols-2 gap-3">
         <!-- *****Patient Name***** -->
-        <mat-form-field
+        <!-- <mat-form-field
           data-testing="gender"
           appearance="outline"
           class="w-full">
@@ -16,6 +16,23 @@
               >{{ patient.firstName }}</mat-option
             >
           </mat-select>
+        </mat-form-field> -->
+
+        <mat-form-field appearance="outline">
+          <mat-label>Patient Name</mat-label>
+          <input
+            type="text"
+            placeholder="Pick a patient"
+            aria-label="Patient Name"
+            matInput
+            formControlName="patientName"
+            [matAutocomplete]="auto"
+          />
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredPatient | async" [value]="option">
+              {{ option }}
+            </mat-option>
+          </mat-autocomplete>
         </mat-form-field>
 
         <ali-select
