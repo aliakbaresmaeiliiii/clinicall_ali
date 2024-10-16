@@ -29,11 +29,9 @@ export class PrescribeMedicationComponent
   agePipe = inject(AgePipe);
   service = inject(PatientsService);
   medicService = inject(PrescribeMedicationService);
-  patientData!: any;
   labelUserName: string = 'UserName';
   labelPassword: string = 'password';
   matcher = new ErrorStateMatcher();
-  filteredOptions: Observable<string[]> | undefined;
   genders: string[] = ['Male', 'Female'];
   maritalStatus: string[] = ['Single', 'Married'];
   bloodGroups: string[] = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
@@ -47,6 +45,9 @@ export class PrescribeMedicationComponent
   minDate!: Date;
   filteredUsers = this.medicData;
 
+  patientData: string[] = [];
+  filteredPatient!: Observable<string[]>;
+
   form = this.fb.group({
     patientName: ['', Validators.required],
     medicine: ['', Validators.required],
@@ -58,22 +59,32 @@ export class PrescribeMedicationComponent
     specialization: ['', Validators.required],
     department: ['', Validators.required],
     degree: ['', Validators.required],
-
     selectValue: new FormControl<Medicine | null>(null),
   });
 
-  constructor(private cd: ChangeDetectorRef) {
-    super();
-  }
-
   ngOnInit() {
-    this.getData();
+    this.getDiseases();
     this.getMedicine();
     this.form
       .get('selectValue')
       ?.valueChanges.subscribe(this.onSelectionChanged);
-      this.getDiseases()
+
+    this.getPatientData();
+    setTimeout(() => {
+      this.filteredPatient = this.form.get('patientName')!.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value || ''))
+      );
+    }, 100);
   }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.patientData.filter(option =>
+      option.toLowerCase().includes(filterValue)
+    );
+  }
+
   getMedicine() {
     this.medicService.getDrugData().subscribe(res => {
       this.medicData = res.result;
@@ -82,7 +93,7 @@ export class PrescribeMedicationComponent
 
   getDiseases() {
     this.medicService.getDiseases().subscribe(res => {
-      console.log('getDiseases',res);
+      console.log('getDiseases', res);
     });
   }
 
@@ -94,15 +105,13 @@ export class PrescribeMedicationComponent
     });
   }
 
-  getData() {
+  getPatientData() {
     this.service.getPatients().subscribe((response: any) => {
-      const newData = response.data.map((patient: any) => {
-        patient.profileImage = patient.profileImage
-          ? `${environment.urlProfileImg}${patient.profileImage}`
-          : '../../../assets/images/bg-01.png';
-        return patient;
+      const patients = response.data.map((patient: any) => {
+        return patient.firstName;
       });
-      this.patientData = newData;
+      this.patientData = patients;
+      console.log('this.patientData', this.patientData);
     });
   }
 
