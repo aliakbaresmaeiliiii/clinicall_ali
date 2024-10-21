@@ -36,7 +36,8 @@ export const routes: Routes = [
     MatAutocompleteModule,
     ChipComponent,
     AliSelectComponent,
-    OptionComponent
+    OptionComponent,
+    
   ],
   providers: [AsyncPipe,AgePipe],
 })

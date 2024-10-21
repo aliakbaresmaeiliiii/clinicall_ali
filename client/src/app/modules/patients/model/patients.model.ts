@@ -1,26 +1,25 @@
 export interface PatientDTO {
-  position?:any;
+  position?: any;
   id?: string | null | any;
   firstName?: string | null | undefined;
   lastName?: string | null | undefined;
-  gender?: string| undefined | null;
-  mobile?: string | undefined | null;
+  gender?: string | undefined | null;
+  mobile?: any;
   dateOfBirth?: any;
-  age?: string | undefined | null; 
+  age?: string | undefined | null;
   email?: string | null | undefined;
   maritalStatus?: string | undefined | null;
   address?: string | undefined | null;
   bloodGroup?: any;
   bloodPressure?: any;
   heartBeat?: string | undefined | null;
-  haemoglobin?: string | undefined | null;
+  haemoglobin?: any;
   doctor?: string | undefined | null;
   treatment?: string | undefined | null;
   charges?: string | undefined | null;
-  description?: string | undefined | null;
-  sugarLevel?: string | undefined | null;
+  description?: any;
+  sugarLevel?: any;
   injury?: string | undefined | null;
   profileImage?: string | undefined | any;
-  profileImageShow?: string ;
-
+  profileImageShow?: string;
 }
