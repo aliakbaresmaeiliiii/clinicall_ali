@@ -4,20 +4,6 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-4">
       <div class="desktop:grid grid-cols-2 gap-3">
         <!-- *****Patient Name***** -->
-        <!-- <mat-form-field
-          data-testing="gender"
-          appearance="outline"
-          class="w-full">
-          <mat-label>Patient Name</mat-label>
-          <mat-select formControlName="patientName" name="g">
-            <mat-option
-              *ngFor="let patient of patientData; trackBy: trackByFn"
-              [value]="patient"
-              >{{ patient.firstName }}</mat-option
-            >
-          </mat-select>
-        </mat-form-field> -->
-
         <mat-form-field appearance="outline">
           <mat-label>Patient Name</mat-label>
           <input
@@ -26,13 +12,52 @@
             aria-label="Patient Name"
             matInput
             formControlName="patientName"
-            [matAutocomplete]="auto"
-          />
+            [matAutocomplete]="auto" />
           <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-            <mat-option *ngFor="let option of filteredPatient | async" [value]="option">
+            <mat-option
+              *ngFor="let option of filteredPatient | async"
+              (onSelectionChange)="onSelectedChange(option)"
+              [value]="option">
               {{ option }}
             </mat-option>
           </mat-autocomplete>
+        </mat-form-field>
+
+        <!-- *****Date of birth***** -->
+        <mat-form-field
+          data-testing="department"
+          appearance="outline"
+          class="w-full">
+          <mat-label>Date Of Birth</mat-label>
+          <input
+            type="text"
+            matInput
+            [errorStateMatcher]="matcher"
+            formControlName="dateOfBirth" />
+        </mat-form-field>
+        <!-- *****bloodGroup***** -->
+        <mat-form-field
+          data-testing="department"
+          appearance="outline"
+          class="w-full">
+          <mat-label>bloodGroup</mat-label>
+          <input
+            type="text"
+            matInput
+            [errorStateMatcher]="matcher"
+            formControlName="bloodGroup" />
+        </mat-form-field>
+        <!-- *****bloodPressure***** -->
+        <mat-form-field
+          data-testing="department"
+          appearance="outline"
+          class="w-full">
+          <mat-label>bloodPressure</mat-label>
+          <input
+            type="text"
+            matInput
+            [errorStateMatcher]="matcher"
+            formControlName="bloodPressure" />
         </mat-form-field>
 
         <ali-select
@@ -44,11 +69,10 @@
           formControlName="selectValue"
           (closed)="onSearchChanged('')"
           (searchChanged)="onSearchChanged($event)">
-          <app-option *ngFor="let user of filteredUsers" [value]="user">
+          <app-option *ngFor="let user of filterMedicData" [value]="user">
             <i class="fa-solid fa-tablets"></i>
-            {{
-            user.drug_name
-          }}</app-option>
+            {{ user.drug_name }}</app-option
+          >
         </ali-select>
       </div>
 

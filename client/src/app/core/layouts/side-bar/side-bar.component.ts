@@ -70,7 +70,6 @@ export class SideBarComponent
   extends BaseComponent
   implements OnInit, OnDestroy
 {
-  title = 'material-responsive-sidenav';
   permissionService = inject(PermissionService);
   hasAccess: boolean = false;
   @ViewChild(MatSidenav)
@@ -78,20 +77,10 @@ export class SideBarComponent
   isMobile = true;
   isCollapsed = true;
   groupedData: any = {};
-  menuMap: { [key: string]: MatMenu } = {};
-  hasBackdrop = new FormControl(null as null | boolean);
-  position = new FormControl('start' as 'start' | 'end');
   expandedMenus: { [key: string]: boolean } = {};
   private ngUnsubscribe: Subject<any> = new Subject();
   username!: User;
-  firstWord: string = '';
-  isExpanded = true;
-  showSubmenu: boolean = false;
-  isShowing = false;
-  showSubSubMenu: boolean = false;
-  expandedSubMenus: { [key: number]: { [key: string]: boolean } } = {};
   private breakpointObserver = inject(BreakpointObserver);
-  rootRoutes = routes.filter(r => r.path);
   navService = inject(NavItemsService);
   observer = inject(BreakpointObserver);
   userImg: any;
@@ -106,27 +95,28 @@ export class SideBarComponent
 
   ngOnInit(): void {
     this.getNavItems();
-    // const loggedInUser = sessionStorage.getItem('loggedInUser');
-    // const getUserInfo = loggedInUser ? JSON.parse(loggedInUser) : null;
-    // this.userImg = getUserInfo?.picture;
-    // this.username = getUserInfo.name;
   }
 
   getFirstWord(username: string): string {
     return username.charAt(0);
   }
+
   toggleSubmenu(index: any) {
     if (index.path === '') {
       this.expandedMenus[index] = !this.expandedMenus[index];
-    }else{
-      this.router.navigate([index.path])
-      this.setFocus(index.path)
-      
+    } else {
+      this.router.navigate([index.path]);
+      this.setFocus(index.path);
     }
   }
 
-  toggleMenu(itemId: number): void {
-    this.expandedMenus[itemId] = !this.expandedMenus[itemId];
+  toggleMenu(data: any) {
+    if (data.path === '') {
+      this.expandedMenus[data.menu_id] = !this.expandedMenus[data.menu_id];
+    } else {
+      this.router.navigate([data.path]);
+      this.setFocus(data.path);
+    }
   }
 
   getNavItems() {
@@ -138,6 +128,7 @@ export class SideBarComponent
       complete: () => {},
     });
   }
+
   stopPropagation(event: Event) {
     event.stopPropagation();
   }
@@ -157,13 +148,15 @@ export class SideBarComponent
   trackByItem(index: number, item: any) {
     return item.menu_id;
   }
+
   isActive(link: string): boolean {
     return this.router.url === link;
   }
 
   trackByFn(index: number, item: any): any {
-    return item.id; // Ensure each item has a unique identifier
+    return item.id;
   }
+
   toggleMenuItem(menuName: string) {
     const sub = this.groupedData[menuName][0].submenus;
     const path = this.groupedData[menuName][0].path;
@@ -181,6 +174,7 @@ export class SideBarComponent
   isMenuExpanded(menuId: string): boolean {
     return this.expandedMenus[menuId];
   }
+
   logout() {
     this.router.navigate(['login']);
     localStorage.removeItem('userData');
@@ -191,23 +185,16 @@ export class SideBarComponent
   }
 
   isRouteActive(routePath: any) {
-  //   return this.router.isActive(routePath, {
-  // paths: 'exact',
-  // queryParams: 'exact',
-  // fragment: 'ignored',
-  // matrixParams: 'ignored');
-  const isActive = this.router.isActive(routePath, {
-    paths: 'exact',
-    queryParams: 'exact',
-    fragment: 'ignored',
-    matrixParams: 'ignored'
-  });
-  
+    const isActive = this.router.isActive(routePath, {
+      paths: 'exact',
+      queryParams: 'exact',
+      fragment: 'ignored',
+      matrixParams: 'ignored',
+    });
   }
 
   setFocus(routePath: any) {
     this.focusedRoute = routePath;
-    
   }
 
   ngOnDestroy(): void {

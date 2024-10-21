@@ -1,6 +1,14 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, Observable, catchError, filter, map, take, throwError } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  catchError,
+  filter,
+  map,
+  take,
+  throwError,
+} from 'rxjs';
 import { environment } from '../../environments/environment';
 import { SignupResponse, TokenPermission, User } from '../auth/models/user';
 
@@ -12,11 +20,6 @@ export class AuthService {
   #http = inject(HttpClient);
   tokenKey!: any;
   public permissions = new BehaviorSubject<TokenPermission[]>([]);
-
-  private refreshTokenInProgress = false;
-  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
-    null
-  );
 
   constructor() {
     if (typeof localStorage !== 'undefined') {
@@ -35,9 +38,7 @@ export class AuthService {
     );
   }
 
-  logout() {
-  
-  }
+  logout() {}
 
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
@@ -77,7 +78,6 @@ export class AuthService {
   //   }
   // }
 
- 
   // getAllUsers(): Observable<Users> {
   //   return this.httpClient.get<Users>(`${this.config}/users`);
   // }

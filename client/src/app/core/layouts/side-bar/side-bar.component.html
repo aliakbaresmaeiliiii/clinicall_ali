@@ -30,7 +30,9 @@
     groupedData[menuName]; track item ) {
     <div
       class="w-full bg-cover hover:bg-blue-100 hover:shadow-inner focus:bg-white transition-all rounded-2xl ease-linear duration-500">
+      <!-- (click)="toggleSubmenu(item)" -->
       <a
+      (click)="toggleMenu(item)"
         class="cursor-pointer dark:hover:text-blue-300 mb-4 w-5/6 flex flex-col"
         mat-list-item
         [ngClass]="{
@@ -40,7 +42,7 @@
         #link="routerLinkActive"
         routerLinkActive
         [activated]="link.isActive"
-        (click)="toggleSubmenu(item)">
+        >
         <div
           class="focus:text-black flex items-center justify-between hover:text-blue-950 text-blue-950 p-1">
           <div class="flex items-center cursor-pointer gap-2">
@@ -53,7 +55,7 @@
 
 
           <!-- Chevron icon -->
-          <div *ngIf="item.submenus.length" (click)="toggleMenu(item.menu_id)">
+          <div *ngIf="item.submenus.length" >
             <mat-icon
               class="menu-button hover:text-blue-950"
               [@iconRotate]="

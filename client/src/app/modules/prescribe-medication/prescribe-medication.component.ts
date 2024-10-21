@@ -3,7 +3,9 @@ import {
   ChangeDetectorRef,
   Component,
   inject,
+  makeStateKey,
   OnInit,
+  TransferState,
 } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
@@ -15,6 +17,7 @@ import { ShareService } from '../../shared/services/share.service';
 import { PatientsService } from '../patients/services/patients.service';
 import { PrescribeMedicationService } from './services/prescribe-medication.service';
 import { Medicine } from './medicine';
+import { PatientDTO } from '../patients/model/patients.model';
 
 @Component({
   selector: 'app-prescribe-medication',
@@ -43,13 +46,19 @@ export class PrescribeMedicationComponent
   phoneExists: boolean | null | unknown = null;
   maxDate!: Date;
   minDate!: Date;
-  filteredUsers = this.medicData;
+  transferState = inject(TransferState);
+  DATA_KEY = makeStateKey<any>('pateintInfo');
 
-  patientData: string[] = [];
+  patientInfo: PatientDTO[] = [];
+  filterName: string[] = [];
   filteredPatient!: Observable<string[]>;
 
   form = this.fb.group({
     patientName: ['', Validators.required],
+    dateOfBirth: [''],
+    bloodGroup: [''],
+    bloodPressure: [''],
+
     medicine: ['', Validators.required],
 
     age: [{ value: '', disabled: true }],
@@ -63,13 +72,13 @@ export class PrescribeMedicationComponent
   });
 
   ngOnInit() {
-    this.getDiseases();
-    this.getMedicine();
+    // this.getDiseases();
+    // this.getMedicine();
+    this.fetchPatients();
     this.form
       .get('selectValue')
       ?.valueChanges.subscribe(this.onSelectionChanged);
 
-    this.getPatientData();
     setTimeout(() => {
       this.filteredPatient = this.form.get('patientName')!.valueChanges.pipe(
         startWith(''),
@@ -78,9 +87,10 @@ export class PrescribeMedicationComponent
     }, 100);
   }
 
-  private _filter(value: string): string[] {
+  private _filter(value: string): any[] {
     const filterValue = value.toLowerCase();
-    return this.patientData.filter(option =>
+    const findName = this.patientInfo.map(name => name.firstName + ' ' + name.lastName);
+    return findName.filter((option: any) =>
       option.toLowerCase().includes(filterValue)
     );
   }
@@ -92,27 +102,52 @@ export class PrescribeMedicationComponent
   }
 
   getDiseases() {
-    this.medicService.getDiseases().subscribe(res => {
-      console.log('getDiseases', res);
-    });
+    this.medicService.getDiseases().subscribe(res => {});
   }
 
   ngAfterViewInit(): void {
     this.shareService.getStoreProfileImg$.subscribe(res => {
       this.profileImg = res;
       this.shareService.setLoading(false);
-      console.log('File:📁', this.profileImg);
     });
   }
 
-  getPatientData() {
-    this.service.getPatients().subscribe((response: any) => {
-      const patients = response.data.map((patient: any) => {
-        return patient.firstName;
+  fetchPatients() {
+    const cachedData = this.transferState.get(this.DATA_KEY, null);
+    if (!cachedData) {
+      this.service.getPatients().subscribe((response: any) => {
+        if (response && response.data) {
+          this.patientInfo = response.data;
+          (this.filterName = response.data.map(
+            (patient: any) => patient.firstName + ' ' + patient.lastName
+          )),
+            this.transferState.set(this.DATA_KEY, response.data);
+            debugger;
+        }
       });
-      this.patientData = patients;
-      console.log('this.patientData', this.patientData);
-    });
+    } else {
+      this.patientInfo = cachedData;
+      this.filterName = cachedData.map((patient: any) => patient.firstName);
+      this.transferState.remove(this.DATA_KEY);
+    }
+  }
+
+  onSelectedChange(patientName: any) {
+    const selectedPatient = this.patientInfo.find(
+      (patient: any) => patient.firstName
+    );
+    console.log(selectedPatient);
+
+    if (selectedPatient) {
+      // const dateOfBirth = new Intl.DateTimeFormat('en-CA').format(new Date(selectedPatient.dateOfBirth));
+      const formattedDate = new Date(selectedPatient.dateOfBirth)
+        .toISOString()
+        .split('T')[0];
+      this.dateOfBirth?.setValue(formattedDate);
+      this.bloodGroup?.setValue(selectedPatient.bloodGroup);
+      this.bloodPressure?.setValue(selectedPatient.bloodPressure);
+    }
+    const patientId = selectedPatient?.id;
   }
 
   toggleDirection() {
@@ -150,15 +185,13 @@ export class PrescribeMedicationComponent
     // }
   }
 
-  onSelectionChanged(value: unknown) {
-    console.log('Selected value: ', value);
-  }
+  onSelectionChanged(value: unknown) {}
 
+  filterMedicData: any;
   onSearchChanged(queryString: string) {
-    this.filteredUsers = this.medicData.filter(d =>
+    this.filterMedicData = this.medicData.filter(d =>
       d.drug_name?.toLowerCase().startsWith(queryString.toLowerCase())
     );
-    console.log('this.filteredUsers', this.filteredUsers);
   }
   compareWithFn(drug_name: any | null, drug_name2: any | null) {
     return drug_name?.id === drug_name2.id;
@@ -168,9 +201,19 @@ export class PrescribeMedicationComponent
 
   trackByFn() {}
 
-  get name() {
-    return this.form.get('name');
+  get patientName() {
+    return this.form.get('patientName');
   }
+  get dateOfBirth() {
+    return this.form.get('dateOfBirth');
+  }
+  get bloodGroup() {
+    return this.form.get('bloodGroup');
+  }
+  get bloodPressure() {
+    return this.form.get('bloodPressure');
+  }
+
   get age() {
     return this.form.get('age');
   }
@@ -195,9 +238,7 @@ export class PrescribeMedicationComponent
   get degree() {
     return this.form.get('degree');
   }
-  get dateOfBirth() {
-    return this.form.get('dateOfBirth');
-  }
+
   get medicine() {
     return this.form.get('medicine');
   }

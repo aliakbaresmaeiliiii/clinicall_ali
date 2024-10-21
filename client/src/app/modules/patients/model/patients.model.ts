@@ -10,8 +10,8 @@ export interface PatientDTO {
   email?: string | null | undefined;
   maritalStatus?: string | undefined | null;
   address?: string | undefined | null;
-  bloodGroup?: string | undefined | null;
-  bloodPressure?: string | undefined | null;
+  bloodGroup?: any;
+  bloodPressure?: any;
   heartBeat?: string | undefined | null;
   haemoglobin?: string | undefined | null;
   doctor?: string | undefined | null;
