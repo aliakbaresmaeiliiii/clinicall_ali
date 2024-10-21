@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { BehaviorSubject, Observable, delay, map, of } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { UserInfo } from '../../shared/models/userInfo';
 import { CurrentUser, User } from '../auth/models/user';
-import { UserInfo, UserRole } from '../../shared/models/userInfo';
 
 @Injectable({
   providedIn: 'root',
@@ -58,16 +58,6 @@ export class UserService {
   updateProfile(data: any): Observable<User> {
     return this.#http.put<User>(`${this.config}user/updateProfile`, data);
   }
-
-  // getSkills(): Observable<string[]> {
-  //   return this.#http
-  //     .get<{
-  //       code: number;
-  //       data: { skill_id: number; skill_name: string }[];
-  //       message: string;
-  //     }>(`${this.config}user/getSkills`)
-  //     .pipe(map(res => res.data.map(skill => skill.skill_name)));
-  // }
 
   forgetPassword(email: any): Observable<{}> {
     return this.#http.get(`${this.config}user/forgot-passsword/${email}`);

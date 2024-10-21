@@ -45,12 +45,7 @@ export class ChangePasswordComponent extends BaseComponent implements OnInit {
         this.toastrService.error('Faild to change passwsord');
       },
     });
-    // this.service.changeUserPasswrod(payload).subscribe(res => {
-    //   if (res) {
-    //     this.toastrService.success('password changed sussceccfully');
-    //   }
-    //   console.log(res);
-    // });
+
   }
 
   // getFormControl
