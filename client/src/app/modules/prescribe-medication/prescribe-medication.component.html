@@ -4,7 +4,7 @@
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-4">
       <div class="desktop:grid grid-cols-4 gap-3">
         <!-- *****Patient Name***** -->
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="w-full">
           <mat-select
             [(value)]="selectedPatient"
             name="selectedPatient"
@@ -116,7 +116,7 @@
         </mat-form-field>
 
         <!-- *****Diseases***** -->
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="w-full">
           <mat-select
             [(value)]="selectedDiseases"
             name="selectedDiseases"
@@ -137,7 +137,7 @@
         </mat-form-field>
 
         <!-- *****medicine***** -->
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" class="w-full">
           <mat-select
             [(value)]="selectedMedicine"
             name="selectedMedicine"
