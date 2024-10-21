@@ -2,25 +2,26 @@
   <mat-card appearance="outlined" class="p-4">
     <h2 class="text-xs font-medium">{{ title }}</h2>
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-4">
-      <div class="desktop:grid grid-cols-2 gap-3">
+      <div class="desktop:grid grid-cols-4 gap-3">
         <!-- *****Patient Name***** -->
         <mat-form-field appearance="outline">
-          <mat-label>Patient Name</mat-label>
-          <input
-            type="text"
-            placeholder="Pick a patient"
-            aria-label="Patient Name"
-            matInput
-            formControlName="patientName"
-            [matAutocomplete]="auto" />
-          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          <mat-select
+            [(value)]="selectedPatient"
+            name="selectedPatient"
+            placeholder="selected Patient...">
+            <input
+              type="text"
+              placeholder="Pick up patient..."
+              formControlName="searchFood"
+              (input)="filterPatient()"
+              style="width: 100%; padding: 8px; margin-bottom: 8px" />
             <mat-option
-              *ngFor="let option of filteredPatient | async"
-              (onSelectionChange)="onSelectedChange(option)"
-              [value]="option">
-              {{ option }}
+              *ngFor="let p of filteredPatient"
+              [value]="p.firstName"
+              (onSelectionChange)="onSelectedChange(p)">
+              {{ p.firstName }}
             </mat-option>
-          </mat-autocomplete>
+          </mat-select>
         </mat-form-field>
 
         <!-- *****Date of birth***** -->
@@ -35,6 +36,7 @@
             [errorStateMatcher]="matcher"
             formControlName="dateOfBirth" />
         </mat-form-field>
+
         <!-- *****bloodGroup***** -->
         <mat-form-field
           data-testing="department"
@@ -47,6 +49,7 @@
             [errorStateMatcher]="matcher"
             formControlName="bloodGroup" />
         </mat-form-field>
+
         <!-- *****bloodPressure***** -->
         <mat-form-field
           data-testing="department"
@@ -60,7 +63,101 @@
             formControlName="bloodPressure" />
         </mat-form-field>
 
-        <ali-select
+        <!-- *****haemoglobin***** -->
+        <mat-form-field
+          data-testing="department"
+          appearance="outline"
+          class="w-full">
+          <mat-label>haemoglobin</mat-label>
+          <input
+            type="text"
+            matInput
+            [errorStateMatcher]="matcher"
+            formControlName="haemoglobin" />
+        </mat-form-field>
+
+        <!-- *****mobile***** -->
+        <mat-form-field
+          data-testing="department"
+          appearance="outline"
+          class="w-full">
+          <mat-label>mobile</mat-label>
+          <input
+            type="text"
+            matInput
+            [errorStateMatcher]="matcher"
+            formControlName="mobile" />
+        </mat-form-field>
+
+        <!-- *****sugarLevel***** -->
+        <mat-form-field
+          data-testing="department"
+          appearance="outline"
+          class="w-full">
+          <mat-label>sugarLevel</mat-label>
+          <input
+            type="text"
+            matInput
+            [errorStateMatcher]="matcher"
+            formControlName="sugarLevel" />
+        </mat-form-field>
+
+        <!-- *****description***** -->
+        <mat-form-field
+          data-testing="department"
+          appearance="outline"
+          class="w-full">
+          <mat-label>description</mat-label>
+          <input
+            type="text"
+            matInput
+            [errorStateMatcher]="matcher"
+            formControlName="description" />
+        </mat-form-field>
+
+        <!-- *****Diseases***** -->
+        <mat-form-field appearance="outline">
+          <mat-select
+            [(value)]="selectedDiseases"
+            name="selectedDiseases"
+            placeholder="selected Diseases...">
+            <input
+              type="text"
+              placeholder="Pick up Diseases..."
+              formControlName="diseases"
+              (input)="filterDiseases()"
+              style="width: 100%; padding: 8px; margin-bottom: 8px" />
+            <mat-option
+              *ngFor="let p of filteredDiseases"
+              [value]="p.disease_name"
+              (onSelectionChange)="onSelectedChangeDiseases(p.disease_id)">
+              {{ p.disease_name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- *****medicine***** -->
+        <mat-form-field appearance="outline">
+          <mat-select
+            [(value)]="selectedMedicine"
+            name="selectedMedicine"
+            placeholder="selected Medicine...">
+            <input
+              type="text"
+              placeholder="Pick up Medicine..."
+              formControlName="medicine"
+              (input)="filterMedicine()"
+              style="width: 100%; padding: 8px; margin-bottom: 8px" />
+            <mat-option
+              *ngFor="let p of filterMedicData"
+              [value]="p.drug_name"
+              (onSelectionChange)="onSelectedChangeMedic(p)">
+              {{ p.drug_name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- <ali-select
           label="Pick the User"
           multiple
           [searchable]="true"
@@ -73,135 +170,7 @@
             <i class="fa-solid fa-tablets"></i>
             {{ user.drug_name }}</app-option
           >
-        </ali-select>
-      </div>
-
-      <div class="desktop:grid grid-cols-3 gap-3">
-        <!-- *****email***** -->
-        <mat-form-field
-          data-testing="email"
-          appearance="outline"
-          class="w-full">
-          <mat-label>Email</mat-label>
-          <input
-            type="email"
-            matInput
-            [errorStateMatcher]="matcher"
-            formControlName="email"
-            placeholder="email"
-            class="w-full" />
-          <!-- Error handling -->
-          <mat-error
-            *ngIf="email?.hasError('email') && !email?.hasError('required')"
-            >Please enter a valid email address</mat-error
-          >
-          <mat-error *ngIf="email?.hasError('required')"
-            >email is <strong>required</strong></mat-error
-          >
-        </mat-form-field>
-        <!-- *****department***** -->
-        <mat-form-field
-          data-testing="department"
-          appearance="outline"
-          class="w-full">
-          <mat-label>department</mat-label>
-          <input
-            type="text"
-            matInput
-            [errorStateMatcher]="matcher"
-            formControlName="department"
-            placeholder="department" />
-          <!-- Error handling -->
-          <mat-error
-            *ngIf="
-              department?.hasError('department') &&
-              !department?.hasError('required')
-            "
-            >Please enter a valid department</mat-error
-          >
-          <mat-error *ngIf="department?.hasError('required')"
-            >department is <strong>required</strong></mat-error
-          >
-          <mat-error *ngIf="form.controls.department.hasError('minlength')"
-            >department is too short
-            <strong>{{
-              form.controls.department.getError('minlength')?.requiredLength
-            }}</strong></mat-error
-          >
-          <mat-error *ngIf="department?.hasError('banWords')"
-            >The value
-            <strong>{{ department?.getError('banWords').bannedWord }} </strong
-            >is banned</mat-error
-          >
-        </mat-form-field>
-        <!-- *****degree***** -->
-        <mat-form-field
-          data-testing="degree"
-          appearance="outline"
-          class="w-full">
-          <mat-label>degree</mat-label>
-          <input
-            type="text"
-            matInput
-            [errorStateMatcher]="matcher"
-            formControlName="degree"
-            placeholder="degree" />
-          <!-- Error handling -->
-          <mat-error
-            *ngIf="degree?.hasError('degree') && !degree?.hasError('required')"
-            >Please enter a valid degree</mat-error
-          >
-          <mat-error *ngIf="degree?.hasError('required')"
-            >degree is <strong>required</strong></mat-error
-          >
-          <mat-error *ngIf="form.controls.degree.hasError('minlength')"
-            >degree is too short
-            <strong>{{
-              form.controls.degree.getError('minlength')?.requiredLength
-            }}</strong></mat-error
-          >
-          <mat-error *ngIf="degree?.hasError('banWords')"
-            >The value
-            <strong>{{ degree?.getError('banWords').bannedWord }} </strong>is
-            banned</mat-error
-          >
-        </mat-form-field>
-      </div>
-      <div class="desktop:grid grid-cols-1 gap-3">
-        <!-- *****Address***** -->
-        <mat-form-field
-          data-testing="Address"
-          appearance="outline"
-          class="w-full">
-          <mat-label>Address</mat-label>
-          <input
-            type="text"
-            matInput
-            [errorStateMatcher]="matcher"
-            formControlName="address"
-            placeholder="address" />
-          <!-- Error handling -->
-          <mat-error
-            *ngIf="
-              address?.hasError('address') && !address?.hasError('required')
-            "
-            >Please enter a valid address</mat-error
-          >
-          <mat-error *ngIf="address?.hasError('required')"
-            >address is <strong>required</strong></mat-error
-          >
-          <mat-error *ngIf="form.controls.address.hasError('minlength')"
-            >address is too short
-            <strong>{{
-              form.controls.address.getError('minlength')?.requiredLength
-            }}</strong></mat-error
-          >
-          <mat-error *ngIf="address?.hasError('banWords')"
-            >The value
-            <strong>{{ address?.getError('banWords').bannedWord }} </strong>is
-            banned</mat-error
-          >
-        </mat-form-field>
+        </ali-select> -->
       </div>
 
       <div class="desktop:flex desktop:justify-end w-full gap-3">

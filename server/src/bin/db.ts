@@ -593,7 +593,6 @@ export async function getMedicine() {
   const result = await query<RowDataPacket[]>(`
     SELECT * FROM ${coreSchema}.medicine
     `);
-
   return result;
 }
 
@@ -601,5 +600,29 @@ export async function getDisease() {
   const result = await query<RowDataPacket[]>(
     `SELECT * FROM ${coreSchema}.diseases`
   );
+  return result;
+}
+// export async function getDiseaseSubcategories(disease_id: string) {
+//   const result = await query<RowDataPacket[]>(
+//     `SELECT * FROM ${coreSchema}.diseases d 
+//       LEFT JOIN ${coreSchema}.disease_subcategories ds ON d.disease_id = ds.disease_id
+
+//     WHERE disease_id =?`,
+//     {
+//       values: [disease_id],
+//     }
+//   );
+//   return result;
+// }
+
+export async function getDiseaseSubcategories(disease_id: string) {
+  const result = await query<RowDataPacket[]>(
+    `SELECT * FROM ${coreSchema}.diseases d 
+      LEFT JOIN ${coreSchema}.disease_subcategories ds ON d.disease_id = ds.disease_id
+    WHERE d.disease_id = ?`,{
+      values: [disease_id], 
+    } 
+  );
+  
   return result;
 }

@@ -38,7 +38,6 @@ export class OptionComponent<T> implements OnInit, Highlightable {
 
   @HostListener('click')
   protected select() {
-    debugger;
     if (!this.disabled) {
       this.highlightAsSelected();
       this.selected.emit(this);

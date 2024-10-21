@@ -18,6 +18,7 @@ import { PatientsService } from '../patients/services/patients.service';
 import { PrescribeMedicationService } from './services/prescribe-medication.service';
 import { Medicine } from './medicine';
 import { PatientDTO } from '../patients/model/patients.model';
+import { Diseases } from '../patients/model/disease';
 
 @Component({
   selector: 'app-prescribe-medication',
@@ -31,7 +32,7 @@ export class PrescribeMedicationComponent
   shareService = inject(ShareService);
   agePipe = inject(AgePipe);
   service = inject(PatientsService);
-  medicService = inject(PrescribeMedicationService);
+  prescribeService = inject(PrescribeMedicationService);
   labelUserName: string = 'UserName';
   labelPassword: string = 'password';
   matcher = new ErrorStateMatcher();
@@ -42,67 +43,129 @@ export class PrescribeMedicationComponent
   title = 'Add New Patient';
   profileImg: File | null = null;
   textDirection: 'ltr' | 'rtl' = 'ltr';
-  medicData: Medicine[] = [];
   phoneExists: boolean | null | unknown = null;
   maxDate!: Date;
   minDate!: Date;
   transferState = inject(TransferState);
-  DATA_KEY = makeStateKey<any>('pateintInfo');
+  DATA_KEY_PATIENT = makeStateKey<any>('pateintInfo');
+  DATA_KEY_MEDIC = makeStateKey<any>('medicine');
+  DATA_KEY_DISEASES = makeStateKey<any>('disease');
 
+  foods = [
+    { value: 'pizza', viewValue: 'Pizza' },
+    { value: 'burger', viewValue: 'Burger' },
+    { value: 'steak', viewValue: 'Steak' },
+    { value: 'salad', viewValue: 'Salad' },
+  ];
+  selectedPatient: string = '';
+  selectedMedicine: string = '';
+  selectedDiseases: string = '';
+
+  medicData: Medicine[] = [];
   patientInfo: PatientDTO[] = [];
-  filterName: string[] = [];
-  filteredPatient!: Observable<string[]>;
+  diseaseData: Diseases[] = [];
+  filteredPatient: any;
+  filteredMedicine: any;
+  filteredDiseases: any;
 
   form = this.fb.group({
     patientName: ['', Validators.required],
     dateOfBirth: [''],
     bloodGroup: [''],
     bloodPressure: [''],
-
-    medicine: ['', Validators.required],
-
-    age: [{ value: '', disabled: true }],
-
-    email: ['', [Validators.required, Validators.email]],
-    address: ['', Validators.required],
-    specialization: ['', Validators.required],
-    department: ['', Validators.required],
-    degree: ['', Validators.required],
-    selectValue: new FormControl<Medicine | null>(null),
+    haemoglobin: [''],
+    mobile: [''],
+    sugarLevel: [''],
+    description: [''],
+    searchFood: [''],
+    medicine: [''],
+    diseases: [''],
   });
 
   ngOnInit() {
-    // this.getDiseases();
-    // this.getMedicine();
+    this.fetchDisease();
+    this.fetchMedicine();
     this.fetchPatients();
-    this.form
-      .get('selectValue')
-      ?.valueChanges.subscribe(this.onSelectionChanged);
-
-    setTimeout(() => {
-      this.filteredPatient = this.form.get('patientName')!.valueChanges.pipe(
-        startWith(''),
-        map(value => this._filter(value || ''))
-      );
-    }, 100);
   }
 
-  private _filter(value: string): any[] {
-    const filterValue = value.toLowerCase();
-    const findName = this.patientInfo.map(name => name.firstName + ' ' + name.lastName);
-    return findName.filter((option: any) =>
-      option.toLowerCase().includes(filterValue)
+  filterPatient() {
+    const filterValue = this.form.get('searchFood')?.value?.toLowerCase() || '';
+    this.filteredPatient = this.patientInfo.filter(p =>
+      p.firstName?.toLowerCase().includes(filterValue)
+    );
+  }
+  fetchPatients() {
+    const cachedData = this.transferState.get(this.DATA_KEY_PATIENT, null);
+    if (!cachedData) {
+      this.service.getPatients().subscribe((response: any) => {
+        if (response && response.data) {
+          this.filteredPatient = [...response.data];
+          this.transferState.set(this.DATA_KEY_PATIENT, response.data);
+        }
+      });
+    } else {
+      this.patientInfo = cachedData;
+      this.selectedPatient = cachedData;
+      this.transferState.remove(this.DATA_KEY_PATIENT);
+    }
+  }
+  filterMedicine() {
+    const filterValue = this.form.get('medicine')?.value?.toLowerCase() || '';
+    this.filteredMedicine = this.medicData.filter(p =>
+      p.drug_name?.toLowerCase().includes(filterValue)
+    );
+  }
+  filterDiseases() {
+    const filterValue = this.form.get('diseases')?.value?.toLowerCase() || '';
+    this.filteredDiseases = this.diseaseData.filter(p =>
+      p.disease_name?.toLowerCase().includes(filterValue)
     );
   }
 
-  getMedicine() {
-    this.medicService.getDrugData().subscribe(res => {
-      this.medicData = res.result;
-    });
+  fetchMedicine() {
+    const cachedData = this.transferState.get(this.DATA_KEY_MEDIC, null);
+    if (!cachedData) {
+      this.prescribeService.getDrugData().subscribe((response: any) => {
+        if (response && response.data) {
+          this.filterMedicData = [...response.data];
+          this.transferState.set(this.DATA_KEY_MEDIC, response.data);
+        }
+      });
+    } else {
+      this.medicData = cachedData;
+      this.selectedMedicine = cachedData;
+      this.transferState.remove(this.DATA_KEY_MEDIC);
+    }
+    // this.prescribeService.getDrugData().subscribe(res => {
+    //   // this.medicData = res.result;
+    //   this.filterMedicData = [...this.patientInfo];
+
+    // });
+  }
+
+  fetchDisease() {
+    const cachedData = this.transferState.get(this.DATA_KEY_DISEASES, null);
+    if (!cachedData) {
+      this.prescribeService.getDiseases().subscribe((response: any) => {
+        if (response && response.data) {
+          this.filteredDiseases = [...response.data];
+          this.transferState.set(this.DATA_KEY_DISEASES, response.data);
+        }
+      });
+    } else {
+      this.diseaseData = cachedData;
+      this.selectedDiseases = cachedData;
+      this.transferState.remove(this.DATA_KEY_DISEASES);
+    }
+    // this.prescribeService.getDrugData().subscribe(res => {
+    //   // this.medicData = res.result;
+    //   this.filterMedicData = [...this.patientInfo];
+
+    // });
   }
 
   getDiseases() {
-    this.medicService.getDiseases().subscribe(res => {});
+    this.prescribeService.getDiseases().subscribe(res => {});
   }
 
   ngAfterViewInit(): void {
@@ -112,42 +175,29 @@ export class PrescribeMedicationComponent
     });
   }
 
-  fetchPatients() {
-    const cachedData = this.transferState.get(this.DATA_KEY, null);
-    if (!cachedData) {
-      this.service.getPatients().subscribe((response: any) => {
-        if (response && response.data) {
-          this.patientInfo = response.data;
-          (this.filterName = response.data.map(
-            (patient: any) => patient.firstName + ' ' + patient.lastName
-          )),
-            this.transferState.set(this.DATA_KEY, response.data);
-            debugger;
-        }
-      });
-    } else {
-      this.patientInfo = cachedData;
-      this.filterName = cachedData.map((patient: any) => patient.firstName);
-      this.transferState.remove(this.DATA_KEY);
-    }
-  }
-
-  onSelectedChange(patientName: any) {
-    const selectedPatient = this.patientInfo.find(
-      (patient: any) => patient.firstName
-    );
-    console.log(selectedPatient);
-
-    if (selectedPatient) {
-      // const dateOfBirth = new Intl.DateTimeFormat('en-CA').format(new Date(selectedPatient.dateOfBirth));
-      const formattedDate = new Date(selectedPatient.dateOfBirth)
+  onSelectedChange(patientName: PatientDTO) {
+    this.selectedPatient = patientName.firstName + ' ' + patientName.lastName;
+    if (this.selectedPatient) {
+      const formattedDate = new Date(patientName.dateOfBirth)
         .toISOString()
         .split('T')[0];
       this.dateOfBirth?.setValue(formattedDate);
-      this.bloodGroup?.setValue(selectedPatient.bloodGroup);
-      this.bloodPressure?.setValue(selectedPatient.bloodPressure);
+      this.bloodGroup?.setValue(patientName.bloodGroup);
+      this.bloodPressure?.setValue(patientName.bloodPressure);
+      this.haemoglobin?.setValue(patientName.haemoglobin);
+      this.sugarLevel?.setValue(patientName.sugarLevel);
+      this.description?.setValue(patientName.description);
     }
-    const patientId = selectedPatient?.id;
+  }
+
+  onSelectedChangeMedic(medic: string) {}
+
+  
+
+  onSelectedChangeDiseases(disease_id: number) {
+    debugger;
+    this.prescribeService.getDiseaseSubcategories(disease_id).subscribe(res => {
+    });
   }
 
   toggleDirection() {
@@ -213,33 +263,19 @@ export class PrescribeMedicationComponent
   get bloodPressure() {
     return this.form.get('bloodPressure');
   }
-
-  get age() {
-    return this.form.get('age');
-  }
-  get gender() {
-    return this.form.get('gender');
-  }
-  get email() {
-    return this.form.get('email');
+  get haemoglobin() {
+    return this.form.get('haemoglobin');
   }
   get mobile() {
     return this.form.get('mobile');
   }
-  get address() {
-    return this.form.get('address');
+  get sugarLevel() {
+    return this.form.get('sugarLevel');
   }
-  get specialization() {
-    return this.form.get('specialization');
+  get description() {
+    return this.form.get('description');
   }
-  get department() {
-    return this.form.get('department');
-  }
-  get degree() {
-    return this.form.get('degree');
-  }
-
-  get medicine() {
-    return this.form.get('medicine');
+  get searchFood() {
+    return this.form.get('searchFood');
   }
 }
