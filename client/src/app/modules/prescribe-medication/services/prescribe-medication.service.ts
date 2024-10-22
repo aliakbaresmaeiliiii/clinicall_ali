@@ -18,11 +18,16 @@ export class PrescribeMedicationService {
     return this.http.get(`${this.config}medicine`);
   }
 
-  getDiseases() {
+  getDiseases(): Observable<{}> {
     return this.http.get(`${this.config}getAllDiseases`);
   }
 
-  getDiseaseSubcategories(disease_id: number) {
+  getDiseaseSubcategories(disease_id: string): Observable<{}> {
     return this.http.get(`${this.config}getDiseaseSubcategories/${disease_id}`);
+  }
+
+  updateIsFavorite(id: string | number, isFavorite: boolean): Observable<any> {
+    debugger;
+    return this.http.put(`${this.config}medicine/${id}/favorite`, { isFavorite });
   }
 }

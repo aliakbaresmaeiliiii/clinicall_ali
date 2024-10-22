@@ -26,6 +26,7 @@
   box-sizing: border-box;
   border-radius: var(--border-radius, 30px);
   min-width: 250px;
+  width: 100%;
   &:hover {
     cursor: pointer;
     background-color: var(--color-background, #eceff1);
