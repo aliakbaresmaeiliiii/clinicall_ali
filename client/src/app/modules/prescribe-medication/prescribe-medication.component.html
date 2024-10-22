@@ -1,6 +1,6 @@
 <section class="w-full">
   <mat-card appearance="outlined" class="p-4">
-    <h2 class="text-xs font-medium">{{ title }}</h2>
+    <h2 class="text-3xl font-medium">{{ title }}</h2>
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-4">
       <div class="desktop:grid grid-cols-4 gap-3">
         <!-- *****Patient Name***** -->
@@ -88,7 +88,6 @@
             [errorStateMatcher]="matcher"
             formControlName="mobile" />
         </mat-form-field>
-
         <!-- *****sugarLevel***** -->
         <mat-form-field
           data-testing="department"
@@ -101,24 +100,15 @@
             [errorStateMatcher]="matcher"
             formControlName="sugarLevel" />
         </mat-form-field>
+      </div>
 
-        <!-- *****description***** -->
-        <mat-form-field
-          data-testing="department"
-          appearance="outline"
-          class="w-full">
-          <mat-label>description</mat-label>
-          <input
-            type="text"
-            matInput
-            [errorStateMatcher]="matcher"
-            formControlName="description" />
-        </mat-form-field>
+      <h2 class="text-3xl font-medium">Disease</h2>
+      <hr />
 
+      <div class="desktop:grid grid-cols-2 gap-3 pt-4">
         <!-- *****Diseases***** -->
         <mat-form-field appearance="outline" class="w-full">
           <mat-select
-            [(value)]="selectedDiseases"
             name="selectedDiseases"
             placeholder="selected Diseases...">
             <input
@@ -136,8 +126,28 @@
           </mat-select>
         </mat-form-field>
 
-        <!-- *****medicine***** -->
+        <!-- *****disease_subcategories***** -->
+
         <mat-form-field appearance="outline" class="w-full">
+          <mat-select
+            name="SubCategoriesDisease"
+            placeholder="selected SubCategoriesDisease...">
+            <input
+              type="text"
+              placeholder="Pick up SubCategoriesDisease..."
+              formControlName="diseaseSubcategories"
+              (input)="filterSubCategoriesDisease()"
+              style="width: 100%; padding: 8px; margin-bottom: 8px" />
+            <mat-option
+              *ngFor="let p of filteredSubCategoriesDisease"
+              [value]="p.subcategory_name">
+              {{ p.subcategory_name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <!-- *****medicine***** -->
+        <!-- <mat-form-field appearance="outline" class="w-full">
           <mat-select
             [(value)]="selectedMedicine"
             name="selectedMedicine"
@@ -155,35 +165,65 @@
               {{ p.drug_name }}
             </mat-option>
           </mat-select>
-        </mat-form-field>
-
-        <!-- <ali-select
+        </mat-form-field> -->
+        <ali-select
           label="Pick the User"
           multiple
           [searchable]="true"
           [compareWith]="compareWithFn"
           [displayWith]="displayWithFn"
-          formControlName="selectValue"
+          formControlName="medicine"
           (closed)="onSearchChanged('')"
           (searchChanged)="onSearchChanged($event)">
-          <app-option *ngFor="let user of filterMedicData" [value]="user">
-            <i class="fa-solid fa-tablets"></i>
-            {{ user.drug_name }}</app-option
-          >
-        </ali-select> -->
+          <div class="w-[700px]">
+            <app-option
+              *ngFor="let user of filterMedicData"
+              [value]="user"
+              class="w-full">
+              <!-- <i class="fa-solid fa-tablets"></i>
+              {{ user.drug_name }} -->
+              <div class="flex justify-between items-center w-full">
+                <div>
+                  <i class="fa-solid fa-tablets"></i>
+                  {{ user.drug_name }}
+                </div>
+                <div (click)="$event.stopPropagation(); selectedFavorite(user)">
+                  <i
+                    class="fa-solid fa-star"
+                    [ngClass]="{
+                      'text-yellow-400': user.isFavorite,
+                      'text-gray-400': !user.isFavorite
+                    }"></i>
+                </div>
+              </div>
+            </app-option>
+          </div>
+        </ali-select>
+        <!-- *****description***** -->
+        <mat-form-field
+          data-testing="department"
+          appearance="outline"
+          class="w-full">
+          <mat-label>description</mat-label>
+          <input
+            type="text"
+            matInput
+            [errorStateMatcher]="matcher"
+            formControlName="description" />
+        </mat-form-field>
       </div>
 
-      <div class="desktop:flex desktop:justify-end w-full gap-3">
+      <div class="desktop:flex desktop:justify-end w-full gap-4 mt-5">
         <!-- *****CancelBTN***** -->
         <button mat-stroked-button type="button" class="w-full">Cancel</button>
+
         <!-- *****SaveBTN***** -->
         <button
-          class="w-full desktop:m-0 tablet:mt-2 mobile:mt-2"
-          [disabled]="!form.valid"
+          class="login-button w-full desktop:m-0 tablet:mt-2 mobile:mt-2"
           mat-flat-button
           data-testid="login-button"
           type="submit">
-          Add Doctor
+          Save
         </button>
       </div>
     </form>

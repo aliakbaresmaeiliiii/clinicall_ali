@@ -602,27 +602,25 @@ export async function getDisease() {
   );
   return result;
 }
-// export async function getDiseaseSubcategories(disease_id: string) {
-//   const result = await query<RowDataPacket[]>(
-//     `SELECT * FROM ${coreSchema}.diseases d 
-//       LEFT JOIN ${coreSchema}.disease_subcategories ds ON d.disease_id = ds.disease_id
-
-//     WHERE disease_id =?`,
-//     {
-//       values: [disease_id],
-//     }
-//   );
-//   return result;
-// }
 
 export async function getDiseaseSubcategories(disease_id: string) {
   const result = await query<RowDataPacket[]>(
     `SELECT * FROM ${coreSchema}.diseases d 
       LEFT JOIN ${coreSchema}.disease_subcategories ds ON d.disease_id = ds.disease_id
-    WHERE d.disease_id = ?`,{
-      values: [disease_id], 
-    } 
+    WHERE d.disease_id = ?`,
+    {
+      values: [disease_id],
+    }
   );
-  
+  return result;
+}
+
+export async function updateIsFavorite(id: string, isFavorite: boolean) {
+  const result = await query<RowDataPacket>(
+    `UPDATE  ${coreSchema}.medicine SET isFavorite = ? WHERE id = ?`,
+    {
+      values: [isFavorite, id],
+    }
+  );
   return result;
 }

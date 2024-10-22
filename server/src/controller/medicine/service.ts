@@ -1,4 +1,4 @@
-import { getMedicine } from "../../bin/db";
+import { getMedicine, updateIsFavorite } from "../../bin/db";
 
 export class MedicineService {
   public static async getMedicine() {
@@ -7,5 +7,14 @@ export class MedicineService {
       return { message: `ok`, data };
     }
     return null;
+  }
+
+  public static async updateIsFavorite(id: string, isFavorite: boolean) {
+    const data = await updateIsFavorite(id, isFavorite);
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
   }
 }

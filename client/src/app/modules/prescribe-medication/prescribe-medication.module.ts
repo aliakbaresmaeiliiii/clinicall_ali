@@ -12,6 +12,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { ChipComponent } from '../../shared/components/chip/chip.component';
 import { AliSelectComponent } from '../../shared/components/select/ali-select/ali-select.component';
 import { OptionComponent } from '../../shared/components/select/option/option.component';
+import { MatButtonModule } from '@angular/material/button';
 
 export const routes: Routes = [
   {
@@ -37,6 +38,7 @@ export const routes: Routes = [
     ChipComponent,
     AliSelectComponent,
     OptionComponent,
+    MatButtonModule
     
   ],
   providers: [AsyncPipe,AgePipe],

@@ -18,7 +18,7 @@ import { PatientsService } from '../patients/services/patients.service';
 import { PrescribeMedicationService } from './services/prescribe-medication.service';
 import { Medicine } from './medicine';
 import { PatientDTO } from '../patients/model/patients.model';
-import { Diseases } from '../patients/model/disease';
+import { Diseases, SubCategoryDisease } from '../patients/model/disease';
 
 @Component({
   selector: 'app-prescribe-medication',
@@ -40,7 +40,7 @@ export class PrescribeMedicationComponent
   maritalStatus: string[] = ['Single', 'Married'];
   bloodGroups: string[] = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
   sugarLevels: string[] = ['Normal', 'Prediabetes', 'Diabetes'];
-  title = 'Add New Patient';
+  title = 'Patient Information';
   profileImg: File | null = null;
   textDirection: 'ltr' | 'rtl' = 'ltr';
   phoneExists: boolean | null | unknown = null;
@@ -50,7 +50,8 @@ export class PrescribeMedicationComponent
   DATA_KEY_PATIENT = makeStateKey<any>('pateintInfo');
   DATA_KEY_MEDIC = makeStateKey<any>('medicine');
   DATA_KEY_DISEASES = makeStateKey<any>('disease');
-
+  DATA_KEY_SUB_CATEGPRY_DISEASE = makeStateKey<any>('subCategoryDisease');
+  isSelectedDiseases = false;
   foods = [
     { value: 'pizza', viewValue: 'Pizza' },
     { value: 'burger', viewValue: 'Burger' },
@@ -58,16 +59,20 @@ export class PrescribeMedicationComponent
     { value: 'salad', viewValue: 'Salad' },
   ];
   selectedPatient: string = '';
-  selectedMedicine: string = '';
+  selectedMedicine: any = '';
   selectedDiseases: string = '';
+  selectedSubCategoriesDisease: string = '';
 
   medicData: Medicine[] = [];
   patientInfo: PatientDTO[] = [];
   diseaseData: Diseases[] = [];
+  subCategoryDiseaseData: SubCategoryDisease[] = [];
   filteredPatient: any;
   filteredMedicine: any;
   filteredDiseases: any;
+  filterMedicData!: Medicine[];
 
+  filteredSubCategoriesDisease: any;
   form = this.fb.group({
     patientName: ['', Validators.required],
     dateOfBirth: [''],
@@ -80,12 +85,14 @@ export class PrescribeMedicationComponent
     searchFood: [''],
     medicine: [''],
     diseases: [''],
+    diseaseSubcategories: [''],
   });
 
   ngOnInit() {
     this.fetchDisease();
     this.fetchMedicine();
     this.fetchPatients();
+    this.filterDiseases();
   }
 
   filterPatient() {
@@ -117,11 +124,21 @@ export class PrescribeMedicationComponent
   }
   filterDiseases() {
     const filterValue = this.form.get('diseases')?.value?.toLowerCase() || '';
-    this.filteredDiseases = this.diseaseData.filter(p =>
-      p.disease_name?.toLowerCase().includes(filterValue)
-    );
+    if (this.diseaseData && this.diseaseData.length) {
+      this.filteredDiseases = this.diseaseData.filter(p =>
+        p.disease_name?.toLowerCase().includes(filterValue)
+      );
+    }
   }
-
+  filterSubCategoriesDisease() {
+    const filterValue =
+      this.form.get('diseaseSubcategories')?.value?.toLowerCase() || '';
+    if (this.subCategoryDiseaseData && this.subCategoryDiseaseData.length) {
+      this.filteredSubCategoriesDisease = this.subCategoryDiseaseData.filter(
+        p => p.subcategory_name?.toLowerCase().includes(filterValue)
+      );
+    }
+  }
   fetchMedicine() {
     const cachedData = this.transferState.get(this.DATA_KEY_MEDIC, null);
     if (!cachedData) {
@@ -133,7 +150,7 @@ export class PrescribeMedicationComponent
       });
     } else {
       this.medicData = cachedData;
-      this.selectedMedicine = cachedData;
+      this.selectedMedicine = [...cachedData];
       this.transferState.remove(this.DATA_KEY_MEDIC);
     }
     // this.prescribeService.getDrugData().subscribe(res => {
@@ -142,39 +159,31 @@ export class PrescribeMedicationComponent
 
     // });
   }
-
   fetchDisease() {
     const cachedData = this.transferState.get(this.DATA_KEY_DISEASES, null);
     if (!cachedData) {
       this.prescribeService.getDiseases().subscribe((response: any) => {
         if (response && response.data) {
-          this.filteredDiseases = [...response.data];
-          this.transferState.set(this.DATA_KEY_DISEASES, response.data);
+          this.diseaseData = [...response.data]; // Store the original data
+          this.filteredDiseases = [...response.data]; // Apply the same data to the filtered list
+          this.transferState.set(this.DATA_KEY_DISEASES, response.data); // Cache the data
         }
       });
     } else {
       this.diseaseData = cachedData;
-      this.selectedDiseases = cachedData;
+      this.filteredDiseases = [...cachedData];
       this.transferState.remove(this.DATA_KEY_DISEASES);
     }
-    // this.prescribeService.getDrugData().subscribe(res => {
-    //   // this.medicData = res.result;
-    //   this.filterMedicData = [...this.patientInfo];
-
-    // });
   }
-
   getDiseases() {
     this.prescribeService.getDiseases().subscribe(res => {});
   }
-
   ngAfterViewInit(): void {
     this.shareService.getStoreProfileImg$.subscribe(res => {
       this.profileImg = res;
       this.shareService.setLoading(false);
     });
   }
-
   onSelectedChange(patientName: PatientDTO) {
     this.selectedPatient = patientName.firstName + ' ' + patientName.lastName;
     if (this.selectedPatient) {
@@ -185,29 +194,46 @@ export class PrescribeMedicationComponent
       this.bloodGroup?.setValue(patientName.bloodGroup);
       this.bloodPressure?.setValue(patientName.bloodPressure);
       this.haemoglobin?.setValue(patientName.haemoglobin);
+      this.mobile?.setValue(patientName.mobile);
       this.sugarLevel?.setValue(patientName.sugarLevel);
       this.description?.setValue(patientName.description);
     }
   }
-
   onSelectedChangeMedic(medic: string) {}
-
-  
-
-  onSelectedChangeDiseases(disease_id: number) {
-    debugger;
-    this.prescribeService.getDiseaseSubcategories(disease_id).subscribe(res => {
-    });
+  onSelectedChangeDiseases(disease_id: string) {
+    this.isSelectedDiseases = true;
+    this.fetchSubCategoryDisease(disease_id);
   }
-
+  fetchSubCategoryDisease(disease_id: string) {
+    const cachedData = this.transferState.get(
+      this.DATA_KEY_SUB_CATEGPRY_DISEASE,
+      null
+    );
+    if (!cachedData) {
+      this.prescribeService
+        .getDiseaseSubcategories(disease_id)
+        .subscribe((response: any) => {
+          if (response && response.data) {
+            this.subCategoryDiseaseData = [...response.data]; // Store the original data
+            this.filteredSubCategoriesDisease = [...response.data]; // Apply the same data to the filtered list
+            this.transferState.set(
+              this.DATA_KEY_SUB_CATEGPRY_DISEASE,
+              response.data
+            ); // Cache the data
+          }
+        });
+    } else {
+      this.subCategoryDiseaseData = cachedData;
+      this.filteredSubCategoriesDisease = [...cachedData]; // Set both to cached data
+      this.transferState.remove(this.DATA_KEY_SUB_CATEGPRY_DISEASE); // Optionally clear the cache
+    }
+  }
   toggleDirection() {
     this.textDirection = this.textDirection === 'ltr' ? 'rtl' : 'ltr';
   }
-
   displayWithFn(drug: any) {
     return drug.drug_name;
   }
-
   onSubmit() {
     // if (this.profileImg) {
     //   const imgProfile = this.profileImg;
@@ -234,17 +260,30 @@ export class PrescribeMedicationComponent
     //   });
     // }
   }
-
   onSelectionChanged(value: unknown) {}
-
-  filterMedicData: any;
   onSearchChanged(queryString: string) {
+    this.fetchMedicine();
     this.filterMedicData = this.medicData.filter(d =>
       d.drug_name?.toLowerCase().startsWith(queryString.toLowerCase())
     );
   }
   compareWithFn(drug_name: any | null, drug_name2: any | null) {
     return drug_name?.id === drug_name2.id;
+  }
+  selectedFavorite(user: Medicine) {
+    user.isFavorite = !user.isFavorite;
+    debugger;
+    this.prescribeService.updateIsFavorite(user.id, user.isFavorite).subscribe(
+      res => {
+        console.log('Favorite status updated successfully:', res);
+      },
+      error => {
+        console.error('Error updating favorite status:', error);
+        user.isFavorite = !user.isFavorite; // Revert to previous state
+      }
+    );
+
+    debugger;
   }
 
   onRemove(e: any) {}
