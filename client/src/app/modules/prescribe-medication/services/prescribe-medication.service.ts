@@ -27,7 +27,6 @@ export class PrescribeMedicationService {
   }
 
   updateIsFavorite(id: string | number, isFavorite: boolean): Observable<any> {
-    debugger;
     return this.http.put(`${this.config}medicine/${id}/favorite`, { isFavorite });
   }
 }

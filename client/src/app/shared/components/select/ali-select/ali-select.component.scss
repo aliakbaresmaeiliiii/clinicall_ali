@@ -60,7 +60,10 @@
   margin-right: 15px;
   transition: transform 0.2s;
   transform-origin: left;
-  width: 100%;
+  white-space: nowrap; 
+  width: 100%; 
+  overflow: hidden;
+  text-overflow: ellipsis; 
   &.empty {
     opacity: 0.6;
   }

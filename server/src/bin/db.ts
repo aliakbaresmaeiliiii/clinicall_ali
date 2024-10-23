@@ -591,7 +591,7 @@ export async function changePassword(data: any) {
 
 export async function getMedicine() {
   const result = await query<RowDataPacket[]>(`
-    SELECT * FROM ${coreSchema}.medicine
+    SELECT * FROM ${coreSchema}.prescription_medicines
     `);
   return result;
 }
@@ -617,7 +617,7 @@ export async function getDiseaseSubcategories(disease_id: string) {
 
 export async function updateIsFavorite(id: string, isFavorite: boolean) {
   const result = await query<RowDataPacket>(
-    `UPDATE  ${coreSchema}.medicine SET isFavorite = ? WHERE id = ?`,
+    `UPDATE  ${coreSchema}.prescription_medicines SET isFavorite = ? WHERE id = ?`,
     {
       values: [isFavorite, id],
     }

@@ -1,231 +1,300 @@
 <section class="w-full">
   <mat-card appearance="outlined" class="p-4">
-    <h2 class="text-3xl font-medium">{{ title }}</h2>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-4">
-      <div class="desktop:grid grid-cols-4 gap-3">
-        <!-- *****Patient Name***** -->
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-select
-            [(value)]="selectedPatient"
-            name="selectedPatient"
-            placeholder="selected Patient...">
-            <input
-              type="text"
-              placeholder="Pick up patient..."
-              formControlName="searchFood"
-              (input)="filterPatient()"
-              style="width: 100%; padding: 8px; margin-bottom: 8px" />
-            <mat-option
-              *ngFor="let p of filteredPatient"
-              [value]="p.firstName"
-              (onSelectionChange)="onSelectedChange(p)">
-              {{ p.firstName }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+    <generic-tab [tabs]="tabs" (selectedIndexChange)="handleTabChange($event)">
+      <ng-template #templateOne let-data="data">
+        <div class="p-5">
+          <h2 class="text-3xl font-medium">{{ title }}</h2>
+          <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-4">
+            <div class="desktop:grid grid-cols-4 gap-3">
+              <!-- *****Patient Name***** -->
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-select
+                  [(value)]="selectedPatient"
+                  name="selectedPatient"
+                  placeholder="selected Patient...">
+                  <input
+                    type="text"
+                    placeholder="Pick up patient..."
+                    formControlName="searchFood"
+                    (input)="filterPatient()"
+                    style="width: 100%; padding: 8px; margin-bottom: 8px" />
+                  <mat-option
+                    *ngFor="let p of filteredPatient"
+                    [value]="p.firstName"
+                    (onSelectionChange)="onSelectedChange(p)">
+                    {{ p.firstName }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
 
-        <!-- *****Date of birth***** -->
-        <mat-form-field
-          data-testing="department"
-          appearance="outline"
-          class="w-full">
-          <mat-label>Date Of Birth</mat-label>
-          <input
-            type="text"
-            matInput
-            [errorStateMatcher]="matcher"
-            formControlName="dateOfBirth" />
-        </mat-form-field>
+              <!-- *****Date of birth***** -->
+              <mat-form-field
+                data-testing="department"
+                appearance="outline"
+                class="w-full">
+                <mat-label>Date Of Birth</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  [errorStateMatcher]="matcher"
+                  formControlName="dateOfBirth" />
+              </mat-form-field>
 
-        <!-- *****bloodGroup***** -->
-        <mat-form-field
-          data-testing="department"
-          appearance="outline"
-          class="w-full">
-          <mat-label>bloodGroup</mat-label>
-          <input
-            type="text"
-            matInput
-            [errorStateMatcher]="matcher"
-            formControlName="bloodGroup" />
-        </mat-form-field>
+              <!-- *****bloodGroup***** -->
+              <mat-form-field
+                data-testing="department"
+                appearance="outline"
+                class="w-full">
+                <mat-label>bloodGroup</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  [errorStateMatcher]="matcher"
+                  formControlName="bloodGroup" />
+              </mat-form-field>
 
-        <!-- *****bloodPressure***** -->
-        <mat-form-field
-          data-testing="department"
-          appearance="outline"
-          class="w-full">
-          <mat-label>bloodPressure</mat-label>
-          <input
-            type="text"
-            matInput
-            [errorStateMatcher]="matcher"
-            formControlName="bloodPressure" />
-        </mat-form-field>
+              <!-- *****bloodPressure***** -->
+              <mat-form-field
+                data-testing="department"
+                appearance="outline"
+                class="w-full">
+                <mat-label>bloodPressure</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  [errorStateMatcher]="matcher"
+                  formControlName="bloodPressure" />
+              </mat-form-field>
 
-        <!-- *****haemoglobin***** -->
-        <mat-form-field
-          data-testing="department"
-          appearance="outline"
-          class="w-full">
-          <mat-label>haemoglobin</mat-label>
-          <input
-            type="text"
-            matInput
-            [errorStateMatcher]="matcher"
-            formControlName="haemoglobin" />
-        </mat-form-field>
+              <!-- *****haemoglobin***** -->
+              <mat-form-field
+                data-testing="department"
+                appearance="outline"
+                class="w-full">
+                <mat-label>haemoglobin</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  [errorStateMatcher]="matcher"
+                  formControlName="haemoglobin" />
+              </mat-form-field>
 
-        <!-- *****mobile***** -->
-        <mat-form-field
-          data-testing="department"
-          appearance="outline"
-          class="w-full">
-          <mat-label>mobile</mat-label>
-          <input
-            type="text"
-            matInput
-            [errorStateMatcher]="matcher"
-            formControlName="mobile" />
-        </mat-form-field>
-        <!-- *****sugarLevel***** -->
-        <mat-form-field
-          data-testing="department"
-          appearance="outline"
-          class="w-full">
-          <mat-label>sugarLevel</mat-label>
-          <input
-            type="text"
-            matInput
-            [errorStateMatcher]="matcher"
-            formControlName="sugarLevel" />
-        </mat-form-field>
-      </div>
+              <!-- *****mobile***** -->
+              <mat-form-field
+                data-testing="department"
+                appearance="outline"
+                class="w-full">
+                <mat-label>mobile</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  [errorStateMatcher]="matcher"
+                  formControlName="mobile" />
+              </mat-form-field>
 
-      <h2 class="text-3xl font-medium">Disease</h2>
-      <hr />
+              <!-- *****sugarLevel***** -->
+              <mat-form-field
+                data-testing="department"
+                appearance="outline"
+                class="w-full">
+                <mat-label>sugarLevel</mat-label>
+                <input
+                  type="text"
+                  matInput
+                  [errorStateMatcher]="matcher"
+                  formControlName="sugarLevel" />
+              </mat-form-field>
+            </div>
 
-      <div class="desktop:grid grid-cols-2 gap-3 pt-4">
-        <!-- *****Diseases***** -->
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-select
-            name="selectedDiseases"
-            placeholder="selected Diseases...">
-            <input
-              type="text"
-              placeholder="Pick up Diseases..."
-              formControlName="diseases"
-              (input)="filterDiseases()"
-              style="width: 100%; padding: 8px; margin-bottom: 8px" />
-            <mat-option
-              *ngFor="let p of filteredDiseases"
-              [value]="p.disease_name"
-              (onSelectionChange)="onSelectedChangeDiseases(p.disease_id)">
-              {{ p.disease_name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+            <h2 class="text-3xl font-medium">Disease</h2>
+            <hr />
 
-        <!-- *****disease_subcategories***** -->
+            <div class="desktop:grid grid-cols-4 gap-3 pt-4">
+              <!-- *****Diseases***** -->
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Selected Diseases...</mat-label>
 
-        <mat-form-field appearance="outline" class="w-full">
-          <mat-select
-            name="SubCategoriesDisease"
-            placeholder="selected SubCategoriesDisease...">
-            <input
-              type="text"
-              placeholder="Pick up SubCategoriesDisease..."
-              formControlName="diseaseSubcategories"
-              (input)="filterSubCategoriesDisease()"
-              style="width: 100%; padding: 8px; margin-bottom: 8px" />
-            <mat-option
-              *ngFor="let p of filteredSubCategoriesDisease"
-              [value]="p.subcategory_name">
-              {{ p.subcategory_name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+                <mat-select name="selectedDiseases">
+                  <input
+                    type="text"
+                    placeholder="Pick up Diseases..."
+                    formControlName="diseases"
+                    (input)="filterDiseases()"
+                    style="width: 100%; padding: 8px; margin-bottom: 8px" />
+                  <mat-option
+                    *ngFor="let p of filteredDiseases"
+                    [value]="p.disease_name"
+                    (onSelectionChange)="
+                      onSelectedChangeDiseases(p.disease_id)
+                    ">
+                    {{ p.disease_name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
 
-        <!-- *****medicine***** -->
-        <!-- <mat-form-field appearance="outline" class="w-full">
-          <mat-select
-            [(value)]="selectedMedicine"
-            name="selectedMedicine"
-            placeholder="selected Medicine...">
-            <input
-              type="text"
-              placeholder="Pick up Medicine..."
+              <!-- *****disease_subcategories***** -->
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Selected SubCategoriesDisease...</mat-label>
+
+                <mat-select
+                  name="SubCategoriesDisease"
+                  [disabled]="isSelectDisease">
+                  <input
+                    type="text"
+                    placeholder="Pick up SubCategoriesDisease..."
+                    formControlName="diseaseSubcategories"
+                    (input)="filterSubCategoriesDisease()"
+                    style="width: 100%; padding: 8px; margin-bottom: 8px" />
+                  <mat-option
+                    *ngFor="let p of filteredSubCategoriesDisease"
+                    (onSelectionChange)="onSelectedChangeSubCat(p)"
+                    [value]="p.subcategory_name">
+                    {{ p.subcategory_name }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <!-- *****Severity***** -->
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Severity</mat-label>
+                <mat-select [disabled]="isSelectedSubCategory">
+                  @for (s of severityData; track s) {
+                  <mat-option [value]="s.value">{{ s.viewValue }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+
+              <!-- *****Year of birth***** -->
+              <mat-form-field appearance="outline" class="w-full mb-1">
+                <mat-label>Choose a date</mat-label>
+                <input
+                  [max]="maxDate"
+                  [min]="minDate"
+                  matInput
+                  [matDatepicker]="picker"
+                  formControlName="dateOfBirth" />
+                <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
+                <mat-datepicker-toggle matIconSuffix [for]="picker">
+                  <mat-icon matDatepickerToggleIcon
+                    >keyboard_arrow_down</mat-icon
+                  >
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <div>
+              <!-- *****description***** -->
+              <mat-form-field
+                data-testing="department"
+                appearance="outline"
+                class="w-full">
+                <mat-label>description</mat-label>
+                <textarea
+                  matInput
+                  placeholder="Ex. It makes me feel..."
+                  formControlName="description"></textarea>
+              </mat-form-field>
+            </div>
+          </form>
+        </div>
+      </ng-template>
+
+      <ng-template #templateTwo let-data="data">
+        <form [formGroup]="formMedicine" (ngSubmit)="onSubmit()" class="mt-4">
+          <div class="desktop:grid grid-cols-4 gap-3 pt-4 p-5">
+            <ali-select
+              label="Pick the medicine"
+              multiple
+              [searchable]="true"
+              [compareWith]="compareWithFn"
+              [displayWith]="displayWithFn"
               formControlName="medicine"
-              (input)="filterMedicine()"
-              style="width: 100%; padding: 8px; margin-bottom: 8px" />
-            <mat-option
-              *ngFor="let p of filterMedicData"
-              [value]="p.drug_name"
-              (onSelectionChange)="onSelectedChangeMedic(p)">
-              {{ p.drug_name }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field> -->
-        <ali-select
-          label="Pick the User"
-          multiple
-          [searchable]="true"
-          [compareWith]="compareWithFn"
-          [displayWith]="displayWithFn"
-          formControlName="medicine"
-          (closed)="onSearchChanged('')"
-          (searchChanged)="onSearchChanged($event)">
-          <div class="w-[700px]">
-            <app-option
-              *ngFor="let user of filterMedicData"
-              [value]="user"
-              class="w-full">
-              <!-- <i class="fa-solid fa-tablets"></i>
-              {{ user.drug_name }} -->
-              <div class="flex justify-between items-center w-full">
-                <div>
-                  <i class="fa-solid fa-tablets"></i>
-                  {{ user.drug_name }}
-                </div>
-                <div (click)="$event.stopPropagation(); selectedFavorite(user)">
-                  <i
-                    class="fa-solid fa-star"
-                    [ngClass]="{
-                      'text-yellow-400': user.isFavorite,
-                      'text-gray-400': !user.isFavorite
-                    }"></i>
-                </div>
+              (closed)="onSearchChanged('')"
+              (searchChanged)="onSearchChanged($event)">
+              <div class="w-[300px]">
+                <app-option
+                  *ngFor="let user of filterMedicData"
+                  [value]="user"
+                  class="w-full">
+                  <div class="flex justify-between items-center w-full">
+                    <div >
+                      <i class="fa-solid fa-tablets text-blue-600"></i>
+                      {{ user.medicine_name }}
+                    </div>
+                    <div
+                      (click)="
+                        $event.stopPropagation(); selectedFavorite(user)
+                      ">
+                      <i
+                        matTooltip="Add favorite"
+                        class="fa-solid fa-star"
+                        [ngClass]="{
+                          'text-yellow-400': user.isFavorite,
+                          'text-gray-400': !user.isFavorite
+                        }"></i>
+                    </div>
+                  </div>
+                </app-option>
               </div>
-            </app-option>
+            </ali-select>
+            <!-- *****Severity***** -->
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Severity</mat-label>
+              <mat-select formControlName="severity">
+                @for (d of dosage; track d) {
+                <mat-option [value]="d.value">{{ d.viewValue }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <!-- *****Duration***** -->
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>Duration</mat-label>
+              <mat-select formControlName="duration">
+                @for (d of durationOption; track d) {
+                <mat-option [value]="d.value">{{ d.viewValue }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            <!-- *****frequencyOptions***** -->
+            <mat-form-field appearance="outline" class="w-full">
+              <mat-label>frequencyOptions</mat-label>
+              <mat-select
+                formControlName="frequency"
+                (selectionChange)="onFrequencyChange($event)">
+                @for (d of frequencyOptions; track d) {
+                <mat-option [value]="d.value">{{ d.viewValue }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+            @if (frequency?.value === 'custom') {
+            <mat-form-field appearance="outline">
+              <mat-label>Custom Frequency</mat-label>
+              <input
+                matInput
+                formControlName="customFrequency"
+                placeholder="Enter custom frequency" />
+            </mat-form-field>
+            }
+            <div class="desktop:grid grid-cols-2 gap-3 desktop:mt-10">
+              <!-- *****CancelBTN***** -->
+              <button mat-stroked-button type="button">Cancel</button>
+              <!-- *****SaveBTN***** -->
+              <button
+                class="desktop:m-0 tablet:mt-2 mobile:mt-2"
+                mat-flat-button
+                data-testid="login-button"
+                type="submit">
+                Save
+              </button>
+            </div>
           </div>
-        </ali-select>
-        <!-- *****description***** -->
-        <mat-form-field
-          data-testing="department"
-          appearance="outline"
-          class="w-full">
-          <mat-label>description</mat-label>
-          <input
-            type="text"
-            matInput
-            [errorStateMatcher]="matcher"
-            formControlName="description" />
-        </mat-form-field>
-      </div>
+          <div>
+          
 
-      <div class="desktop:flex desktop:justify-end w-full gap-4 mt-5">
-        <!-- *****CancelBTN***** -->
-        <button mat-stroked-button type="button" class="w-full">Cancel</button>
-
-        <!-- *****SaveBTN***** -->
-        <button
-          class="login-button w-full desktop:m-0 tablet:mt-2 mobile:mt-2"
-          mat-flat-button
-          data-testid="login-button"
-          type="submit">
-          Save
-        </button>
-      </div>
-    </form>
+          </div>
+        </form>
+      </ng-template>
+    </generic-tab>
   </mat-card>
 </section>
