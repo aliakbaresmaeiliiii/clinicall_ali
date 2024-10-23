@@ -13,6 +13,10 @@ import { ChipComponent } from '../../shared/components/chip/chip.component';
 import { AliSelectComponent } from '../../shared/components/select/ali-select/ali-select.component';
 import { OptionComponent } from '../../shared/components/select/option/option.component';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatIconModule } from '@angular/material/icon';
+import { CustomTabComponent } from '../../shared/components/custom-tab/custom-tab.component';
 
 export const routes: Routes = [
   {
@@ -38,7 +42,11 @@ export const routes: Routes = [
     ChipComponent,
     AliSelectComponent,
     OptionComponent,
-    MatButtonModule
+    MatButtonModule,
+    MatTooltipModule,
+    MatDatepickerModule,
+    MatIconModule,
+    CustomTabComponent
     
   ],
   providers: [AsyncPipe,AgePipe],

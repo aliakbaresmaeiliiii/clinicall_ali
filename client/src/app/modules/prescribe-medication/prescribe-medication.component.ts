@@ -4,12 +4,15 @@ import {
   Component,
   inject,
   makeStateKey,
+  OnDestroy,
   OnInit,
+  TemplateRef,
   TransferState,
+  ViewChild,
 } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { map, Observable, startWith } from 'rxjs';
+import { map, Observable, startWith, Subject, takeUntil } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { AgePipe } from '../../shared/pipes/age.pipe';
@@ -19,6 +22,8 @@ import { PrescribeMedicationService } from './services/prescribe-medication.serv
 import { Medicine } from './medicine';
 import { PatientDTO } from '../patients/model/patients.model';
 import { Diseases, SubCategoryDisease } from '../patients/model/disease';
+import { IsFavorite } from './enum/isFavorite.enum';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-prescribe-medication',
@@ -27,7 +32,7 @@ import { Diseases, SubCategoryDisease } from '../patients/model/disease';
 })
 export class PrescribeMedicationComponent
   extends BaseComponent
-  implements OnInit
+  implements OnInit, OnDestroy
 {
   shareService = inject(ShareService);
   agePipe = inject(AgePipe);
@@ -40,6 +45,19 @@ export class PrescribeMedicationComponent
   maritalStatus: string[] = ['Single', 'Married'];
   bloodGroups: string[] = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
   sugarLevels: string[] = ['Normal', 'Prediabetes', 'Diabetes'];
+  @ViewChild('templateOne', { static: true }) templateOne!: TemplateRef<any>;
+  @ViewChild('templateTwo', { static: true }) templateTwo!: TemplateRef<any>;
+  @ViewChild('templateThree', { static: true })
+  templateThree!: TemplateRef<any>;
+  #route = inject(ActivatedRoute);
+
+  @ViewChild('templatefour', { static: true }) templatefour!: TemplateRef<any>;
+  tabs: {
+    id: number;
+    title: string;
+    template: TemplateRef<any>;
+    context?: any;
+  }[] = [];
   title = 'Patient Information';
   profileImg: File | null = null;
   textDirection: 'ltr' | 'rtl' = 'ltr';
@@ -51,17 +69,39 @@ export class PrescribeMedicationComponent
   DATA_KEY_MEDIC = makeStateKey<any>('medicine');
   DATA_KEY_DISEASES = makeStateKey<any>('disease');
   DATA_KEY_SUB_CATEGPRY_DISEASE = makeStateKey<any>('subCategoryDisease');
-  isSelectedDiseases = false;
-  foods = [
-    { value: 'pizza', viewValue: 'Pizza' },
-    { value: 'burger', viewValue: 'Burger' },
-    { value: 'steak', viewValue: 'Steak' },
-    { value: 'salad', viewValue: 'Salad' },
+  isSelectDisease = true;
+  isSelectedSubCategory = true;
+  severityData = [
+    { value: 'mid', viewValue: 'Mid' },
+    { value: 'moderate', viewValue: 'Moderate' },
+    { value: 'severe', viewValue: 'Severe' },
+  ];
+  dosage = [
+    { value: '10mg', viewValue: '10 mg' },
+    { value: '20mg', viewValue: '20mg' },
+    { value: '50mg', viewValue: '50mg' },
+    { value: '100mg', viewValue: '100mg' },
+  ];
+  durationOption = [
+    { value: '1day', viewValue: '1day' },
+    { value: '1week', viewValue: '1week' },
+    { value: '1months', viewValue: '1months' },
+    { value: '3months', viewValue: '3months' },
+    { value: '6months', viewValue: '6months' },
+  ];
+  frequencyOptions = [
+    { value: 'once', viewValue: 'Once' },
+    { value: 'daily', viewValue: 'Daily' },
+    { value: 'weekly', viewValue: 'Weekly' },
+    { value: 'bi-weekly', viewValue: 'Bi-Weekly' },
+    { value: 'monthly', viewValue: 'Monthly' },
+    { value: 'custom', viewValue: 'Other' }
   ];
   selectedPatient: string = '';
   selectedMedicine: any = '';
   selectedDiseases: string = '';
   selectedSubCategoriesDisease: string = '';
+  private destroy$ = new Subject<void>();
 
   medicData: Medicine[] = [];
   patientInfo: PatientDTO[] = [];
@@ -73,9 +113,17 @@ export class PrescribeMedicationComponent
   filterMedicData!: Medicine[];
 
   filteredSubCategoriesDisease: any;
+  formMedicine=this.fb.group({
+    medicine: [''],
+    diseases: [''],
+    severity: [''],
+    diseaseSubcategories: [''],
+    duration: [''],
+    frequency: [this.frequencyOptions[0].value],  // Default to 'Once'
+    customFrequency: ['']  
+  })
   form = this.fb.group({
     patientName: ['', Validators.required],
-    dateOfBirth: [''],
     bloodGroup: [''],
     bloodPressure: [''],
     haemoglobin: [''],
@@ -83,17 +131,46 @@ export class PrescribeMedicationComponent
     sugarLevel: [''],
     description: [''],
     searchFood: [''],
-    medicine: [''],
-    diseases: [''],
-    diseaseSubcategories: [''],
+    dateOfBirth: ['', Validators.required],
+  
   });
+
+  onFrequencyChange(event: any) {
+    debugger;
+    const selectedFrequency = event.value;
+    if (selectedFrequency !== 'custom') {
+      this.formMedicine.get('customFrequency')?.setValue('');
+    }
+  }
+
 
   ngOnInit() {
     this.fetchDisease();
     this.fetchMedicine();
     this.fetchPatients();
     this.filterDiseases();
+    this.#route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {});
+    this.setDataInTabs();
   }
+
+  setDataInTabs() {
+    this.tabs = [
+      {
+        id: 0,
+        title: 'Patient Info',
+        template: this.templateOne,
+        context: { data: 'Data for Tab 1' },
+      },
+      {
+        id: 1,
+        title: 'Prescription Medicine',
+        template: this.templateTwo,
+        context: { data: 'Data for Tab 2' },
+      },
+    ];
+  }
+
+  handleTabChange(index: number) {}
 
   filterPatient() {
     const filterValue = this.form.get('searchFood')?.value?.toLowerCase() || '';
@@ -117,13 +194,13 @@ export class PrescribeMedicationComponent
     }
   }
   filterMedicine() {
-    const filterValue = this.form.get('medicine')?.value?.toLowerCase() || '';
+    const filterValue = this.formMedicine.get('medicine')?.value?.toLowerCase() || '';
     this.filteredMedicine = this.medicData.filter(p =>
-      p.drug_name?.toLowerCase().includes(filterValue)
+      p.medicine_name?.toLowerCase().includes(filterValue)
     );
   }
   filterDiseases() {
-    const filterValue = this.form.get('diseases')?.value?.toLowerCase() || '';
+    const filterValue = this.formMedicine.get('diseases')?.value?.toLowerCase() || '';
     if (this.diseaseData && this.diseaseData.length) {
       this.filteredDiseases = this.diseaseData.filter(p =>
         p.disease_name?.toLowerCase().includes(filterValue)
@@ -132,7 +209,7 @@ export class PrescribeMedicationComponent
   }
   filterSubCategoriesDisease() {
     const filterValue =
-      this.form.get('diseaseSubcategories')?.value?.toLowerCase() || '';
+      this.formMedicine.get('diseaseSubcategories')?.value?.toLowerCase() || '';
     if (this.subCategoryDiseaseData && this.subCategoryDiseaseData.length) {
       this.filteredSubCategoriesDisease = this.subCategoryDiseaseData.filter(
         p => p.subcategory_name?.toLowerCase().includes(filterValue)
@@ -144,8 +221,26 @@ export class PrescribeMedicationComponent
     if (!cachedData) {
       this.prescribeService.getDrugData().subscribe((response: any) => {
         if (response && response.data) {
-          this.filterMedicData = [...response.data];
-          this.transferState.set(this.DATA_KEY_MEDIC, response.data);
+          const mappedData = response.data
+            .map((item: any) => {
+              const isFavoriteValue = item.isFavorite; // Capture the original value for debugging
+              const isFavorite = isFavoriteValue === IsFavorite.True;
+
+              console.log(
+                `Item: ${item.name}, isFavorite: ${isFavoriteValue}, Mapped: ${isFavorite}`
+              ); // Log each item's conversion
+
+              return {
+                ...item,
+                isFavorite, // Convert 0 to false and 1 to true
+              };
+            })
+            .sort((a: any, b: any) => {
+              return b.isFavorite - a.isFavorite;
+            });
+          console.log('Mapped Data:', mappedData);
+          this.filterMedicData = [...mappedData];
+          this.transferState.set(this.DATA_KEY_MEDIC, mappedData);
         }
       });
     } else {
@@ -153,11 +248,6 @@ export class PrescribeMedicationComponent
       this.selectedMedicine = [...cachedData];
       this.transferState.remove(this.DATA_KEY_MEDIC);
     }
-    // this.prescribeService.getDrugData().subscribe(res => {
-    //   // this.medicData = res.result;
-    //   this.filterMedicData = [...this.patientInfo];
-
-    // });
   }
   fetchDisease() {
     const cachedData = this.transferState.get(this.DATA_KEY_DISEASES, null);
@@ -201,8 +291,19 @@ export class PrescribeMedicationComponent
   }
   onSelectedChangeMedic(medic: string) {}
   onSelectedChangeDiseases(disease_id: string) {
-    this.isSelectedDiseases = true;
+    debugger;
     this.fetchSubCategoryDisease(disease_id);
+    if (disease_id) {
+      this.isSelectDisease = false;
+    } else {
+      this.isSelectDisease = true;
+    }
+  }
+
+  onSelectedChangeSubCat(data: Diseases) {
+    if (data.disease_id) {
+      this.isSelectedSubCategory = false;
+    }
   }
   fetchSubCategoryDisease(disease_id: string) {
     const cachedData = this.transferState.get(
@@ -232,7 +333,7 @@ export class PrescribeMedicationComponent
     this.textDirection = this.textDirection === 'ltr' ? 'rtl' : 'ltr';
   }
   displayWithFn(drug: any) {
-    return drug.drug_name;
+    return drug.medicine_name;
   }
   onSubmit() {
     // if (this.profileImg) {
@@ -264,15 +365,14 @@ export class PrescribeMedicationComponent
   onSearchChanged(queryString: string) {
     this.fetchMedicine();
     this.filterMedicData = this.medicData.filter(d =>
-      d.drug_name?.toLowerCase().startsWith(queryString.toLowerCase())
+      d.medicine_name?.toLowerCase().startsWith(queryString.toLowerCase())
     );
   }
-  compareWithFn(drug_name: any | null, drug_name2: any | null) {
-    return drug_name?.id === drug_name2.id;
+  compareWithFn(medicine_name: any | null, medicine_name2: any | null) {
+    return medicine_name?.id === medicine_name2.id;
   }
   selectedFavorite(user: Medicine) {
     user.isFavorite = !user.isFavorite;
-    debugger;
     this.prescribeService.updateIsFavorite(user.id, user.isFavorite).subscribe(
       res => {
         console.log('Favorite status updated successfully:', res);
@@ -283,12 +383,15 @@ export class PrescribeMedicationComponent
       }
     );
 
-    debugger;
   }
 
   onRemove(e: any) {}
 
   trackByFn() {}
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+  }
 
   get patientName() {
     return this.form.get('patientName');
@@ -314,7 +417,7 @@ export class PrescribeMedicationComponent
   get description() {
     return this.form.get('description');
   }
-  get searchFood() {
-    return this.form.get('searchFood');
+  get frequency() {
+    return this.formMedicine.get('frequency');
   }
 }
