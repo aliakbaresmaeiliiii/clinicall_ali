@@ -1,10 +1,12 @@
 <section class="w-full">
   <mat-card appearance="outlined" class="p-4">
-    <generic-tab [tabs]="tabs" (selectedIndexChange)="handleTabChange($event)">
-      <ng-template #templateOne let-data="data">
-        <div class="p-5">
-          <h2 class="text-3xl font-medium">{{ title }}</h2>
-          <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-4">
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="mt-4">
+      <generic-tab
+        [tabs]="tabs"
+        (selectedIndexChange)="handleTabChange($event)">
+        <ng-template #templateOne let-data="data">
+          <div class="p-5">
+            <h2 class="text-3xl font-medium">{{ title }}</h2>
             <div class="desktop:grid grid-cols-4 gap-3">
               <!-- *****Patient Name***** -->
               <mat-form-field appearance="outline" class="w-full">
@@ -109,7 +111,9 @@
             <h2 class="text-3xl font-medium">Disease</h2>
             <hr />
 
-            <div class="desktop:grid grid-cols-4 gap-3 pt-4">
+            <div
+              formGroupName="diseasesGroup"
+              class="desktop:grid grid-cols-4 gap-3 pt-4">
               <!-- *****Diseases***** -->
               <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Selected Diseases...</mat-label>
@@ -157,22 +161,24 @@
               <!-- *****Severity***** -->
               <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Severity</mat-label>
-                <mat-select [disabled]="isSelectedSubCategory">
+                <mat-select
+                  [disabled]="isSelectedSubCategory"
+                  formControlName="severity">
                   @for (s of severityData; track s) {
                   <mat-option [value]="s.value">{{ s.viewValue }}</mat-option>
                   }
                 </mat-select>
               </mat-form-field>
 
-              <!-- *****Year of birth***** -->
+              <!-- *****prescription_date***** -->
               <mat-form-field appearance="outline" class="w-full mb-1">
-                <mat-label>Choose a date</mat-label>
+                <mat-label>prescription_date</mat-label>
                 <input
                   [max]="maxDate"
                   [min]="minDate"
                   matInput
                   [matDatepicker]="picker"
-                  formControlName="dateOfBirth" />
+                  formControlName="prescription_date" />
                 <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
                 <mat-datepicker-toggle matIconSuffix [for]="picker">
                   <mat-icon matDatepickerToggleIcon
@@ -196,87 +202,81 @@
                   formControlName="description"></textarea>
               </mat-form-field>
             </div>
-          </form>
-        </div>
-      </ng-template>
+          </div>
+        </ng-template>
 
-      <ng-template #templateTwo let-data="data">
-        <form [formGroup]="formMedicine" (ngSubmit)="onSubmit()" class="mt-4">
-          <div class="desktop:grid grid-cols-4 gap-3 pt-4 p-5">
-            <ali-select
-              label="Pick the medicine"
-              multiple
-              [searchable]="true"
-              [compareWith]="compareWithFn"
-              [displayWith]="displayWithFn"
-              formControlName="medicine"
-              (closed)="onSearchChanged('')"
-              (searchChanged)="onSearchChanged($event)">
-              <div class="w-[300px]">
-                <app-option
-                  *ngFor="let user of filterMedicData"
-                  [value]="user"
-                  class="w-full">
-                  <div class="flex justify-between items-center w-full">
-                    <div >
-                      <i class="fa-solid fa-tablets text-blue-600"></i>
-                      {{ user.medicine_name }}
+        <ng-template #templateTwo let-data="data">
+          <div formGroupName="medication" class="mt-4">
+            <div class="desktop:grid grid-cols-4 gap-3 pt-4 p-5">
+              <!-- *****Medicine***** -->
+              <ali-select
+                label="Pick the Medicine"
+                multiple
+                [searchable]="true"
+                [compareWith]="compareWithFn"
+                [displayWith]="displayWithFn"
+                formControlName="medicine"
+                (closed)="onSearchChanged('')"
+                (searchChanged)="onSearchChanged($event)">
+                <div class="w-[300px]">
+                  <app-option
+                    *ngFor="let user of filterMedicData"
+                    [value]="user"
+                    class="w-full">
+                    <div class="flex justify-between items-center w-full">
+                      <div>
+                        <i class="fa-solid fa-tablets text-blue-600"></i>
+                        {{ user.medicine_name }}
+                      </div>
+                      <div
+                        (click)="
+                          $event.stopPropagation(); selectedFavorite(user)
+                        ">
+                        <i
+                          matTooltip="Add favorite"
+                          class="fa-solid fa-star"
+                          [ngClass]="{
+                            'text-yellow-400': user.isFavorite,
+                            'text-gray-400': !user.isFavorite
+                          }"></i>
+                      </div>
                     </div>
-                    <div
-                      (click)="
-                        $event.stopPropagation(); selectedFavorite(user)
-                      ">
-                      <i
-                        matTooltip="Add favorite"
-                        class="fa-solid fa-star"
-                        [ngClass]="{
-                          'text-yellow-400': user.isFavorite,
-                          'text-gray-400': !user.isFavorite
-                        }"></i>
-                    </div>
-                  </div>
-                </app-option>
-              </div>
-            </ali-select>
-            <!-- *****Severity***** -->
-            <mat-form-field appearance="outline" class="w-full">
-              <mat-label>Severity</mat-label>
-              <mat-select formControlName="severity">
-                @for (d of dosage; track d) {
-                <mat-option [value]="d.value">{{ d.viewValue }}</mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
-            <!-- *****Duration***** -->
-            <mat-form-field appearance="outline" class="w-full">
-              <mat-label>Duration</mat-label>
-              <mat-select formControlName="duration">
-                @for (d of durationOption; track d) {
-                <mat-option [value]="d.value">{{ d.viewValue }}</mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
-            <!-- *****frequencyOptions***** -->
-            <mat-form-field appearance="outline" class="w-full">
-              <mat-label>frequencyOptions</mat-label>
-              <mat-select
-                formControlName="frequency"
-                (selectionChange)="onFrequencyChange($event)">
-                @for (d of frequencyOptions; track d) {
-                <mat-option [value]="d.value">{{ d.viewValue }}</mat-option>
-                }
-              </mat-select>
-            </mat-form-field>
-            @if (frequency?.value === 'custom') {
-            <mat-form-field appearance="outline">
-              <mat-label>Custom Frequency</mat-label>
-              <input
-                matInput
-                formControlName="customFrequency"
-                placeholder="Enter custom frequency" />
-            </mat-form-field>
-            }
-            <div class="desktop:grid grid-cols-2 gap-3 desktop:mt-10">
+                  </app-option>
+                </div>
+              </ali-select>
+              <!-- *****Duration***** -->
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Duration</mat-label>
+                <mat-select formControlName="duration">
+                  @for (d of durationOption; track d) {
+                  <mat-option [value]="d.value">{{ d.viewValue }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+
+              <!-- *****frequencyOptions***** -->
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>frequencyOptions</mat-label>
+                <mat-select
+                  formControlName="frequency"
+                  (selectionChange)="onFrequencyChange($event)">
+                  @for (d of frequencyOptions; track d) {
+                  <mat-option [value]="d.value">{{ d.viewValue }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+              @if (frequency?.value === 'custom') {
+              <mat-form-field appearance="outline">
+                <mat-label>Custom Frequency</mat-label>
+                <input
+                  matInput
+                  formControlName="customFrequency"
+                  placeholder="Enter custom frequency" />
+              </mat-form-field>
+              }
+              
+            </div>
+            <div class="desktop:grid grid-cols-2 gap-3 desktop:mt-10 mb-2">
               <!-- *****CancelBTN***** -->
               <button mat-stroked-button type="button">Cancel</button>
               <!-- *****SaveBTN***** -->
@@ -288,13 +288,73 @@
                 Save
               </button>
             </div>
-          </div>
-          <div>
-          
+            <div>
+              <hr />
+              @if (storeMedicine.length) {
+              <div class="flex justify-between gap-3 p-4 border-2 border-dashed rounded-lg mt-5">
+                <!-- <span> Medicine: </span>
+                <span> Severity: </span>
+                <span> Duration: </span>
+                <span> frequencyOptions: </span> -->
+                <div class="flex flex-col">
 
+                
+                @for (item of storeMedicine; track $index) {
+                <ng-container class="p-2">
+                  <div>
+                    <span class="opacity-55">Duration:</span>
+                    <strong class="pl-1">{{ item.medication.duration }}</strong>
+                  </div>
+                  <div>
+                    <span class="opacity-55">Frequency:</span>
+                    <strong class="pl-1">{{
+                      item.medication.frequency
+                    }}</strong>
+                  </div>
+                  @if (item.medication.frequencyOption) {
+                  <div>
+                    <span class="opacity-55">Frequency Option:</span>
+                    <strong class="pl-1">{{
+                      item.medication.frequencyOption
+                    }}</strong>
+                  </div>
+                  }
+                  <div class="flex">
+                    <span class="opacity-55"> Medicine: </span>
+
+                    @for (m of item.medication.medicine; track $index ) {
+                    <div class="flex">
+                      <strong class="pl-1">
+                        {{ m.medicine_name }}
+                        <span
+                          *ngIf="$index < item.medication.medicine.length - 1"
+                          >,</span
+                        ></strong
+                      >
+                    </div>
+                    }
+                  </div>
+                </ng-container>
+                }
+              </div>
+
+                <button
+                class="pointer"
+                matTooltip="Delete Medicine"
+                mat-icon-button
+                type="button"
+                (click)="deleteMedicine()"
+                >
+                <i class="fa-regular fa-trash-can text-red-500 text-xl"></i>
+
+
+              </button>
+              </div>
+              }
+            </div>
           </div>
-        </form>
-      </ng-template>
-    </generic-tab>
+        </ng-template>
+      </generic-tab>
+    </form>
   </mat-card>
 </section>
