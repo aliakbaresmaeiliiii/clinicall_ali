@@ -1,6 +1,4 @@
 import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   inject,
   makeStateKey,
@@ -10,20 +8,19 @@ import {
   TransferState,
   ViewChild,
 } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { map, Observable, startWith, Subject, takeUntil } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { ActivatedRoute } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { BaseComponent } from '../../shared/components/base/base.component';
 import { AgePipe } from '../../shared/pipes/age.pipe';
 import { ShareService } from '../../shared/services/share.service';
-import { PatientsService } from '../patients/services/patients.service';
-import { PrescribeMedicationService } from './services/prescribe-medication.service';
-import { Medicine } from './medicine';
-import { PatientDTO } from '../patients/model/patients.model';
 import { Diseases, SubCategoryDisease } from '../patients/model/disease';
+import { PatientDTO } from '../patients/model/patients.model';
+import { PatientsService } from '../patients/services/patients.service';
 import { IsFavorite } from './enum/isFavorite.enum';
-import { ActivatedRoute } from '@angular/router';
+import { Medicine } from './medicine';
+import { PrescribeMedicationService } from './services/prescribe-medication.service';
 
 @Component({
   selector: 'app-prescribe-medication',
@@ -95,14 +92,13 @@ export class PrescribeMedicationComponent
     { value: 'weekly', viewValue: 'Weekly' },
     { value: 'bi-weekly', viewValue: 'Bi-Weekly' },
     { value: 'monthly', viewValue: 'Monthly' },
-    { value: 'custom', viewValue: 'Other' }
+    { value: 'custom', viewValue: 'Other' },
   ];
   selectedPatient: string = '';
   selectedMedicine: any = '';
   selectedDiseases: string = '';
   selectedSubCategoriesDisease: string = '';
   private destroy$ = new Subject<void>();
-
   medicData: Medicine[] = [];
   patientInfo: PatientDTO[] = [];
   diseaseData: Diseases[] = [];
@@ -111,17 +107,10 @@ export class PrescribeMedicationComponent
   filteredMedicine: any;
   filteredDiseases: any;
   filterMedicData!: Medicine[];
-
   filteredSubCategoriesDisease: any;
-  formMedicine=this.fb.group({
-    medicine: [''],
-    diseases: [''],
-    severity: [''],
-    diseaseSubcategories: [''],
-    duration: [''],
-    frequency: [this.frequencyOptions[0].value],  // Default to 'Once'
-    customFrequency: ['']  
-  })
+
+  storeMedicine: any[] = [];
+
   form = this.fb.group({
     patientName: ['', Validators.required],
     bloodGroup: [''],
@@ -132,17 +121,26 @@ export class PrescribeMedicationComponent
     description: [''],
     searchFood: [''],
     dateOfBirth: ['', Validators.required],
-  
+    diseasesGroup: this.fb.group({
+      diseases: [''],
+      diseaseSubcategories: [''],
+      severity: [''],
+      prescription_date: [new Date()],
+    }),
+    medication: this.fb.group({
+      medicine: [''],
+      duration: [''],
+      frequency: [this.frequencyOptions[0].value], // Default to 'Once'
+      customFrequency: [''],
+    }),
   });
 
   onFrequencyChange(event: any) {
-    debugger;
     const selectedFrequency = event.value;
     if (selectedFrequency !== 'custom') {
-      this.formMedicine.get('customFrequency')?.setValue('');
+      this.form.controls.medication.get('customFrequency')?.setValue('');
     }
   }
-
 
   ngOnInit() {
     this.fetchDisease();
@@ -194,13 +192,15 @@ export class PrescribeMedicationComponent
     }
   }
   filterMedicine() {
-    const filterValue = this.formMedicine.get('medicine')?.value?.toLowerCase() || '';
+    const filterValue =
+      this.form.get('medication.medicine')?.value?.toLowerCase() || '';
     this.filteredMedicine = this.medicData.filter(p =>
       p.medicine_name?.toLowerCase().includes(filterValue)
     );
   }
   filterDiseases() {
-    const filterValue = this.formMedicine.get('diseases')?.value?.toLowerCase() || '';
+    const filterValue =
+      this.form.get('diseasesGroup.diseases')?.value?.toLowerCase() || '';
     if (this.diseaseData && this.diseaseData.length) {
       this.filteredDiseases = this.diseaseData.filter(p =>
         p.disease_name?.toLowerCase().includes(filterValue)
@@ -209,7 +209,9 @@ export class PrescribeMedicationComponent
   }
   filterSubCategoriesDisease() {
     const filterValue =
-      this.formMedicine.get('diseaseSubcategories')?.value?.toLowerCase() || '';
+      this.form
+        .get('diseasesGroup.diseaseSubcategories')
+        ?.value?.toLowerCase() || '';
     if (this.subCategoryDiseaseData && this.subCategoryDiseaseData.length) {
       this.filteredSubCategoriesDisease = this.subCategoryDiseaseData.filter(
         p => p.subcategory_name?.toLowerCase().includes(filterValue)
@@ -291,7 +293,6 @@ export class PrescribeMedicationComponent
   }
   onSelectedChangeMedic(medic: string) {}
   onSelectedChangeDiseases(disease_id: string) {
-    debugger;
     this.fetchSubCategoryDisease(disease_id);
     if (disease_id) {
       this.isSelectDisease = false;
@@ -335,7 +336,10 @@ export class PrescribeMedicationComponent
   displayWithFn(drug: any) {
     return drug.medicine_name;
   }
-  onSubmit() {
+  onSubmit(formData: any) {
+    console.log('this.form.value', this.form.value);
+    this.storeMedicine.push(formData);
+    // this.storeMedicine
     // if (this.profileImg) {
     //   const imgProfile = this.profileImg;
     //   const payload: DoctorsDTO = {
@@ -361,6 +365,9 @@ export class PrescribeMedicationComponent
     //   });
     // }
   }
+  deleteMedicine() {
+    this.storeMedicine = [];
+  }
   onSelectionChanged(value: unknown) {}
   onSearchChanged(queryString: string) {
     this.fetchMedicine();
@@ -382,7 +389,6 @@ export class PrescribeMedicationComponent
         user.isFavorite = !user.isFavorite; // Revert to previous state
       }
     );
-
   }
 
   onRemove(e: any) {}
@@ -418,6 +424,6 @@ export class PrescribeMedicationComponent
     return this.form.get('description');
   }
   get frequency() {
-    return this.formMedicine.get('frequency');
+    return this.form.get('frequency');
   }
 }
