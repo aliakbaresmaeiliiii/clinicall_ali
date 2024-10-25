@@ -4,75 +4,42 @@
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-4">
       <div class="desktop:grid grid-cols-2 gap-3">
-        <!-- *****FirstName***** -->
+        <!-- *****patientName***** -->
         <mat-form-field
-          data-testing="FirstName"
+          data-testing="patientName"
           appearance="outline"
           class="w-full">
-          <mat-label>FirstName</mat-label>
+          <mat-label>patientName</mat-label>
           <input
             type="text"
             matInput
             [errorStateMatcher]="matcher"
-            formControlName="firstName"
-            placeholder="firstName" />
+            formControlName="patientName"
+            placeholder="patientName" />
           <!-- Error handling -->
           <mat-error
             *ngIf="
-              firstName?.hasError('firstName') &&
-              !firstName?.hasError('required')
+              patientName?.hasError('patientName') &&
+              !patientName?.hasError('required')
             "
-            >Please enter a valid firstName</mat-error
+            >Please enter a valid patientName</mat-error
           >
-          <mat-error *ngIf="firstName?.hasError('required')"
-            >firstName is <strong>required</strong></mat-error
+          <mat-error *ngIf="patientName?.hasError('required')"
+            >patientName is <strong>required</strong></mat-error
           >
-          <mat-error *ngIf="form.controls.firstName.hasError('minlength')"
-            >firstName is too short
+          <mat-error *ngIf="form.controls.patientName.hasError('minlength')"
+            >patientName is too short
             <strong>{{
-              form.controls.firstName.getError('minlength')?.requiredLength
+              form.controls.patientName.getError('minlength')?.requiredLength
             }}</strong></mat-error
           >
-          <mat-error *ngIf="firstName?.hasError('banWords')"
+          <mat-error *ngIf="patientName?.hasError('banWords')"
             >The value
-            <strong>{{ firstName?.getError('banWords').bannedWord }} </strong>is
+            <strong>{{ patientName?.getError('banWords').bannedWord }} </strong>is
             banned</mat-error
           >
         </mat-form-field>
-        <!-- *****lastName***** -->
-        <mat-form-field
-          data-testing="lastName"
-          appearance="outline"
-          class="w-full">
-          <mat-label>lastName</mat-label>
-          <input
-            type="text"
-            matInput
-            [errorStateMatcher]="matcher"
-            formControlName="lastName"
-            placeholder="lastName" />
-          <!-- Error handling -->
-          <mat-error
-            *ngIf="
-              lastName?.hasError('lastName') && !lastName?.hasError('required')
-            "
-            >Please enter a valid lastName</mat-error
-          >
-          <mat-error *ngIf="lastName?.hasError('required')"
-            >lastName is <strong>required</strong></mat-error
-          >
-          <mat-error *ngIf="form.controls.lastName.hasError('minlength')"
-            >lastName is too short
-            <strong>{{
-              form.controls.lastName.getError('minlength')?.requiredLength
-            }}</strong></mat-error
-          >
-          <mat-error *ngIf="lastName?.hasError('banWords')"
-            >The value
-            <strong>{{ lastName?.getError('banWords').bannedWord }} </strong>is
-            banned</mat-error
-          >
-        </mat-form-field>
+  
       </div>
       <div class="desktop:grid grid-cols-2 gap-3">
         <!-- *****gender***** -->

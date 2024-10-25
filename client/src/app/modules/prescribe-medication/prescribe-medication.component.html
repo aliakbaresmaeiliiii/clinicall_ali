@@ -17,14 +17,14 @@
                   <input
                     type="text"
                     placeholder="Pick up patient..."
-                    formControlName="searchFood"
+                    formControlName="patientName"
                     (input)="filterPatient()"
                     style="width: 100%; padding: 8px; margin-bottom: 8px" />
                   <mat-option
                     *ngFor="let p of filteredPatient"
-                    [value]="p.firstName"
+                    [value]="p.patientName"
                     (onSelectionChange)="onSelectedChange(p)">
-                    {{ p.firstName }}
+                    {{ p.patientName }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -106,18 +106,9 @@
                   [errorStateMatcher]="matcher"
                   formControlName="sugarLevel" />
               </mat-form-field>
-            </div>
-
-            <h2 class="text-3xl font-medium">Disease</h2>
-            <hr />
-
-            <div
-              formGroupName="diseasesGroup"
-              class="desktop:grid grid-cols-4 gap-3 pt-4">
               <!-- *****Diseases***** -->
               <mat-form-field appearance="outline" class="w-full">
                 <mat-label>Selected Diseases...</mat-label>
-
                 <mat-select name="selectedDiseases">
                   <input
                     type="text"
@@ -169,44 +160,13 @@
                   }
                 </mat-select>
               </mat-form-field>
-
-              <!-- *****prescription_date***** -->
-              <mat-form-field appearance="outline" class="w-full mb-1">
-                <mat-label>prescription_date</mat-label>
-                <input
-                  [max]="maxDate"
-                  [min]="minDate"
-                  matInput
-                  [matDatepicker]="picker"
-                  formControlName="prescription_date" />
-                <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
-                <mat-datepicker-toggle matIconSuffix [for]="picker">
-                  <mat-icon matDatepickerToggleIcon
-                    >keyboard_arrow_down</mat-icon
-                  >
-                </mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
-            </div>
-
-            <div>
-              <!-- *****description***** -->
-              <mat-form-field
-                data-testing="department"
-                appearance="outline"
-                class="w-full">
-                <mat-label>description</mat-label>
-                <textarea
-                  matInput
-                  placeholder="Ex. It makes me feel..."
-                  formControlName="description"></textarea>
-              </mat-form-field>
             </div>
           </div>
         </ng-template>
 
-        <ng-template #templateTwo let-data="data">
-          <div formGroupName="medication" class="mt-4">
+        <ng-template #templateTwo let-data="data" formGroupName="medication">
+          <div class="mt-4">
+            <h2 class="text-3xl font-medium">Precription Medicine</h2>
             <div class="desktop:grid grid-cols-4 gap-3 pt-4 p-5">
               <!-- *****Medicine***** -->
               <ali-select
@@ -219,29 +179,29 @@
                 (closed)="onSearchChanged('')"
                 (searchChanged)="onSearchChanged($event)">
                 <div class="w-[300px]">
-                  <app-option
-                    *ngFor="let user of filterMedicData"
-                    [value]="user"
-                    class="w-full">
+                  @for (medic of filterMedicData; track $index) {
+
+                  <app-option [value]="medic" class="w-full">
                     <div class="flex justify-between items-center w-full">
                       <div>
                         <i class="fa-solid fa-tablets text-blue-600"></i>
-                        {{ user.medicine_name }}
+                        {{ medic.medicine_name }}
                       </div>
                       <div
                         (click)="
-                          $event.stopPropagation(); selectedFavorite(user)
+                          $event.stopPropagation(); selectedFavorite(medic)
                         ">
                         <i
                           matTooltip="Add favorite"
                           class="fa-solid fa-star"
                           [ngClass]="{
-                            'text-yellow-400': user.isFavorite,
-                            'text-gray-400': !user.isFavorite
+                            'text-yellow-400': medic.isFavorite,
+                            'text-gray-400': !medic.isFavorite
                           }"></i>
                       </div>
                     </div>
                   </app-option>
+                  }
                 </div>
               </ali-select>
               <!-- *****Duration***** -->
@@ -274,84 +234,262 @@
                   placeholder="Enter custom frequency" />
               </mat-form-field>
               }
-              
+              <!-- *****prescription_date***** -->
+              <mat-form-field appearance="outline" class="w-full mb-1">
+                <mat-label>prescription_date</mat-label>
+                <input
+                  [max]="maxDate"
+                  [min]="minDate"
+                  matInput
+                  [matDatepicker]="picker"
+                  formControlName="prescription_date" />
+                <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
+                <mat-datepicker-toggle matIconSuffix [for]="picker">
+                  <mat-icon matDatepickerToggleIcon
+                    >keyboard_arrow_down</mat-icon
+                  >
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
             </div>
-            <div class="desktop:grid grid-cols-2 gap-3 desktop:mt-10 mb-2">
-              <!-- *****CancelBTN***** -->
-              <button mat-stroked-button type="button">Cancel</button>
-              <!-- *****SaveBTN***** -->
-              <button
-                class="desktop:m-0 tablet:mt-2 mobile:mt-2"
-                mat-flat-button
-                data-testid="login-button"
-                type="submit">
-                Save
-              </button>
-            </div>
-            <div>
-              <hr />
-              @if (storeMedicine.length) {
-              <div class="flex justify-between gap-3 p-4 border-2 border-dashed rounded-lg mt-5">
-                <!-- <span> Medicine: </span>
-                <span> Severity: </span>
-                <span> Duration: </span>
-                <span> frequencyOptions: </span> -->
-                <div class="flex flex-col">
 
-                
-                @for (item of storeMedicine; track $index) {
+            <div class="p-5">
+              <!-- *****description***** -->
+              <mat-form-field
+                data-testing="department"
+                appearance="outline"
+                class="w-full">
+                <mat-label>description</mat-label>
+                <textarea
+                  matInput
+                  placeholder="Ex. It makes me feel..."
+                  formControlName="description"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="desktop:grid grid-cols-2 gap-3 desktop:mt-10 mb-2">
+            <!-- *****CancelBTN***** -->
+            <button mat-stroked-button type="button" (click)="form.reset()">
+              Cancel
+            </button>
+            <!-- *****SaveBTN***** -->
+            <button
+              [disabled]="!form.valid"
+              class="desktop:m-0 tablet:mt-2 mobile:mt-2"
+              mat-flat-button
+              data-testid="login-button"
+              type="submit">
+              Save
+            </button>
+          </div>
+          <div class="h-80 overflow-auto">
+            @if (storeMedicine.length) { @for (item of storeMedicine; track item
+            ) {
+            <div
+              class="flex justify-between gap-3 p-4 border-2 border-dashed rounded-lg mt-5">
+              <div class="flex flex-col">
                 <ng-container class="p-2">
                   <div>
-                    <span class="opacity-55">Duration:</span>
-                    <strong class="pl-1">{{ item.medication.duration }}</strong>
+                    <span class="opacity-55">Diseases:</span>
+                    <span class="pl-1">{{ item.medication.diseases }}</span>
                   </div>
                   <div>
-                    <span class="opacity-55">Frequency:</span>
-                    <strong class="pl-1">{{
-                      item.medication.frequency
-                    }}</strong>
+                    <span class="opacity-55">DiseaseSubcategories:</span>
+                    <span class="pl-1">{{
+                      item.medication.diseaseSubcategories
+                    }}</span>
                   </div>
-                  @if (item.medication.frequencyOption) {
                   <div>
-                    <span class="opacity-55">Frequency Option:</span>
-                    <strong class="pl-1">{{
-                      item.medication.frequencyOption
-                    }}</strong>
+                    <span class="opacity-55">Severity:</span>
+                    <span class="pl-1">{{ item.medication.severity }}</span>
                   </div>
-                  }
                   <div class="flex">
                     <span class="opacity-55"> Medicine: </span>
 
                     @for (m of item.medication.medicine; track $index ) {
                     <div class="flex">
-                      <strong class="pl-1">
+                      <span class="pl-1">
                         {{ m.medicine_name }}
                         <span
                           *ngIf="$index < item.medication.medicine.length - 1"
                           >,</span
-                        ></strong
+                        ></span
                       >
                     </div>
                     }
                   </div>
+
+                  <div>
+                    <span class="opacity-55">Duration:</span>
+                    <span class="pl-1">{{ item.medication.duration }}</span>
+                  </div>
+                  <div>
+                    <span class="opacity-55">Frequency:</span>
+                    <span class="pl-1">{{ item.medication.frequency }}</span>
+                  </div>
+
+                  @if (item.medication.frequencyOption) {
+                  <div>
+                    <span class="opacity-55">Frequency Option:</span>
+                    <span class="pl-1">{{
+                      item.medication.frequencyOption
+                    }}</span>
+                  </div>
+                  }
+                  <div>
+                    <span class="opacity-55">Prescription Date:</span>
+                    <span class="pl-1">{{
+                      item.medication.prescription_date | date
+                    }}</span>
+                  </div>
                 </ng-container>
+              </div>
+
+              <div>
+                <button
+                  class="pointer"
+                  matTooltip="Delete Medicine"
+                  mat-icon-button
+                  type="button"
+                  (click)="deleteMedicine(item)">
+                  <i class="fa-regular fa-trash-can text-red-500 text-xl"></i>
+                </button>
+                <button
+                  class="pointer"
+                  mat-icon-button
+                  type="button"
+                  matTooltip="Eidt Doctor"
+                  (click)="openDialogEdit()">
+                  <i
+                    class="fa-solid fa-pen-to-square text-blue-500 text-xl"></i>
+                </button>
+              </div>
+            </div>
+            }@empty { There is no items. } }
+          </div>
+        </ng-template>
+
+        <ng-template #templateThree let-data="data">
+          @if (storeMedicine.length) { @for (item of storeMedicine; track item)
+          {
+          <ng-container class="p-4 border-2 border-dashed rounded-lg mt-5">
+            <!-- Patient Information -->
+            <div class="text-2xl font-medium py-6 opacity-50">
+              Patient Information
+            </div>
+            <div
+              class="grid md:grid-cols-2 lg:grid-cols-3 grid-cols-4 gap-4 pb-2">
+              <div>
+                <span class="opacity-55">Patient Name:</span>
+                <span class="pl-1">{{ item.patientName }}</span>
+              </div>
+              <div>
+                <span class="opacity-55">Sugar Level:</span>
+                <span class="pl-1">{{ item.sugarLevel }}</span>
+              </div>
+              <div>
+                <span class="opacity-55">Mobile:</span>
+                <span class="pl-1">{{ item.mobile }}</span>
+              </div>
+              <div>
+                <span class="opacity-55">Haemoglobin:</span>
+                <span class="pl-1">{{ item.haemoglobin }}</span>
+              </div>
+              <div>
+                <span class="opacity-55">Date of Birth:</span>
+                <span class="pl-1">{{ item.dateOfBirth }}</span>
+              </div>
+              <div>
+                <span class="opacity-55">Blood Pressure:</span>
+                <span class="pl-1">{{ item.bloodPressure }}</span>
+              </div>
+            </div>
+
+            <hr />
+            <!-- Prescription Medicine -->
+            <div class="text-2xl font-medium py-6 opacity-50">Disease</div>
+            <div
+              class="grid md:grid-cols-2 lg:grid-cols-3 grid-cols-4 gap-4 pb-2">
+              @if (storeMedicine.length) { @for (item of storeMedicine; track
+              item ) {
+
+              <div>
+                <span class="opacity-55">Diseases:</span>
+                <span class="pl-1">{{ item.medication.diseases }}</span>
+              </div>
+              <div>
+                <span class="opacity-55">DiseaseSubcategories:</span>
+                <span class="pl-1">{{
+                  item.medication.diseaseSubcategories
+                }}</span>
+              </div>
+              <div>
+                <span class="opacity-55">Severity:</span>
+                <span class="pl-1">{{ item.medication.severity }}</span>
+              </div>
+
+              }@empty { There is no items. } }
+            </div>
+
+            <hr />
+            <!-- Prescription Medicine -->
+            <div class="text-2xl font-medium py-6 opacity-50">
+              Prescription Medicine
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 grid-cols-2 gap-4">
+              <div class="flex w-36 flex-wrap">
+                <span class="opacity-55"> Medicine: </span>
+                @for (m of item.medication.medicine; track $index ) {
+                <div class="flex">
+                  <span class="pl-1">
+                    {{ m.medicine_name }}
+                    <span *ngIf="$index < item.medication.medicine.length - 1"
+                      >,</span
+                    ></span
+                  >
+                </div>
                 }
               </div>
 
-                <button
-                class="pointer"
-                matTooltip="Delete Medicine"
-                mat-icon-button
-                type="button"
-                (click)="deleteMedicine()"
-                >
-                <i class="fa-regular fa-trash-can text-red-500 text-xl"></i>
+              <div>
+                <span class="opacity-55">Duration:</span>
+                <span class="pl-1">{{ item.medication.duration }}</span>
+              </div>
+              <div>
+                <span class="opacity-55">Frequency:</span>
+                <span class="pl-1">{{ item.medication.frequency }}</span>
+              </div>
 
-
-              </button>
+              @if (item.medication.frequencyOption) {
+              <div>
+                <span class="opacity-55">Frequency Option:</span>
+                <span class="pl-1">{{ item.medication.frequencyOption }}</span>
               </div>
               }
+              <div>
+                <span class="opacity-55">Prescription Date:</span>
+                <span class="pl-1">{{
+                  item.medication.prescription_date | date
+                }}</span>
+              </div>
             </div>
+          </ng-container>
+          } @empty {
+          <p>There are no items to display.</p>
+          } }
+          <div class="desktop:grid grid-cols-2 gap-3 desktop:mt-10 mb-2">
+            <!-- *****CancelBTN***** -->
+            <button mat-stroked-button type="button" (click)="form.reset()">
+              Cancel
+            </button>
+            <!-- *****SaveBTN***** -->
+            <button
+              class="desktop:m-0 tablet:mt-2 mobile:mt-2"
+              mat-flat-button
+              data-testid="login-button"
+              type="submit">
+              Final Save
+            </button>
           </div>
         </ng-template>
       </generic-tab>

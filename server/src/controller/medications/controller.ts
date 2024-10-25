@@ -5,7 +5,7 @@ import { MedicineService } from "./service";
 import { Request, Response } from "express";
 
 router.get(
-  "/medicine",
+  "/medications",
   asyncHandler(async function getMedicine(req: any, res: any) {
     const data = await MedicineService.getMedicine();
     const buildResponse = BuildResponse.get(data);
@@ -16,14 +16,14 @@ router.get(
 );
 
 router.put(
-  "/medicine/:id/favorite",
+  "/medications/:id/favorite",
   asyncHandler(async function updateIsFavorite(
     req: Request,
     res: Response
   ): Promise<any> {
     const { isFavorite } = req.body; // Get the isFavorite value from the request body
-    const { id } = req.params;
-    const data = await MedicineService.updateIsFavorite(id, isFavorite);
+    const medication_id = req.params.id;
+    const data = await MedicineService.updateIsFavorite(medication_id, isFavorite);
     const buildResponse = BuildResponse.get(data);
     if (buildResponse) {
       return res.status(200).json(buildResponse);

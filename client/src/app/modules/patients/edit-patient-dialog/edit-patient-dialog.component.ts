@@ -61,8 +61,7 @@ export class EditPatientDialogComponent extends BaseComponent {
   updatePatient() {
     this.form.patchValue({
       id: this.patientData.id,
-      firstName: this.patientData.firstName,
-      lastName: this.patientData.lastName,
+      lastName: this.patientData.patientName,
       gender: this.patientData.gender,
       mobile: this.patientData.mobile,
       dateOfBirth: this.patientData.dateOfBirth,

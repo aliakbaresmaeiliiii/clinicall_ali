@@ -21,6 +21,7 @@ import { PatientsService } from '../patients/services/patients.service';
 import { IsFavorite } from './enum/isFavorite.enum';
 import { Medicine } from './medicine';
 import { PrescribeMedicationService } from './services/prescribe-medication.service';
+import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
 
 @Component({
   selector: 'app-prescribe-medication',
@@ -108,30 +109,29 @@ export class PrescribeMedicationComponent
   filteredDiseases: any;
   filterMedicData!: Medicine[];
   filteredSubCategoriesDisease: any;
+  loadingCards = new Array(3);
 
   storeMedicine: any[] = [];
 
   form = this.fb.group({
-    patientName: ['', Validators.required],
+    patientName: [''],
     bloodGroup: [''],
     bloodPressure: [''],
     haemoglobin: [''],
     mobile: [''],
     sugarLevel: [''],
-    description: [''],
-    searchFood: [''],
-    dateOfBirth: ['', Validators.required],
-    diseasesGroup: this.fb.group({
-      diseases: [''],
-      diseaseSubcategories: [''],
-      severity: [''],
-      prescription_date: [new Date()],
-    }),
+    dateOfBirth: [''],
+    diseases: [''],
+    diseaseSubcategories: [''],
+    severity: [''],
     medication: this.fb.group({
       medicine: [''],
       duration: [''],
       frequency: [this.frequencyOptions[0].value], // Default to 'Once'
       customFrequency: [''],
+
+      prescription_date: [new Date()],
+      description: [''],
     }),
   });
 
@@ -165,15 +165,22 @@ export class PrescribeMedicationComponent
         template: this.templateTwo,
         context: { data: 'Data for Tab 2' },
       },
+      {
+        id: 3,
+        title: 'Final Prescription Medicine',
+        template: this.templateThree,
+        context: { data: 'Data for Tab 3' },
+      },
     ];
   }
 
   handleTabChange(index: number) {}
 
   filterPatient() {
-    const filterValue = this.form.get('searchFood')?.value?.toLowerCase() || '';
+    const filterValue =
+      this.form.get('patientName')?.value?.toLowerCase() || '';
     this.filteredPatient = this.patientInfo.filter(p =>
-      p.firstName?.toLowerCase().includes(filterValue)
+      p.patientName?.toLowerCase().includes(filterValue)
     );
   }
   fetchPatients() {
@@ -199,8 +206,7 @@ export class PrescribeMedicationComponent
     );
   }
   filterDiseases() {
-    const filterValue =
-      this.form.get('diseasesGroup.diseases')?.value?.toLowerCase() || '';
+    const filterValue = this.form.get('diseases')?.value?.toLowerCase() || '';
     if (this.diseaseData && this.diseaseData.length) {
       this.filteredDiseases = this.diseaseData.filter(p =>
         p.disease_name?.toLowerCase().includes(filterValue)
@@ -209,9 +215,7 @@ export class PrescribeMedicationComponent
   }
   filterSubCategoriesDisease() {
     const filterValue =
-      this.form
-        .get('diseasesGroup.diseaseSubcategories')
-        ?.value?.toLowerCase() || '';
+      this.form.get('diseaseSubcategories')?.value?.toLowerCase() || '';
     if (this.subCategoryDiseaseData && this.subCategoryDiseaseData.length) {
       this.filteredSubCategoriesDisease = this.subCategoryDiseaseData.filter(
         p => p.subcategory_name?.toLowerCase().includes(filterValue)
@@ -223,24 +227,20 @@ export class PrescribeMedicationComponent
     if (!cachedData) {
       this.prescribeService.getDrugData().subscribe((response: any) => {
         if (response && response.data) {
+          debugger;
           const mappedData = response.data
             .map((item: any) => {
-              const isFavoriteValue = item.isFavorite; // Capture the original value for debugging
+              const isFavoriteValue = item.isFavorite;
               const isFavorite = isFavoriteValue === IsFavorite.True;
-
-              console.log(
-                `Item: ${item.name}, isFavorite: ${isFavoriteValue}, Mapped: ${isFavorite}`
-              ); // Log each item's conversion
-
               return {
                 ...item,
-                isFavorite, // Convert 0 to false and 1 to true
+                isFavorite,
               };
+              
             })
             .sort((a: any, b: any) => {
               return b.isFavorite - a.isFavorite;
             });
-          console.log('Mapped Data:', mappedData);
           this.filterMedicData = [...mappedData];
           this.transferState.set(this.DATA_KEY_MEDIC, mappedData);
         }
@@ -277,7 +277,6 @@ export class PrescribeMedicationComponent
     });
   }
   onSelectedChange(patientName: PatientDTO) {
-    this.selectedPatient = patientName.firstName + ' ' + patientName.lastName;
     if (this.selectedPatient) {
       const formattedDate = new Date(patientName.dateOfBirth)
         .toISOString()
@@ -289,6 +288,8 @@ export class PrescribeMedicationComponent
       this.mobile?.setValue(patientName.mobile);
       this.sugarLevel?.setValue(patientName.sugarLevel);
       this.description?.setValue(patientName.description);
+      // this.patientName?.setValue(this.selectedPatient);
+      this.diseases?.setValue(patientName.diseases);
     }
   }
   onSelectedChangeMedic(medic: string) {}
@@ -301,10 +302,12 @@ export class PrescribeMedicationComponent
     }
   }
 
-  onSelectedChangeSubCat(data: Diseases) {
+  onSelectedChangeSubCat(data: any) {
     if (data.disease_id) {
       this.isSelectedSubCategory = false;
     }
+    this.diseases?.setValue(data.disease_name);
+    this.diseaseSubcategories?.setValue(data.subcategory_name);
   }
   fetchSubCategoryDisease(disease_id: string) {
     const cachedData = this.transferState.get(
@@ -333,12 +336,13 @@ export class PrescribeMedicationComponent
   toggleDirection() {
     this.textDirection = this.textDirection === 'ltr' ? 'rtl' : 'ltr';
   }
-  displayWithFn(drug: any) {
-    return drug.medicine_name;
+  displayWithFn(medication: Medicine) {
+    return medication.medicine_name;
   }
   onSubmit(formData: any) {
     console.log('this.form.value', this.form.value);
     this.storeMedicine.push(formData);
+    // this.form.reset();
     // this.storeMedicine
     // if (this.profileImg) {
     //   const imgProfile = this.profileImg;
@@ -365,9 +369,14 @@ export class PrescribeMedicationComponent
     //   });
     // }
   }
-  deleteMedicine() {
-    this.storeMedicine = [];
+  deleteMedicine(index: any) {
+    this.storeMedicine.splice(index, 1);
   }
+
+  openDialogEdit() {
+    this.dialog.open(EditDialogComponent);
+  }
+
   onSelectionChanged(value: unknown) {}
   onSearchChanged(queryString: string) {
     this.fetchMedicine();
@@ -375,20 +384,16 @@ export class PrescribeMedicationComponent
       d.medicine_name?.toLowerCase().startsWith(queryString.toLowerCase())
     );
   }
-  compareWithFn(medicine_name: any | null, medicine_name2: any | null) {
-    return medicine_name?.id === medicine_name2.id;
+  compareWithFn(medicine_name: any) {
+    return medicine_name;
   }
-  selectedFavorite(user: Medicine) {
-    user.isFavorite = !user.isFavorite;
-    this.prescribeService.updateIsFavorite(user.id, user.isFavorite).subscribe(
-      res => {
+  selectedFavorite(medic: Medicine) {
+    medic.isFavorite = !medic.isFavorite;
+    this.prescribeService
+      .updateIsFavorite(medic.medication_id, medic.isFavorite)
+      .subscribe(res => {
         console.log('Favorite status updated successfully:', res);
-      },
-      error => {
-        console.error('Error updating favorite status:', error);
-        user.isFavorite = !user.isFavorite; // Revert to previous state
-      }
-    );
+      });
   }
 
   onRemove(e: any) {}
@@ -420,8 +425,14 @@ export class PrescribeMedicationComponent
   get sugarLevel() {
     return this.form.get('sugarLevel');
   }
+  get diseases() {
+    return this.form.get('diseases');
+  }
   get description() {
-    return this.form.get('description');
+    return this.form.get('medication.description');
+  }
+  get diseaseSubcategories() {
+    return this.form.get('diseaseSubcategories');
   }
   get frequency() {
     return this.form.get('frequency');

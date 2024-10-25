@@ -15,7 +15,7 @@ export class PrescribeMedicationService {
   // }
 
   getDrugData(): Observable<any> {
-    return this.http.get(`${this.config}medicine`);
+    return this.http.get(`${this.config}medications`);
   }
 
   getDiseases(): Observable<{}> {
@@ -26,7 +26,7 @@ export class PrescribeMedicationService {
     return this.http.get(`${this.config}getDiseaseSubcategories/${disease_id}`);
   }
 
-  updateIsFavorite(id: string | number, isFavorite: boolean): Observable<any> {
-    return this.http.put(`${this.config}medicine/${id}/favorite`, { isFavorite });
+  updateIsFavorite(medication_id: string | number, isFavorite: boolean): Observable<any> {
+    return this.http.put(`${this.config}medications/${medication_id}/favorite`, { isFavorite });
   }
 }

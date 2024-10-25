@@ -1,8 +1,7 @@
 export interface PatientDTO {
   position?: any;
   id?: string | null | any;
-  firstName?: string | null | undefined;
-  lastName?: string | null | undefined;
+  patientName?: string | null | undefined;
   gender?: string | undefined | null;
   mobile?: any;
   dateOfBirth?: any;
@@ -22,4 +21,5 @@ export interface PatientDTO {
   injury?: string | undefined | null;
   profileImage?: string | undefined | any;
   profileImageShow?: string;
+  diseases?: any;
 }
