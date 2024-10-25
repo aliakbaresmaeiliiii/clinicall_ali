@@ -9,8 +9,8 @@ export class MedicineService {
     return null;
   }
 
-  public static async updateIsFavorite(id: string, isFavorite: boolean) {
-    const data = await updateIsFavorite(id, isFavorite);
+  public static async updateIsFavorite(medication_id: string, isFavorite: boolean) {
+    const data = await updateIsFavorite(medication_id, isFavorite);
     if (data) {
       return { message: "ok", data };
     } else {

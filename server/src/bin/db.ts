@@ -385,8 +385,7 @@ export async function addPatient(patientData: PatientDTO) {
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       {
         values: [
-          patientData.firstName,
-          patientData.lastName,
+          patientData.patientName,
           patientData.gender,
           patientData.mobile,
           patientData.dateOfBirth,
@@ -445,8 +444,7 @@ export async function updatePatient(patientData: PatientDTO): Promise<any> {
       `,
     {
       values: [
-        patientData.firstName,
-        patientData.lastName,
+        patientData.patientName,
         patientData.gender,
         patientData.mobile,
         patientData.dateOfBirth,
@@ -591,7 +589,7 @@ export async function changePassword(data: any) {
 
 export async function getMedicine() {
   const result = await query<RowDataPacket[]>(`
-    SELECT * FROM ${coreSchema}.prescription_medicines
+    SELECT * FROM ${coreSchema}.medications
     `);
   return result;
 }
@@ -615,11 +613,11 @@ export async function getDiseaseSubcategories(disease_id: string) {
   return result;
 }
 
-export async function updateIsFavorite(id: string, isFavorite: boolean) {
+export async function updateIsFavorite(medication_id: string, isFavorite: boolean) {
   const result = await query<RowDataPacket>(
-    `UPDATE  ${coreSchema}.prescription_medicines SET isFavorite = ? WHERE id = ?`,
+    `UPDATE  ${coreSchema}.medications SET isFavorite = ? WHERE medication_id = ?`,
     {
-      values: [isFavorite, id],
+      values: [isFavorite, medication_id],
     }
   );
   return result;

@@ -1,22 +1,22 @@
-import { NgModule } from '@angular/core';
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
-import { PrescribeMedicationComponent } from './prescribe-medication.component';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select';
+import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
-import { AgePipe } from '../../shared/pipes/age.pipe';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { RouterModule, Routes } from '@angular/router';
 import { ChipComponent } from '../../shared/components/chip/chip.component';
+import { CustomTabComponent } from '../../shared/components/custom-tab/custom-tab.component';
 import { AliSelectComponent } from '../../shared/components/select/ali-select/ali-select.component';
 import { OptionComponent } from '../../shared/components/select/option/option.component';
-import { MatButtonModule } from '@angular/material/button';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { MatIconModule } from '@angular/material/icon';
-import { CustomTabComponent } from '../../shared/components/custom-tab/custom-tab.component';
+import { AgePipe } from '../../shared/pipes/age.pipe';
+import { PrescribeMedicationComponent } from './prescribe-medication.component';
 
 export const routes: Routes = [
   {
@@ -46,7 +46,7 @@ export const routes: Routes = [
     MatTooltipModule,
     MatDatepickerModule,
     MatIconModule,
-    CustomTabComponent
+    CustomTabComponent,
     
   ],
   providers: [AsyncPipe,AgePipe],

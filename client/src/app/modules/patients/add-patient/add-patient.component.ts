@@ -35,7 +35,7 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
   minDate!: Date;
 
   form = this.fb.group({
-    firstName: [
+    patientName: [
       '',
       [
         Validators.required,
@@ -43,7 +43,6 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
         banWords(['test', 'dummy']),
       ],
     ],
-    lastName: ['', [Validators.required, Validators.minLength(2)]],
     gender: ['Man'],
     mobile: ['', Validators.required],
     dateOfBirth: ['', Validators.required],
@@ -120,8 +119,7 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
     if (this.profileImg) {
       const imgProfile = this.profileImg;
       const payload: PatientDTO = {
-        firstName: this.form.value.firstName,
-        lastName: this.form.value.lastName,
+        patientName: this.form.value.patientName,
         gender: this.form.value.gender,
         mobile: this.form.value.mobile,
         dateOfBirth: this.form.value.dateOfBirth as String,
@@ -152,12 +150,10 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
     }
   }
   trackByFn() {}
-  get firstName() {
-    return this.form.get('firstName');
+  get patientName() {
+    return this.form.get('patientName');
   }
-  get lastName() {
-    return this.form.get('lastName');
-  }
+
   get age() {
     return this.form.get('age');
   }

@@ -106,6 +106,7 @@ const routes: Routes = [
     MatRadioModule,
     MatExpansionModule
   ],
+  exports:[PlaceholderComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class UiModule {}
