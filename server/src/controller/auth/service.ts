@@ -2,7 +2,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import ms from "ms";
 import { getUniqueCodev2, getUniqueCodev3 } from "../../helper/common";
-import {SendEmail} from "../../helper/send_email";
 import {useValidation} from "../../helper/use_validation";
 import {ResponseError} from "../../modules/error/response_error";
 import { CreateUser, User } from "../../types/user";
@@ -10,6 +9,7 @@ import {loginSchema, registerSchema} from "./schema";
 import { AppResponse } from "../../types/response.interface";
 import {UserService} from "../user/sercvice";
 import { createUser, getUserByPassword } from "../../bin/db";
+import SendMail from "../../helper/send_email";
 
 const { JWT_SECRET_ACCESS_TOKEN, JWT_SECRET_REFRESH_TOKEN }: any = process.env;
 
@@ -51,7 +51,7 @@ export class AuthService {
     const newUserId = await createUser(formData);
     if (!newUserId)
       throw new ResponseError.BadRequest("Cannot add user in the database !");
-    SendEmail.AccountRegister(formData);
+    SendMail.AccountRegister(formData);
     return {
       message: null,
       newUser: {

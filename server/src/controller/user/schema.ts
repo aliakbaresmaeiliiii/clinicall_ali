@@ -9,7 +9,7 @@ export const createSchema = yup.object().shape({
   email: yup.string().email("invalid email").required("email is required"),
   phoneNumber: yup.string().nullable(),
   tokenVerify: yup.string().nullable(),
-  password: yup
+password: yup
     .string()
     .min(8, "at least 8 characters")
     .oneOf([yup.ref("confirmPassword")], "passwords are not the same"),

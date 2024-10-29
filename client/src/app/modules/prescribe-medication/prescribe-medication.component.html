@@ -118,11 +118,11 @@
                     style="width: 100%; padding: 8px; margin-bottom: 8px" />
                   <mat-option
                     *ngFor="let p of filteredDiseases"
-                    [value]="p.disease_name"
+                    [value]="p.name"
                     (onSelectionChange)="
                       onSelectedChangeDiseases(p.disease_id)
                     ">
-                    {{ p.disease_name }}
+                    {{ p.name }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -143,8 +143,8 @@
                   <mat-option
                     *ngFor="let p of filteredSubCategoriesDisease"
                     (onSelectionChange)="onSelectedChangeSubCat(p)"
-                    [value]="p.subcategory_name">
-                    {{ p.subcategory_name }}
+                    [value]="p.name">
+                    {{ p.name }}
                   </mat-option>
                 </mat-select>
               </mat-form-field>

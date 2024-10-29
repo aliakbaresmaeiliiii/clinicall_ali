@@ -1,7 +1,6 @@
 export interface User {
   id?: number;
-  firstName: string;
-  lastName: string;
+  patientName: string;
   email: string;
   password?: string;
   emailConfirmed?: boolean;
@@ -23,8 +22,7 @@ export interface Skills {
 }
 
 export interface Register {
-  firstName: string;
-  lastName: string;
+  patientName: string;
   nickName: string;
   email: string;
   gender: string;

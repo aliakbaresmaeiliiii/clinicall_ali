@@ -39,6 +39,9 @@ export class AuthInterceptor implements HttpInterceptor {
           case 404:
             this.errorService.handle404Error(err);
             break;
+          case 400:
+            this.errorService.handle400Error(err);
+            break;
           case 401:
             this.errorService.handle401Error(err);
             break;
