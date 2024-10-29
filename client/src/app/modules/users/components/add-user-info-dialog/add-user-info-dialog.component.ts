@@ -26,20 +26,12 @@ export class AddUserInfoDialogComponent implements OnInit {
   skiil$!: Observable<string[]>;
 
   form = this.fb.group({
-    firstName: [
+    patientName: [
       'ali',
       [
         Validators.required,
         Validators.minLength(3),
         banWords(['test', 'dummy']),
-      ],
-    ],
-    lastName: [
-      'es',
-      [
-        Validators.required,
-        Validators.minLength(2),
-        banWords(['ali', 'dummy']),
       ],
     ],
     nikname: [

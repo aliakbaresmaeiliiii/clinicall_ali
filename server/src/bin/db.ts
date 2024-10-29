@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
-import {} from "../controller/user/schema";
+import { createSchema } from "../controller/user/schema";
 import { AdminDTO } from "../models/admin";
 import { PatientDTO } from "../models/patients";
 import { IAppointment } from "../types/appointment.interface";
@@ -32,7 +32,7 @@ export async function createUser(data: any) {
   const { password } = data;
   const { confirmPassword } = data;
   const fdPassword = { password, confirmPassword };
-  const validPassword = createPasswordSchema.validateSyncAt(
+  const validPassword = createSchema.validateSyncAt(
     "confirmPassword",
     fdPassword
   );
@@ -379,10 +379,10 @@ export async function addPatient(patientData: PatientDTO) {
   try {
     const result = await query<RowDataPacket[]>(
       `INSERT INTO ${coreSchema}.patients
-      (firstName, lastName, gender, mobile, dateOfBirth, age, email, maritalStatus, address,
+      (patientName, gender, mobile, dateOfBirth, age, email, maritalStatus, address,
         bloodGroup, bloodPressure, sugarLevel, injury, profileImage,heartBeat,
         haemoglobin,doctor,treatment,charges,description,date)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       {
         values: [
           patientData.patientName,
@@ -429,8 +429,7 @@ export async function updatePatient(patientData: PatientDTO): Promise<any> {
   const result = await query<RowDataPacket>(
     `
       UPDATE ${coreSchema}.patients
-      SET firstName = ?,
-          lastName = ?,
+      SET patientName = ?,
           gender = ?,
           mobile = ?,
           dateOfBirth = ?,

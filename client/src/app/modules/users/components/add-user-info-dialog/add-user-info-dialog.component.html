@@ -3,49 +3,29 @@
   <div class="form-field">
     <label for="name">First name</label>
     <input
-      formControlName="firstName"
+      formControlName="patientName"
       type="text"
       id="name"
       placeholder="Enter your name" />
-    <ng-container *ngIf="form.controls.firstName as firstName">
-      @if(firstName.hasError('required') && firstName.dirty){
+    <ng-container *ngIf="form.controls.patientName as patientName">
+      @if(patientName.hasError('required') && patientName.dirty){
       <div class="input-error">This field is required</div>
-      } @if(firstName.hasError('minlength') && firstName.dirty){
+      } @if(patientName.hasError('minlength') && patientName.dirty){
       <div class="input-error">
         The name must be at least
-        <strong>{{ firstName.getError('minlength').requiredLength }} </strong
+        <strong>{{ patientName.getError('minlength').requiredLength }} </strong
         >characters
       </div>
-      } @if(firstName.hasError('banWords') && firstName.dirty){
+      } @if(patientName.hasError('banWords') && patientName.dirty){
       <div class="input-error">
         The value
-        <strong>{{ firstName.getError('banWords').bannedWord }} </strong>is
+        <strong>{{ patientName.getError('banWords').bannedWord }} </strong>is
         banned
       </div>
       }
     </ng-container>
   </div>
-  <div class="form-field">
-    <label for="last_name">Last name</label>
-    <input
-      formControlName="lastName"
-      type="text"
-      id="last_name"
-      placeholder="Enter your last name" />
-    <ng-container *ngIf="form.controls.lastName as lastName">
-      @if(lastName.hasError('required') && lastName.dirty){
-      <div class="input-error">This field is required</div>
-      } @if(lastName.hasError('minlength') && lastName.dirty){
-      <div class="input-error">The name is short</div>
-      } @if(lastName.hasError('banWords') && lastName.dirty){
-      <div class="input-error">
-        The value
-        <strong>{{ lastName.getError('banWords').bannedWord }} </strong>is
-        banned
-      </div>
-      }
-    </ng-container>
-  </div>
+
   <div class="form-field">
     <label for="Nick Name">Nick Name</label>
     <input

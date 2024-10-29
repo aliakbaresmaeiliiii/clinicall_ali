@@ -209,7 +209,7 @@ export class PrescribeMedicationComponent
     const filterValue = this.form.get('diseases')?.value?.toLowerCase() || '';
     if (this.diseaseData && this.diseaseData.length) {
       this.filteredDiseases = this.diseaseData.filter(p =>
-        p.disease_name?.toLowerCase().includes(filterValue)
+        p.name?.toLowerCase().includes(filterValue)
       );
     }
   }
@@ -218,7 +218,7 @@ export class PrescribeMedicationComponent
       this.form.get('diseaseSubcategories')?.value?.toLowerCase() || '';
     if (this.subCategoryDiseaseData && this.subCategoryDiseaseData.length) {
       this.filteredSubCategoriesDisease = this.subCategoryDiseaseData.filter(
-        p => p.subcategory_name?.toLowerCase().includes(filterValue)
+        p => p.name?.toLowerCase().includes(filterValue)
       );
     }
   }

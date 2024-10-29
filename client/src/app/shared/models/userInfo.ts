@@ -1,7 +1,6 @@
 export interface UserInfo {
   user_id: number;
-  firstName: string;
-  lastName: string;
+  patientName: string;
   age: number;
   sex: string;
   phoneNumber: string;

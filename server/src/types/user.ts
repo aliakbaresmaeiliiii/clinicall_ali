@@ -35,7 +35,7 @@ export interface CreateUser {
   verify_code: string;
 }
 export interface Register {
-  firstName: string;
+  patientName: string;
   lastName: string;
   nickName: string;
   email: string;

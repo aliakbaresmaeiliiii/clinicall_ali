@@ -1,11 +1,11 @@
 import { Component, inject, Inject } from '@angular/core';
-import { FormGroup, Validators } from '@angular/forms';
+import { Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { banWords } from '../../../shared/validators/ban-words.validators';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { PatientsService } from '../services/patients.service';
 import { PatientDTO } from '../model/patients.model';
+import { PatientsService } from '../services/patients.service';
 
 @Component({
   selector: 'app-edit-patient-dialog',
@@ -30,7 +30,7 @@ export class EditPatientDialogComponent extends BaseComponent {
   }
   form = this.fb.group({
     id: [''],
-    firstName: [
+    patientName: [
       '',
       [
         Validators.required,
@@ -38,7 +38,6 @@ export class EditPatientDialogComponent extends BaseComponent {
         banWords(['test', 'dummy']),
       ],
     ],
-    lastName: ['', [Validators.required, Validators.minLength(2)]],
     gender: [''],
     mobile: [''],
     dateOfBirth: ['', Validators.required],
@@ -61,7 +60,7 @@ export class EditPatientDialogComponent extends BaseComponent {
   updatePatient() {
     this.form.patchValue({
       id: this.patientData.id,
-      lastName: this.patientData.patientName,
+      patientName: this.patientData.patientName,
       gender: this.patientData.gender,
       mobile: this.patientData.mobile,
       dateOfBirth: this.patientData.dateOfBirth,
@@ -74,11 +73,8 @@ export class EditPatientDialogComponent extends BaseComponent {
     });
   }
   trackByFn() {}
-  get firstName() {
-    return this.form.get('firstName');
-  }
-  get lastName() {
-    return this.form.get('lastName');
+  get patientName() {
+    return this.form.get('patientName');
   }
   get age() {
     return this.form.get('age');

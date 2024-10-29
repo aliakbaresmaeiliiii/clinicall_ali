@@ -12,13 +12,13 @@ import {
 import {useValidation} from "../../helper/use_validation";
 import {BuildResponse} from "../../modules/response/app_response";
 import { ConfirmEmail, User } from "../../types/user";
-import {SendEmail} from "../../helper/send_email";
 import { getUniqueCodev2, getUniqueCodev3 } from "../../helper/common";
 import jwt from "jsonwebtoken";
 import ms from "ms";
 import {ResponseError} from "../../modules/error/response_error";
 import bcrypt from "bcrypt";
 import { checkEmailSchema, confirmEmailSchema } from "./schema";
+import SendMail from "../../helper/send_email";
 
 const { JWT_SECRET_ACCESS_TOKEN, JWT_SECRET_REFRESH_TOKEN }: any = process.env;
 const JWT_ACCESS_TOKEN_EXPIRED = process.env.JWT_ACCESS_TOKEN_EXPIRED || "1d"; // 1 Days
@@ -55,7 +55,7 @@ export class UserService {
   public static async getVerifyCode(userData: any, tokenVerify: any) {
     // const userData = useValidation(schemaUser.confirmEmail,userData)
     const result = await getOTP(userData, tokenVerify);
-    SendEmail.AccountRegister(result);
+    SendMail.AccountRegister(result);
 
     if (result) {
       return result;
