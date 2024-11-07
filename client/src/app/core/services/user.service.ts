@@ -52,7 +52,6 @@ export class UserService {
   }
 
   getOTP(email: string): Observable<CurrentUser> {
-    debugger;
     return this.#http.get<CurrentUser>(`${this.config}user/getOTP/${email}`);
   }
 

@@ -44,7 +44,6 @@ export class ConfirmEmailComponent implements OnInit {
         Validators.minLength(4),
       ]),
     });
-    debugger;
     this.#userService.storeEmail$.subscribe(res => {
       this.userData = res;
 

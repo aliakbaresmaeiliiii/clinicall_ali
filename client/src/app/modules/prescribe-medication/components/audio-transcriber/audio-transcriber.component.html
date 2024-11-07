@@ -1,0 +1,9 @@
+<div class="app-container">
+    <div class="app-container-inner">
+      <h3 class="mb-4">Angular Speech Recognition</h3>
+      <div class="app-speech-input" [class.app-speech-input-listening]="listening">
+        <input class="app-speech-input-form-control form-control" type="text" [value]="message" [placeholder]="placeholder">
+        <button class="app-speech-input-btn" [disabled]="listening" (click)="listen()"></button>
+      </div>
+    </div>
+  </div>

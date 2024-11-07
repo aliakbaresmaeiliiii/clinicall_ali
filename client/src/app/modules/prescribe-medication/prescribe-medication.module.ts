@@ -47,8 +47,7 @@ export const routes: Routes = [
     MatDatepickerModule,
     MatIconModule,
     CustomTabComponent,
-    
   ],
-  providers: [AsyncPipe,AgePipe],
+  providers: [AsyncPipe, AgePipe],
 })
 export class PrescribeMedicationModule {}
