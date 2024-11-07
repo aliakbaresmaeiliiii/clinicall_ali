@@ -170,6 +170,7 @@ export class AliSelectComponent<T>
       }
       return this.displayWith(this.value);
     }
+    
     return this.value;
   }
   protected onChange: (newValue: SelectValue<T>) => void = () => {};
@@ -225,9 +226,9 @@ export class AliSelectComponent<T>
       tap(() => this.refreshOptionsMap()),
       tap(() => queueMicrotask(() => this.highlightSelectedOptions())),
       switchMap(options => merge(...options.map(o => o.selected))),
-      
       takeUntil(this.unsubscribe$)
     ).subscribe(selectedOption => this.handleSelection(selectedOption));
+
   }
 
   ngOnDestroy(): void {
@@ -262,6 +263,7 @@ export class AliSelectComponent<T>
     if (value) {
       if (Array.isArray(value)) {
         this.selectionModel.select(...value);
+        
       } else {
         this.selectionModel.select(value);
       }
