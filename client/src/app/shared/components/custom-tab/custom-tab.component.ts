@@ -6,35 +6,38 @@ import {
   EventEmitter,
   Output,
   TemplateRef,
-  input
+  input,
 } from '@angular/core';
 import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'generic-tab',
   standalone: true,
-  imports: [MatTabsModule, NgTemplateOutlet, AsyncPipe, CommonModule],
+  imports: [MatTabsModule, NgTemplateOutlet, CommonModule],
+  providers: [AsyncPipe],
   templateUrl: './custom-tab.component.html',
   styleUrl: './custom-tab.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomTabComponent implements AfterViewInit {
-  tabs =
-    input.required<
-      { id: number; title: string; template: TemplateRef<any>; context?: any }[]
-    >();
+  tabs = input.required<
+    {
+      id: number;
+      title: string;
+      template: TemplateRef<any>;
+      disabled: boolean;
+      context?: any;
+    }[]
+  >();
 
   @Output() selectedIndexChange = new EventEmitter<number>();
   selectedTemplate!: TemplateRef<any>;
+  selectedIndex = input(0);
   context: any;
 
   constructor() {}
 
-  ngOnInit() {
-    // if (this.tabs().length > 0) {
-    //   this.setSelectedTab(0);
-    // }
-  }
+  ngOnInit() {}
   ngAfterViewInit() {
     const data = this.tabs();
     if (data.length > 0) {

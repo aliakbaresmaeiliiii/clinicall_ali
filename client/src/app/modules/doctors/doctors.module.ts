@@ -98,7 +98,6 @@ const routes: Routes = [
     MatListModule,
     MatTooltipModule,
     NgOptimizedImage,
-    AsyncPipe,
     MatProgressBarModule,
     MatMenuModule,
     MatTabsModule,

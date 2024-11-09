@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   computed,
   inject,
@@ -23,6 +24,8 @@ import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
 import { IsFavorite } from './enum/isFavorite.enum';
 import { Medicine } from './medicine';
 import { PrescribeMedicationService } from './services/prescribe-medication.service';
+import { Validators } from '@angular/forms';
+import { MatTabGroup } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-prescribe-medication',
@@ -40,14 +43,14 @@ export class PrescribeMedicationComponent
 
   formData = computed(() => ({
     patientInfo: this.formDataTemp1(),
-    medication: this.formDataTemp2()
+    medication: this.formDataTemp2(),
   }));
-
 
   shareService = inject(ShareService);
   agePipe = inject(AgePipe);
   service = inject(PatientsService);
   prescribeService = inject(PrescribeMedicationService);
+  cdr = inject(ChangeDetectorRef);
   labelUserName: string = 'UserName';
   labelPassword: string = 'password';
   matcher = new ErrorStateMatcher();
@@ -60,13 +63,14 @@ export class PrescribeMedicationComponent
   @ViewChild('templateThree', { static: true })
   templateThree!: TemplateRef<any>;
   #route = inject(ActivatedRoute);
-
+  @ViewChild('tabGroup') tabGroup!: MatTabGroup;
   @ViewChild('templatefour', { static: true }) templatefour!: TemplateRef<any>;
   tabs: {
     id: number;
     title: string;
     template: TemplateRef<any>;
     context?: any;
+    disabled: boolean;
   }[] = [];
   // title = 'Patient Information';
   profileImg: File | null = null;
@@ -122,12 +126,12 @@ export class PrescribeMedicationComponent
   filterMedicData!: Medicine[];
   filteredSubCategoriesDisease: any;
   loadingCards = new Array(3);
-
+  selectedIndex = 0;
   storeMedicine: any[] = [];
 
   form = this.fb.group({
     patientInfo: this.fb.group({
-      patientName: [''],
+      patientName: ['', Validators.required],
       bloodGroup: [''],
       bloodPressure: [''],
       haemoglobin: [''],
@@ -140,7 +144,7 @@ export class PrescribeMedicationComponent
     }),
 
     medication: this.fb.group({
-      medicine: [''],
+      medicine: ['', Validators.required],
       duration: [''],
       frequency: [this.frequencyOptions[0].value], // Default to 'Once'
       customFrequency: [''],
@@ -171,24 +175,41 @@ export class PrescribeMedicationComponent
         id: 0,
         title: 'Patient Info',
         template: this.templateOne,
+        disabled: false,
         context: { data: 'Data for Tab 1' },
       },
       {
         id: 1,
         title: 'Prescription Medicine',
         template: this.templateTwo,
+        disabled: true,
         context: { data: 'Data for Tab 2' },
       },
       {
-        id: 3,
+        id: 2,
         title: 'Final Prescription Medicine',
         template: this.templateThree,
+        disabled: true,
         context: { data: 'Data for Tab 3' },
       },
     ];
   }
+  onTabChanged() {
+    this.updateTabStatus();
+    this.formDataTemp1.set(this.form.controls.patientInfo.value);
+  }
 
-  handleTabChange(index: number) {}
+  updateTabStatus() {
+    if (this.form.controls.patientInfo) {
+      this.tabs[1].disabled = false;
+      this.form.controls.medication.valueChanges.subscribe(res => {
+        if (res) {
+          this.tabs[2].disabled = false;
+        }
+      });
+    } else {
+    }
+  }
 
   filterPatient() {
     const filterValue =
@@ -292,6 +313,8 @@ export class PrescribeMedicationComponent
     });
   }
   onSelectedChange(patientName: PatientDTO) {
+    this.onTabChanged();
+
     const formattedDate = new Date(patientName.dateOfBirth)
       .toISOString()
       .split('T')[0];
@@ -353,11 +376,14 @@ export class PrescribeMedicationComponent
     return medication.name;
   }
 
-  storeDataTemp1() {
-    this.formDataTemp1.set(this.form.controls.patientInfo.value);
-    console.log(this.formDataTemp1());
-    
+  goToNextTab() {
+    if (this.selectedIndex < this.tabs.length - 1) {
+      this.selectedIndex++;
+      this.tabGroup.selectedIndex = this.selectedIndex;
+    }
+
   }
+
   storeDataTemp2() {
     this.formDataTemp2.set(this.form.controls.medication.value);
     console.log(this.formData());

@@ -1,12 +1,13 @@
-
-
 <mat-tab-group
   animationDuration="1000ms"
   mat-stretch-tabs="false"
   mat-align-tabs="start"
+  [(selectedIndex)]="selectedIndex"
   (selectedTabChange)="onTabChanged($event.index)">
   @for (tab of tabs(); track $index) {
-  <mat-tab [label]="tab.title">
+  <mat-tab [label]="tab.title"
+  [disabled]="tab.disabled"
+  >
     <ng-container
       select=""
       *ngTemplateOutlet="
