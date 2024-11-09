@@ -22,4 +22,6 @@ export interface PatientDTO {
   profileImage?: string | undefined | any;
   profileImageShow?: string;
   diseases?: any;
+  diseaseSubcategories?: any;
+  severity?: any;
 }

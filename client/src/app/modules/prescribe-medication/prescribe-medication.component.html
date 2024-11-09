@@ -2,8 +2,10 @@
   <mat-card appearance="outlined" class="p-4">
     <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="mt-4">
       <generic-tab
+        #tabGroup
         [tabs]="tabs"
-        (selectedIndexChange)="handleTabChange($event)">
+        [selectedIndex]="selectedIndex"
+        (selectedIndexChange)="onTabChanged()">
         <ng-template #templateOne let-data="data" formArrayName="patientInfo">
           <div class="p-5">
             <h2 class="text-3xl font-medium">{{ title() }}</h2>
@@ -159,22 +161,6 @@
                   }
                 </mat-select>
               </mat-form-field>
-            </div>
-
-            <div class="desktop:grid grid-cols-2 gap-3 desktop:mt-10 mb-2">
-              <!-- *****CancelBTN***** -->
-              <button mat-stroked-button type="button" (click)="form.reset()">
-                Cancel
-              </button>
-              <!-- *****SaveBTN***** -->
-              <button
-                class="desktop:m-0 tablet:mt-2 mobile:mt-2"
-                mat-flat-button
-                data-testid="login-button"
-                type="button"
-                (click)="storeDataTemp1()">
-                Next Step
-              </button>
             </div>
           </div>
         </ng-template>
@@ -384,8 +370,6 @@
         </ng-template>
 
         <ng-template #templateThree let-data="data">
-          @if (storeMedicine.length) { @for (item of storeMedicine; track item)
-          {
           <div class="border-2 p-4 rounded-md mt-2">
             <ng-container class="p-4 border-2 border-dashed rounded-lg mt-5 p">
               <!-- Patient Information -->
@@ -396,27 +380,37 @@
                 class="grid md:grid-cols-2 lg:grid-cols-3 grid-cols-4 gap-4 pb-2">
                 <div>
                   <span class="opacity-55">Patient Name:</span>
-                  <span class="pl-1">{{ item.patientName }}</span>
+                  <span class="pl-1">{{
+                    formData().patientInfo.patientName
+                  }}</span>
                 </div>
                 <div>
                   <span class="opacity-55">Sugar Level:</span>
-                  <span class="pl-1">{{ item.sugarLevel }}</span>
+                  <span class="pl-1">{{
+                    formData().patientInfo.sugarLevel
+                  }}</span>
                 </div>
                 <div>
                   <span class="opacity-55">Mobile:</span>
-                  <span class="pl-1">{{ item.mobile }}</span>
+                  <span class="pl-1">{{ formData().patientInfo.mobile }}</span>
                 </div>
                 <div>
                   <span class="opacity-55">Haemoglobin:</span>
-                  <span class="pl-1">{{ item.haemoglobin }}</span>
+                  <span class="pl-1">{{
+                    formData().patientInfo.haemoglobin
+                  }}</span>
                 </div>
                 <div>
                   <span class="opacity-55">Date of Birth:</span>
-                  <span class="pl-1">{{ item.dateOfBirth }}</span>
+                  <span class="pl-1">{{
+                    formData().patientInfo.dateOfBirth
+                  }}</span>
                 </div>
                 <div>
                   <span class="opacity-55">Blood Pressure:</span>
-                  <span class="pl-1">{{ item.bloodPressure }}</span>
+                  <span class="pl-1">{{
+                    formData().patientInfo.bloodPressure
+                  }}</span>
                 </div>
               </div>
 
@@ -425,25 +419,24 @@
               <div class="text-2xl font-medium py-6 opacity-50">Disease</div>
               <div
                 class="grid md:grid-cols-2 lg:grid-cols-3 grid-cols-4 gap-4 pb-2">
-                @if (storeMedicine.length) { @for (item of storeMedicine; track
-                item ) {
-
                 <div>
                   <span class="opacity-55">Diseases:</span>
-                  <span class="pl-1">{{ item.medication.diseases }}</span>
+                  <span class="pl-1">{{
+                    formData().patientInfo.diseases
+                  }}</span>
                 </div>
                 <div>
                   <span class="opacity-55">DiseaseSubcategories:</span>
                   <span class="pl-1">{{
-                    item.medication.diseaseSubcategories
+                    formData().patientInfo.diseaseSubcategories
                   }}</span>
                 </div>
                 <div>
                   <span class="opacity-55">Severity:</span>
-                  <span class="pl-1">{{ item.medication.severity }}</span>
+                  <span class="pl-1">{{
+                    formData().patientInfo.severity
+                  }}</span>
                 </div>
-
-                }@empty { There is no items. } }
               </div>
 
               <hr />
@@ -451,51 +444,40 @@
               <div class="text-2xl font-medium py-6 opacity-50">
                 Prescription Medicine
               </div>
-              <div class="grid md:grid-cols-2 lg:grid-cols-3 grid-cols-2 gap-4">
-                <div class="flex w-36 flex-wrap">
-                  <span class="opacity-55"> Medicine: </span>
-                  @for (m of item.medication.medicine; track $index ) {
-                  <div class="flex">
-                    <span class="pl-1">
-                      {{ m.medicine_name }}
-                      <span *ngIf="$index < item.medication.medicine.length - 1"
-                        >,</span
-                      ></span
-                    >
-                  </div>
-                  }
+              <div
+                class="grid md:grid-cols-2 lg:grid-cols-3 grid-cols-4 gap-4 pb-2">
+                <div>
+                  <span class="opacity-55">Medicine:</span>
+                  <span class="pl-1">{{
+                    formData().medication.medicine_name | json
+                  }}</span>
                 </div>
-
                 <div>
                   <span class="opacity-55">Duration:</span>
-                  <span class="pl-1">{{ item.medication.duration }}</span>
+                  <span class="pl-1">{{ formData().medication.duration }}</span>
                 </div>
                 <div>
                   <span class="opacity-55">Frequency:</span>
-                  <span class="pl-1">{{ item.medication.frequency }}</span>
-                </div>
-
-                @if (item.medication.frequencyOption) {
-                <div>
-                  <span class="opacity-55">Frequency Option:</span>
                   <span class="pl-1">{{
-                    item.medication.frequencyOption
+                    formData().medication.frequency
                   }}</span>
                 </div>
-                }
                 <div>
-                  <span class="opacity-55">Prescription Date:</span>
+                  <span class="opacity-55">Prescription_date:</span>
                   <span class="pl-1">{{
-                    item.medication.prescription_date | date
+                    formData().medication.prescription_date | date
                   }}</span>
                 </div>
+              </div>
+              <div>
+                <span class="opacity-55">Description:</span>
+                <span class="pl-1">{{
+                  formData().medication.description
+                }}</span>
               </div>
             </ng-container>
           </div>
 
-          } @empty {
-          <p>There are no items to display.</p>
-          } }
           <div class="desktop:grid grid-cols-2 gap-3 desktop:mt-10 mb-2">
             <!-- *****CancelBTN***** -->
             <button mat-stroked-button type="button" (click)="form.reset()">
@@ -512,15 +494,6 @@
           </div>
           <!-- {{ formData().medication| json }} -->
           <br />
-          <div>
-            <strong>PatientInfo</strong> :{{
-              formData().patientInfo.patientName | json
-            }}
-          </div>
-          <div>
-            <strong>Medication</strong> :
-            {{ formData().medication.duration | json }}
-          </div>
         </ng-template>
       </generic-tab>
     </form>
