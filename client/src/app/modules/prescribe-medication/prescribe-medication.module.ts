@@ -17,6 +17,7 @@ import { AliSelectComponent } from '../../shared/components/select/ali-select/al
 import { OptionComponent } from '../../shared/components/select/option/option.component';
 import { AgePipe } from '../../shared/pipes/age.pipe';
 import { PrescribeMedicationComponent } from './prescribe-medication.component';
+import { MatTabsModule } from '@angular/material/tabs';
 
 export const routes: Routes = [
   {
@@ -47,6 +48,7 @@ export const routes: Routes = [
     MatDatepickerModule,
     MatIconModule,
     CustomTabComponent,
+    MatTabsModule
   ],
   providers: [AsyncPipe, AgePipe],
 })

@@ -4,16 +4,18 @@ import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
+  Input,
   Output,
   TemplateRef,
   input,
 } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
   selector: 'generic-tab',
   standalone: true,
-  imports: [MatTabsModule, NgTemplateOutlet, CommonModule],
+  imports: [MatTabsModule, NgTemplateOutlet, CommonModule, MatButtonModule],
   providers: [AsyncPipe],
   templateUrl: './custom-tab.component.html',
   styleUrl: './custom-tab.component.scss',
@@ -32,12 +34,13 @@ export class CustomTabComponent implements AfterViewInit {
 
   @Output() selectedIndexChange = new EventEmitter<number>();
   selectedTemplate!: TemplateRef<any>;
-  selectedIndex = input(0);
   context: any;
+  @Input() selectedIndex = 0;
 
   constructor() {}
 
   ngOnInit() {}
+
   ngAfterViewInit() {
     const data = this.tabs();
     if (data.length > 0) {
@@ -45,10 +48,11 @@ export class CustomTabComponent implements AfterViewInit {
     }
   }
 
-  onTabChanged(index: number) {
-    if (this.tabs().length > index) {
-      this.setSelectedTab(index);
-      this.selectedIndexChange.emit(index);
+  onTabChanged(data: any) {
+    debugger;
+    if (this.tabs().length > data.index) {
+      this.setSelectedTab(data.index);
+      this.selectedIndexChange.emit(data.index);
     }
   }
 
@@ -57,4 +61,5 @@ export class CustomTabComponent implements AfterViewInit {
     this.selectedTemplate = selectedTab.template;
     this.context = { $implicit: selectedTab.context };
   }
+
 }
