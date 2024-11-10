@@ -38,30 +38,19 @@ export class PrescribeMedicationComponent
 {
   title = signal('Patient Information');
 
-  formDataTemp1 = signal<any>(null);
-  formDataTemp2 = signal<any>(null);
-
-  formData = computed(() => ({
-    patientInfo: this.formDataTemp1(),
-    medication: this.formDataTemp2(),
-  }));
+  formDataTab1: any[] = [];
+  formDataTab2: any[] = [];
 
   shareService = inject(ShareService);
   agePipe = inject(AgePipe);
   service = inject(PatientsService);
   prescribeService = inject(PrescribeMedicationService);
-  cdr = inject(ChangeDetectorRef);
-  labelUserName: string = 'UserName';
-  labelPassword: string = 'password';
   matcher = new ErrorStateMatcher();
   genders: string[] = ['Male', 'Female'];
   maritalStatus: string[] = ['Single', 'Married'];
   bloodGroups: string[] = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
   sugarLevels: string[] = ['Normal', 'Prediabetes', 'Diabetes'];
-  @ViewChild('templateOne', { static: true }) templateOne!: TemplateRef<any>;
-  @ViewChild('templateTwo', { static: true }) templateTwo!: TemplateRef<any>;
-  @ViewChild('templateThree', { static: true })
-  templateThree!: TemplateRef<any>;
+
   #route = inject(ActivatedRoute);
   @ViewChild('tabGroup') tabGroup!: MatTabGroup;
   @ViewChild('templatefour', { static: true }) templatefour!: TemplateRef<any>;
@@ -126,8 +115,10 @@ export class PrescribeMedicationComponent
   filterMedicData!: Medicine[];
   filteredSubCategoriesDisease: any;
   loadingCards = new Array(3);
-  selectedIndex = 0;
   storeMedicine: any[] = [];
+  selectedIndex: number = 0;
+
+
 
   form = this.fb.group({
     patientInfo: this.fb.group({
@@ -166,49 +157,33 @@ export class PrescribeMedicationComponent
     this.fetchPatients();
     this.filterDiseases();
     this.#route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {});
-    this.setDataInTabs();
   }
 
-  setDataInTabs() {
-    this.tabs = [
-      {
-        id: 0,
-        title: 'Patient Info',
-        template: this.templateOne,
-        disabled: false,
-        context: { data: 'Data for Tab 1' },
-      },
-      {
-        id: 1,
-        title: 'Prescription Medicine',
-        template: this.templateTwo,
-        disabled: true,
-        context: { data: 'Data for Tab 2' },
-      },
-      {
-        id: 2,
-        title: 'Final Prescription Medicine',
-        template: this.templateThree,
-        disabled: true,
-        context: { data: 'Data for Tab 3' },
-      },
-    ];
-  }
-  onTabChanged() {
-    this.updateTabStatus();
-    this.formDataTemp1.set(this.form.controls.patientInfo.value);
+  onTabChanged(formData: any) {
+    // this.updateTabStatus();
   }
 
-  updateTabStatus() {
-    if (this.form.controls.patientInfo) {
-      this.tabs[1].disabled = false;
-      this.form.controls.medication.valueChanges.subscribe(res => {
-        if (res) {
-          this.tabs[2].disabled = false;
-        }
-      });
-    } else {
-    }
+  // updateTabStatus() {
+  //   if (this.form.controls.patientInfo) {
+  //     this.tabs[1].disabled = false;
+  //     this.form.controls.medication.valueChanges.subscribe(res => {
+  //       if (res) {
+  //         this.tabs[2].disabled = false;
+  //       }
+  //     });
+  //   } else {
+  //   }
+  // }
+
+  goToNextTab() {
+    this.formDataTab1.push(this.form.controls.patientInfo.value);
+    console.log(this.formDataTab1);
+
+    this.selectedIndex++;
+  }
+
+  previoseTab() {
+    this.selectedIndex--;
   }
 
   filterPatient() {
@@ -313,8 +288,6 @@ export class PrescribeMedicationComponent
     });
   }
   onSelectedChange(patientName: PatientDTO) {
-    this.onTabChanged();
-
     const formattedDate = new Date(patientName.dateOfBirth)
       .toISOString()
       .split('T')[0];
@@ -376,17 +349,9 @@ export class PrescribeMedicationComponent
     return medication.name;
   }
 
-  goToNextTab() {
-    if (this.selectedIndex < this.tabs.length - 1) {
-      this.selectedIndex++;
-      this.tabGroup.selectedIndex = this.selectedIndex;
-    }
-
-  }
-
-  storeDataTemp2() {
-    this.formDataTemp2.set(this.form.controls.medication.value);
-    console.log(this.formData());
+  storeDataTab2(formData: any) {
+    this.formDataTab2.push(this.form.controls.medication.value);
+    console.log(this.formDataTab2);
   }
   onSubmit(form: any) {
     console.log('this.formData', form);
@@ -422,9 +387,7 @@ export class PrescribeMedicationComponent
     this.storeMedicine.splice(index, 1);
   }
 
-  openDialogEdit() {
-    this.dialog.open(EditDialogComponent);
-  }
+ 
 
   onSearchChanged(queryString: string) {
     this.fetchMedicine();
@@ -432,14 +395,11 @@ export class PrescribeMedicationComponent
       d.name?.toLowerCase().startsWith(queryString.toLowerCase())
     );
   }
-  // onSearchChanged(queryString: string) {
-  //   this.filteredUsers = this.users.filter(user =>
-  //     user.name.toLowerCase().startsWith(queryString.toLowerCase()))
-  // }
 
   compareWithFn(medic: Medicine | null, medic2: Medicine | null) {
     return medic?.medication_id === medic2?.medication_id;
   }
+  
   selectedFavorite(medic: Medicine) {
     medic.isFavorite = !medic.isFavorite;
     this.prescribeService
