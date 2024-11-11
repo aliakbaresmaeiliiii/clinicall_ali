@@ -140,7 +140,7 @@ export class PatientsComponent extends BaseComponent {
         'Address',
       ],
       ...data.map(item => [
-        item.id,
+        item.patient_id,
         item.patientName,
         item.gender,
         item.mobile,

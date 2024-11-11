@@ -4,21 +4,13 @@ import {
   Inject,
   inject,
 } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
 import {
   MAT_DIALOG_DATA,
-  MatDialogActions,
-  MatDialogClose,
-  MatDialogContent,
-  MatDialogRef,
-  MatDialogTitle,
+  MatDialogRef
 } from '@angular/material/dialog';
-import { MatListModule } from '@angular/material/list';
-import { PatientDTO } from '../model/patients.model';
-import { CommonModule, NgFor } from '@angular/common';
-import { PatientsService } from '../services/patients.service';
-import { ToastrService } from 'ngx-toastr';
 import { BaseComponent } from '../../../shared/components/base/base.component';
+import { PatientDTO } from '../model/patients.model';
+import { PatientsService } from '../services/patients.service';
 
 @Component({
   selector: 'app-delete-patient-dialog',

@@ -256,15 +256,15 @@
                     placeholder="Enter custom frequency" />
                 </mat-form-field>
                 }
-                <!-- *****prescription_date***** -->
+                <!-- *****prescribed_date***** -->
                 <mat-form-field appearance="outline" class="w-full mb-1">
-                  <mat-label>prescription_date</mat-label>
+                  <mat-label>prescribed_date</mat-label>
                   <input
                     [max]="maxDate"
                     [min]="minDate"
                     matInput
                     [matDatepicker]="picker"
-                    formControlName="prescription_date" />
+                    formControlName="prescribed_date" />
                   <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
                   <mat-datepicker-toggle matIconSuffix [for]="picker">
                     <mat-icon matDatepickerToggleIcon
@@ -392,8 +392,8 @@
                   <span class="pl-1">{{ item.frequency }}</span>
                 </div>
                 <div>
-                  <span class="opacity-55">Prescription_date:</span>
-                  <span class="pl-1">{{ item.prescription_date | date }}</span>
+                  <span class="opacity-55">prescribed_date:</span>
+                  <span class="pl-1">{{ item.prescribed_date | date }}</span>
                 </div>
               </div>
               <div>

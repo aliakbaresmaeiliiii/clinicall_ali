@@ -49,7 +49,6 @@ export class CustomTabComponent implements AfterViewInit {
   }
 
   onTabChanged(data: any) {
-    debugger;
     if (this.tabs().length > data.index) {
       this.setSelectedTab(data.index);
       this.selectedIndexChange.emit(data.index);

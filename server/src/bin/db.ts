@@ -10,6 +10,7 @@ import { ConfirmEmail, CreateUser, User } from "../types/user";
 import { RowDataPacket, coreSchema, query } from "./mysql";
 import { DoctorsDTO } from "../models/doctors";
 import { createPasswordSchema } from "../controller/user/schema";
+import { PrescriptionMedicine } from "../models/prescription_medicine";
 
 // ****** Auth ******
 export async function checkUserExist(email: string): Promise<RowDataPacket[]> {
@@ -612,11 +613,34 @@ export async function getDiseaseSubcategories(disease_id: string) {
   return result;
 }
 
-export async function updateIsFavorite(medication_id: string, isFavorite: boolean) {
+export async function updateIsFavorite(
+  medication_id: string,
+  isFavorite: boolean
+) {
   const result = await query<RowDataPacket>(
     `UPDATE  ${coreSchema}.medications SET isFavorite = ? WHERE medication_id = ?`,
     {
       values: [isFavorite, medication_id],
+    }
+  );
+  return result;
+}
+
+export async function addPrescriptionMedicine(
+  formData: PrescriptionMedicine,
+  medicine_id: number
+): Promise<any> {
+  const result = await query<RowDataPacket[]>(
+    `
+    INSERT INTO ${coreSchema}.prescription_medicine
+     (
+      patient_id,
+      medicine_id,
+      prescribed_date
+    ) VALUES (?, ?, ?)
+    `,
+    {
+      values: [formData.patient_id, medicine_id, formData.prescribed_date],
     }
   );
   return result;
