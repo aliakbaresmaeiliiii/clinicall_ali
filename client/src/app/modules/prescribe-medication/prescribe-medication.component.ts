@@ -158,26 +158,10 @@ export class PrescribeMedicationComponent
     this.#route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {});
   }
 
-  onTabChanged(formData: any) {
-    // this.updateTabStatus();
-  }
-
-  // updateTabStatus() {
-  //   if (this.form.controls.patientInfo) {
-  //     this.tabs[1].disabled = false;
-  //     this.form.controls.medication.valueChanges.subscribe(res => {
-  //       if (res) {
-  //         this.tabs[2].disabled = false;
-  //       }
-  //     });
-  //   } else {
-  //   }
-  // }
+  onTabChanged(formData: any) {}
 
   goToNextTab() {
     this.formDataTab1.push(this.form.controls.patientInfo.value);
-    console.log(this.formDataTab1);
-
     this.selectedIndex++;
   }
 
@@ -351,7 +335,7 @@ export class PrescribeMedicationComponent
 
   storeDataTab2(formData: any) {
     this.formDataTab2.push(this.form.controls.medication.value);
-    console.log(this.formDataTab2);
+    this.selectedIndex++;
   }
   onSubmit(form: any) {
     this.storeMedicine.push(form);
@@ -364,8 +348,16 @@ export class PrescribeMedicationComponent
       frequency: medicine.frequency,
       prescribed_date: medicine.prescribed_date,
     };
-    this.prescribeService.addPrescriptionMedicne(payload).subscribe((res)=>{
-
+    this.prescribeService.addPrescriptionMedicne(payload).subscribe(res => {
+      if (res) {
+        this.form.reset();
+        this.formDataTab1 = [];
+        this.formDataTab2 = [];
+        this.selectedIndex = 0;
+        this.toastrService.success('Data has been successfully saved');
+      } else {
+        this.toastrService.error('can not save data');
+      }
     });
   }
   deleteMedicine(index: any) {
