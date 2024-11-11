@@ -26,6 +26,7 @@ import { Medicine } from './medicine';
 import { PrescribeMedicationService } from './services/prescribe-medication.service';
 import { Validators } from '@angular/forms';
 import { MatTabGroup } from '@angular/material/tabs';
+import { PrescriptionMedicine } from './models/prescribe-medication';
 
 @Component({
   selector: 'app-prescribe-medication',
@@ -50,7 +51,7 @@ export class PrescribeMedicationComponent
   maritalStatus: string[] = ['Single', 'Married'];
   bloodGroups: string[] = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
   sugarLevels: string[] = ['Normal', 'Prediabetes', 'Diabetes'];
-
+  patientId!: number;
   #route = inject(ActivatedRoute);
   @ViewChild('tabGroup') tabGroup!: MatTabGroup;
   @ViewChild('templatefour', { static: true }) templatefour!: TemplateRef<any>;
@@ -118,8 +119,6 @@ export class PrescribeMedicationComponent
   storeMedicine: any[] = [];
   selectedIndex: number = 0;
 
-
-
   form = this.fb.group({
     patientInfo: this.fb.group({
       patientName: ['', Validators.required],
@@ -139,7 +138,7 @@ export class PrescribeMedicationComponent
       duration: [''],
       frequency: [this.frequencyOptions[0].value], // Default to 'Once'
       customFrequency: [''],
-      prescription_date: [new Date()],
+      prescribed_date: [new Date()],
       description: [''],
     }),
   });
@@ -287,19 +286,20 @@ export class PrescribeMedicationComponent
       this.shareService.setLoading(false);
     });
   }
-  onSelectedChange(patientName: PatientDTO) {
-    const formattedDate = new Date(patientName.dateOfBirth)
+  onSelectedChange(patienData: PatientDTO) {
+    this.patientId = patienData.patient_id;
+    const formattedDate = new Date(patienData.dateOfBirth)
       .toISOString()
       .split('T')[0];
     this.dateOfBirth?.setValue(formattedDate);
-    this.bloodGroup?.setValue(patientName.bloodGroup);
-    this.bloodPressure?.setValue(patientName.bloodPressure);
-    this.haemoglobin?.setValue(patientName.haemoglobin);
-    this.mobile?.setValue(patientName.mobile);
-    this.sugarLevel?.setValue(patientName.sugarLevel);
-    this.description?.setValue(patientName.description);
-    // this.patientName?.setValue(this.selectedPatient);
-    this.diseases?.setValue(patientName.diseases);
+    this.bloodGroup?.setValue(patienData.bloodGroup);
+    this.bloodPressure?.setValue(patienData.bloodPressure);
+    this.haemoglobin?.setValue(patienData.haemoglobin);
+    this.mobile?.setValue(patienData.mobile);
+    this.sugarLevel?.setValue(patienData.sugarLevel);
+    this.description?.setValue(patienData.description);
+    // this.patienData?.setValue(this.selectedPatient);
+    this.diseases?.setValue(patienData.diseases);
   }
   onSelectedChangeMedic(medic: string) {}
   onSelectedChangeDiseases(disease_id: string) {
@@ -354,40 +354,23 @@ export class PrescribeMedicationComponent
     console.log(this.formDataTab2);
   }
   onSubmit(form: any) {
-    console.log('this.formData', form);
     this.storeMedicine.push(form);
-    // this.form.reset();
-    // this.storeMedicine
-    // if (this.profileImg) {
-    //   const imgProfile = this.profileImg;
-    //   const payload: DoctorsDTO = {
-    //     name: this.form.value.name,
-    //     gender: this.form.value.gender,
-    //     mobile: this.form.value.mobile,
-    //     specialization: this.form.value.specialization,
-    //     dateOfBirth: this.form.value.dateOfBirth,
-    //     address: this.form.value.address,
-    //     department: this.form.value.department,
-    //     degree: this.form.value.degree,
-    //     email: this.form.value.email,
-    //     age: this.form.value.age,
-    //     profileImage: imgProfile.name,
-    //   };
-    //   this.service.addDoctor(payload).subscribe((res: any) => {
-    //     if (res.code === 200) {
-    //       this.form.reset();
-    //       this.toastrService.success('pateint add successfully');
-    //     } else {
-    //       this.toastrService.error('can not add patient...!');
-    //     }
-    //   });
-    // }
+    const medicine = this.form.controls.medication.value;
+    const payload: PrescriptionMedicine = {
+      patient_id: this.patientId,
+      medicine_name: medicine.medicine,
+      duration: medicine.duration,
+      instructions: medicine.customFrequency,
+      frequency: medicine.frequency,
+      prescribed_date: medicine.prescribed_date,
+    };
+    this.prescribeService.addPrescriptionMedicne(payload).subscribe((res)=>{
+
+    });
   }
   deleteMedicine(index: any) {
     this.storeMedicine.splice(index, 1);
   }
-
- 
 
   onSearchChanged(queryString: string) {
     this.fetchMedicine();
@@ -399,7 +382,7 @@ export class PrescribeMedicationComponent
   compareWithFn(medic: Medicine | null, medic2: Medicine | null) {
     return medic?.medication_id === medic2?.medication_id;
   }
-  
+
   selectedFavorite(medic: Medicine) {
     medic.isFavorite = !medic.isFavorite;
     this.prescribeService

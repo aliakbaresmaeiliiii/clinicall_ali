@@ -1,6 +1,6 @@
 export interface PatientDTO {
   position?: any;
-  id?: string | null | any;
+  patient_id?: string | null | any;
   patientName?: string | null | undefined;
   gender?: string | undefined | null;
   mobile?: any;

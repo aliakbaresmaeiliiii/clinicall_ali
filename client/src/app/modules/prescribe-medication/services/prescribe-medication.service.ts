@@ -1,6 +1,6 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { catchError, Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -14,6 +14,13 @@ export class PrescribeMedicationService {
   //   return this.http.get<any>(this.apiUrl);
   // }
 
+  addPrescriptionMedicne(formData: any): Observable<any[]> {  
+    return this.http.post<any[]>(
+      `${this.config}prescription-medicine`,
+      formData
+    );
+  }
+
   getDrugData(): Observable<any> {
     return this.http.get(`${this.config}medications`);
   }
@@ -26,7 +33,13 @@ export class PrescribeMedicationService {
     return this.http.get(`${this.config}getDiseaseSubcategories/${disease_id}`);
   }
 
-  updateIsFavorite(medication_id: string | number, isFavorite: boolean): Observable<any> {
-    return this.http.put(`${this.config}medications/${medication_id}/favorite`, { isFavorite });
+  updateIsFavorite(
+    medication_id: string | number,
+    isFavorite: boolean
+  ): Observable<any> {
+    return this.http.put(
+      `${this.config}medications/${medication_id}/favorite`,
+      { isFavorite }
+    );
   }
 }
