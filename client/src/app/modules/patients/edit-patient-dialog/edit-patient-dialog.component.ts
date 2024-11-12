@@ -1,4 +1,4 @@
-import { Component, inject, Inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Inject } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -11,6 +11,7 @@ import { PatientsService } from '../services/patients.service';
   selector: 'app-edit-patient-dialog',
   templateUrl: './edit-patient-dialog.component.html',
   styleUrl: './edit-patient-dialog.component.scss',
+  changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class EditPatientDialogComponent extends BaseComponent {
   genders: string[] = ['Male', 'Female'];
@@ -29,7 +30,7 @@ export class EditPatientDialogComponent extends BaseComponent {
 
   }
   form = this.fb.group({
-    id: [''],
+    patient_id: [''],
     patientName: [
       '',
       [
@@ -59,7 +60,7 @@ export class EditPatientDialogComponent extends BaseComponent {
 
   updatePatient() {
     this.form.patchValue({
-      id: this.patientData.patient_id,
+      patient_id: this.patientData.patient_id,
       patientName: this.patientData.patientName,
       gender: this.patientData.gender,
       mobile: this.patientData.mobile,

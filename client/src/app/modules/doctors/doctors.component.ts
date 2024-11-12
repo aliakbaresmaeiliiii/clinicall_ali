@@ -21,7 +21,7 @@ export class DoctorsComponent extends BaseComponent {
   doctors: DoctorsDTO[] = [];
   displayedColumns: string[] = [
     'select',
-    'id',
+    'doctor_id',
     'profileImage',
     'name',
     'gender',
@@ -73,6 +73,7 @@ export class DoctorsComponent extends BaseComponent {
   }
   getData() {
     this.service.getDoctors().subscribe((response: any) => {
+      debugger;
       const newData = response.data.map((doctor: any) => {
         doctor.profileImage = doctor.profileImage
           ? `${environment.urlProfileImg}${doctor.profileImage}`
@@ -166,8 +167,8 @@ export class DoctorsComponent extends BaseComponent {
     // XLSX.writeFile(wb, this.fileName);
   }
 
-  doctorDetial(id: number) {
-    this.router.navigate(['aliakbar/doctors/doctor-detail', id]);
+  doctorDetial(doctor_id: number) {
+    this.router.navigate(['aliakbar/doctors/doctor-detail', doctor_id]);
   }
 
   editDoctor(

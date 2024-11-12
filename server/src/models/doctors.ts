@@ -1,5 +1,5 @@
 export interface DoctorsDTO {
-  id: number;
+  doctor_id: number;
   name?: string | null | undefined;
   mobile?: string | undefined | null;
   email?: string | null | undefined;

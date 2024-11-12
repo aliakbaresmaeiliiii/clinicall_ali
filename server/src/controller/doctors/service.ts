@@ -43,6 +43,7 @@ export class DoctorsService {
     }
   }
 
+
   public static async updateDoctor(formData: DoctorsDTO) {
     const data = await updateDoctor(formData);
     if (data) {

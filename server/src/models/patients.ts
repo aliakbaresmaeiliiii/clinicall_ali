@@ -1,5 +1,5 @@
 export interface PatientDTO {
-  id: number;
+  patient_id: number;
   patientName: string;
   gender: "Male" | "Female" | "Other";
   mobile: string;

@@ -1,6 +1,6 @@
 export interface DoctorsDTO {
   position?: number | any;
-  id?: string | null | undefined;
+  doctor_id?: string | null | undefined;
   name?: string | null | undefined;
   mobile?: string | undefined | null;
   specialization?: string | null | undefined;

@@ -356,11 +356,11 @@ export async function getPatients() {
   `);
   return patients;
 }
-export async function patientDetail(patientId: number): Promise<any> {
+export async function patientDetail(patient_id: number): Promise<any> {
   const result = await query<RowDataPacket>(
     `SELECT * FROM ${coreSchema}.patients
-    WHERE id=?`,
-    { values: [patientId] }
+    WHERE patient_id=?`,
+    { values: [patient_id] }
   );
   return result;
 }
@@ -440,7 +440,7 @@ export async function updatePatient(patientData: PatientDTO): Promise<any> {
           injury = ?,
           bloodGroup = ?,
           address = ?
-      WHERE id = ?
+      WHERE patient_id = ?
       `,
     {
       values: [
@@ -454,7 +454,7 @@ export async function updatePatient(patientData: PatientDTO): Promise<any> {
         patientData.injury,
         patientData.bloodGroup,
         patientData.address,
-        patientData.id,
+        patientData.patient_id,
       ],
     }
   );
@@ -464,13 +464,13 @@ export async function updatePatient(patientData: PatientDTO): Promise<any> {
 // ***********Doctors *********
 export async function getDoctors(): Promise<DoctorsDTO[]> {
   const doctors = await query<RowDataPacket[]>(`
-    SELECT * FROM ${coreSchema}.doctor`);
+    SELECT * FROM ${coreSchema}.doctors`);
   return doctors as DoctorsDTO[];
 }
 export async function checkDoctorPhoneNumberExists(mobile: string) {
   const result = await query<RowDataPacket>(
     `
-    SELECT mobile FROM ${coreSchema}.doctor
+    SELECT mobile FROM ${coreSchema}.doctors
     where mobile=?
     `,
     {
@@ -482,7 +482,7 @@ export async function checkDoctorPhoneNumberExists(mobile: string) {
 export async function addDoctor(doctorInfo: DoctorsDTO) {
   try {
     const result = await query<RowDataPacket[]>(
-      `INSERT INTO ${coreSchema}.doctor
+      `INSERT INTO ${coreSchema}.doctors
       (name,gender,mobile,degree,dateOfBirth,department,
        age,email,address,profileImage,specialization,joingin_date)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
@@ -512,43 +512,33 @@ export async function addDoctor(doctorInfo: DoctorsDTO) {
 }
 export async function doctorDetail(doctorId: number): Promise<any> {
   const result = await query<RowDataPacket>(
-    `SELECT * FROM ${coreSchema}.doctor d
+    `SELECT * FROM ${coreSchema}.doctors d
     LEFT JOIN 
-    ${coreSchema}.locations_doctors ld ON d.id = ld.doctor_id
+    ${coreSchema}.locations_doctors ld ON d.doctor_id = ld.doctor_id
      WHERE 
-    d.id = ?;
+    d.doctor_id = ?;
 `,
     { values: [doctorId] }
   );
   return result;
 }
-export async function updateDoctor(doctortData: DoctorsDTO): Promise<any> {
+export async function updateDoctor(doctorData: DoctorsDTO): Promise<any> {
   const result = await query<RowDataPacket>(
     `
-      UPDATE ${coreSchema}.doctor
-      SET name = ?,
-          gender = ?,
-          mobile = ?,
-          age = ?,
-          email = ?,
-          address = ?
-      WHERE id = ?
-      `,
+      UPDATE ${coreSchema}.doctors
+      SET name = ?
+      WHERE doctor_id = ?
+    `,
     {
       values: [
-        doctortData.name,
-        doctortData.gender,
-        doctortData.mobile,
-        doctortData.dateOfBirth,
-        doctortData.age,
-        doctortData.email,
-        doctortData.address,
-        doctortData.id,
+        doctorData.name,
+        doctorData.doctor_id,
       ],
     }
   );
   return result;
 }
+
 
 export async function comparePassword(data: any): Promise<any> {
   const result = await query<RowDataPacket[]>(

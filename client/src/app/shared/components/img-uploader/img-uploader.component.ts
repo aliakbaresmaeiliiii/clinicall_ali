@@ -92,6 +92,7 @@ export class ImgUploaderComponent {
     this.progressInfos[idx] = { value: 0, fileName: file };
     if (file) {
       this.service.storeProfileImg.next(file);
+      
       this.service.uploadImg(file).subscribe(
         (event:any)=>{
           if(event.type === HttpEventType.UploadProgress){
