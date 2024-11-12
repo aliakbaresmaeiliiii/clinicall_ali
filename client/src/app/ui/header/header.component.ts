@@ -5,11 +5,10 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import {
-  Component,
-  output,
-  signal
-} from '@angular/core';
+import { Component, inject, output, signal } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { LoginComponent } from '../../core/auth/components/login/login.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -56,6 +55,9 @@ import {
 })
 export class HeaderComponent {
   navbarVisible = signal(true);
+  dialog = inject(MatDialog);
+  router = inject(Router);
+  userData: string = '';
 
   private lastScrollPosition = 0;
   bgColor: string = 'default';
@@ -66,6 +68,13 @@ export class HeaderComponent {
 
   ngOnInit(): void {
     window.addEventListener('scroll', this.onWindowScroll.bind(this));
+    if (typeof localStorage !== 'undefined') {
+      const getStoreItem = localStorage.getItem('userData');
+      if (getStoreItem) {
+        const getItem = JSON.parse(getStoreItem);
+        this.userData = getItem.userName;
+      }
+    }
   }
 
   onWindowScroll(): void {
@@ -80,7 +89,10 @@ export class HeaderComponent {
     this.lastScrollPosition = currentScrollPosition;
   }
 
-  
+  loginUser() {
+    this.router.navigate(['login']);
+  }
+
   ngOnDestroy(): void {
     window.removeEventListener('scroll', this.onWindowScroll.bind(this));
   }
