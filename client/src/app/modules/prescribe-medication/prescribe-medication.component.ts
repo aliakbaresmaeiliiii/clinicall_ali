@@ -1,7 +1,5 @@
 import {
-  ChangeDetectorRef,
   Component,
-  computed,
   inject,
   makeStateKey,
   OnDestroy,
@@ -9,9 +7,11 @@ import {
   signal,
   TemplateRef,
   TransferState,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
+import { Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { BaseComponent } from '../../shared/components/base/base.component';
@@ -20,13 +20,10 @@ import { ShareService } from '../../shared/services/share.service';
 import { Diseases, SubCategoryDisease } from '../patients/model/disease';
 import { PatientDTO } from '../patients/model/patients.model';
 import { PatientsService } from '../patients/services/patients.service';
-import { EditDialogComponent } from './edit-dialog/edit-dialog.component';
 import { IsFavorite } from './enum/isFavorite.enum';
 import { Medicine } from './medicine';
-import { PrescribeMedicationService } from './services/prescribe-medication.service';
-import { Validators } from '@angular/forms';
-import { MatTabGroup } from '@angular/material/tabs';
 import { PrescriptionMedicine } from './models/prescribe-medication';
+import { PrescribeMedicationService } from './services/prescribe-medication.service';
 
 @Component({
   selector: 'app-prescribe-medication',
@@ -39,8 +36,9 @@ export class PrescribeMedicationComponent
 {
   title = signal('Patient Information');
 
-  formDataTab1: any[] = [];
-  formDataTab2: any[] = [];
+  patientInfoTab: any[] = [];
+  diseaseTab: any[] = [];
+  medicationTab: any[] = [];
 
   shareService = inject(ShareService);
   agePipe = inject(AgePipe);
@@ -128,6 +126,9 @@ export class PrescribeMedicationComponent
       mobile: [''],
       sugarLevel: [''],
       dateOfBirth: [''],
+    }),
+
+    diseases: this.fb.group({
       diseases: [''],
       diseaseSubcategories: [''],
       severity: [''],
@@ -160,8 +161,12 @@ export class PrescribeMedicationComponent
 
   onTabChanged(formData: any) {}
 
-  goToNextTab() {
-    this.formDataTab1.push(this.form.controls.patientInfo.value);
+  patientNextTab() {
+    this.patientInfoTab.push(this.form.controls.patientInfo.value);
+    this.selectedIndex++;
+  }
+  diseasesNextTab() {
+    this.diseaseTab.push(this.form.controls.diseases.value);
     this.selectedIndex++;
   }
 
@@ -200,7 +205,7 @@ export class PrescribeMedicationComponent
   }
   filterDiseases() {
     const filterValue =
-      this.form.get('patientInfo.diseases')?.value?.toLowerCase() || '';
+      this.form.get('diseases.diseases')?.value?.toLowerCase() || '';
     if (this.diseaseData && this.diseaseData.length) {
       this.filteredDiseases = this.diseaseData.filter(p =>
         p.name?.toLowerCase().includes(filterValue)
@@ -209,7 +214,7 @@ export class PrescribeMedicationComponent
   }
   filterSubCategoriesDisease() {
     const filterValue =
-      this.form.get('patientInfo.diseaseSubcategories')?.value?.toLowerCase() ||
+      this.form.get('diseases.diseaseSubcategories')?.value?.toLowerCase() ||
       '';
     if (this.subCategoryDiseaseData && this.subCategoryDiseaseData.length) {
       this.filteredSubCategoriesDisease = this.subCategoryDiseaseData.filter(
@@ -333,8 +338,8 @@ export class PrescribeMedicationComponent
     return medication.name;
   }
 
-  storeDataTab2(formData: any) {
-    this.formDataTab2.push(this.form.controls.medication.value);
+  medicationNextTab() {
+    this.medicationTab.push(this.form.controls.medication.value);
     this.selectedIndex++;
   }
   onSubmit(form: any) {
@@ -351,8 +356,8 @@ export class PrescribeMedicationComponent
     this.prescribeService.addPrescriptionMedicne(payload).subscribe(res => {
       if (res) {
         this.form.reset();
-        this.formDataTab1 = [];
-        this.formDataTab2 = [];
+        this.patientInfoTab = [];
+        this.medicationTab = [];
         this.selectedIndex = 0;
         this.toastrService.success('Data has been successfully saved');
       } else {
@@ -414,13 +419,13 @@ export class PrescribeMedicationComponent
     return this.form.get('patientInfo.sugarLevel');
   }
   get diseases() {
-    return this.form.get('patientInfo.diseases');
+    return this.form.get('diseases.diseases');
   }
   get description() {
     return this.form.get('medication.description');
   }
   get diseaseSubcategories() {
-    return this.form.get('patientInfo.diseaseSubcategories');
+    return this.form.get('diseases.diseaseSubcategories');
   }
   get frequency() {
     return this.form.get('frequency');

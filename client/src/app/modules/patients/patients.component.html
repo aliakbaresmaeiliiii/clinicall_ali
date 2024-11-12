@@ -73,10 +73,10 @@
           <th mat-header-cell *matHeaderCellDef>Posidtion.</th>
           <td mat-cell *matCellDef="let element">{{ element.posidtion }}</td>
         </ng-container>
-        <!-- id Column -->
-        <ng-container matColumnDef="id">
+        <!-- patient_id Column -->
+        <ng-container matColumnDef="patient_id">
           <th mat-header-cell *matHeaderCellDef>Id.</th>
-          <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.patient_id }}</td>
         </ng-container>
         <!-- profileImage Column -->
         <ng-container matColumnDef="profileImage">
@@ -93,7 +93,7 @@
         </ng-container>
         <!-- patientName Column -->
         <ng-container matColumnDef="patientName">
-          <th mat-header-cell *matHeaderCellDef>patientName</th>
+          <th mat-header-cell *matHeaderCellDef>PatientName</th>
           <td mat-cell *matCellDef="let element">
             {{ element.patientName }} 
           </td>
@@ -125,7 +125,7 @@
 
         <!-- dateOfBirth Column -->
         <ng-container matColumnDef="dateOfBirth">
-          <th mat-header-cell *matHeaderCellDef>dateOfBirth</th>
+          <th mat-header-cell *matHeaderCellDef>DateOfBirth</th>
           <td mat-cell *matCellDef="let element">
             {{ element.dateOfBirth | date }}
           </td>
@@ -182,7 +182,7 @@
               <button
                 mat-icon-button
                 matTooltip="View Detail"
-                (click)="patientDetial(element.id)">
+                (click)="patientDetial(element.patient_id)">
                 <i class="fa-regular fa-eye text-blue-900 text-xl"></i>
               </button>
               <button

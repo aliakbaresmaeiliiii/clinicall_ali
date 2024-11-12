@@ -1,4 +1,9 @@
-import { Component, Inject, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Inject,
+  inject,
+} from '@angular/core';
 import { DoctorsService } from '../doctors.service';
 import { DoctorsDTO } from '../models/doctors';
 import { ErrorStateMatcher } from '@angular/material/core';
@@ -10,9 +15,10 @@ import { banWords } from '../../../shared/validators/ban-words.validators';
 @Component({
   selector: 'app-edit-doctor',
   templateUrl: './edit-doctor.component.html',
-  styleUrl: './edit-doctor.component.scss'
+  styleUrl: './edit-doctor.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditDoctorComponent extends BaseComponent{
+export class EditDoctorComponent extends BaseComponent {
   genders: string[] = ['Male', 'Female'];
   bloodGroups: string[] = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
   service = inject(DoctorsService);
@@ -25,13 +31,11 @@ export class EditDoctorComponent extends BaseComponent{
   ) {
     super();
     this.doctorInfo = data;
-    this.updatePatient();
-
+    this.updateDoctor();
   }
 
-  
   form = this.fb.group({
-    id: [''],
+    doctor_id: [''],
     name: [
       '',
       [
@@ -52,14 +56,14 @@ export class EditDoctorComponent extends BaseComponent{
   onSubmit() {
     this.service.updateDoctor(this.form.value).subscribe((res: any) => {
       if (res.code === 200) {
-        this.toastrService.success('the data has beed updated!')
+        this.toastrService.success('the data has beed updated!');
       }
     });
   }
 
-  updatePatient() {
+  updateDoctor() {
     this.form.patchValue({
-      id: this.doctorInfo.id,
+      doctor_id: this.doctorInfo.doctor_id,
       name: this.doctorInfo.name,
       gender: this.doctorInfo.gender,
       mobile: this.doctorInfo.mobile,
@@ -97,6 +101,4 @@ export class EditDoctorComponent extends BaseComponent{
   get specialization() {
     return this.form.get('specialization');
   }
-
-
 }

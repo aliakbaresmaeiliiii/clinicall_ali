@@ -1,10 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import {
-  Component,
-  inject,
-  Input,
-  ViewChild
-} from '@angular/core';
+import { Component, inject, Input, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -27,9 +22,9 @@ export class PatientsComponent extends BaseComponent {
   service = inject(PatientsService);
   displayedColumns: string[] = [
     'select',
-    'id',
+    'patient_id',
     'profileImage',
-    'name',
+    'patientName',
     'gender',
     'mobile',
     'dateOfBirth',
@@ -52,6 +47,7 @@ export class PatientsComponent extends BaseComponent {
   imgTest: any;
   wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
   fileName: string = 'SheetJS.xlsx';
+
   ngOnInit(): void {
     this.getData();
   }
@@ -60,7 +56,9 @@ export class PatientsComponent extends BaseComponent {
     this.dataSource.sort = this.sort;
   }
   getData() {
+    debugger;
     this.service.getPatients().subscribe((response: any) => {
+      console.log('asdf',response);
       const newData = response.data.map((patient: any) => {
         patient.profileImage = patient.profileImage
           ? `${environment.urlProfileImg}${patient.profileImage}`
@@ -118,8 +116,9 @@ export class PatientsComponent extends BaseComponent {
     });
   }
 
-  patientDetial(id: number) {
-    this.router.navigate(['aliakbar/patients/patient-detail', id]);
+  patientDetial(patient_id: number) {
+    debugger;
+    this.router.navigate(['aliakbar/patients/patient-detail', patient_id]);
   }
 
   refreshGrid() {
@@ -130,8 +129,8 @@ export class PatientsComponent extends BaseComponent {
     const data = this.dataSource.data;
     const aoaData: any[][] = [
       [
-        'id',
-        'Name',
+        'patient_id',
+        'patientName',
         'Gender',
         'Mobile',
         'dateOfBirth',

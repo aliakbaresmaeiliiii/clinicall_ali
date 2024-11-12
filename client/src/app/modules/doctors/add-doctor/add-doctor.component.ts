@@ -25,8 +25,7 @@ import { ImgUploaderComponent } from '../../../shared/components/img-uploader/im
   templateUrl: './add-doctor.component.html',
   styleUrl: './add-doctor.component.scss',
 })
-export class AddDoctorComponent extends BaseComponent implements AfterViewInit{
-
+export class AddDoctorComponent extends BaseComponent implements AfterViewInit {
   uniqueNickname = inject(UniqueNicknameValidator);
   service = inject(DoctorsService);
   shareService = inject(ShareService);
@@ -71,19 +70,15 @@ export class AddDoctorComponent extends BaseComponent implements AfterViewInit{
     this.onTouch();
   }
 
-
-
   ngOnInit(): void {
-    
-
     this.validationAge();
   }
   ngAfterViewInit(): void {
     this.shareService.getStoreProfileImg$.subscribe(res => {
-      
+      debugger;
       this.profileImg = res;
       this.shareService.setLoading(false);
-      console.log('File:📁',this.profileImg);
+      console.log('File:📁', this.profileImg);
     });
   }
 
@@ -124,7 +119,9 @@ export class AddDoctorComponent extends BaseComponent implements AfterViewInit{
   }
 
   onSubmit() {
+    debugger;
     if (this.profileImg) {
+
       const imgProfile = this.profileImg;
       const payload: DoctorsDTO = {
         name: this.form.value.name,

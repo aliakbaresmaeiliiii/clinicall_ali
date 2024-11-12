@@ -16,8 +16,8 @@ export class PatientService {
     return null;
   }
 
-  public static async patientDetial(patientId: number) {
-    const data = await patientDetail(patientId);
+  public static async patientDetial(patient_id: number) {
+    const data = await patientDetail(patient_id);
     if (data) {
       return { message: "ok", data };
     } else {
