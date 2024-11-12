@@ -1,9 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { AngularFireModule } from '@angular/fire/compat';
+import { AngularFireFunctionsModule } from '@angular/fire/compat/functions';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
@@ -12,6 +16,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterModule, RouterOutlet, Routes } from '@angular/router';
 import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input';
+import { environment } from '../environments/environment';
 import { ButtonComponent } from '../shared/components/button/button.component';
 import { CustomCardComponent } from '../shared/components/custom-card/custom-card.component';
 import { GoogleMapComponent } from '../shared/components/google-map/google-map.component';
@@ -30,16 +35,12 @@ import { AppScrollProgressBarComponent } from './header/app-scroll-progress-bar/
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { MediicAppointmentComponent } from './mediic-appointment/mediic-appointment.component';
+import { MenuComponent } from './mobile/menu/menu.component';
 import { ServiceSectionComponent } from './service-section/service-section.component';
 import { ServicesDoctorComponent } from './services-doctor/services-doctor.component';
 import { PlaceholderComponent } from './shared-ui/components/placeholder/placeholder.component';
 import { SliderComponent } from './slider/slider.component';
-import { MenuComponent } from './mobile/menu/menu.component';
-import {MatExpansionModule} from '@angular/material/expansion';
-import { AngularFireFunctionsModule } from '@angular/fire/compat/functions';
-import { environment } from '../environments/environment';
-import { AngularFireModule } from '@angular/fire/compat';
-import { provideFirebaseApp } from '@angular/fire/app';
+import { LoginComponent } from '../core/auth/components/login/login.component';
 
 const routes: Routes = [
   {
@@ -77,7 +78,7 @@ const routes: Routes = [
     DrProjectsComponent,
     DetailDrProjectComponent,
     PlaceholderComponent,
-    MenuComponent
+    MenuComponent,
   ],
   imports: [
     CommonModule,
@@ -104,9 +105,10 @@ const routes: Routes = [
     CounterDirective,
     MatSidenavModule,
     MatRadioModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatDialogModule,
   ],
-  exports:[PlaceholderComponent],
+  exports: [PlaceholderComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class UiModule {}

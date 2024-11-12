@@ -57,6 +57,8 @@ import { PermissionService } from '../../../services/permission.service';
     MatCheckboxModule,
     SocialLoginModule,
   ],
+
+ 
   // providers: [
   //   SocialAuthService,
   //   {
@@ -158,15 +160,21 @@ export class LoginComponent implements OnInit{
   
 
   // ****login Google
-
   login(event: AnimationEvent) {
     if (this.form.value) {
       this.#authService.signIn(this.form.value).subscribe((res: any) => {
         this.permissionService.setPermissions(res.data.permissions);
         const stroeDataUser = res.data;
+        console.log(res.data.roles[0]);
+        
         const dataJson = JSON.stringify(stroeDataUser);
         localStorage.setItem('userData', dataJson);
-        this.router.navigate(['aliakbar/settings']);
+        if(res.data.roles[0] === 'user'){
+          debugger;
+          this.router.navigate(['']);
+        }else{
+          // this.router.navigate(['aliakbar/settings']);
+        }
       });
     }
   }

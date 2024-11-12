@@ -6,7 +6,6 @@
   <div class="col-span-2 flex justify-center items-center">
     <div class="w-36 h-auto">
       @if (navbarVisible()) {
-
       <a href="/home">
         <img
           src="../../../assets/images/icons/ui/logo.png"
@@ -23,6 +22,51 @@
           alt="" />
       </a>
       }
+    </div>
+  </div>
+  <div class="col-span-8 flex justify-center items-center">
+    <div class="flex gap-2">
+      @if (!userData) {
+      <button dfButton appearance="solid" class="flex" (click)="loginUser()">
+        Login users
+        <i class="fa-solid fa-user"></i>
+      </button>
+
+      }@else {
+      <button
+        mat-flat-button
+        color="primary"
+        class="ease-in-out duration-300 w-full desktop:m-0 tablet:mt-2 mobile:mt-2"
+        type="submit">
+        <a class="">
+          <span> {{ userData }} </span>
+        </a>
+      </button>
+      }
+      <button dfButton appearance="solid" class="flex">
+        Login Doctors
+        <i class="fa-solid fa-user"></i>
+      </button>
+
+      <!-- <a class="link cursor-pointer">
+          <span> User Login </span>
+          <i class="fa-solid fa-user text-blue-600"></i>
+        </a> -->
+
+      <!-- <div class="submenu">
+          <div class="submenu-item">
+            <a routerLink="/services" class="submenu-link"> Our Services </a>
+          </div>
+          <div class="submenu-item">
+            <a href="#" class="submenu-link"> Design </a>
+          </div>
+          <div class="submenu-item">
+            <a href="#" class="submenu-link"> Marketing </a>
+          </div>
+          <div class="submenu-item">
+            <a href="#" class="submenu-link"> SEO </a>
+          </div>
+        </div> -->
     </div>
   </div>
   <div class="col-span-8 flex justify-center items-center">
@@ -91,11 +135,13 @@
       </div>
     </div>
   </div>
+
   <div class="col-span-2 flex justify-center items-center gap-4">
     <button mat-icon-button matTooltip="View Detail">
       <i class="fa-solid fa-magnifying-glass text-blue-600"></i>
     </button>
-    <div  class="p-4 bg-blue-600 w-14 h-14 rounded-full cursor-pointer ease-in duration-300">
+    <div
+      class="p-4 bg-blue-600 w-14 h-14 rounded-full cursor-pointer ease-in duration-300">
       <i
         class="fa-solid fa-bars text-white text-center text-2xl"
         (click)="drawer.emit(false)"></i>
