@@ -1,13 +1,8 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import {
   BehaviorSubject,
-  Observable,
-  catchError,
-  filter,
-  map,
-  take,
-  throwError,
+  Observable  
 } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { SignupResponse, TokenPermission, User } from '../auth/models/user';

@@ -41,6 +41,7 @@ import { ServicesDoctorComponent } from './services-doctor/services-doctor.compo
 import { PlaceholderComponent } from './shared-ui/components/placeholder/placeholder.component';
 import { SliderComponent } from './slider/slider.component';
 import { LoginComponent } from '../core/auth/components/login/login.component';
+import { ProfilePatientComponent } from './profile-patient/profile-patient.component';
 
 const routes: Routes = [
   {
@@ -57,6 +58,7 @@ const routes: Routes = [
       { path: 'about-us', component: AboutUsComponent },
       { path: 'dr-projects', component: DrProjectsComponent },
       { path: 'detail-dr-project', component: DetailDrProjectComponent },
+      { path: 'profile-pateint', component: ProfilePatientComponent },
     ],
   },
 ];
