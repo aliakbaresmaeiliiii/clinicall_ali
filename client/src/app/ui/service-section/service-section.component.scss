@@ -1,5 +1,3 @@
-
-
 .swiper {
   margin-left: auto;
   margin-right: auto;
@@ -49,15 +47,30 @@
   background-repeat: no-repeat;
   opacity: 0;
   transition: 0.5s;
+
 }
+
 .single-service-box:hover .service-thumb:after {
   height: 100%;
+  color: white;
+
 }
-.service-thumb img {
+
+.service-thumb .img-slide {
   position: relative;
   z-index: -1;
-  width: 100%;
   border-radius: 20px;
+  width: 100%;
+  height: 370px;
+}
+
+.service-thumb .img-slide img {
+  width: 100px;
+  height: 100px;
+  left: 35%;
+  top: 13%;
+
+
 }
 
 .single-service-box:hover .service-icon a i {
@@ -65,7 +78,9 @@
   right: 0;
 }
 
-.bi::before, [class^="bi-"]::before, [class*=" bi-"]::before {
+.bi::before,
+[class^="bi-"]::before,
+[class*=" bi-"]::before {
   display: inline-block;
   font-family: bootstrap-icons !important;
   font-style: normal;
@@ -76,7 +91,9 @@
   vertical-align: -.125em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
 }
+
 .single-service-box:hover .service-thumb:before {
   opacity: 1;
   top: -0px;
@@ -100,6 +117,7 @@
   transition: 0.5s;
   opacity: 0;
   transform: rotate(-4deg);
+
 }
 
 
@@ -115,24 +133,12 @@
   transition: 0.5s;
   border-radius: 18px;
 }
+
 .service-content {
   position: absolute;
   z-index: 1;
   bottom: 40px;
-  left: 40px;
+  left: 55px;
 }
 
-.service-content h6 {
-  font-size: 16px;
-  font-weight: 500;
-  text-transform: uppercase;
-  color: #fff;
-}
 
-.service-content h2 a {
-  font-size: 28px;
-  font-weight: 600;
-  color: #ffff;
-  display: inline-block;
-  transition: 0.5s;
-}

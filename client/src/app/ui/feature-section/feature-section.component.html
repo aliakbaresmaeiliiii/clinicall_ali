@@ -2,11 +2,11 @@
 
 <!---------------- start mediic center cards  --------------->
 <section
-  class="grid desktop:grid-flow-col desktop:auto-rows-max desktop:mx-auto desktop:gap-20 gap-10 mobile:mx-4 mx-auto pt-14 desktop:pt-28 desktop:w-9/12">
+  class="grid desktop:grid-flow-col desktop:gap-10 mobile:mx-4 desktop:pt-28 px-6">
   <div class="card" data-aos="fade-up">
     <div class="w-10/12 m-auto pt-4">
       <div class="flex justify-between items-center">
-        <h2 class="header_card text-blue-950">Our Professionals</h2>
+        <h2 class="header_card text-blue-950">Online medical consultation</h2>
         <a routerLink="/doctors">
           <i
             class="fa-solid fa-arrow-trend-up text-2xl hoverWhite text-blue-950"></i>
@@ -35,10 +35,40 @@
   <div class="card" data-aos="fade-down">
     <div class="w-10/12 m-auto pt-4">
       <div class="flex justify-between items-center">
-        <button class="rounded-full text-blue-950 hoverWhite p-2 pl-4 pr-4">
-          BOOKING
-        </button>
-        <h2 class="header_card text-blue-950">Appointment</h2>
+        <h2 class="header_card text-blue-950">
+          Clinic and hospital Appointment
+        </h2>
+        <a routerLink="/doctors">
+          <i
+            class="fa-solid fa-arrow-trend-up text-2xl hoverWhite text-blue-950"></i>
+        </a>
+      </div>
+
+      <hr class="text-white" />
+    </div>
+
+    <div class="pt-8 w-80 m-auto">
+      <div class="flex flex-col justify-center items-center">
+        <img src="../../../assets/images/ui/call.png" alt="" />
+        <span
+          class="flex justify-center text-blue-600 items-center pt-8 hoverWhite text-2xl">
+          +123 (4567) 890
+        </span>
+        <p class="hoverWhite text-base transition text-center">
+          Call Us for Booking appoinments online 24 hrs available
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" data-aos="fade-down">
+    <div class="w-10/12 m-auto pt-4">
+      <div class="flex justify-between items-center">
+        <h2 class="header_card text-blue-950">Doctor's office Appointment</h2>
+        <a routerLink="/doctors">
+          <i
+            class="fa-solid fa-arrow-trend-up text-2xl hoverWhite text-blue-950"></i>
+        </a>
       </div>
       <hr class="text-white" />
     </div>
@@ -60,8 +90,11 @@
   <div class="card" data-aos="fade-up">
     <div class="w-10/12 m-auto pt-4">
       <div class="flex justify-between items-center">
-        <h2 class="header_card text-blue-950">Locations</h2>
-        <i class="fa-solid fa-arrow-trend-up text-2xl text-blue-950"></i>
+        <h2 class="header_card text-blue-950">Doctor's and clinic locations</h2>
+        <a routerLink="/doctors">
+          <i
+            class="fa-solid fa-arrow-trend-up text-2xl hoverWhite text-blue-950"></i>
+        </a>
       </div>
       <hr class="text-white" />
     </div>
@@ -392,6 +425,15 @@
   <div class="m-auto w-9/12 pt-12">
     <app-best-doctors />
   </div>
+</section>
+
+<app-sepereate-sections
+  [title]="'Support our cities'"
+  [count]="300"
+  [description]="'We are supporting all these cities'" />
+<section
+  class="grid desktop:grid-flow-col desktop:gap-10 mobile:mx-4 desktop:pt-28 px-6">
+  <app-cities-support />
 </section>
 
 <!---------------- start Blog section ---------------------->

@@ -25,6 +25,7 @@ import { CounterDirective } from '../shared/directives/counter-number/counter.di
 import { AboutUsComponent } from './about-us/about-us.component';
 import { BestDoctorsComponent } from './best-doctors/best-doctors.component';
 import { BlogComponent } from './blog/blog.component';
+import { CitiesSupportComponent } from './cities-support/cities-support.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { DetailDrProjectComponent } from './detail-dr-project/detail-dr-project.component';
 import { DoctorsComponent } from './doctors/doctors.component';
@@ -36,12 +37,12 @@ import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { MediicAppointmentComponent } from './mediic-appointment/mediic-appointment.component';
 import { MenuComponent } from './mobile/menu/menu.component';
+import { ProfilePatientComponent } from './profile-patient/profile-patient.component';
 import { ServiceSectionComponent } from './service-section/service-section.component';
 import { ServicesDoctorComponent } from './services-doctor/services-doctor.component';
 import { PlaceholderComponent } from './shared-ui/components/placeholder/placeholder.component';
+import { SepereateSectionsComponent } from './shared-ui/components/sepereate-sections/sepereate-sections.component';
 import { SliderComponent } from './slider/slider.component';
-import { LoginComponent } from '../core/auth/components/login/login.component';
-import { ProfilePatientComponent } from './profile-patient/profile-patient.component';
 
 const routes: Routes = [
   {
@@ -81,6 +82,8 @@ const routes: Routes = [
     DetailDrProjectComponent,
     PlaceholderComponent,
     MenuComponent,
+    CitiesSupportComponent,
+    SepereateSectionsComponent
   ],
   imports: [
     CommonModule,
@@ -109,6 +112,7 @@ const routes: Routes = [
     MatRadioModule,
     MatExpansionModule,
     MatDialogModule,
+
   ],
   exports: [PlaceholderComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
