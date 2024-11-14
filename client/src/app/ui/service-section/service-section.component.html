@@ -2,39 +2,42 @@
   <div
     class="desktop:grid grid-cols-3 w-10/12 m-auto pt-28 border-b-2 border-lightGray">
     <div class="text-gray-100" data-aos="fade-up">
-      <div class="mobile:text-2xl mobile:font-semibold desktop:text-5xl ">PROVIDES BEST SERVICE</div>
+      <div class="mobile:text-2xl mobile:font-semibold desktop:text-5xl">
+        Most popular specialties
+      </div>
     </div>
-    <div class="text-gray-100 mobile:pt-4"  data-aos="fade-down">
+    <!-- <div class="text-gray-100 mobile:pt-4" data-aos="fade-down">
       Enthusiastically orchestrate competitive e-services whereas superior
       Conveniently disintermediate innovative solutions through impactfuls
       tailers without seamless markets network .
-    </div>
+    </div> -->
     <div class="flex justify-end mobile:pt-4 mobile:pb-4" data-aos="fade-up">
-      <button dfButton>View All Service</button>
+      <button dfButton>View All</button>
     </div>
   </div>
   <div class="swiper serviceSwiper mobile:w-full desktop:w-10/12 mt-10">
     <div class="swiper-wrapper">
-      @for (image of images; track $index) {
+      @for (data of images; track $index) {
       <div class="swiper-slide">
         <div class="single-service-box aos-init aos-animate">
           <div class="service-thumb">
-            <img class="relative" [src]="image.src" />
+            <div class="img-slide bg-gray-100">
+              <img class="relative" [src]="data.src" />
+            </div>
             <div class="service-icon cursor-scale small">
               <a routerLink="/dr-projects">
                 <i class="fa-solid fa-arrow-trend-up text-2xl"></i>
               </a>
             </div>
           </div>
-          <div class="service-content">
-            <h6 class="text-2xl">Dentist</h6>
-            <h2 class="text-blueDark">
-              <a href=""> Dental Fixing </a>
+          <div class="service-content ">
+            <h6 class="!text-base text-blue-950 text-center">{{ data.specialty }}</h6>
+            <h2 class="text-blue-950 text-sm font-bold ">
+              <a href="">Docor: {{ data.count }} + </a>
             </h2>
           </div>
         </div>
       </div>
-
       }
     </div>
     <div class="swiper-pagination"></div>
