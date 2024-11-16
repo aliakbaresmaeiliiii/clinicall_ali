@@ -1,5 +1,185 @@
 <app-slider />
 
+<!-- What service do you need? -->
+<section class="pt-2 px-2">
+  <app-service-section [title]="'What service do you need?'">
+    <div class="swiper serviceSwiper mobile:w-full desktop:w-10/12 mt-10">
+      <div class="swiper-wrapper">
+        @for (data of imagesServices; track $index) {
+        <div class="swiper-slide">
+          <div class="single-service-box aos-init aos-animate">
+            <div class="service-thumb">
+              <div class="img-slide bg-gray-100">
+                <img class="relative" [src]="data.src" />
+              </div>
+              <div class="service-icon cursor-scale small">
+                <a routerLink="/dr-projects">
+                  <i class="fa-solid fa-arrow-trend-up text-2xl"></i>
+                </a>
+              </div>
+            </div>
+            <div class="service-content">
+              <h6 class="!text-base text-white !font-medium text-center">
+                {{ data.specialty }}
+              </h6>
+              <h2 class="!text-base text-white !font-medium">
+                <a href="">Docor: {{ data.count }} + </a>
+              </h2>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </div>
+  </app-service-section>
+</section>
+
+<!-- Dermatology, Hair, and Aesthetic Services -->
+<section class="pt-2 px-2">
+  <app-service-section [title]="'Dermatology, Hair, and Aesthetic Services'">
+    <div class="swiper serviceSwiper mobile:w-full desktop:w-10/12 mt-10">
+      <div class="swiper-wrapper">
+        @for (data of imagesDermatology; track $index) {
+        <div class="swiper-slide">
+          <div class="single-service-box aos-init aos-animate">
+            <div class="service-thumb">
+              <div class="img-slide bg-gray-100">
+                <img class="relative" [src]="data.src" />
+              </div>
+              <div class="service-icon cursor-scale small">
+                <a routerLink="/dr-projects">
+                  <i class="fa-solid fa-arrow-trend-up text-2xl"></i>
+                </a>
+              </div>
+            </div>
+            <div class="service-content">
+              <h6 class="!text-base text-white !font-medium text-center">
+                {{ data.specialty }}
+              </h6>
+              <h2 class="!text-base text-white !font-medium">
+                <a href="">Docor: {{ data.count }} + </a>
+              </h2>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </div>
+  </app-service-section>
+</section>
+
+<!-- Suggestions Related to Skin, Hair, and Beauty Tips -->
+<section class="px-2">
+  <app-service-section
+    [title]="'Suggestions Related to Skin, Hair, and Beauty Tips:'">
+    <div
+      class="flex gap-4 desktop:flex justify-between w-10/12 m-auto pt-28 border-b-2 border-lightGray">
+      <div class="swiper beautySwiper">
+        <div class="swiper-wrapper">
+          @for (item of beauty; track $index) {
+          <ng-container>
+            <div class="swiper-slide">
+              <app-card
+                [title]="item.title"
+                [description]="item.description"
+                [name]="item.name"
+                [promotion]="item.promotion"
+                [price]="item.price"
+                [off]="item.off"
+                [imgSergury]="item.imgSergury"
+                [doctorImg]="item.doctorImg">
+              </app-card>
+            </div>
+          </ng-container>
+          }
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </app-service-section>
+</section>
+
+
+<!-- Dental Services -->
+<section class="pt-2 px-2">
+  <app-service-section [title]="'Dental Services'">
+    <div class="swiper serviceSwiper mobile:w-full desktop:w-10/12 mt-10">
+      <div class="swiper-wrapper">
+        @for (data of dental; track $index) {
+        <div class="swiper-slide">
+          <div class="single-service-box aos-init aos-animate">
+            <div class="service-thumb">
+              <div class="img-slide bg-gray-100">
+                <img class="relative" [src]="data.src" />
+              </div>
+              <div class="service-icon cursor-scale small">
+                <a routerLink="/dr-projects">
+                  <i class="fa-solid fa-arrow-trend-up text-2xl"></i>
+                </a>
+              </div>
+            </div>
+            <div class="service-content">
+              <h6 class="!text-base text-white !font-medium text-center">
+                {{ data.specialty }}
+              </h6>
+              <h2 class="!text-base text-white !font-medium">
+                <a href="">Docor: {{ data.count }} + </a>
+              </h2>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </div>
+  </app-service-section>
+</section>
+
+<!-- Suggestions Dental  -->
+<section class="px-2">
+  <app-service-section
+    [title]="'Suggestions Dental:'">
+    <div
+      class="flex gap-4 desktop:flex justify-between w-10/12 m-auto pt-28 border-b-2 border-lightGray">
+      <div class="swiper beautySwiper">
+        <div class="swiper-wrapper">
+          @for (item of dentalSuggestions; track $index) {
+          <ng-container>
+            <div class="swiper-slide">
+              <app-card
+                [title]="item.specialty"
+                [description]="item.description"
+                [name]="item.drName"
+                [promotion]="item.promotion"
+                [price]="item.price"
+                [off]="item.off"
+                [imgSergury]="item.imgSergury"
+                [doctorImg]="item.doctorImg">
+              </app-card>
+            </div>
+          </ng-container>
+          }
+        </div>
+        <!-- Add Pagination -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-pagination"></div>
+      </div>
+    </div>
+  </app-service-section>
+</section>
+
 <!---------------- start mediic center cards  --------------->
 <section
   class="grid desktop:grid-flow-col desktop:gap-10 mobile:mx-4 desktop:pt-28 px-6">
@@ -373,7 +553,7 @@
   </div>
 </div>
 <!----------- start mediic service-section  ---------------->
-<app-service-section />
+<app-service-section [title]="'Most popular specialties'" />
 
 <!------------- start mediic-appointment  ------------------>
 <section>
