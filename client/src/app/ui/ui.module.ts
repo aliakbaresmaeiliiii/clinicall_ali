@@ -43,6 +43,7 @@ import { ServicesDoctorComponent } from './services-doctor/services-doctor.compo
 import { PlaceholderComponent } from './shared-ui/components/placeholder/placeholder.component';
 import { SepereateSectionsComponent } from './shared-ui/components/sepereate-sections/sepereate-sections.component';
 import { SliderComponent } from './slider/slider.component';
+import { CardComponent } from './shared-ui/components/card/card.component';
 
 const routes: Routes = [
   {
@@ -83,7 +84,8 @@ const routes: Routes = [
     PlaceholderComponent,
     MenuComponent,
     CitiesSupportComponent,
-    SepereateSectionsComponent
+    SepereateSectionsComponent,
+    CardComponent,
   ],
   imports: [
     CommonModule,
@@ -112,7 +114,6 @@ const routes: Routes = [
     MatRadioModule,
     MatExpansionModule,
     MatDialogModule,
-
   ],
   exports: [PlaceholderComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
