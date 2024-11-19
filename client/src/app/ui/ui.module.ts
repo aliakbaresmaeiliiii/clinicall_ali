@@ -44,6 +44,8 @@ import { PlaceholderComponent } from './shared-ui/components/placeholder/placeho
 import { SepereateSectionsComponent } from './shared-ui/components/sepereate-sections/sepereate-sections.component';
 import { SliderComponent } from './slider/slider.component';
 import { CardComponent } from './shared-ui/components/card/card.component';
+import { UserReviewsOfClinicAliComponent } from './user-reviews-of-clinic-ali/user-reviews-of-clinic-ali.component';
+import { CardInfoComponent } from './shared-ui/components/card-info/card-info.component';
 
 const routes: Routes = [
   {
@@ -86,6 +88,8 @@ const routes: Routes = [
     CitiesSupportComponent,
     SepereateSectionsComponent,
     CardComponent,
+    UserReviewsOfClinicAliComponent,
+    CardInfoComponent
   ],
   imports: [
     CommonModule,

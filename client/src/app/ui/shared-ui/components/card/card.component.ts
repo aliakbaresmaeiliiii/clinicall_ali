@@ -10,7 +10,7 @@ export class CardComponent {
   description = input<string>();
   name = input<string>();
   promotion = input<string>();
-  price = input<number>();
+  price = input<number | string>();
   off = input<string>();
   imgSergury = input<string>();
   doctorImg = input<string>();
