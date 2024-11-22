@@ -24,6 +24,130 @@
       }
     </div>
   </div>
+
+  <div class="col-span-8 flex justify-center items-center">
+    <div class="menu bg-gray-200 rounded-2xl">
+      <div class="item">
+        <a class="link">
+          <span> Categories of Specializations </span>
+          <svg viewBox="0 0 360 360" xml:space="preserve">
+            <g id="SVGRepo_iconCarrier">
+              <path
+                id="XMLID_225_"
+                d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393 c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393 s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"></path>
+            </g>
+          </svg>
+        </a>
+
+        <div class="submenu grid grid-cols-8 gap-4">
+          <div class="submenu-item col-span-2 ...">
+            <div class="submenu-item grid-cols-1">
+              @for (menu of dentistryCategories; track $index) {
+              <a
+                routerLink="/services"
+                class="submenu-link"
+                (mouseover)="toggleCategory($index)"
+               >
+                <span>
+                  {{ menu.title }}
+                </span>
+                <span>
+                  <svg
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                    xml:space="preserve"
+                    width="24px"
+                    height="24px">
+                    <g id="SVGRepo_iconCarrier">
+                      <path
+                        d="M8.29 16.29a1 1 0 010-1.41L12.88 10 8.29 5.71a1 1 0 111.41-1.41l5 5a1 1 0 010 1.41l-5 5a1 1 0 01-1.41 0z" />
+                    </g>
+                  </svg>
+                </span>
+              </a>
+              }
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-4 col-span-6 p-4">
+            <ng-container *ngIf="hoveredCategoryIndex !== null">
+              <a
+                *ngFor="
+                  let treatment of dentistryCategories[hoveredCategoryIndex]
+                    .treatments
+                "
+                href="#"
+                class="text-gray-800 px-4 py-2 rounded-lg hover:text-white hover:bg-[#2563EB] transition-colors block">
+                {{ treatment }}
+              </a>
+            </ng-container>
+
+            <!-- @for (menu of dentistryCategories; track $index) { @for (item of
+            menu.treatments; track $index) { @if (hoveredCategoryIndex !==null)
+            {
+            <a
+              href="#"
+              class="text-gray-800 px-4 py-2 rounded-lg hover:text-white hover:bg-[#2563EB] transition-colors">
+              {{ item }}
+            </a>
+            } } } -->
+          </div>
+        </div>
+
+        <!-- <div class="submenu border-r-2 grid grid-cols-1">
+       
+
+            @for (item of menu.treatments; track $index) { @if (item) {
+            <div class="submenu grid-cols-5">
+              <div class="submenu-item">
+                <a href="#" class="submenu-link"> Development </a>
+              </div>
+              <div class="submenu-item">
+                <a href="#" class="submenu-link"> Design </a>
+              </div>
+              <div class="submenu-item">
+                <a href="#" class="submenu-link"> Marketing </a>
+              </div>
+              <div class="submenu-item">
+                <a href="#" class="submenu-link"> SEO </a>
+              </div>
+            </div>
+            } } 
+        </div> -->
+      </div>
+      <div class="item">
+        <a routerLink="/about-us" class="link">
+          <span> About Us </span>
+        </a>
+      </div>
+      <div class="item">
+        <a href="#" class="link">
+          <span> Our Services </span>
+          <svg viewBox="0 0 360 360" xml:space="preserve">
+            <g id="SVGRepo_iconCarrier">
+              <path
+                id="XMLID_225_"
+                d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393 c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393 s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"></path>
+            </g>
+          </svg>
+        </a>
+        <div class="submenu">
+          <div class="submenu-item">
+            <a href="#" class="submenu-link"> Development </a>
+          </div>
+          <div class="submenu-item">
+            <a href="#" class="submenu-link"> Design </a>
+          </div>
+          <div class="submenu-item">
+            <a href="#" class="submenu-link"> Marketing </a>
+          </div>
+          <div class="submenu-item">
+            <a href="#" class="submenu-link"> SEO </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="col-span-8 flex justify-center items-center">
     <div class="flex gap-2">
       @if (!userData) {
@@ -77,73 +201,6 @@
         </a> -->
     </div>
   </div>
-  <div class="col-span-8 flex justify-center items-center">
-    <div class="menu bg-gray-200 rounded-2xl">
-      <div class="item">
-        <a class="link">
-          <span> Services </span>
-          <svg viewBox="0 0 360 360" xml:space="preserve">
-            <g id="SVGRepo_iconCarrier">
-              <path
-                id="XMLID_225_"
-                d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393 c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393 s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"></path>
-            </g>
-          </svg>
-        </a>
-        <div class="submenu">
-          <div class="submenu-item">
-            <a routerLink="/services" class="submenu-link"> Our Services </a>
-          </div>
-          <div class="submenu-item">
-            <a href="#" class="submenu-link"> Design </a>
-          </div>
-          <div class="submenu-item">
-            <a href="#" class="submenu-link"> Marketing </a>
-          </div>
-          <div class="submenu-item">
-            <a href="#" class="submenu-link"> SEO </a>
-          </div>
-        </div>
-      </div>
-      <div class="item">
-        <a routerLink="/about-us" class="link">
-          <span> About Us </span>
-        </a>
-      </div>
-      <div class="item">
-        <a href="#" class="link">
-          <span> Our Services </span>
-          <svg viewBox="0 0 360 360" xml:space="preserve">
-            <g id="SVGRepo_iconCarrier">
-              <path
-                id="XMLID_225_"
-                d="M325.607,79.393c-5.857-5.857-15.355-5.858-21.213,0.001l-139.39,139.393L25.607,79.393 c-5.857-5.857-15.355-5.858-21.213,0.001c-5.858,5.858-5.858,15.355,0,21.213l150.004,150c2.813,2.813,6.628,4.393,10.606,4.393 s7.794-1.581,10.606-4.394l149.996-150C331.465,94.749,331.465,85.251,325.607,79.393z"></path>
-            </g>
-          </svg>
-        </a>
-        <div class="submenu">
-          <div class="submenu-item">
-            <a href="#" class="submenu-link"> Development </a>
-          </div>
-          <div class="submenu-item">
-            <a href="#" class="submenu-link"> Design </a>
-          </div>
-          <div class="submenu-item">
-            <a href="#" class="submenu-link"> Marketing </a>
-          </div>
-          <div class="submenu-item">
-            <a href="#" class="submenu-link"> SEO </a>
-          </div>
-        </div>
-      </div>
-      <div class="item">
-        <a routerLink="/contact-us" class="link">
-          <span> Contact Us </span>
-        </a>
-      </div>
-    </div>
-  </div>
-
   <div class="col-span-2 flex justify-center items-center gap-4">
     <button mat-icon-button matTooltip="View Detail">
       <i class="fa-solid fa-magnifying-glass text-blue-600"></i>
