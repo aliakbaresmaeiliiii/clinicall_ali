@@ -1,0 +1,37 @@
+<mat-card appearance="outlined">
+  <mat-card-header class="flex justify-center">
+    <mat-card-title class="!font-semibold">
+      {{ title() }}
+    </mat-card-title>
+    <mat-card-subtitle class="!text-sm text-center !pt-4">{{
+      subTitle()
+    }}</mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <div class="grid grid-cols-3 gap-4 text-center mt-16">
+      <div class="flex flex-col gap-6 justify-center items-center">
+        <img src="../../../assets/images/ui/icons/HowToReserve1.png" alt="" />
+        <p>1- Search and select the service.</p>
+        <p class="text-gray-400 w-80 text-sm">
+          Search for your desired service or select from the available options.
+        </p>
+      </div>
+      <div class="flex flex-col gap-6 justify-center items-center">
+        <img src="../../../assets/images/ui/icons/HowToReserve2.png" alt="" />
+        <p>2- Book and confirm your appointment.</p>
+        <p class="text-gray-400 w-80 text-sm">
+          Select and confirm your preferred date and time from the list of
+          available slots.
+        </p>
+      </div>
+      <div class="flex flex-col gap-6 justify-center items-center">
+        <img src="../../../assets/images/ui/icons/HowToReserve3.png" alt="" />
+        <p>3- Receive and complete the service.</p>
+        <p class="text-gray-400 w-80 text-sm">
+          After viewing the receipt, visit the doctor to receive your service.
+        </p>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

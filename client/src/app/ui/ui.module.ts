@@ -46,6 +46,7 @@ import { SliderComponent } from './slider/slider.component';
 import { UserReviewsOfClinicAliComponent } from './user-reviews-of-clinic-ali/user-reviews-of-clinic-ali.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
+import { StepBookAppointmentComponent } from './step-book-appointment/step-book-appointment.component';
 
 const routes: Routes = [
   {
@@ -89,7 +90,8 @@ const routes: Routes = [
     CardComponent,
     UserReviewsOfClinicAliComponent,
     CardInfoComponent,
-    HomeComponent
+    HomeComponent,
+    StepBookAppointmentComponent
   ],
   imports: [
     CommonModule,
