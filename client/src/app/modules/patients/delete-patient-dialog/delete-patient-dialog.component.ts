@@ -13,11 +13,11 @@ import { PatientDTO } from '../model/patients.model';
 import { PatientsService } from '../services/patients.service';
 
 @Component({
-  selector: 'app-delete-patient-dialog',
-
-  templateUrl: './delete-patient-dialog.component.html',
-  styleUrl: './delete-patient-dialog.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-delete-patient-dialog',
+    templateUrl: './delete-patient-dialog.component.html',
+    styleUrl: './delete-patient-dialog.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class DeletePatientDialogComponent extends BaseComponent{
   service = inject(PatientsService);

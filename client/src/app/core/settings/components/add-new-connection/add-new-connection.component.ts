@@ -4,9 +4,10 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
 
 @Component({
-  selector: 'app-add-new-connection',
-  templateUrl: './add-new-connection.component.html',
-  styleUrl: './add-new-connection.component.scss',
+    selector: 'app-add-new-connection',
+    templateUrl: './add-new-connection.component.html',
+    styleUrl: './add-new-connection.component.scss',
+    standalone: false
 })
 export class AddNewConnectionComponent extends BaseComponent {
   form = this.fb.group({

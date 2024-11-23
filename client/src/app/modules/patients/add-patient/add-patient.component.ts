@@ -11,9 +11,10 @@ import { ShareService } from '../../../shared/services/share.service';
 import { AgePipe } from '../../../shared/pipes/age.pipe';
 
 @Component({
-  selector: 'app-add-patient',
-  templateUrl: './add-patient.component.html',
-  styleUrl: './add-patient.component.scss',
+    selector: 'app-add-patient',
+    templateUrl: './add-patient.component.html',
+    styleUrl: './add-patient.component.scss',
+    standalone: false
 })
 export class AddPatientComponent extends BaseComponent implements OnInit {
   uniqueNickname = inject(UniqueNicknameValidator);

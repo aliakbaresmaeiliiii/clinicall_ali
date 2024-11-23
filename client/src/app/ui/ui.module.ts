@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireFunctionsModule } from '@angular/fire/compat/functions';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -15,7 +14,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { RouterModule, RouterOutlet, Routes } from '@angular/router';
-import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input';
 import { environment } from '../environments/environment';
 import { ButtonComponent } from '../shared/components/button/button.component';
 import { CustomCardComponent } from '../shared/components/custom-card/custom-card.component';
@@ -40,12 +38,14 @@ import { MenuComponent } from './mobile/menu/menu.component';
 import { ProfilePatientComponent } from './profile-patient/profile-patient.component';
 import { ServiceSectionComponent } from './service-section/service-section.component';
 import { ServicesDoctorComponent } from './services-doctor/services-doctor.component';
+import { CardInfoComponent } from './shared-ui/components/card-info/card-info.component';
+import { CardComponent } from './shared-ui/components/card/card.component';
 import { PlaceholderComponent } from './shared-ui/components/placeholder/placeholder.component';
 import { SepereateSectionsComponent } from './shared-ui/components/sepereate-sections/sepereate-sections.component';
 import { SliderComponent } from './slider/slider.component';
-import { CardComponent } from './shared-ui/components/card/card.component';
 import { UserReviewsOfClinicAliComponent } from './user-reviews-of-clinic-ali/user-reviews-of-clinic-ali.component';
-import { CardInfoComponent } from './shared-ui/components/card-info/card-info.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 const routes: Routes = [
   {
@@ -69,7 +69,6 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    HomeComponent,
     HeaderComponent,
     SliderComponent,
     FeatureSectionComponent,
@@ -89,14 +88,14 @@ const routes: Routes = [
     SepereateSectionsComponent,
     CardComponent,
     UserReviewsOfClinicAliComponent,
-    CardInfoComponent
+    CardInfoComponent,
+    HomeComponent
   ],
   imports: [
     CommonModule,
     RouterOutlet,
     RouterModule.forChild(routes),
     AngularFireModule.initializeApp(environment.firebaseConfig),
-
     AngularFireFunctionsModule,
     FormsModule,
     ReactiveFormsModule,
@@ -110,7 +109,6 @@ const routes: Routes = [
     MatCheckboxModule,
     MatButtonModule,
     MatCardModule,
-    NgxMatIntlTelInputComponent,
     GoogleMapComponent,
     AppScrollProgressBarComponent,
     CounterDirective,
@@ -118,6 +116,8 @@ const routes: Routes = [
     MatRadioModule,
     MatExpansionModule,
     MatDialogModule,
+    SharedModule
+
   ],
   exports: [PlaceholderComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

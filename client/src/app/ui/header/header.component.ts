@@ -7,52 +7,39 @@ import {
 } from '@angular/animations';
 import { Component, inject, output, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { LoginComponent } from '../../core/auth/components/login/login.component';
 import { Router } from '@angular/router';
-import { groupBy } from 'lodash';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
-  animations: [
-    trigger('openClose', [
-      state(
-        'open',
-        style({
-          opacity: 1,
-          transform: 'translateY(0)',
-          transition: '500ms',
-        })
-      ),
-      state(
-        'closed',
-        style({
-          opacity: 0,
-          transform: 'translateY(-100%)',
-          transition: '500ms',
-        })
-      ),
-      transition('open => closed', [animate('1s ease-in-out')]),
-      transition('closed => open', [animate('1s ease-in-out')]),
-    ]),
-    trigger('bgColorChange', [
-      state(
-        'default',
-        style({
-          backgroundColor: '#fff',
-        })
-      ),
-      state(
-        'scrolled',
-        style({
-          backgroundColor: '#002570',
-        })
-      ),
-      transition('default => scrolled', [animate('1s ease')]),
-      transition('scrolled => default', [animate('1s ease')]),
-    ]),
-  ],
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrl: './header.component.scss',
+    animations: [
+        trigger('openClose', [
+            state('open', style({
+                opacity: 1,
+                transform: 'translateY(0)',
+                transition: '500ms',
+            })),
+            state('closed', style({
+                opacity: 0,
+                transform: 'translateY(-100%)',
+                transition: '500ms',
+            })),
+            transition('open => closed', [animate('1s ease-in-out')]),
+            transition('closed => open', [animate('1s ease-in-out')]),
+        ]),
+        trigger('bgColorChange', [
+            state('default', style({
+                backgroundColor: '#fff',
+            })),
+            state('scrolled', style({
+                backgroundColor: '#002570',
+            })),
+            transition('default => scrolled', [animate('1s ease')]),
+            transition('scrolled => default', [animate('1s ease')]),
+        ]),
+    ],
+    standalone: false
 })
 export class HeaderComponent {
   navbarVisible = signal(true);

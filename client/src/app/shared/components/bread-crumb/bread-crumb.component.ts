@@ -8,11 +8,10 @@ import { BaseComponent } from '../base/base.component';
 import { filter } from 'rxjs';
 
 @Component({
-  selector: 'app-bread-crumb',
-  standalone: true,
-  imports: [CommonModule, RouterLink,MatIconModule],
-  templateUrl: './bread-crumb.component.html',
-  styleUrl: './bread-crumb.component.scss',
+    selector: 'app-bread-crumb',
+    imports: [CommonModule, RouterLink, MatIconModule],
+    templateUrl: './bread-crumb.component.html',
+    styleUrl: './bread-crumb.component.scss'
 })
 export class BreadCrumbComponent extends BaseComponent {
   breadcrumbs: Array<BreadcrumbDTO> = [];

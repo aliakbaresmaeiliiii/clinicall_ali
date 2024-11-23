@@ -15,9 +15,10 @@ import { ToastrService } from 'ngx-toastr';
 
 
 @Component({
-  selector: 'app-mediic-appointment',
-  templateUrl: './mediic-appointment.component.html',
-  styleUrl: './mediic-appointment.component.scss',
+    selector: 'app-mediic-appointment',
+    templateUrl: './mediic-appointment.component.html',
+    styleUrl: './mediic-appointment.component.scss',
+    standalone: false
 })
 export class MediicAppointmentComponent implements OnInit {
   fb = inject(FormBuilder);

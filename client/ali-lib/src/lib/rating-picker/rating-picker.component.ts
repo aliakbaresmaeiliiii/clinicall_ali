@@ -1,26 +1,24 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule } from "@angular/common";
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   HostListener,
-  Input,
   OnChanges,
-  Output,
   SimpleChanges,
-} from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+  input,
+  output,
+  signal,
+} from "@angular/core";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from "@angular/forms";
 
-export type RatingOptions = 'great' | 'good' | 'neutral' | 'bad' | null;
+export type RatingOptions = "great" | "good" | "neutral" | "bad" | null;
 
 @Component({
-  selector: 'lib-rating-picker',
-  standalone: true,
+  selector: "lib-rating-picker",
   imports: [CommonModule],
-  templateUrl: './rating-picker.component.html',
-  styleUrl: './rating-picker.component.scss',
-
+  templateUrl: "./rating-picker.component.html",
+  styleUrl: "./rating-picker.component.scss",
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -31,38 +29,36 @@ export type RatingOptions = 'great' | 'good' | 'neutral' | 'bad' | null;
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RatingPickerComponent implements OnChanges, ControlValueAccessor {
-  @Input()
-  value: RatingOptions = null;
+  value = signal<RatingOptions>(null);
 
-  @Input()
-  disabled = false;
+  disabled = signal(false);
 
-  @Output()
-  changed = new EventEmitter<RatingOptions>();
+  readonly changed = output<RatingOptions>();
   onChange: (newValue: RatingOptions) => void = () => {};
 
-  @HostListener('blur')
+  @HostListener("blur")
   onBlur() {
     this.onTouch();
   }
 
   onTouch: () => void = () => {};
 
-  constructor(private cd: ChangeDetectorRef) { }
+  constructor(private cd: ChangeDetectorRef) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['value']) {
-      this.onChange(changes['value'].currentValue);
+    if (changes["value"]) {
+      this.onChange(changes["value"].currentValue);
     }
   }
 
   setValue(value: RatingOptions) {
-    this.value = value;
-    this.onChange(this.value);
-    this.changed.emit(this.value);
+    this.value.set(value);
+    const valueValue = this.value();
+    this.onChange(valueValue);
+    this.changed.emit(valueValue);
   }
   writeValue(obj: RatingOptions): void {
-    this.value = obj;
+    this.value.set(obj);
   }
   registerOnChange(fn: any): void {
     this.onChange = fn;
@@ -71,8 +67,7 @@ export class RatingPickerComponent implements OnChanges, ControlValueAccessor {
     this.onTouch = fn;
   }
   setDisabledState?(isDisabled: boolean): void {
-    this.disabled = isDisabled;
+    this.disabled.set(isDisabled);
     this.cd.markForCheck();
   }
-
 }

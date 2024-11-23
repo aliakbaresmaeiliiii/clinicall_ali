@@ -13,10 +13,11 @@ import { Validators } from '@angular/forms';
 import { banWords } from '../../../shared/validators/ban-words.validators';
 
 @Component({
-  selector: 'app-edit-doctor',
-  templateUrl: './edit-doctor.component.html',
-  styleUrl: './edit-doctor.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-edit-doctor',
+    templateUrl: './edit-doctor.component.html',
+    styleUrl: './edit-doctor.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class EditDoctorComponent extends BaseComponent {
   genders: string[] = ['Male', 'Female'];

@@ -23,13 +23,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { NgxEditorModule } from 'ngx-editor';
-import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input';
 import { GoogleMapComponent } from '../../shared/components/google-map/google-map.component';
 import { UsersSettingsComponent } from './components/users_settings/users_settings.component';
 import { AddNewConnectionComponent } from './components/add-new-connection/add-new-connection.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { AgePipe } from '../../shared/pipes/age.pipe';
 import { UserService } from '../services/user.service';
+import { SharedModule } from '../../shared/shared.module';
 
 export const routes: Routes = [
   {
@@ -99,14 +99,13 @@ export const routes: Routes = [
     MatFormFieldModule,
     RouterLink,
     MatSelectModule,
-    NgxMatIntlTelInputComponent,
     NgxEditorModule,
     MatIconModule,
     MatCheckboxModule,
     GoogleMapComponent,
     MatDatepickerModule,
     RouterModule.forChild(routes),
-    
+    SharedModule
   ],
   exports:[],
   providers:[AgePipe,UserService]

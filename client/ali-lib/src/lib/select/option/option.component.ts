@@ -1,11 +1,10 @@
 import {
   Component,
-  EventEmitter,
   HostBinding,
   HostListener,
-  Input,
   OnInit,
-  Output,
+  input,
+  output
 } from '@angular/core';
 
 @Component({
@@ -15,21 +14,17 @@ import {
   styleUrl: './option.component.scss',
 })
 export class OptionComponent implements OnInit {
-  @Input()
-  value: string | null = null;
-  @Input()
-  disableReason = '';
+  readonly value = input<string | null>(null);
+  readonly disableReason = input('');
 
-  @Input()
   @HostBinding('class.disabled')
-  disabled = false;
+readonly disabled = input(false);
 
-  @Output()
-  selected = new EventEmitter<OptionComponent>();
+  readonly selected = output<OptionComponent>();
 
   @HostListener('click')
   protected select() {
-    if (!this.disabled) {
+    if (!this.disabled()) {
       this.highlightAsSelected();
       this.selected.emit(this);
     }

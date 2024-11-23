@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, inject, Input, ViewChild } from '@angular/core';
+import { Component, inject, input, viewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -14,9 +14,10 @@ import { PatientDTO } from './model/patients.model';
 import { PatientsService } from './services/patients.service';
 
 @Component({
-  selector: 'app-patients',
-  templateUrl: './patients.component.html',
-  styleUrl: './patients.component.scss',
+    selector: 'app-patients',
+    templateUrl: './patients.component.html',
+    styleUrl: './patients.component.scss',
+    standalone: false
 })
 export class PatientsComponent extends BaseComponent {
   service = inject(PatientsService);
@@ -39,9 +40,9 @@ export class PatientsComponent extends BaseComponent {
     'action',
   ];
   dataSource = new MatTableDataSource<PatientDTO>();
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  @Input() title!: string;
+  readonly paginator = viewChild.required(MatPaginator);
+  readonly sort = viewChild.required(MatSort);
+  readonly title = input.required<string>();
   selection = new SelectionModel<any>(true, []);
   imgPatient: any;
   imgTest: any;
@@ -52,8 +53,8 @@ export class PatientsComponent extends BaseComponent {
     this.getData();
   }
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator();
+    this.dataSource.sort = this.sort();
   }
   getData() {
     debugger;
@@ -66,8 +67,8 @@ export class PatientsComponent extends BaseComponent {
         return patient;
       });
       this.dataSource = new MatTableDataSource(newData);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator();
+      this.dataSource.sort = this.sort();
     });
   }
 

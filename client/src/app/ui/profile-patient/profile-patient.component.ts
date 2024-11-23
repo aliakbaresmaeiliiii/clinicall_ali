@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-profile-patient',
-  standalone: true,
-  imports: [],
-  templateUrl: './profile-patient.component.html',
-  styleUrl: './profile-patient.component.scss'
+    selector: 'app-profile-patient',
+    imports: [],
+    templateUrl: './profile-patient.component.html',
+    styleUrl: './profile-patient.component.scss'
 })
 export class ProfilePatientComponent implements OnInit{
   isHovered: boolean = false;

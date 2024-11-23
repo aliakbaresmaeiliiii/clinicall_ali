@@ -1,16 +1,16 @@
-import { Directive, ElementRef, Input, Renderer2 } from "@angular/core";
+import { Directive, ElementRef, Renderer2, input } from "@angular/core";
 
 @Directive({
   selector: "[appNumberOnly]",
   standalone: true,
 })
 export class NumberOnlyDirective {
-  @Input() disabledNumberOnly!: boolean;
+  readonly disabledNumberOnly = input.required<boolean>();
 
   constructor(private _elRef: ElementRef, private _renderer: Renderer2) {}
 
   ngOnInit() {
-    if (!this.disabledNumberOnly) {
+    if (!this.disabledNumberOnly()) {
       this._renderer.setAttribute(
         this._elRef.nativeElement,
         "onkeypress",

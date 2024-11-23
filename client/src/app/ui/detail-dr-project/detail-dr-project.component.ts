@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-detail-dr-project',
-  templateUrl: './detail-dr-project.component.html',
-  styleUrl: './detail-dr-project.component.scss'
+    selector: 'app-detail-dr-project',
+    templateUrl: './detail-dr-project.component.html',
+    styleUrl: './detail-dr-project.component.scss',
+    standalone: false
 })
 export class DetailDrProjectComponent {
 

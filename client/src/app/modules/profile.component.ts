@@ -1,11 +1,12 @@
 import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-modules',
-  template: ` 
+    selector: 'app-modules',
+    template: ` 
     <router-outlet />
     `,
-  styles: ``,
+    styles: ``,
+    standalone: false
 })
 export class ModulesComponent implements AfterViewInit {
   constructor(private cdr: ChangeDetectorRef) { }

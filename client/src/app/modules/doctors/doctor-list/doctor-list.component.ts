@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, input, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,17 +14,18 @@ import { Customers } from '../../users/models/customers';
 import { CustomersService } from '../../users/services/customers.service';
 
 @Component({
-  selector: 'app-doctor-list',
-  templateUrl: './doctor-list.component.html',
-  styleUrl: './doctor-list.component.scss',
+    selector: 'app-doctor-list',
+    templateUrl: './doctor-list.component.html',
+    styleUrl: './doctor-list.component.scss',
+    standalone: false
 })
 export class DoctorListComponent {
   customers: Customers[] = [];
   displayedColumns: string[] = ['position', 'doctorName', 'status'];
   dataSource = new MatTableDataSource();
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  @Input() title!: string;
+  readonly paginator = viewChild.required(MatPaginator);
+  readonly sort = viewChild.required(MatSort);
+  readonly title = input.required<string>();
   constructor(private service: CustomersService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
@@ -32,8 +33,8 @@ export class DoctorListComponent {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator();
+    this.dataSource.sort = this.sort();
   }
 
   /**

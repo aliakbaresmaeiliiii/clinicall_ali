@@ -1,12 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 @Component({
-  selector: 'app-custom-card',
-  standalone: true,
-  imports: [],
-  templateUrl: './custom-card.component.html',
-  styleUrl: './custom-card.component.scss'
+    selector: 'app-custom-card',
+    imports: [],
+    templateUrl: './custom-card.component.html',
+    styleUrl: './custom-card.component.scss'
 })
 export class CustomCardComponent {
-  @Input() content: string = 'HELLO';
+  readonly content = input<string>('HELLO');
 }

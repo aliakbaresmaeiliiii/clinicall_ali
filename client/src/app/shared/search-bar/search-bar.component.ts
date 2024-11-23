@@ -5,41 +5,34 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, viewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, map, startWith } from 'rxjs';
 
 @Component({
-  selector: 'app-search-bar',
-  templateUrl: './search-bar.component.html',
-  styleUrl: './search-bar.component.scss',
-
-  animations: [
-    trigger('showHide', [
-      state(
-        'show',
-        style({
-          width: '300px',
-        })
-      ),
-      state(
-        'hide',
-        style({
-          width: '0px',
-        })
-      ),
-      transition('show => hide', [animate('0.2s')]),
-      transition('hide => show', [animate('0.2s')]),
-    ]),
-  ],
+    selector: 'app-search-bar',
+    templateUrl: './search-bar.component.html',
+    styleUrl: './search-bar.component.scss',
+    animations: [
+        trigger('showHide', [
+            state('show', style({
+                width: '300px',
+            })),
+            state('hide', style({
+                width: '0px',
+            })),
+            transition('show => hide', [animate('0.2s')]),
+            transition('hide => show', [animate('0.2s')]),
+        ]),
+    ],
+    standalone: false
 })
 export class SearchBarComponent {
   show: boolean;
   searchControl: FormControl;
   options: string[];
   filteredOptions!: Observable<string[]>;
-  @ViewChild('searchbar')
-  searchbar!: ElementRef;
+  readonly searchbar = viewChild.required<ElementRef>('searchbar');
   searchText = '';
   toggleSearch: boolean = false;
 
@@ -73,7 +66,7 @@ export class SearchBarComponent {
   }
   openSearch() {
     this.toggleSearch = true;
-    this.searchbar.nativeElement.focus();
+    this.searchbar().nativeElement.focus();
   }
   clear() {
     this.searchControl.setValue('');

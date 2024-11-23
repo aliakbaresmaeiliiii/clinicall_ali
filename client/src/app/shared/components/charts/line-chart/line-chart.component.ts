@@ -1,17 +1,16 @@
-import { Component, Input, ViewChild } from '@angular/core';
+import { Component, Input, viewChild } from '@angular/core';
 
 import { ChartComponent, NgApexchartsModule } from 'ng-apexcharts';
 import { ChartOptions } from '../../../models/chart-option';
 
 @Component({
-  selector: 'app-line-chart',
-  standalone: true,
-  imports: [NgApexchartsModule],
-  templateUrl: './line-chart.component.html',
-  styleUrl: './line-chart.component.scss',
+    selector: 'app-line-chart',
+    imports: [NgApexchartsModule],
+    templateUrl: './line-chart.component.html',
+    styleUrl: './line-chart.component.scss'
 })
 export class LineChartComponent {
-  @ViewChild('chart') chart!: ChartComponent;
+  readonly chart = viewChild.required<ChartComponent>('chart');
   public chartOptions: Partial<ChartOptions>;
  
 

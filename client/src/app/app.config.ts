@@ -18,6 +18,7 @@ import { provideToastr } from 'ngx-toastr';
 import { routes } from './app.routes';
 import { AuthInterceptor } from './core/interceptors/auth-interceptor';
 import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideNgProgressOptions } from 'ngx-progressbar';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,6 +28,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     provideAnimations(),
     provideToastr(),
+    provideNgProgressOptions({ spinner: false, }),
     importProvidersFrom(MatSnackBarModule),
     provideHttpClient(withFetch(), withInterceptorsFromDi()),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

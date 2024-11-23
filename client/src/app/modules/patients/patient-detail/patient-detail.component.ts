@@ -14,10 +14,11 @@ import { PatientsService } from '../services/patients.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
-  selector: 'app-patient-detail',
-  templateUrl: './patient-detail.component.html',
-  styleUrl: './patient-detail.component.scss',
-  changeDetection: ChangeDetectionStrategy.Default,
+    selector: 'app-patient-detail',
+    templateUrl: './patient-detail.component.html',
+    styleUrl: './patient-detail.component.scss',
+    changeDetection: ChangeDetectionStrategy.Default,
+    standalone: false
 })
 export class PatientDetailComponent extends BaseComponent implements OnInit {
   service = inject(PatientsService);

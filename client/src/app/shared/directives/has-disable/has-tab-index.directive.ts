@@ -1,4 +1,4 @@
-import { Directive, HostBinding, Input } from '@angular/core';
+import { Directive, HostBinding, Input, input } from '@angular/core';
 import { toNumberProperty } from '../../utils/type-coercion';
 
 type TabIndexInput = number | string;
@@ -8,8 +8,7 @@ type TabIndexInput = number | string;
   standalone: true,
 })
 export class HasTabIndexDirective {
-  @Input()
-  pauseFocusing = false;
+  readonly pauseFocusing = input(false);
 
   @Input()
   @HostBinding('attr.tabindex')
@@ -17,7 +16,7 @@ export class HasTabIndexDirective {
     this.#tabIndex = toNumberProperty(value);
   }
   get tabIndex() {
-    return this.pauseFocusing ? -1 : this.#tabIndex;
+    return this.pauseFocusing() ? -1 : this.#tabIndex;
   }
   #tabIndex: number = 0;
 }

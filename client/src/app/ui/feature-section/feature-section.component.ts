@@ -4,9 +4,10 @@ import { interval, takeWhile } from 'rxjs';
 import Swiper from 'swiper';
 
 @Component({
-  selector: 'app-feature-section',
-  templateUrl: './feature-section.component.html',
-  styleUrl: './feature-section.component.scss',
+    selector: 'app-feature-section',
+    templateUrl: './feature-section.component.html',
+    styleUrl: './feature-section.component.scss',
+    standalone: false
 })
 export class FeatureSectionComponent implements OnInit {
   counter: number = 0;

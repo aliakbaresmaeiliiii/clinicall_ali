@@ -90,7 +90,7 @@
           appearance="outline"
           class="w-full">
           <mat-label>Mobile</mat-label>
-          <ngx-mat-intl-tel-input
+          <!-- <ngx-mat-intl-tel-input
             [preferredCountries]="['my']"
             [enablePlaceholder]="true"
             placeholder="Write your phone number..."
@@ -99,7 +99,7 @@
             [required]="true"
             formControlName="mobile"
             (cdkAutofill)="onAutofill($event)"
-            [dir]="textDirection"></ngx-mat-intl-tel-input>
+            [dir]="textDirection"></ngx-mat-intl-tel-input> -->
 
           <!-- Error handling -->
           <mat-error
@@ -299,7 +299,7 @@
       </div>
 
       <div class="desktop:grid grid-cols-2 gap-3 mb-2 border-dashed">
-        <app-img-uploader></app-img-uploader>
+        <app-img-uploader/>
       </div>
       <div class="desktop:flex desktop:justify-end w-full gap-3">
         <!-- *****CancelBTN***** -->

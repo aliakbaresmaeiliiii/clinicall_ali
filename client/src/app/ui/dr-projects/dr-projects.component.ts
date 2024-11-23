@@ -3,9 +3,10 @@ import Swiper from 'swiper';
 import AOS from 'aos';
 
 @Component({
-  selector: 'app-dr-projects',
-  templateUrl: './dr-projects.component.html',
-  styleUrl: './dr-projects.component.scss',
+    selector: 'app-dr-projects',
+    templateUrl: './dr-projects.component.html',
+    styleUrl: './dr-projects.component.scss',
+    standalone: false
 })
 export class DrProjectsComponent {
   brands: any[] = [

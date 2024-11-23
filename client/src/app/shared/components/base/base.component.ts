@@ -14,8 +14,9 @@ import { AuthService } from '../../../core/services/auth.service';
 import { UserService } from '../../../core/services/user.service';
 
 @Component({
-  template: '',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    template: '',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export abstract class BaseComponent {
   router = inject(Router);

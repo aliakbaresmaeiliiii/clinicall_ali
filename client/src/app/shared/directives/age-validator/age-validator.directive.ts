@@ -1,4 +1,4 @@
-import { Directive, inject, Input, OnInit } from '@angular/core';
+import { Directive, inject, OnInit, input } from '@angular/core';
 import { AbstractControl, FormGroup } from '@angular/forms';
 import { AgePipe } from '../../pipes/age.pipe';
 
@@ -8,15 +8,15 @@ import { AgePipe } from '../../pipes/age.pipe';
 })
 export class AgeValidatorDirective implements OnInit {
   // @Input('appAgeValidator') formGroup!: FormGroup;
-  @Input() formGroup!: FormGroup;  
-  @Input() dateOfBirthControl!: string;
-  @Input() ageControl!: string;
+  readonly formGroup = input.required<FormGroup>();  
+  readonly dateOfBirthControl = input.required<string>();
+  readonly ageControl = input.required<string>();
 
   agePipe = inject(AgePipe);
 
   ngOnInit(): void {
-    const dateOfBirth: AbstractControl = this.formGroup.controls[this.dateOfBirthControl];
-    const age: AbstractControl = this.formGroup.controls[this.ageControl];
+    const dateOfBirth: AbstractControl = this.formGroup().controls[this.dateOfBirthControl()];
+    const age: AbstractControl = this.formGroup().controls[this.ageControl()];
     dateOfBirth.valueChanges.subscribe(date => {
       if (date) {
         const calculatedAge = this.agePipe.transform(date);

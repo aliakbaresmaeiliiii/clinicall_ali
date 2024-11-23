@@ -7,7 +7,7 @@ import {
   signal,
   TemplateRef,
   TransferState,
-  ViewChild
+  viewChild
 } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
@@ -26,9 +26,10 @@ import { PrescriptionMedicine } from './models/prescribe-medication';
 import { PrescribeMedicationService } from './services/prescribe-medication.service';
 
 @Component({
-  selector: 'app-prescribe-medication',
-  templateUrl: './prescribe-medication.component.html',
-  styleUrl: './prescribe-medication.component.scss',
+    selector: 'app-prescribe-medication',
+    templateUrl: './prescribe-medication.component.html',
+    styleUrl: './prescribe-medication.component.scss',
+    standalone: false
 })
 export class PrescribeMedicationComponent
   extends BaseComponent
@@ -51,8 +52,8 @@ export class PrescribeMedicationComponent
   sugarLevels: string[] = ['Normal', 'Prediabetes', 'Diabetes'];
   patientId!: number;
   #route = inject(ActivatedRoute);
-  @ViewChild('tabGroup') tabGroup!: MatTabGroup;
-  @ViewChild('templatefour', { static: true }) templatefour!: TemplateRef<any>;
+  readonly tabGroup = viewChild.required<MatTabGroup>('tabGroup');
+  readonly templatefour = viewChild.required<TemplateRef<any>>('templatefour');
   tabs: {
     id: number;
     title: string;

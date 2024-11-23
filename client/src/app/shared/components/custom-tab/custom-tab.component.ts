@@ -1,25 +1,22 @@
-import { AsyncPipe, CommonModule, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
-  Input,
-  Output,
   TemplateRef,
   input,
+  output
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 
 @Component({
-  selector: 'generic-tab',
-  standalone: true,
-  imports: [MatTabsModule, NgTemplateOutlet, CommonModule, MatButtonModule],
-  providers: [AsyncPipe],
-  templateUrl: './custom-tab.component.html',
-  styleUrl: './custom-tab.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'generic-tab',
+    imports: [MatTabsModule, CommonModule, MatButtonModule],
+    providers: [AsyncPipe],
+    templateUrl: './custom-tab.component.html',
+    styleUrl: './custom-tab.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CustomTabComponent implements AfterViewInit {
   tabs = input.required<
@@ -32,10 +29,10 @@ export class CustomTabComponent implements AfterViewInit {
     }[]
   >();
 
-  @Output() selectedIndexChange = new EventEmitter<number>();
+  readonly selectedIndexChange = output<number>();
   selectedTemplate!: TemplateRef<any>;
   context: any;
-  @Input() selectedIndex = 0;
+  readonly selectedIndex = input(0);
 
   constructor() {}
 

@@ -1,16 +1,15 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, viewChild } from '@angular/core';
 import { ChartComponent, NgApexchartsModule } from 'ng-apexcharts';
 import { ChartOptionsPieDount } from '../../../models/chart-option';
 
 @Component({
-  selector: 'app-pie-dount-chart',
-  standalone: true,
-  imports: [NgApexchartsModule],
-  templateUrl: './pie-dount-chart.component.html',
-  styleUrl: './pie-dount-chart.component.scss',
+    selector: 'app-pie-dount-chart',
+    imports: [NgApexchartsModule],
+    templateUrl: './pie-dount-chart.component.html',
+    styleUrl: './pie-dount-chart.component.scss'
 })
 export class PieDountChartComponent {
-  @ViewChild('chart') chart!: ChartComponent;
+  readonly chart = viewChild.required<ChartComponent>('chart');
   public chartOptions: Partial<ChartOptionsPieDount>;
 
   constructor() {

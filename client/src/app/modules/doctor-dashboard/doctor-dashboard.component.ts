@@ -9,19 +9,19 @@ import { TodoListComponent } from '../todo-list/todo-list.component';
 import { DoctorsModule } from '../doctors/doctors.module';
 
 @Component({
-  selector: 'app-doctor-dashboard',
-  standalone: true,
-  imports: [
-    MatCardModule,
-    MatGridListModule,
-    LineChartComponent,
-    PieDountChartComponent,
-    PatientsModule,
-    PatientsGroupComponent,
-    TodoListComponent,
-    DoctorsModule
-  ],
-  templateUrl: './doctor-dashboard.component.html',
-  styleUrl: './doctor-dashboard.component.scss',
+    selector: 'app-doctor-dashboard',
+    imports: [
+        MatCardModule,
+        MatGridListModule,
+        LineChartComponent,
+        PieDountChartComponent,
+        PatientsModule,
+        PatientsGroupComponent,
+        TodoListComponent,
+        DoctorsModule,
+        
+    ],
+    templateUrl: './doctor-dashboard.component.html',
+    styleUrl: './doctor-dashboard.component.scss'
 })
 export class DoctorDashboardComponent {}

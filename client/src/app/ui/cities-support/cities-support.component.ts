@@ -2,15 +2,16 @@ import {
   Component,
   inject,
   TemplateRef,
-  ViewChild,
   ViewContainerRef,
+  viewChild
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-cities-support',
-  templateUrl: './cities-support.component.html',
-  styleUrl: './cities-support.component.scss',
+    selector: 'app-cities-support',
+    templateUrl: './cities-support.component.html',
+    styleUrl: './cities-support.component.scss',
+    standalone: false
 })
 export class CitiesSupportComponent {
   dialog = inject(MatDialog);
@@ -70,8 +71,7 @@ export class CitiesSupportComponent {
     { id: 50, specialty: 'Microsurgery' },
   ];
 
-  @ViewChild('clinicTemplate', { static: false })
-  clinicTemplate!: TemplateRef<any>;
+  readonly clinicTemplate = viewChild.required<TemplateRef<any>>('clinicTemplate');
 
   citiesInMalaysia = [
     {
@@ -134,7 +134,7 @@ export class CitiesSupportComponent {
     city: string
   ) {
     this.title = city;
-    const dialogRef = this.dialog.open(this.clinicTemplate, {
+    const dialogRef = this.dialog.open(this.clinicTemplate(), {
       enterAnimationDuration,
       exitAnimationDuration,
       width: '500px',

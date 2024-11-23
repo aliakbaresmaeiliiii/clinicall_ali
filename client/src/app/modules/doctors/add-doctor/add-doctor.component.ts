@@ -21,9 +21,10 @@ import { AgePipe } from '../../../shared/pipes/age.pipe';
 import { ImgUploaderComponent } from '../../../shared/components/img-uploader/img-uploader.component';
 
 @Component({
-  selector: 'app-add-doctor',
-  templateUrl: './add-doctor.component.html',
-  styleUrl: './add-doctor.component.scss',
+    selector: 'app-add-doctor',
+    templateUrl: './add-doctor.component.html',
+    styleUrl: './add-doctor.component.scss',
+    standalone: false
 })
 export class AddDoctorComponent extends BaseComponent implements AfterViewInit {
   uniqueNickname = inject(UniqueNicknameValidator);

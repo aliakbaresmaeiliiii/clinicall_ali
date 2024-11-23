@@ -3,9 +3,10 @@ import { BaseComponent } from '../../../../shared/components/base/base.component
 import { routes } from '../../settings.module';
 
 @Component({
-  selector: 'app-users_settings',
-  templateUrl: './users_settings.component.html',
-  styleUrl: './users_settings.component.scss',
+    selector: 'app-users_settings',
+    templateUrl: './users_settings.component.html',
+    styleUrl: './users_settings.component.scss',
+    standalone: false
 })
 export class UsersSettingsComponent extends BaseComponent implements OnInit {
   temp: any;

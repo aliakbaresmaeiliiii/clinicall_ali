@@ -1,4 +1,4 @@
-import { Component, inject, Input, ViewChild } from '@angular/core';
+import { Component, inject, input, viewChild } from '@angular/core';
 import { DoctorsService } from './doctors.service';
 import { DoctorsDTO } from './models/doctors';
 import { MatTableDataSource } from '@angular/material/table';
@@ -12,9 +12,10 @@ import { EditDoctorComponent } from './edit-doctor/edit-doctor.component';
 import { PermissionService } from '../../core/services/permission.service';
 
 @Component({
-  selector: 'app-doctors',
-  templateUrl: './doctors.component.html',
-  styleUrl: './doctors.component.scss',
+    selector: 'app-doctors',
+    templateUrl: './doctors.component.html',
+    styleUrl: './doctors.component.scss',
+    standalone: false
 })
 export class DoctorsComponent extends BaseComponent {
   service = inject(DoctorsService);
@@ -36,9 +37,9 @@ export class DoctorsComponent extends BaseComponent {
     'action',
   ];
   dataSource = new MatTableDataSource<DoctorsDTO>();
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  @Input() title!: string;
+  readonly paginator = viewChild.required(MatPaginator);
+  readonly sort = viewChild.required(MatSort);
+  readonly title = input.required<string>();
   selection = new SelectionModel<any>(true, []);
   imgPatient: any;
   imgTest: any;
@@ -68,8 +69,8 @@ export class DoctorsComponent extends BaseComponent {
     // }
   }
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator();
+    this.dataSource.sort = this.sort();
   }
   getData() {
     this.service.getDoctors().subscribe((response: any) => {
@@ -81,8 +82,8 @@ export class DoctorsComponent extends BaseComponent {
         return doctor;
       });
       this.dataSource = new MatTableDataSource(newData);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
+      this.dataSource.paginator = this.paginator();
+      this.dataSource.sort = this.sort();
     });
   }
 

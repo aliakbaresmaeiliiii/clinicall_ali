@@ -26,17 +26,18 @@ const style2 = style({
 });
 
 @Component({
-  selector: 'app-slider',
-  templateUrl: './slider.component.html',
-  styleUrl: './slider.component.scss',
-  animations: [
-    trigger('foobar', [
-      state('show', style1),
-      state('hide', style2),
-      transition('show => hide', animate('1.2s ease-out')),
-      transition('hide => show', animate('1.2s ease-in')),
-    ]),
-  ],
+    selector: 'app-slider',
+    templateUrl: './slider.component.html',
+    styleUrl: './slider.component.scss',
+    animations: [
+        trigger('foobar', [
+            state('show', style1),
+            state('hide', style2),
+            transition('show => hide', animate('1.2s ease-out')),
+            transition('hide => show', animate('1.2s ease-in')),
+        ]),
+    ],
+    standalone: false
 })
 export class SliderComponent implements OnInit {
   state = 'hide';

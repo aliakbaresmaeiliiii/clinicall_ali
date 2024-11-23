@@ -5,21 +5,21 @@ import {
   inject,
   OnInit,
   Renderer2,
-  ViewChild,
+  viewChild
 } from '@angular/core';
 import Swiper from 'swiper';
 
 @Component({
-  selector: 'app-best-doctors',
-
-  templateUrl: './best-doctors.component.html',
-  styleUrl: './best-doctors.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-best-doctors',
+    templateUrl: './best-doctors.component.html',
+    styleUrl: './best-doctors.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class BestDoctorsComponent implements OnInit {
   renderer = inject(Renderer2);
   // socialIcon = viewChild<ElementRef>('socialIcon');
-  @ViewChild('socialIcon') socialIcon!: ElementRef;
+  readonly socialIcon = viewChild.required<ElementRef>('socialIcon');
 
   images = [
     { src: '../../../assets/images/ui/doctors/team2.jpg' },
@@ -58,14 +58,16 @@ export class BestDoctorsComponent implements OnInit {
   }
 
   showIcon(event: MouseEvent) {
-    if (this.socialIcon) {
-      this.renderer.setStyle(this.socialIcon.nativeElement, 'opacity', '1');
+    const socialIcon = this.socialIcon();
+    if (socialIcon) {
+      this.renderer.setStyle(socialIcon.nativeElement, 'opacity', '1');
     }
   }
 
   hideIcon(event: MouseEvent) {
-    if (this.socialIcon) {
-      this.renderer.setStyle(this.socialIcon.nativeElement, 'opacity', '0');
+    const socialIcon = this.socialIcon();
+    if (socialIcon) {
+      this.renderer.setStyle(socialIcon.nativeElement, 'opacity', '0');
     }
   }
 }

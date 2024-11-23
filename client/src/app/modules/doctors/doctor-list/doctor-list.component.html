@@ -6,7 +6,7 @@
     <button class="add-user-info" (click)="addUserInfo()">+</button>
   </div> -->
 
-<h2>{{ title }}</h2>
+<h2>{{ title() }}</h2>
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
   <!-- Position Column -->
   <ng-container matColumnDef="position">

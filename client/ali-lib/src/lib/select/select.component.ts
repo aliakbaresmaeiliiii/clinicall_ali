@@ -8,13 +8,12 @@ import {
 import {
   AfterContentInit,
   Component,
-  ContentChildren,
-  EventEmitter,
   HostListener,
   Input,
   OnInit,
-  Output,
-  QueryList,
+  input,
+  output,
+  contentChildren
 } from '@angular/core';
 import { OptionComponent } from './option/option.component';
 import { SelectionModel } from '@angular/cdk/collections';
@@ -36,8 +35,7 @@ import { SelectionModel } from '@angular/cdk/collections';
   ],
 })
 export class SelectComponent implements AfterContentInit {
-  @Input()
-  label = '';
+  readonly label = input('');
 
   @Input()
   set value(value: string | null) {
@@ -52,10 +50,8 @@ export class SelectComponent implements AfterContentInit {
 
   private selectionModel = new SelectionModel<string>();
   
-  @Output()
-  readonly opened = new EventEmitter<void>();
-  @Output()
-  readonly closed = new EventEmitter<void>();
+  readonly opened = output<void>();
+  readonly closed = output<void>();
 
   @HostListener('click')
   open() {
@@ -66,8 +62,7 @@ export class SelectComponent implements AfterContentInit {
     this.isOpen = false;
   }
 
-  @ContentChildren(OptionComponent, { descendants: true })
-  options!: QueryList<OptionComponent>;
+  readonly options = contentChildren(OptionComponent, { descendants: true });
   isOpen = false;
 
   constructor() {}
@@ -90,6 +85,7 @@ export class SelectComponent implements AfterContentInit {
   }
 
   private findOptionsByValue(value: string | null) {
-    return this.options && this.options.find((o) => o.value === value);
+    const options = this.options();
+    return options && options.find((o) => o.value() === value);
   }
 }

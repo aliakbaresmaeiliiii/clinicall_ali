@@ -2,38 +2,33 @@ import { NgIf } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
-  Input,
-  Output,
+  input,
+  output
 } from '@angular/core';
 import { HasTabIndexDirective } from '../../directives/has-disable/has-tab-index.directive';
 
 @Component({
-  selector: 'app-chip',
-  standalone: true,
-  imports: [NgIf],
-  templateUrl: './chip.component.html',
-  styleUrl: './chip.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  hostDirectives: [
-    {
-      directive: HasTabIndexDirective,
-      inputs: ['tabIndex', 'pauseFocusing'],
-    },
-  ],
+    selector: 'app-chip',
+    imports: [NgIf],
+    templateUrl: './chip.component.html',
+    styleUrl: './chip.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    hostDirectives: [
+        {
+            directive: HasTabIndexDirective,
+            inputs: ['tabIndex', 'pauseFocusing'],
+        },
+    ]
 })
 export class ChipComponent<T> {
-  @Input()
-  removable = false;
+  readonly removable = input(false);
 
-  @Input()
-  value: T | null = null;
+  readonly value = input<T | null>(null);
 
-  @Output()
-  removed = new EventEmitter<ChipComponent<T>>();
+  readonly removed = output<ChipComponent<T>>();
 
   onClick() {
-    if (this.removable) {
+    if (this.removable()) {
       this.removed.emit(this);
     }
   }

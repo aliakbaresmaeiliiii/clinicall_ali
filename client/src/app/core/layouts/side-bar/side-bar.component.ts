@@ -7,7 +7,7 @@ import {
 } from '@angular/animations';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, ViewChild, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject, viewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -31,38 +31,35 @@ import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
 import { Menu } from '../types/navItem';
 @Component({
-  selector: 'side-bar',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatMenuModule,
-    RouterLink,
-    MatIconModule,
-    MatToolbarModule,
-    MatFormFieldModule,
-    MatSidenavModule,
-    MatListModule,
-    RouterOutlet,
-    MatButtonModule,
-    MatCardModule,
-    HeaderComponent,
-    FooterComponent,
-    AsyncPipe,
-    RouterLinkActive,
-    MatTooltipModule,
-    MatExpansionModule,
-    LoaderComponent,
-    BreadCrumbComponent,
-  ],
-  templateUrl: './side-bar.component.html',
-  styleUrl: './side-bar.component.scss',
-  animations: [
-    trigger('iconRotate', [
-      state('collapsed', style({ transform: 'rotate(0deg)' })),
-      state('expanded', style({ transform: 'rotate(90deg)' })),
-      transition('collapsed <=> expanded', animate('50ms ease-in-out')),
-    ]),
-  ],
+    selector: 'side-bar',
+    imports: [
+        CommonModule,
+        MatMenuModule,
+        RouterLink,
+        MatIconModule,
+        MatToolbarModule,
+        MatFormFieldModule,
+        MatSidenavModule,
+        MatListModule,
+        MatButtonModule,
+        MatCardModule,
+        HeaderComponent,
+        AsyncPipe,
+        RouterLinkActive,
+        MatTooltipModule,
+        MatExpansionModule,
+        LoaderComponent,
+        BreadCrumbComponent,
+    ],
+    templateUrl: './side-bar.component.html',
+    styleUrl: './side-bar.component.scss',
+    animations: [
+        trigger('iconRotate', [
+            state('collapsed', style({ transform: 'rotate(0deg)' })),
+            state('expanded', style({ transform: 'rotate(90deg)' })),
+            transition('collapsed <=> expanded', animate('50ms ease-in-out')),
+        ]),
+    ]
 })
 export class SideBarComponent
   extends BaseComponent
@@ -70,8 +67,7 @@ export class SideBarComponent
 {
   permissionService = inject(PermissionService);
   hasAccess: boolean = false;
-  @ViewChild(MatSidenav)
-  sidenav!: MatSidenav;
+  readonly sidenav = viewChild.required(MatSidenav);
   isMobile = true;
   isCollapsed = true;
   groupedData: any = {};

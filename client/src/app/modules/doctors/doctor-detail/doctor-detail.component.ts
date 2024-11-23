@@ -6,9 +6,10 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { environment } from '../../../environments/environment';
 
 @Component({
-  selector: 'app-doctor-detail',
-  templateUrl: './doctor-detail.component.html',
-  styleUrl: './doctor-detail.component.scss',
+    selector: 'app-doctor-detail',
+    templateUrl: './doctor-detail.component.html',
+    styleUrl: './doctor-detail.component.scss',
+    standalone: false
 })
 export class DoctorDetailComponent extends BaseComponent {
   isMobile = false;
