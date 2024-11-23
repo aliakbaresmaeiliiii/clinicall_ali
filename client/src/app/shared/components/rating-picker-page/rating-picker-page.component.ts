@@ -1,12 +1,10 @@
-import { CommonModule } from '@angular/common';
 import {
-  CUSTOM_ELEMENTS_SCHEMA,
   ChangeDetectionStrategy,
   Component,
+  inject
 } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { EditableContentValueAccessor } from '../../directives/value-accessor/value.directive';
-import { RatingOptions, RatingPickerComponent } from 'ali';
+import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RatingOptions } from 'ali';
 
 interface Rating {
   reviewText: string;
@@ -14,28 +12,22 @@ interface Rating {
 }
 @Component({
   selector: 'app-rating-picker-page',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    EditableContentValueAccessor,
-    RatingPickerComponent,
-  ],
   templateUrl: './rating-picker-page.component.html',
   styleUrl: './rating-picker-page.component.scss',
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  standalone:true,
+  imports:[FormsModule,ReactiveFormsModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RatingPickerPageComponent {
+  fb = inject(FormBuilder);
+
+
   form = this.fb.group<Rating>({
     reviewText: '',
-    reviewRating: 'great'
-  })
+    reviewRating: 'great',
+  });
 
-  constructor(private fb: FormBuilder) { }
-
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onSubmit() {
     this.form.reset();

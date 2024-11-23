@@ -67,12 +67,12 @@
         appearance="outline"
         class="w-full">
         <mat-label>Mobile</mat-label>
-        <ngx-mat-intl-tel-input
+        <!-- <ngx-mat-intl-tel-input
           [preferredCountries]="['my']"
           [enablePlaceholder]="true"
           [enableSearch]="true"
           name="mobile"
-          formControlName="mobile"></ngx-mat-intl-tel-input>
+          formControlName="mobile"></ngx-mat-intl-tel-input> -->
         <!-- Error handling -->
         <mat-error
           *ngIf="mobile?.hasError('mobile') && !mobile?.hasError('required')"

@@ -1,13 +1,13 @@
-import { Component, Inject } from '@angular/core';
+import { Component, inject, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { banWords } from '../../../shared/validators/ban-words.validators';
 
 @Component({
   selector: 'app-dialog-calendar',
-  standalone: false,
   templateUrl: './dialog-calendar.component.html',
   styleUrl: './dialog-calendar.component.scss',
+  standalone: false,
 })
 export class DialogCalendarComponent {
   title: string = 'Create Appointment';
@@ -17,14 +17,15 @@ export class DialogCalendarComponent {
   form!: FormGroup;
   colors: string[] = ['#FF0000', '#00FF00', '#0000FF'];
 
+  fb = inject(FormBuilder);
+
   constructor(
-    private fb: FormBuilder,
     public dialogRef: MatDialogRef<DialogCalendarComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.date = data.data.date;
     setTimeout(() => {
-      this.title = 'testing change detection'
+      this.title = 'testing change detection';
     }, 2000);
   }
 

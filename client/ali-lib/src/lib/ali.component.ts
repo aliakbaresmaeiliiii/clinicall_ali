@@ -1,15 +1,14 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'lib-ali',
-  standalone: true,
-  imports: [],
-  template: `
+    selector: 'lib-ali',
+    imports: [],
+    template: `
     <p>
       ali works!
     </p>
   `,
-  styles: ``
+    styles: ``
 })
 export class AliComponent {
 

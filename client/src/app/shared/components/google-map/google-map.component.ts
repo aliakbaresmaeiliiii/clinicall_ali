@@ -2,13 +2,12 @@ import { isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   inject,
-  Input,
   OnInit,
-  Output,
   PLATFORM_ID,
-  SimpleChanges
+  SimpleChanges,
+  input,
+  output
 } from '@angular/core';
 import * as mapboxGl from 'mapbox-gl';
 import { LngLat } from 'mapbox-gl';
@@ -18,16 +17,17 @@ import { MapService } from './map.service';
 
 
 @Component({
-  selector: 'app-google-map',
-  standalone: true,
-  imports: [],
-  templateUrl: './google-map.component.html',
-  styleUrl: './google-map.component.scss',
+    selector: 'app-google-map',
+    templateUrl: './google-map.component.html',
+    styleUrl: './google-map.component.scss'
 })
 export class GoogleMapComponent implements OnInit {
-  @Input() coordinates: { lat: number; lng: number }[] = [];
-  @Input() zoomLevel: number = 14;
-  @Output() markerMoved = new EventEmitter<any>();
+  readonly coordinates = input<{
+    lat: number;
+    lng: number;
+}[]>([]);
+  readonly zoomLevel = input<number>(14);
+  readonly markerMoved = output<any>();
 
   style = 'mapbox://styles/mapbox/streets-v11';
   lng: number = 51.375447552429875;
@@ -45,8 +45,9 @@ export class GoogleMapComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes['coordinates'].currentValue && this.coordinates) {
-      this.updateMapLocation(this.coordinates);
+    const coordinates = this.coordinates();
+    if (changes['coordinates'].currentValue && coordinates) {
+      this.updateMapLocation(coordinates);
     }
   }
   
@@ -57,14 +58,15 @@ export class GoogleMapComponent implements OnInit {
   initializeMap(zoom: number | null = null): void {
     if (isPlatformBrowser(this.platformId)) {
       setTimeout((): void => {
+        const coordinates = this.coordinates();
         this.map = new mapboxGl.Map({
           container: 'map',
           style: 'mapbox://styles/mapbox/streets-v12',
           zoom: zoom ? zoom : 14,
           attributionControl: true,
           accessToken: environment.mapboxToken,
-          center: this.coordinates.length
-            ? [this.coordinates[0].lng, this.coordinates[0].lat]
+          center: coordinates.length
+            ? [coordinates[0].lng, coordinates[0].lat]
             : [-74.006, 40.7128],
 
           maxZoom: 20,
@@ -73,14 +75,15 @@ export class GoogleMapComponent implements OnInit {
         //   // this.addEssentialMapControls();
         // });
 
+        const coordinatesValue = this.coordinates();
         if (
-          (this.coordinates[0],
-          this.coordinates[0].lng,
-          this.coordinates[0].lat)
+          (coordinatesValue[0],
+          coordinatesValue[0].lng,
+          coordinatesValue[0].lat)
         ) {
           const lngLat: LngLat = {
-            lng: parseFloat(`${this.coordinates[0].lng}`),
-            lat: parseFloat(`${this.coordinates[0].lat}`),
+            lng: parseFloat(`${coordinatesValue[0].lng}`),
+            lat: parseFloat(`${coordinatesValue[0].lat}`),
           } as LngLat;
           this.marker = new mapboxGl.Marker({
             draggable: true,

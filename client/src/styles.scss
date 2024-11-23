@@ -4,7 +4,9 @@
 @use './app/test-component.theme';
 @use 'swiper/swiper-bundle.min.css';
 // regular style toast
-@import 'ngx-toastr/toastr';
+// @import 'ngx-toastr/toastr';
+@use 'ngx-toastr/toastr';
+
 
 @tailwind base;
 @tailwind components;
@@ -18,52 +20,52 @@
   }
 }
 
-@include mat.core();
+// @include mat.core();
 
-$angular-material-3-light-theme: mat.define-theme(
-  (
-    color: (
-      theme-type: light,
-      use-system-variables: true,
-      primary: mat.$azure-palette,
-      tertiary: mat.$blue-palette,
-    ),
-    density: (
-      scale: 0,
-    ),
-  )
-);
+// $angular-material-3-light-theme: mat.define-theme(
+//   (
+//     color: (
+//       theme-type: light,
+//       use-system-variables: true,
+//       primary: mat.$azure-palette,
+//       tertiary: mat.$blue-palette,
+//     ),
+//     density: (
+//       scale: 0,
+//     ),
+//   )
+// );
 
-$angular-material-3-dark-theme: mat.define-theme(
-  (
-    color: (
-      theme-type: dark,
-      primary: mat.$magenta-palette,
-      tertiary: mat.$violet-palette,
-    ),
-    density: (
-      scale: 0,
-    ),
-  )
-);
+// $angular-material-3-dark-theme: mat.define-theme(
+//   (
+//     color: (
+//       theme-type: dark,
+//       primary: mat.$magenta-palette,
+//       tertiary: mat.$violet-palette,
+//     ),
+//     density: (
+//       scale: 0,
+//     ),
+//   )
+// );
 
-$light-theme: m3-theme.$light-theme;
-$dark-theme: m3-theme.$dark-theme;
+// $light-theme: m3-theme.$light-theme;
+// $dark-theme: m3-theme.$dark-theme;
 
-:root {
-  @include mat.all-component-themes($light-theme);
-  background: mat.get-theme-color($light-theme, surface);
-  // Components themes
-  @include layout-component.themeLayout($light-theme);
-  @include test-component.themeTest($light-theme);
+// :root {
+//   @include mat.all-component-themes($light-theme);
+//   background: mat.get-theme-color($light-theme, surface);
+//   // Components themes
+//   @include layout-component.themeLayout($light-theme);
+//   @include test-component.themeTest($light-theme);
 
-  &.dark {
-    @include mat.all-component-colors($dark-theme);
-    background: mat.get-theme-color($dark-theme, surface);
-    @include layout-component.themeLayout($dark-theme);
-    @include test-component.themeTest($dark-theme);
-  }
-}
+//   &.dark {
+//     @include mat.all-component-colors($dark-theme);
+//     background: mat.get-theme-color($dark-theme, surface);
+//     @include layout-component.themeLayout($dark-theme);
+//     @include test-component.themeTest($dark-theme);
+//   }
+// }
 
 html,
 body {

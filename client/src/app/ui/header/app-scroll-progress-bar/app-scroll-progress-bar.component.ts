@@ -1,13 +1,12 @@
-import { AsyncPipe, CommonModule } from '@angular/common';
-import { Component, HostListener, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, HostListener } from '@angular/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
-  selector: 'app-scroll-progress-bar',
-  standalone: true,
-  imports: [MatProgressBarModule, AsyncPipe,CommonModule],
-  templateUrl: './app-scroll-progress-bar.component.html',
-  styleUrl: './app-scroll-progress-bar.component.scss',
+    selector: 'app-scroll-progress-bar',
+    imports: [MatProgressBarModule, CommonModule],
+    templateUrl: './app-scroll-progress-bar.component.html',
+    styleUrl: './app-scroll-progress-bar.component.scss'
 })
 export class AppScrollProgressBarComponent {
   scrollPercentage: number = 0;

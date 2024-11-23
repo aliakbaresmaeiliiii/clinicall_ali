@@ -1,53 +1,20 @@
-import { CommonModule } from '@angular/common';
+import { HttpEventType } from '@angular/common/http';
 import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   inject,
-  input,
-  NgZone,
-  signal,
-  WritableSignal,
+  NgZone
 } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatProgressBarModule } from '@angular/material/progress-bar';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import {
-  NgxImageCaptureModule,
-  NgxImageCompressService,
+  NgxImageCompressService
 } from 'ngx-image-compress';
-import { delay, Observable } from 'rxjs';
-import { PatientsService } from '../../../modules/patients/services/patients.service';
-import { MatTooltipModule } from '@angular/material/tooltip';
+import { Observable } from 'rxjs';
 import { ShareService } from '../../services/share.service';
-import { LoaderComponent } from '../loader/loader.component';
-import { HttpEventType } from '@angular/common/http';
 
 @Component({
-  selector: 'app-img-uploader',
-  standalone: true,
-  imports: [
-    CommonModule,
-    NgxImageCaptureModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatCardModule,
-    MatGridListModule,
-    MatToolbarModule,
-    MatProgressBarModule,
-    MatInputModule,
-    MatIconModule,
-    MatTooltipModule,
-    LoaderComponent,
-  ],
-  templateUrl: './img-uploader.component.html',
-  styleUrl: './img-uploader.component.scss',
-  providers: [NgxImageCompressService],
+    selector: 'app-img-uploader',
+    templateUrl: './img-uploader.component.html',
+    styleUrl: './img-uploader.component.scss',
+    providers: [NgxImageCompressService],
 })
 export class ImgUploaderComponent {
   service = inject(ShareService);

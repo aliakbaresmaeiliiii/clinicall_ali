@@ -1,41 +1,36 @@
-import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { SelectionModel } from '@angular/cdk/collections';
+import { CommonModule } from '@angular/common';
+import { Component, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { FilterComponent } from '../users/filter/filter.component';
-import { Customers } from '../users/models/customers';
-import { MatDialog } from '@angular/material/dialog';
-import { take } from 'rxjs';
 import { AddUserInfoDialogComponent } from '../users/components/add-user-info-dialog/add-user-info-dialog.component';
+import { Customers } from '../users/models/customers';
 import { CustomersService } from '../users/services/customers.service';
-import { MatIconModule } from '@angular/material/icon';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { SelectionModel } from '@angular/cdk/collections';
 
 @Component({
-  selector: 'app-operations',
-  standalone: true,
-  imports: [
-    FilterComponent,
-    FormsModule,
-    CommonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatTableModule,
-    MatSortModule,
-    MatPaginatorModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatCheckboxModule,
-    NgOptimizedImage
-  ],
-  templateUrl: './operations.component.html',
-  styleUrl: './operations.component.scss'
+    selector: 'app-operations',
+    imports: [
+        FormsModule,
+        CommonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatTableModule,
+        MatSortModule,
+        MatPaginatorModule,
+        MatToolbarModule,
+        MatIconModule,
+        MatCheckboxModule,
+    ],
+    templateUrl: './operations.component.html',
+    styleUrl: './operations.component.scss'
 })
 export class OperationsComponent {
   customers: Customers[] = [];
@@ -54,8 +49,8 @@ export class OperationsComponent {
     'zip_code',
   ];
   dataSource = new MatTableDataSource();
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  readonly paginator = viewChild.required(MatPaginator);
+  readonly sort = viewChild.required(MatSort);
   selection = new SelectionModel<any>(true, []);
   constructor(private service: CustomersService, private dialog: MatDialog) {}
 
@@ -64,8 +59,8 @@ export class OperationsComponent {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator();
+    this.dataSource.sort = this.sort();
   }
 
   /**

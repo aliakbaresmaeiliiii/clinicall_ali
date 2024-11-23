@@ -1,5 +1,5 @@
-import { AsyncPipe, CommonModule, NgOptimizedImage } from '@angular/common';
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit, output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,29 +13,26 @@ import { Router, RouterLink } from '@angular/router';
 import { ThemeManagerService } from '../../../shared/client-services/theme-manager.service';
 import { MyErrorStateMatcher } from '../../../shared/input-validation/input-validation';
 @Component({
-  selector: 'app-header',
-  standalone: true,
-  imports: [
-    MatFormFieldModule,
-    MatSelectModule,
-    FormsModule,
-    CommonModule,
-    ReactiveFormsModule,
-    MatMenuModule,
-    MatDividerModule,
-    RouterLink,
-    MatIconModule,
-    MatTooltipModule,
-    AsyncPipe,
-    MatButtonModule,
-    MatBadgeModule,
-    NgOptimizedImage,
-  ],
-  templateUrl: './header.component.html',
-  styleUrl: './header.component.scss',
+    selector: 'app-header',
+    imports: [
+        MatFormFieldModule,
+        MatSelectModule,
+        FormsModule,
+        CommonModule,
+        ReactiveFormsModule,
+        MatMenuModule,
+        MatDividerModule,
+        RouterLink,
+        MatIconModule,
+        MatTooltipModule,
+        MatButtonModule,
+        MatBadgeModule,
+    ],
+    templateUrl: './header.component.html',
+    styleUrl: './header.component.scss'
 })
 export class HeaderComponent implements OnInit {
-  @Output() onToggleMenu = new EventEmitter<any>();
+  readonly onToggleMenu = output<any>();
   matcher = new MyErrorStateMatcher();
   today: number = Date.now();
   router = inject(Router);

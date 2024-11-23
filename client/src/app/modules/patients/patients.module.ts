@@ -26,7 +26,6 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule, Routes } from '@angular/router';
-import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input';
 import { ImgUploaderComponent } from '../../shared/components/img-uploader/img-uploader.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { AgePipe } from '../../shared/pipes/age.pipe';
@@ -37,6 +36,7 @@ import { EditPatientDialogComponent } from './edit-patient-dialog/edit-patient-d
 import { PatientDetailComponent } from './patient-detail/patient-detail.component';
 import { PatientProfileComponent } from './patient-profile/patient-profile.component';
 import { PatientsComponent } from './patients.component';
+import { SharedModule } from '../../shared/shared.module';
 
 export const routes: Routes = [
   {
@@ -72,7 +72,6 @@ export const routes: Routes = [
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    FilterComponent,
     FormsModule,
     MatTableModule,
     MatSortModule,
@@ -85,11 +84,9 @@ export const routes: Routes = [
     MatInputModule,
     MatSelectModule,
     MatCardModule,
-    NgxMatIntlTelInputComponent,
     MatDatepickerModule,
     MatIconModule,
     MatButtonModule,
-    ImgUploaderComponent,
     MatRadioModule,
     MatDialogActions,
     MatDialogModule,
@@ -103,6 +100,7 @@ export const routes: Routes = [
     AsyncPipe,
     MatProgressBarModule,
     MatMenuModule,
+    SharedModule
   ],
   exports: [PatientsComponent],
   providers: [AgePipe],

@@ -1,5 +1,5 @@
 declare var google: any;
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import {
   Component,
   CUSTOM_ELEMENTS_SCHEMA,
@@ -26,9 +26,8 @@ import { ThemeManagerService } from '../../../../shared/client-services/theme-ma
 import { AuthService } from '../../../services/auth.service';
 
 import {
-  GoogleLoginProvider,
   SocialLoginModule,
-  SocialUser,
+  SocialUser
 } from '@abacritt/angularx-social-login';
 import { AnimationEvent } from '@angular/animations';
 import { PermissionService } from '../../../services/permission.service';
@@ -39,49 +38,45 @@ import { PermissionService } from '../../../services/permission.service';
 // Client secret
 // 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
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  standalone: true,
-  imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    MatCardModule,
-    MatInputModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    RouterLink,
-    CommonModule,
-    NgOptimizedImage,
-    MatIconModule,
-    RouterModule,
-    MatCheckboxModule,
-    SocialLoginModule,
-  ],
-
- 
-  // providers: [
-  //   SocialAuthService,
-  //   {
-  //     provide: 'SocialAuthServiceConfig',
-  //     useValue: {
-  //       autoLogin: false,
-  //       lang: 'en',
-  //       providers: [
-  //         {
-  //           id: GoogleLoginProvider.PROVIDER_ID,
-  //           provider: new GoogleLoginProvider(
-  //             '302618903274-6bfd6agmkoanb474m3e1ii3oc1phjl40.apps.googleusercontent.com'
-  //           ),
-  //         },
-  //       ],
-  //       onError: err => {
-  //         console.error('❌❌❌', err);
-  //       },
-  //     } as SocialAuthServiceConfig,
-  //   },
-  // ],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  styleUrl: './login.component.scss',
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatCardModule,
+        MatInputModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        RouterLink,
+        CommonModule,
+        MatIconModule,
+        RouterModule,
+        MatCheckboxModule,
+        SocialLoginModule,
+    ],
+    // providers: [
+    //   SocialAuthService,
+    //   {
+    //     provide: 'SocialAuthServiceConfig',
+    //     useValue: {
+    //       autoLogin: false,
+    //       lang: 'en',
+    //       providers: [
+    //         {
+    //           id: GoogleLoginProvider.PROVIDER_ID,
+    //           provider: new GoogleLoginProvider(
+    //             '302618903274-6bfd6agmkoanb474m3e1ii3oc1phjl40.apps.googleusercontent.com'
+    //           ),
+    //         },
+    //       ],
+    //       onError: err => {
+    //         console.error('❌❌❌', err);
+    //       },
+    //     } as SocialAuthServiceConfig,
+    //   },
+    // ],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA],
+    styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit{
   router = inject(Router);

@@ -12,29 +12,26 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
-import { NgxMatIntlTelInputComponent } from 'ngx-mat-intl-tel-input';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
 import { banWords } from '../../../../shared/validators/ban-words.validators';
 import { passswordShouldMatch } from '../../../../shared/validators/password-should-math.validator';
 import { UniqueNicknameValidator } from '../../../../shared/validators/unique-nickname.validators';
 
 @Component({
-  selector: 'app-register',
-  standalone: true,
-  imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    MatCardModule,
-    MatInputModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    RouterLink,
-    CommonModule,
-    MatSelectModule,
-    NgxMatIntlTelInputComponent,
-  ],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.scss',
+    selector: 'app-register',
+    imports: [
+        FormsModule,
+        ReactiveFormsModule,
+        MatCardModule,
+        MatInputModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        RouterLink,
+        CommonModule,
+        MatSelectModule,
+    ],
+    templateUrl: './register.component.html',
+    styleUrl: './register.component.scss'
 })
 export class RegisterComponent extends BaseComponent {
    uniqueNickname=inject( UniqueNicknameValidator);

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,28 +8,24 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { take } from 'rxjs';
-import { FilterComponent } from '../../filter/filter.component';
 import { Customers } from '../../models/customers';
-import { AddUserInfoDialogComponent } from '../add-user-info-dialog/add-user-info-dialog.component';
 import { CustomersService } from '../../services/customers.service';
+import { AddUserInfoDialogComponent } from '../add-user-info-dialog/add-user-info-dialog.component';
 
 @Component({
-  selector: 'app-user-list',
-  standalone: true,
-  imports: [
-    FilterComponent,
-    FormsModule,
-    CommonModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatTableModule,
-    MatSortModule,
-    MatPaginatorModule,
-    MatToolbarModule,
-  ],
-  templateUrl: './user-list.component.html',
-  styleUrl: './user-list.component.scss',
+    selector: 'app-user-list',
+    imports: [
+        FormsModule,
+        CommonModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatTableModule,
+        MatSortModule,
+        MatPaginatorModule,
+        MatToolbarModule,
+    ],
+    templateUrl: './user-list.component.html',
+    styleUrl: './user-list.component.scss'
 })
 export class UserListComponent implements OnDestroy, OnInit {
   customers: Customers[] = [];
@@ -46,8 +42,8 @@ export class UserListComponent implements OnDestroy, OnInit {
     'zip_code',
   ];
   dataSource = new MatTableDataSource();
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+  readonly paginator = viewChild.required(MatPaginator);
+  readonly sort = viewChild.required(MatSort);
 
   constructor(private service: CustomersService, private dialog: MatDialog) {}
 
@@ -56,8 +52,8 @@ export class UserListComponent implements OnDestroy, OnInit {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
+    this.dataSource.paginator = this.paginator();
+    this.dataSource.sort = this.sort();
   }
 
   /**

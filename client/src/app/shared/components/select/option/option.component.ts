@@ -4,41 +4,34 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter,
   HostBinding,
   HostListener,
-  Input,
   OnInit,
-  Output,
+  input,
+  output,
 } from '@angular/core';
 import { Highlightable } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-option',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './option.component.html',
   styleUrl: './option.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OptionComponent<T> implements OnInit, Highlightable {
+  readonly value = input<T | null>(null);
 
-  @Input()
-  value: T | null = null;
+  readonly disabledReason = input('');
 
-  @Input()
-  disabledReason = '';
-
-  @Input()
   @HostBinding('class.disabled')
-  disabled = false;
+  readonly disabledValue = input(false);
 
-  @Output()
-  selected = new EventEmitter<OptionComponent<T>>();
+  readonly selected = output<OptionComponent<T>>();
 
   @HostListener('click')
   protected select() {
-    if (!this.disabled) {
+    if (!this.disabledValue()) {
       this.highlightAsSelected();
       this.selected.emit(this);
     }
@@ -55,7 +48,6 @@ export class OptionComponent<T> implements OnInit, Highlightable {
   ) {}
   priority!: number;
   type!: HighlightType;
-
 
   setActiveStyles(): void {
     this.isActive = true;

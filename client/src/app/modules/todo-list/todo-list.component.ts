@@ -3,11 +3,10 @@ import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-
 
 
 @Component({
-  selector: 'app-todo-list',
-  standalone: true,
-  imports: [DragDropModule],
-  templateUrl: './todo-list.component.html',
-  styleUrl: './todo-list.component.scss',
+    selector: 'app-todo-list',
+    imports: [DragDropModule],
+    templateUrl: './todo-list.component.html',
+    styleUrl: './todo-list.component.scss'
 })
 export class TodoListComponent {
   movies = [

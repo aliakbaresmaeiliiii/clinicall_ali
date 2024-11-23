@@ -13,12 +13,11 @@ import { passswordShouldMatch } from '../../../../shared/validators/password-sho
 import { CustomersService } from '../../services/customers.service';
 
 @Component({
-  selector: 'app-add-user-info-dialog',
-  standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './add-user-info-dialog.component.html',
-  styleUrl: './add-user-info-dialog.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-add-user-info-dialog',
+    imports: [CommonModule, ReactiveFormsModule],
+    templateUrl: './add-user-info-dialog.component.html',
+    styleUrl: './add-user-info-dialog.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddUserInfoDialogComponent implements OnInit {
   years = this.getYears();

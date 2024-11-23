@@ -1,16 +1,15 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, viewChild } from '@angular/core';
 import { ChartComponent, NgApexchartsModule } from 'ng-apexcharts';
 import { ChartOptions } from '../../../models/chart-option';
 
 @Component({
-  selector: 'app-stacked-chart',
-  standalone: true,
-  imports: [NgApexchartsModule],
-  templateUrl: './stacked-chart.component.html',
-  styleUrl: './stacked-chart.component.scss',
+    selector: 'app-stacked-chart',
+    imports: [NgApexchartsModule],
+    templateUrl: './stacked-chart.component.html',
+    styleUrl: './stacked-chart.component.scss'
 })
 export class StackedChartComponent {
-  @ViewChild("chart") chart!: ChartComponent;
+  readonly chart = viewChild.required<ChartComponent>("chart");
   public chartOptions: Partial<ChartOptions>;
 
   constructor() {

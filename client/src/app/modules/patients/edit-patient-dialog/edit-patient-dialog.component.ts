@@ -8,10 +8,11 @@ import { PatientDTO } from '../model/patients.model';
 import { PatientsService } from '../services/patients.service';
 
 @Component({
-  selector: 'app-edit-patient-dialog',
-  templateUrl: './edit-patient-dialog.component.html',
-  styleUrl: './edit-patient-dialog.component.scss',
-  changeDetection:ChangeDetectionStrategy.OnPush
+    selector: 'app-edit-patient-dialog',
+    templateUrl: './edit-patient-dialog.component.html',
+    styleUrl: './edit-patient-dialog.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    standalone: false
 })
 export class EditPatientDialogComponent extends BaseComponent {
   genders: string[] = ['Male', 'Female'];

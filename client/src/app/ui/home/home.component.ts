@@ -5,22 +5,18 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import {
   Component,
-  effect,
   ElementRef,
   HostListener,
   inject,
-  OnInit,
   signal,
-  ViewChild,
   viewChild,
-  WritableSignal,
 } from '@angular/core';
-import { map, Observable, shareReplay, startWith } from 'rxjs';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
+import { map, Observable, shareReplay } from 'rxjs';
 
 const style1 = style({
   opacity: 1,
@@ -44,13 +40,14 @@ const style2 = style({
       transition('hide => show', animate('1.2s ease-in')),
     ]),
   ],
+  standalone: false,
 })
 export class HomeComponent {
   state = 'hide';
   el = inject(ElementRef);
   fb = inject(FormBuilder);
   private breakpointObserver = inject(BreakpointObserver);
-  @ViewChild('drawer') drawer!: MatSidenav;
+  readonly drawer = viewChild.required<MatSidenav>('drawer');
   events: string[] = [];
   opened!: boolean;
   isDrawerOpen = signal(true);
@@ -80,6 +77,6 @@ export class HomeComponent {
   }
 
   toggleDrawer(): void {
-    this.drawer.toggle();
+    this.drawer().toggle();
   }
 }

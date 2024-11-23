@@ -2,8 +2,8 @@ import {
   Directive,
   ElementRef,
   HostListener,
-  Input,
   inject,
+  input
 } from '@angular/core';
 import { ClipboardService } from './clipboard.service';
 import { BehaviorSubject } from 'rxjs';
@@ -20,8 +20,7 @@ export class CanCopyToClipboardDirective {
   #copied = new BehaviorSubject<boolean>(false);
   copied$ = this.#copied.asObservable();
 
-  @Input()
-  text = '';
+  readonly text = input('');
 
   // get #computedSelectionText() {
   //   // const currentSelection = window?.getSelection()?.toString();

@@ -1,18 +1,18 @@
 <div class="flex items-center justify-center gap-36">
   <div
-    class="wrapper {{ config.containerClass }} "
+    class="wrapper {{ config().containerClass }} "
     id="c_{{ componentKey }}"
     *ngIf="otpForm?.controls"
-    [ngStyle]="config.containerStyles"
+    [ngStyle]="config().containerStyles"
   >
     <input
-      [pattern]="config.allowNumbersOnly ? '\\d*' : ''"
+      [pattern]="config().allowNumbersOnly ? '\\d*' : ''"
       [type]="inputType"
       numberOnly
-      [placeholder]="config.placeholder || ''"
-      [ngStyle]="config.inputStyles"
+      [placeholder]="config().placeholder || ''"
+      [ngStyle]="config().inputStyles"
       maxlength="1"
-      class="otp-input {{ config.inputClass }}"
+      class="otp-input {{ config().inputClass }}"
       autocomplete="off"
       *ngFor="let item of otpForm?.controls | keys; let i = index"
       [formControl]="otpForm.controls[item]"

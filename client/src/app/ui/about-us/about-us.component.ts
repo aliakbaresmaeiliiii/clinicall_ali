@@ -4,13 +4,12 @@ import {
 import Swiper from 'swiper';
 
 @Component({
-  selector: 'app-about-us',
-  standalone: true,
-  imports: [],
-  templateUrl: './about-us.component.html',
-  styleUrl: './about-us.component.scss',
-  styles: [
-    `
+    selector: 'app-about-us',
+    imports: [],
+    templateUrl: './about-us.component.html',
+    styleUrl: './about-us.component.scss',
+    styles: [
+        `
       .item {
         opacity: 0;
         transform: translateY(50px);
@@ -21,7 +20,7 @@ import Swiper from 'swiper';
         transform: translateY(0);
       }
     `,
-  ],
+    ]
 })
 export class AboutUsComponent {
 

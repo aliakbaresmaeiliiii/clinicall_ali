@@ -146,12 +146,12 @@
       appearance="outline"
       class="w-full">
       <mat-label>Contact Number</mat-label>
-      <ngx-mat-intl-tel-input
+      <!-- <ngx-mat-intl-tel-input
         [preferredCountries]="['my']"
         [enablePlaceholder]="true"
         [enableSearch]="true"
         name="phoneNumber"
-        formControlName="phoneNumber"></ngx-mat-intl-tel-input>
+        formControlName="phoneNumber"></ngx-mat-intl-tel-input> -->
       <!-- Error handling -->
       <mat-error
         *ngIf="
@@ -277,6 +277,7 @@
       <mat-label>{{ 'Zip Code' | titlecase }}</mat-label>
       <input
         appNumberOnly
+        [disabledNumberOnly]="false"
         type="text"
         matInput
         [errorStateMatcher]="matcher"

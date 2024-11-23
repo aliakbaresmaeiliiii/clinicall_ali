@@ -5,9 +5,10 @@ import { BaseComponent } from '../../../../shared/components/base/base.component
 import { SettingsService } from '../../services/settings.service';
 
 @Component({
-  selector: 'app-change-password',
-  templateUrl: './change-password.component.html',
-  styleUrl: './change-password.component.scss',
+    selector: 'app-change-password',
+    templateUrl: './change-password.component.html',
+    styleUrl: './change-password.component.scss',
+    standalone: false
 })
 export class ChangePasswordComponent extends BaseComponent implements OnInit {
   service = inject(SettingsService);

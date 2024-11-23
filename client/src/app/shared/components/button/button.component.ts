@@ -5,6 +5,7 @@ import {
   HostBinding,
   Input,
   signal,
+  input
 } from '@angular/core';
 import { CanDisableDirective } from '../../directives/can-disable/can-disable.directive';
 import { HasTabIndexDirective } from '../../directives/has-disable/has-tab-index.directive';
@@ -20,26 +21,24 @@ export type ButtonAppearance = keyof typeof BUTTON_CLASESS;
 export type ButtonClasses = (typeof BUTTON_CLASESS)[ButtonAppearance];
 
 @Component({
-  selector: 'button[dfButton],a[dfButton]',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './button.component.html',
-  styleUrl: './button.component.scss',
-  hostDirectives: [
-    {
-      directive: CanDisableDirective,
-      inputs: ['disabled'],
-    },
-    {
-      directive: HasTabIndexDirective,
-      inputs: ['tabIndex', 'pauseFocusing: disabled'],
-    },
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'button[dfButton],a[dfButton]',
+    imports: [CommonModule],
+    templateUrl: './button.component.html',
+    styleUrl: './button.component.scss',
+    hostDirectives: [
+        {
+            directive: CanDisableDirective,
+            inputs: ['disabled'],
+        },
+        {
+            directive: HasTabIndexDirective,
+            inputs: ['tabIndex', 'pauseFocusing: disabled'],
+        },
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ButtonComponent {
-  @Input()
-  appearance: 'solid' | 'stroked' | 'dashed' = 'solid';
+  readonly appearance = input<'solid' | 'stroked' | 'dashed'>('solid');
 
 
 
@@ -56,7 +55,7 @@ export class ButtonComponent {
 
   @HostBinding('class')
   protected get buttonTypeHostClass(): ButtonClasses {
-    return BUTTON_CLASESS[this.appearance];
+    return BUTTON_CLASESS[this.appearance()];
   }
 
  
