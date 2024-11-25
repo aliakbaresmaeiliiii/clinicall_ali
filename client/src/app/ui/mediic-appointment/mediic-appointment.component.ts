@@ -48,8 +48,7 @@ export class MediicAppointmentComponent implements OnInit {
     ],
     email: ['', [Validators.required, Validators.email]],
     subject: [''],
-    phone: [''],
-    message: [''],
+
   });
 
   onSubmit() {

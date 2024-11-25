@@ -2,7 +2,7 @@
 
 <div
   class="flex justify-between p-8 fixed z-10 top-0 w-full"
-  [@bgColorChange]="bgColor" >
+  [@bgColorChange]="bgColor">
   <div class="col-span-2 flex justify-center items-center">
     <div class="w-36 h-auto">
       @if (navbarVisible()) {
@@ -41,18 +41,18 @@
 
         <div class="submenu grid grid-cols-8 gap-4">
           <div class="submenu-item col-span-2 ...">
-            <div class="submenu-item grid-cols-1">
+            <div class="submenu-item grid-cols-1 overflow-scroll h-80">
               @for (menu of dentistryCategories; track $index) {
-              <a
-                routerLink="/services"
-                class="submenu-link"
-                (mouseover)="toggleCategory($index)"
-               >
-                <span>
-                  {{ menu.title }}
-                </span>
-                <span>
-                  <svg
+                <div class="">
+                  <a
+                  routerLink="/services"
+                  class="submenu-link"
+                  (mouseover)="toggleCategory($index)">
+                  <span>
+                    {{ menu.title }}
+                  </span>
+                  <span>
+                    <svg
                     viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg"
                     xml:space="preserve"
@@ -60,15 +60,16 @@
                     height="24px">
                     <g id="SVGRepo_iconCarrier">
                       <path
-                        d="M8.29 16.29a1 1 0 010-1.41L12.88 10 8.29 5.71a1 1 0 111.41-1.41l5 5a1 1 0 010 1.41l-5 5a1 1 0 01-1.41 0z" />
+                      d="M8.29 16.29a1 1 0 010-1.41L12.88 10 8.29 5.71a1 1 0 111.41-1.41l5 5a1 1 0 010 1.41l-5 5a1 1 0 01-1.41 0z" />
                     </g>
                   </svg>
                 </span>
               </a>
+            </div>
               }
             </div>
           </div>
-          <div class="grid grid-cols-3 gap-4 col-span-6 p-4">
+          <div class="grid grid-cols-3 gap-4 col-span-6 p-4 h-5">
             <ng-container *ngIf="hoveredCategoryIndex !== null">
               <a
                 *ngFor="
@@ -80,16 +81,6 @@
                 {{ treatment }}
               </a>
             </ng-container>
-
-            <!-- @for (menu of dentistryCategories; track $index) { @for (item of
-            menu.treatments; track $index) { @if (hoveredCategoryIndex !==null)
-            {
-            <a
-              href="#"
-              class="text-gray-800 px-4 py-2 rounded-lg hover:text-white hover:bg-[#2563EB] transition-colors">
-              {{ item }}
-            </a>
-            } } } -->
           </div>
         </div>
 
