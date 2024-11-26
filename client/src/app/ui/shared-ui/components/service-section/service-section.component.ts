@@ -4,8 +4,6 @@ import {
   input,
   OnInit,
 } from '@angular/core';
-import AOS from 'aos';
-import Swiper from 'swiper';
 
 @Component({
     selector: 'app-service-section',

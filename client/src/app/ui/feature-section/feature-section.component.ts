@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import AOS from 'aos';
 import { interval, takeWhile } from 'rxjs';
 import Swiper from 'swiper';
 
 @Component({
-    selector: 'app-feature-section',
-    templateUrl: './feature-section.component.html',
-    styleUrl: './feature-section.component.scss',
-    standalone: false
+  selector: 'app-feature-section',
+  templateUrl: './feature-section.component.html',
+  styleUrl: './feature-section.component.scss',
+  standalone: false,
 })
 export class FeatureSectionComponent implements OnInit {
   counter: number = 0;
   maxCounter: number = 20;
   isLoading = false;
+  router = inject(Router)
 
   exchangeRate = 42000;
 
@@ -434,7 +436,7 @@ export class FeatureSectionComponent implements OnInit {
       doctorImg: '../../.././assets/images/ui/doctors/5.jpg',
       key: 7,
       specialty: 'Gum Disease Treatment',
-      promotion: 'First Checkup Free',
+      promotion: ' Free',
       description:
         'Effective treatment for gum disease to restore oral health.',
       price: 300,
@@ -1520,5 +1522,11 @@ export class FeatureSectionComponent implements OnInit {
       .subscribe(() => {
         this.counter++;
       });
+  }
+
+  navigateToPage(data: any) {
+    const getData = data.specialty;
+    this.router.navigate(['speciality'])
+    debugger;
   }
 }

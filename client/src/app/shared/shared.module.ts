@@ -77,23 +77,22 @@ const ANGULR_MATERIAL_MODULES = [
   MatDatepickerModule,
   ImgUploaderComponent,
   RatingPickerPageComponent,
-
 ];
 const COMMON_MODULES = [CommonModule, ReactiveFormsModule, FormsModule];
 // const SHARED_COMPONENT = [];
 @NgModule({
-  declarations: [SearchBarComponent, ChunkPipe,
+  declarations: [
+    SearchBarComponent,
+    ChunkPipe,
   
-
   ],
   imports: [...COMMON_MODULES, ...ANGULR_MATERIAL_MODULES],
   exports: [
     ...ANGULR_MATERIAL_MODULES,
     ...COMMON_MODULES,
     ChunkPipe,
-    SearchBarComponent,
+  
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-
 })
 export class SharedModule {}
