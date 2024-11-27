@@ -43,6 +43,7 @@ import { SliderComponent } from './slider/slider.component';
 import { SpecialityComponent } from './speciality/speciality.component';
 import { StepBookAppointmentComponent } from './step-book-appointment/step-book-appointment.component';
 import { UserReviewsOfClinicAliComponent } from './user-reviews-of-clinic-ali/user-reviews-of-clinic-ali.component';
+import { CustomTabComponent } from '../shared/components/custom-tab/custom-tab.component';
 
 const routes: Routes = [
   {
@@ -115,7 +116,9 @@ const routes: Routes = [
     MatRadioModule,
     MatExpansionModule,
     MatDialogModule,
-    SharedUiModule
+    SharedUiModule,
+    CustomTabComponent
+    
     
     
   ],

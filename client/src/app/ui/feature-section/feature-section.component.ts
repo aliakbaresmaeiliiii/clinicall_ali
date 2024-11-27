@@ -14,7 +14,7 @@ export class FeatureSectionComponent implements OnInit {
   counter: number = 0;
   maxCounter: number = 20;
   isLoading = false;
-  router = inject(Router)
+  router = inject(Router);
 
   exchangeRate = 42000;
 
@@ -22,13 +22,13 @@ export class FeatureSectionComponent implements OnInit {
     {
       src: '../../../assets/images/ui/speciality/women.png',
       key: 1,
-      specialty: 'Gynecologist and Obstetrician',
+      specialty: 'Gynecologist & Obstetrician',
       count: 3000,
     },
     {
       src: '../../../assets/images/ui/speciality/skin.png',
       key: 2,
-      specialty: 'Dermatologist and Aesthetic Specialist',
+      specialty: 'Dermatologist & Aesthetic Specialist',
       count: 5000,
     },
     {
@@ -1454,19 +1454,18 @@ export class FeatureSectionComponent implements OnInit {
     this.incrementCounter();
     AOS.init({ disable: 'mobile' });
     AOS.refresh();
-
     var swiper = new Swiper('.serviceSwiper', {
-      slidesPerView: 3,
+      slidesPerView: 5,
       spaceBetween: 20,
       pagination: {
         el: '.swiper-pagination',
         clickable: true,
-      },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
+        renderBullet: function (index, className) {
+          return '<span class="' + className + '">' + (index + 1) + '</span>';
+        },
       },
     });
+
     var swiper = new Swiper('.DermatologySwiper', {
       slidesPerView: 3,
       spaceBetween: 20,
@@ -1526,7 +1525,16 @@ export class FeatureSectionComponent implements OnInit {
 
   navigateToPage(data: any) {
     const getData = data.specialty;
-    this.router.navigate(['speciality'])
+    console.log('👉👉👉👉',getData);
+
+    switch (getData) {
+      case 'Dentist':
+        this.router.navigate(['speciality']);
+        break;
+
+      default:
+        break;
+    }
     debugger;
   }
 }

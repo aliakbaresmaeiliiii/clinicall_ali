@@ -1,1 +1,82 @@
+<div class="grid grid-rows-4 grid-flow-col gap-4 w-10/12 m-auto ">
+  <div class="row-span-6">
+    <div class="flex flex-col bg-white rounded-2xl p-4">
+      <h2 class="pb-2">Filters</h2>
+      <hr />
+      <h2 class="pb-2">Services</h2>
+      <hr />
+      <mat-form-field appearance="outline" class="pt-2">
+        <mat-label>Services:</mat-label>
+        <mat-select>
+          @for (dental of dentalServices ; track dental) {
+          <mat-option [value]="dental.id">{{ dental.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <h2 class="pb-2">Service Type</h2>
+      <hr />
+      <mat-form-field appearance="outline" class="pt-2">
+        <mat-label>Services:</mat-label>
+        <mat-select>
+          @for (dental of dentalServices ; track dental) {
+          <mat-option [value]="dental.id">{{ dental.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <h2 class="pb-2">Providing physician</h2>
+      <hr />
+      <mat-form-field appearance="outline" class="pt-2">
+        <mat-label>Services:</mat-label>
+        <mat-select>
+          @for (dental of dentalServices ; track dental) {
+          <mat-option [value]="dental.id">{{ dental.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <h2 class="pb-2">Provider Center</h2>
+      <hr />
+      <mat-form-field appearance="outline" class="pt-2">
+        <mat-label>Services:</mat-label>
+        <mat-select>
+          @for (dental of dentalServices ; track dental) {
+          <mat-option [value]="dental.id">{{ dental.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <h2 class="pb-2">Price ($)</h2>
+      <hr />
+      <mat-form-field appearance="outline" class="pt-2">
+        <mat-label>Maximum:</mat-label>
+        <mat-select>
+          @for (dental of maximumPrice ; track dental) {
+          <mat-option [value]="dental.id">{{ dental.price }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="pt-2">
+        <mat-label>Minimum:</mat-label>
+        <mat-select>
+          @for (dental of minimumPrice ; track dental) {
+          <mat-option [value]="dental.id">{{ dental.price }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
 
+  <div class="bg-white row-span-5 col-span-1 flex items-center gap-4 p-4 rounded-2xl">
+    <span>Sort:</span>
+    @for (option of filterOptions; track $index) {
+    <button
+      mat-button
+      class="filter-item"
+      (click)="setActiveFilter(option.key)"
+      [class.active]="option.key === activeFilter">
+      <span>{{ option.label }}</span>
+    </button>
+    }
+  </div>
+  <div class="flex flex-wrap">
+    <ng-content></ng-content>
+  </div>
+</div>

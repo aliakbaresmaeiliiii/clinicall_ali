@@ -1,8 +1,16 @@
 .mat-tab-group {
-    margin-bottom: 48px;
-  }
+  margin-bottom: 48px;
+}
 
 
-  .content{
-    border: 1px solid black;
-  }
+.content {
+  border: 1px solid black;
+}
+
+
+.filter-item.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+  transition: ease-in-out 0.3s;
+}

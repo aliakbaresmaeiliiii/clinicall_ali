@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, viewChild } from '@angular/core';
 import Swiper from 'swiper';
 
 @Component({
@@ -503,6 +503,49 @@ export class SpecialityComponent implements OnInit {
       DepositPayment: 15000,
     },
   ];
+
+
+  readonly templateOne = viewChild.required<TemplateRef<any>>('templateOne');
+  readonly templateTwo = viewChild.required<TemplateRef<any>>('templateTwo');
+  readonly templateThree = viewChild.required<TemplateRef<any>>('templateThree');
+  readonly templatefour = viewChild.required<TemplateRef<any>>('templatefour');
+
+  tabs: {
+    id: number;
+    title: string;
+    template: TemplateRef<any>;
+    context?: any;
+  }[] = [];
+
+  setDataInTabs() {
+    this.tabs = [
+      {
+        id: 0,
+        title: 'Tab 1',
+        template: this.templateOne(),
+        context: { data: 'Data for Tab 1' },
+      },
+      {
+        id: 1,
+        title: 'Tab 2',
+        template: this.templateTwo(),
+        context: { data: 'Data for Tab 2' },
+      },
+      {
+        id: 3,
+        title: 'Tab 3',
+        template: this.templateThree(),
+        context: { data: 'Data for Tab 3' },
+      },
+      {
+        id: 4,
+        title: 'Tab 4',
+        template: this.templatefour(),
+        context: { data: 'Data for Tab 4' },
+      },
+    ];
+  }
+  handleTabChange(index: number) {}
 
   ngOnInit(): void {
     var swiper = new Swiper('.swiper', {
