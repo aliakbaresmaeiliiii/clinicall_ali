@@ -5,26 +5,68 @@ import {
   Component,
   TemplateRef,
   input,
-  output
+  output,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
-
+import { MatSelectModule } from '@angular/material/select';
 @Component({
-    selector: 'generic-tab',
-    imports: [MatTabsModule, CommonModule, MatButtonModule],
-    providers: [AsyncPipe],
-    templateUrl: './custom-tab.component.html',
-    styleUrl: './custom-tab.component.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'generic-tab',
+  imports: [MatTabsModule, CommonModule, MatButtonModule, MatSelectModule],
+  providers: [AsyncPipe],
+  templateUrl: './custom-tab.component.html',
+  styleUrl: './custom-tab.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomTabComponent implements AfterViewInit {
+  filterOptions = [
+    { key: 'default', label: 'Default' },
+    { key: 'mostPopular', label: 'Most Popular' },
+    { key: 'lowestPrice', label: 'The Lowest Price' },
+    { key: 'highestPrice', label: 'The Highest Price' },
+    { key: 'nearestVisited', label: 'Nearest Visited' },
+    { key: 'closelyAppointment', label: 'Closely Appointment' },
+    { key: 'highestScore', label: 'Highest Score' },
+  ];
+
+  dentalServices = [
+    { id: 1, name: 'Dental Cleaning' },
+    { id: 2, name: 'Teeth Whitening' },
+    { id: 3, name: 'Cavity Filling' },
+    { id: 4, name: 'Root Canal' },
+    { id: 5, name: 'Dental Implants' },
+    { id: 6, name: 'Braces & Aligners' },
+    { id: 7, name: 'Wisdom Tooth Extraction' },
+    { id: 8, name: 'Gum Disease Treatment' },
+  ];
+  maximumPrice = [
+    { id: 1, price: 1150 },
+    { id: 2, price: 1300 },
+    { id: 3, price: 1200 },
+    { id: 4, price: 1500 },
+    { id: 5, price: 12000 },
+    { id: 6, price: 14000 },
+    { id: 7, price: 1250 },
+    { id: 8, price: 1350 },
+  ];
+  minimumPrice = [
+    { id: 1, price: 150 },
+    { id: 2, price: 300 },
+    { id: 3, price: 200 },
+    { id: 4, price: 500 },
+    { id: 5, price: 2000 },
+    { id: 6, price: 4000 },
+    { id: 7, price: 250 },
+    { id: 8, price: 350 },
+  ];
+
+  activeFilter = 'default';
+
   tabs = input.required<
     {
       id: number;
       title: string;
       template: TemplateRef<any>;
-      disabled: boolean;
       context?: any;
     }[]
   >();
@@ -58,4 +100,7 @@ export class CustomTabComponent implements AfterViewInit {
     this.context = { $implicit: selectedTab.context };
   }
 
+  setActiveFilter(key: string) {
+    this.activeFilter = key;
+  }
 }

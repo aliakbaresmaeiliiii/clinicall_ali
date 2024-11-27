@@ -1,7 +1,5 @@
-import { Component, OnInit, computed, effect, signal } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { LayoutComponent } from './core/layouts/layout.component';
-import { GoogleMapComponent } from './shared/components/google-map/google-map.component';
 
 @Component({
     selector: 'app-root',

@@ -1,9 +1,9 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ServiceSectionComponent } from './components/service-section/service-section.component';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CardComponent } from './components/card/card.component';
 import { PlaceholderComponent } from './components/placeholder/placeholder.component';
-import { SepereateSectionsComponent } from './components/sepereate-sections/sepereate-sections.component';
+import { ServiceSectionComponent } from './components/service-section/service-section.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   declarations: [
@@ -16,6 +16,7 @@ import { SepereateSectionsComponent } from './components/sepereate-sections/sepe
     ServiceSectionComponent,
     CardComponent,
     PlaceholderComponent,
+    MatButtonModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
