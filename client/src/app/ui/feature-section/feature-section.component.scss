@@ -150,8 +150,8 @@
 }
 
 .swiper-slide {
-  width: 350px !important;
-  height: 413px !important;
+  max-width: 350px !important;
+  max-height: 413px !important;
   flex-shrink: 0;
   width: 100%;
   height: 100%;
