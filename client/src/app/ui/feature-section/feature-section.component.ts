@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import AOS from 'aos';
 import { interval, takeWhile } from 'rxjs';
 import Swiper from 'swiper';
+import { AmazonService } from '../shared-ui/services/amazon.service';
 
 @Component({
   selector: 'app-feature-section',
@@ -15,10 +16,22 @@ export class FeatureSectionComponent implements OnInit {
   maxCounter: number = 20;
   isLoading = false;
   router = inject(Router);
-
+  awsService = inject(AmazonService);
   exchangeRate = 42000;
 
   imagesServices = [
+    {
+      src: '../../../assets/images/ui/speciality/women.png',
+      key: 1,
+      specialty: 'Gynecologist & Obstetrician',
+      count: 3000,
+    },
+    {
+      src: '../../../assets/images/ui/speciality/women.png',
+      key: 1,
+      specialty: 'Gynecologist & Obstetrician',
+      count: 3000,
+    },
     {
       src: '../../../assets/images/ui/speciality/women.png',
       key: 1,
@@ -925,9 +938,8 @@ export class FeatureSectionComponent implements OnInit {
   urologyTips = [
     {
       title: 'Prostate Treatment',
-      imgSurgery:
-        'https://cdn.example.com/images/urology/prostate-treatment.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/urologist1.jpg',
+      imgSurgery: '',
+      doctorImg: '',
       centerName: 'Prostate Wellness Clinic',
       address: '123 Jalan Tun Razak, Kuala Lumpur, Malaysia',
       userReviews: [
@@ -940,9 +952,8 @@ export class FeatureSectionComponent implements OnInit {
     },
     {
       title: 'Kidney Stone Surgery',
-      imgSurgery:
-        'https://cdn.example.com/images/urology/kidney-stone-surgery.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/urologist2.jpg',
+      imgSurgery: '',
+      doctorImg: '',
       centerName: 'Renal Health Center',
       address: '45 Jalan Ampang, Kuala Lumpur, Malaysia',
       userReviews: [
@@ -955,8 +966,8 @@ export class FeatureSectionComponent implements OnInit {
     },
     {
       title: 'Urinary Tract Infection (UTI) Treatment',
-      imgSurgery: 'https://cdn.example.com/images/urology/uti-treatment.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/urologist3.jpg',
+      imgSurgery: '',
+      doctorImg: '',
       centerName: 'UTI Care Center',
       address: '87 Jalan Bukit Bintang, Kuala Lumpur, Malaysia',
       userReviews: [
@@ -967,117 +978,13 @@ export class FeatureSectionComponent implements OnInit {
       price: '$150',
       tip: 'Expert treatment for UTIs with quick diagnosis and effective medication.',
     },
-    {
-      title: 'Male Infertility Treatment',
-      imgSurgery: 'https://cdn.example.com/images/urology/male-infertility.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/urologist4.jpg',
-      centerName: 'Fertility Specialist Clinic',
-      address: '20 Jalan Imbi, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'We received excellent care and guidance throughout.',
-        'Highly recommend for personalized fertility solutions.',
-      ],
-      starRating: 4.8,
-      price: '$5000',
-      tip: 'Innovative solutions for male infertility, including advanced testing and treatment.',
-    },
-    {
-      title: 'Bladder Cancer Treatment',
-      imgSurgery:
-        'https://cdn.example.com/images/urology/bladder-cancer-treatment.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/urologist5.jpg',
-      centerName: 'Oncology & Urology Center',
-      address: '15 Jalan Raja Laut, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'A life-saving treatment with great care.',
-        'The doctor was knowledgeable and supportive.',
-      ],
-      starRating: 4.7,
-      price: '$10,000',
-      tip: 'Comprehensive treatment plans for bladder cancer, focusing on patient care.',
-    },
-    {
-      title: 'Erectile Dysfunction Treatment',
-      imgSurgery:
-        'https://cdn.example.com/images/urology/erectile-dysfunction.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/urologist6.jpg',
-      centerName: 'Men’s Health Clinic',
-      address: '112 Jalan Sultan Ismail, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'Effective solutions and great advice.',
-        'Very understanding doctor and supportive staff.',
-      ],
-      starRating: 4.8,
-      price: '$1200',
-      tip: 'Tailored treatment options for erectile dysfunction to restore confidence.',
-    },
-    {
-      title: 'Urinary Incontinence Management',
-      imgSurgery:
-        'https://cdn.example.com/images/urology/incontinence-treatment.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/urologist7.jpg',
-      centerName: 'Incontinence Relief Clinic',
-      address: '33 Jalan Tunku Abdul Rahman, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'Life-changing care and advice.',
-        'Highly recommended for anyone struggling with incontinence.',
-      ],
-      starRating: 4.9,
-      price: '$900',
-      tip: 'Comprehensive management plans for urinary incontinence with long-term results.',
-    },
-    {
-      title: 'Testicular Cancer Screening',
-      imgSurgery:
-        'https://cdn.example.com/images/urology/testicular-cancer-screening.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/urologist8.jpg',
-      centerName: 'Cancer Screening Center',
-      address: '55 Jalan Bangsar, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'Early detection saved my life.',
-        'Thorough screening with detailed guidance.',
-      ],
-      starRating: 4.8,
-      price: '$700',
-      tip: 'Early detection screenings to ensure timely treatment for testicular cancer.',
-    },
-    {
-      title: 'Pelvic Floor Therapy',
-      imgSurgery:
-        'https://cdn.example.com/images/urology/pelvic-floor-therapy.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/urologist9.jpg',
-      centerName: 'Pelvic Health Center',
-      address: '60 Jalan Cheras, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'A great therapy that improved my quality of life.',
-        'Professional and effective therapy sessions.',
-      ],
-      starRating: 4.9,
-      price: '$800',
-      tip: 'Effective therapy sessions for pelvic floor disorders to enhance mobility and comfort.',
-    },
-    {
-      title: 'Vasectomy Procedure',
-      imgSurgery: 'https://cdn.example.com/images/urology/vasectomy.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/urologist10.jpg',
-      centerName: 'Family Planning Clinic',
-      address: '95 Jalan Merdeka, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'Quick and painless procedure.',
-        'The doctor explained everything clearly.',
-      ],
-      starRating: 4.8,
-      price: '$600',
-      tip: 'Safe and minimally invasive vasectomy procedures for family planning.',
-    },
   ];
 
   rhinoplastyTips = [
     {
       title: 'Open Rhinoplasty',
-      imgSurgery:
-        'https://cdn.example.com/images/rhinoplasty/open-rhinoplasty.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/surgeon1.jpg',
+      imgSurgery: '',
+      doctorImg: '',
       centerName: 'Advanced Cosmetic Surgery Clinic',
       address: '12 Jalan Bukit Bintang, Kuala Lumpur, Malaysia',
       userReviews: [
@@ -1090,9 +997,8 @@ export class FeatureSectionComponent implements OnInit {
     },
     {
       title: 'Closed Rhinoplasty',
-      imgSurgery:
-        'https://cdn.example.com/images/rhinoplasty/closed-rhinoplasty.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/surgeon2.jpg',
+      imgSurgery: '',
+      doctorImg: '',
       centerName: 'Nose Reshaping Experts',
       address: '45 Jalan Ampang, Kuala Lumpur, Malaysia',
       userReviews: [
@@ -1105,8 +1011,8 @@ export class FeatureSectionComponent implements OnInit {
     },
     {
       title: 'Septoplasty',
-      imgSurgery: 'https://cdn.example.com/images/rhinoplasty/septoplasty.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/surgeon3.jpg',
+      imgSurgery: '',
+      doctorImg: '',
       centerName: 'Sinus Relief Clinic',
       address: '33 Jalan Tun Razak, Kuala Lumpur, Malaysia',
       userReviews: [
@@ -1119,9 +1025,8 @@ export class FeatureSectionComponent implements OnInit {
     },
     {
       title: 'Revision Rhinoplasty',
-      imgSurgery:
-        'https://cdn.example.com/images/rhinoplasty/revision-rhinoplasty.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/surgeon4.jpg',
+      imgSurgery: '',
+      doctorImg: '',
       centerName: 'Rhinoplasty Specialists',
       address: '87 Jalan Imbi, Kuala Lumpur, Malaysia',
       userReviews: [
@@ -1134,9 +1039,8 @@ export class FeatureSectionComponent implements OnInit {
     },
     {
       title: 'Functional Rhinoplasty',
-      imgSurgery:
-        'https://cdn.example.com/images/rhinoplasty/functional-rhinoplasty.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/surgeon5.jpg',
+      imgSurgery: '',
+      doctorImg: '',
       centerName: 'Breathing Wellness Center',
       address: '60 Jalan Cheras, Kuala Lumpur, Malaysia',
       userReviews: [
@@ -1149,9 +1053,8 @@ export class FeatureSectionComponent implements OnInit {
     },
     {
       title: 'Tip Rhinoplasty',
-      imgSurgery:
-        'https://cdn.example.com/images/rhinoplasty/tip-rhinoplasty.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/surgeon6.jpg',
+      imgSurgery: '',
+      doctorImg: '',
       centerName: 'Cosmetic Nose Surgery Clinic',
       address: '20 Jalan Sultan Ismail, Kuala Lumpur, Malaysia',
       userReviews: [
@@ -1164,8 +1067,8 @@ export class FeatureSectionComponent implements OnInit {
     },
     {
       title: 'Non-Surgical Rhinoplasty',
-      imgSurgery: 'https://cdn.example.com/images/rhinoplasty/non-surgical.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/surgeon7.jpg',
+      imgSurgery: '',
+      doctorImg: '',
       centerName: 'Aesthetic Enhancement Clinic',
       address: '112 Jalan Tunku Abdul Rahman, Kuala Lumpur, Malaysia',
       userReviews: [
@@ -1178,9 +1081,8 @@ export class FeatureSectionComponent implements OnInit {
     },
     {
       title: 'Ethnic Rhinoplasty',
-      imgSurgery:
-        'https://cdn.example.com/images/rhinoplasty/ethnic-rhinoplasty.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/surgeon8.jpg',
+      imgSurgery: '',
+      doctorImg: '',
       centerName: 'Cultural Aesthetic Surgery Center',
       address: '15 Jalan Raja Laut, Kuala Lumpur, Malaysia',
       userReviews: [
@@ -1191,43 +1093,13 @@ export class FeatureSectionComponent implements OnInit {
       price: '$4500',
       tip: 'Customized rhinoplasty preserving ethnic identity and enhancing aesthetics.',
     },
-    {
-      title: 'Teen Rhinoplasty',
-      imgSurgery:
-        'https://cdn.example.com/images/rhinoplasty/teen-rhinoplasty.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/surgeon9.jpg',
-      centerName: 'Youth Cosmetic Surgery Center',
-      address: '123 Jalan Bangsar, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'Made me feel confident and happy with my look.',
-        'Safe and age-appropriate care.',
-      ],
-      starRating: 4.7,
-      price: '$3000',
-      tip: 'Specialized care for teenagers focusing on safety and long-term outcomes.',
-    },
-    {
-      title: '3D Imaging Rhinoplasty Consultation',
-      imgSurgery:
-        'https://cdn.example.com/images/rhinoplasty/3d-consultation.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/surgeon10.jpg',
-      centerName: 'Future Vision Cosmetic Clinic',
-      address: '95 Jalan Merdeka, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'Seeing the 3D preview helped me make the right decision.',
-        'Fantastic use of technology for planning.',
-      ],
-      starRating: 4.9,
-      price: '$500 (consultation)',
-      tip: 'Advanced 3D imaging for personalized planning and visualization of results.',
-    },
   ];
 
   suggestions = [
     {
       title: 'Advanced Skin Treatment',
-      imgSurgery: 'https://cdn.example.com/images/skin-treatment.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/skin-specialist1.jpg',
+      imgSurgery: '',
+      doctorImg: '',
       centerName: 'Dermatology Excellence Clinic',
       address: '12 Jalan Sultan Ismail, Kuala Lumpur, Malaysia',
       starRating: 4.8,
@@ -1235,8 +1107,8 @@ export class FeatureSectionComponent implements OnInit {
     },
     {
       title: 'Dental Implants',
-      imgSurgery: 'https://cdn.example.com/images/dental-implants.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/dentist1.jpg',
+      imgSurgery: '',
+      doctorImg: '',
       centerName: 'Smile Care Dental Center',
       address: '45 Jalan Ampang, Kuala Lumpur, Malaysia',
       starRating: 4.9,
@@ -1244,8 +1116,8 @@ export class FeatureSectionComponent implements OnInit {
     },
     {
       title: 'Knee Replacement Surgery',
-      imgSurgery: 'https://cdn.example.com/images/knee-replacement.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/orthopedic1.jpg',
+      imgSurgery: '',
+      doctorImg: '',
       centerName: 'Orthopedic Specialist Hospital',
       address: '87 Jalan Cheras, Kuala Lumpur, Malaysia',
       starRating: 4.7,
@@ -1253,8 +1125,8 @@ export class FeatureSectionComponent implements OnInit {
     },
     {
       title: 'Lasik Eye Surgery',
-      imgSurgery: 'https://cdn.example.com/images/lasik-surgery.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/eye-specialist1.jpg',
+      imgSurgery: '',
+      doctorImg: '',
       centerName: 'Vision Enhancement Center',
       address: '60 Jalan Bukit Bintang, Kuala Lumpur, Malaysia',
       starRating: 4.9,
@@ -1262,57 +1134,12 @@ export class FeatureSectionComponent implements OnInit {
     },
     {
       title: 'Weight Loss Program',
-      imgSurgery: 'https://cdn.example.com/images/weight-loss.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/nutritionist1.jpg',
+      imgSurgery: '',
+      doctorImg: '',
       centerName: 'Wellness Clinic Malaysia',
       address: '33 Jalan Tun Razak, Kuala Lumpur, Malaysia',
       starRating: 4.8,
       tip: 'Customized diet and exercise plans to achieve your goals.',
-    },
-    {
-      title: 'Cardiology Consultation',
-      imgSurgery: 'https://cdn.example.com/images/cardiology-consultation.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/cardiologist1.jpg',
-      centerName: 'Heart Care Specialist Center',
-      address: '20 Jalan Raja Laut, Kuala Lumpur, Malaysia',
-      starRating: 4.9,
-      tip: 'Comprehensive heart health evaluations and treatment.',
-    },
-    {
-      title: 'Pediatric Vaccination',
-      imgSurgery: 'https://cdn.example.com/images/pediatric-vaccine.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/pediatrician1.jpg',
-      centerName: 'Healthy Kids Clinic',
-      address: '123 Jalan Bangsar, Kuala Lumpur, Malaysia',
-      starRating: 4.9,
-      tip: 'Ensure your child is protected with the latest vaccinations.',
-    },
-    {
-      title: 'Psychological Therapy',
-      imgSurgery: 'https://cdn.example.com/images/therapy-session.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/psychologist1.jpg',
-      centerName: 'Mind Wellness Center',
-      address: '15 Jalan Tunku Abdul Rahman, Kuala Lumpur, Malaysia',
-      starRating: 4.8,
-      tip: 'Professional therapy sessions to boost mental health.',
-    },
-    {
-      title: 'Orthodontics for Braces',
-      imgSurgery: 'https://cdn.example.com/images/braces.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/orthodontist1.jpg',
-      centerName: 'Braces and Smile Clinic',
-      address: '95 Jalan Merdeka, Kuala Lumpur, Malaysia',
-      starRating: 4.7,
-      tip: 'Straighten teeth with the latest orthodontic treatments.',
-    },
-    {
-      title: 'Physical Therapy',
-      imgSurgery: 'https://cdn.example.com/images/physical-therapy.jpg',
-      doctorImg: 'https://cdn.example.com/images/doctors/physiotherapist1.jpg',
-      centerName: 'Physio Health Recovery Clinic',
-      address: '10 Jalan Imbi, Kuala Lumpur, Malaysia',
-      starRating: 4.8,
-      tip: 'Recover and strengthen with expert physiotherapy sessions.',
     },
   ];
 
@@ -1451,64 +1278,105 @@ export class FeatureSectionComponent implements OnInit {
   ];
 
   ngOnInit() {
+    this.getImageFromAWS();
+
     this.incrementCounter();
     AOS.init({ disable: 'mobile' });
     AOS.refresh();
-    var swiper = new Swiper('.serviceSwiper', {
-      slidesPerView: 5,
-      spaceBetween: 20,
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-        renderBullet: function (index, className) {
-          return '<span class="' + className + '">' + (index + 1) + '</span>';
-        },
-      },
-    });
 
-    var swiper = new Swiper('.DermatologySwiper', {
-      slidesPerView: 3,
-      spaceBetween: 20,
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-      },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-    });
-
-    var swiper = new Swiper('.beautySwiper', {
+    const serviceSwiper = new Swiper('.serviceSwiper', {
       slidesPerView: 4,
-      spaceBetween: 20,
       centeredSlides: true,
-      // autoplay: {
-      //   delay: 2500,
-      //   disableOnInteraction: false,
-      // },
+      spaceBetween: 30,
       pagination: {
         el: '.swiper-pagination',
-        clickable: true,
+        type: 'fraction',
       },
       navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
       },
+    
     });
 
-    var swiper = new Swiper('.mySwiper', {
-      pagination: {
-        el: '.swiper-pagination',
-        type: 'progressbar',
-      },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-    });
+
+
+
+
+
+
+    // var swiper = new Swiper('.serviceSwiper', {
+    //   slidesPerView: 5,
+    //   spaceBetween: 20,
+    //   pagination: {
+    //     el: '.swiper-pagination',
+    //     clickable: true,
+    //     renderBullet: function (index, className) {
+    //       return '<span class="' + className + '">' + (index + 1) + '</span>';
+    //     },
+    //   },
+    // });
+
+    // var swiper = new Swiper('.DermatologySwiper', {
+    //   slidesPerView: 3,
+    //   spaceBetween: 20,
+    //   pagination: {
+    //     el: '.swiper-pagination',
+    //     clickable: true,
+    //   },
+    //   navigation: {
+    //     nextEl: '.swiper-button-next',
+    //     prevEl: '.swiper-button-prev',
+    //   },
+    // });
+
+    // var swiper = new Swiper('.beautySwiper', {
+    //   slidesPerView: 4,
+    //   spaceBetween: 20,
+    //   centeredSlides: true,
+    //   // autoplay: {
+    //   //   delay: 2500,
+    //   //   disableOnInteraction: false,
+    //   // },
+    //   pagination: {
+    //     el: '.swiper-pagination',
+    //     clickable: true,
+    //   },
+    //   navigation: {
+    //     nextEl: '.swiper-button-next',
+    //     prevEl: '.swiper-button-prev',
+    //   },
+    // });
+
+    // var swiper = new Swiper('.mySwiper', {
+    //   pagination: {
+    //     el: '.swiper-pagination',
+    //     type: 'progressbar',
+    //   },
+    //   navigation: {
+    //     nextEl: '.swiper-button-next',
+    //     prevEl: '.swiper-button-prev',
+    //   },
+    // });
     AOS.init({ disable: 'mobile' });
     AOS.refresh();
+  }
+
+  fileUrls: string[] = [];
+  imageUrl: any;
+
+
+
+  getImageFromAWS() {
+    this.awsService.listFolderContents().subscribe({
+      next: (blob: Blob) => {
+        this.imageUrl = URL.createObjectURL(blob); // Convert Blob to Object URL
+        console.log('👉👉👉👉👉',this.imageUrl);
+      },
+      error: (err) => {
+        console.error('Error fetching the image:', err);
+      },
+    });
   }
 
   showPost() {
@@ -1525,7 +1393,7 @@ export class FeatureSectionComponent implements OnInit {
 
   navigateToPage(data: any) {
     const getData = data.specialty;
-    console.log('👉👉👉👉',getData);
+    console.log('👉👉👉👉', getData);
 
     switch (getData) {
       case 'Dentist':

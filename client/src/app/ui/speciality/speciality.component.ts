@@ -548,16 +548,19 @@ export class SpecialityComponent implements OnInit {
   handleTabChange(index: number) {}
 
   ngOnInit(): void {
-    var swiper = new Swiper('.swiper', {
-      slidesPerView: 5,
-      spaceBetween: 20,
+    const serviceSwiper = new Swiper('.serviceSwiper', {
+      slidesPerView: 4,
+      centeredSlides: true,
+      spaceBetween: 30,
       pagination: {
         el: '.swiper-pagination',
-        clickable: true,
-        renderBullet: function (index, className) {
-          return '<span class="' + className + '">' + (index + 1) + '</span>';
-        },
+        type: 'fraction',
       },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    
     });
     // var swiper = new Swiper('.discountsSwiper', {
     //   slidesPerView: 5,
