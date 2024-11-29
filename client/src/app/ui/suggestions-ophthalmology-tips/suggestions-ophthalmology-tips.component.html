@@ -1,0 +1,25 @@
+<app-service-section [title]="'Suggestions OphthalmologyTips:'">
+    <div class="swiper ophthalmologyTipsSwiper mobile:w-full desktop:w-10/12">
+      <div class="swiper-wrapper">
+        @for (data of ophthalmologyTips; track $index) {
+        <div class="swiper-slide">
+          <div class="aos-init aos-animate">
+            <div class="">
+              <app-card
+                [title]="data.centerName"
+                [description]="data.address"
+                [name]="data.centerName"
+                [price]="data.price"
+                [imgSergury]="data.imgSurgery"
+                [doctorImg]="data.doctorImg">
+              </app-card>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+      <div class="swiper-pagination"></div>
+      <div class="swiper-button-next"></div>
+      <div class="swiper-button-prev"></div>
+    </div>
+  </app-service-section>

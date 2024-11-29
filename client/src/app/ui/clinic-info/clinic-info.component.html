@@ -1,0 +1,12 @@
+    <app-service-section [title]="'Clinic Information'">
+      <div class="flex gap-10 justify-center">
+        @for (item of cartInfo; track $index) {
+        <app-card-info
+          [title]="item.title"
+          [subtitle]="item.subtitle"
+          [description]="item.description"
+          [paragraph]="item.paragraph"
+          [image]="item.image" />
+        }
+      </div>
+    </app-service-section>
