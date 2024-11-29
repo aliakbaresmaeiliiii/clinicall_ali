@@ -44,6 +44,17 @@ import { SpecialityComponent } from './speciality/speciality.component';
 import { StepBookAppointmentComponent } from './step-book-appointment/step-book-appointment.component';
 import { UserReviewsOfClinicAliComponent } from './user-reviews-of-clinic-ali/user-reviews-of-clinic-ali.component';
 import { CustomTabComponent } from '../shared/components/custom-tab/custom-tab.component';
+import { SuggustionsServiceComponent } from './suggustions-service/suggustions-service.component';
+import { ClinicInfoComponent } from './clinic-info/clinic-info.component';
+import { DermatologyHairComponent } from './dermatology-hair/dermatology-hair.component';
+import { BookAppointmentComponent } from './book-appointment/book-appointment.component';
+import { SuggestionsSkinHairComponent } from './suggestions-skin-hair/suggestions-skin-hair.component';
+import { DentalServiceComponent } from './dental-service/dental-service.component';
+import { SuggestionsPsychologyTipsComponent } from './suggestions-psychology-tips/suggestions-psychology-tips.component';
+import { SuggestionsOphthalmologyTipsComponent } from './suggestions-ophthalmology-tips/suggestions-ophthalmology-tips.component';
+import { SuggestionsUrologyTipsComponent } from './suggestions-urology-tips/suggestions-urology-tips.component';
+import { SuggestionsRhinoplastyTipsComponent } from './suggestions-rhinoplasty-tips/suggestions-rhinoplasty-tips.component';
+import { SuggestionsComponent } from './suggestions/suggestions.component';
 
 const routes: Routes = [
   {
@@ -90,7 +101,18 @@ const routes: Routes = [
     CardInfoComponent,
     HomeComponent,
     StepBookAppointmentComponent,
-    SpecialityComponent
+    SpecialityComponent,
+    SuggustionsServiceComponent,
+    ClinicInfoComponent,
+    DermatologyHairComponent,
+    BookAppointmentComponent,
+    SuggestionsSkinHairComponent,
+    DentalServiceComponent,
+    SuggestionsPsychologyTipsComponent,
+    SuggestionsOphthalmologyTipsComponent,
+    SuggestionsUrologyTipsComponent,
+    SuggestionsRhinoplastyTipsComponent,
+    SuggestionsComponent
   ],
   imports: [
     CommonModule,
@@ -117,10 +139,7 @@ const routes: Routes = [
     MatExpansionModule,
     MatDialogModule,
     SharedUiModule,
-    CustomTabComponent
-    
-    
-    
+    CustomTabComponent,
   ],
   exports: [],
 })

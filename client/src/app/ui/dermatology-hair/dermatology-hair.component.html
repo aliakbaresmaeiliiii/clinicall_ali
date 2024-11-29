@@ -1,0 +1,33 @@
+<app-service-section [title]="'Dermatology, Hair, and Aesthetic Services'">
+    <div class="swiper dermatologySwiper mobile:w-full desktop:w-10/12">
+      <div class="swiper-wrapper">
+        @for (data of imagesDermatology; track $index) {
+        <div class="swiper-slide" >
+          <div class="single-service-box aos-init aos-animate">
+            <div class="service-thumb">
+              <div class="img-slide bg-gray-100">
+                <img class="relative" [src]="data.src" />
+              </div>
+              <div class="service-icon cursor-scale small">
+                <a routerLink="/dr-projects">
+                  <i class="fa-solid fa-arrow-trend-up text-2xl"></i>
+                </a>
+              </div>
+            </div>
+            <div class="absolute z-1 bottom-10 left-4 flex flex-col gap-2">
+              <h6 class="!text-xl text-white !font-medium text-center">
+                {{ data.specialty }}
+              </h6>
+              <h2 class="!text-base text-white !font-medium">
+                <a href="">Docor: {{ data.count }} + </a>
+              </h2>
+            </div>
+          </div>
+        </div>
+        }
+      </div>
+      <div class="swiper-pagination dermatology-pagination"></div>
+      <div class="swiper-button-next dermatology-next"></div>
+      <div class="swiper-button-prev dermatology-prev"></div>
+    </div>
+  </app-service-section>

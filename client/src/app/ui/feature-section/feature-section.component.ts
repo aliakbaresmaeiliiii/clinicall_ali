@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import AOS from 'aos';
 import { interval, takeWhile } from 'rxjs';
@@ -11,7 +11,7 @@ import { AmazonService } from '../shared-ui/services/amazon.service';
   styleUrl: './feature-section.component.scss',
   standalone: false,
 })
-export class FeatureSectionComponent implements OnInit {
+export class FeatureSectionComponent implements OnInit, AfterViewInit {
   counter: number = 0;
   maxCounter: number = 20;
   isLoading = false;
@@ -19,259 +19,8 @@ export class FeatureSectionComponent implements OnInit {
   awsService = inject(AmazonService);
   exchangeRate = 42000;
 
-  imagesServices = [
-    {
-      src: '../../../assets/images/ui/speciality/women.png',
-      key: 1,
-      specialty: 'Gynecologist & Obstetrician',
-      count: 3000,
-    },
-    {
-      src: '../../../assets/images/ui/speciality/women.png',
-      key: 1,
-      specialty: 'Gynecologist & Obstetrician',
-      count: 3000,
-    },
-    {
-      src: '../../../assets/images/ui/speciality/women.png',
-      key: 1,
-      specialty: 'Gynecologist & Obstetrician',
-      count: 3000,
-    },
-    {
-      src: '../../../assets/images/ui/speciality/skin.png',
-      key: 2,
-      specialty: 'Dermatologist & Aesthetic Specialist',
-      count: 5000,
-    },
-    {
-      src: '../../../assets/images/ui/speciality/neurologist.png',
-
-      key: 3,
-      specialty: 'Neurologist',
-      count: 5000,
-    },
-    {
-      src: '../../../assets/images/ui/speciality/psychology.png',
-      key: 4,
-      specialty: 'Psychologist',
-      count: 5000,
-    },
-
-    {
-      src: '../../../assets/images/ui/speciality/endocrinologist.png',
-      key: 6,
-      specialty: 'Urologist',
-      count: 5000,
-    },
-    {
-      src: '../../../assets/images/ui/speciality/kids.png',
-      key: 7,
-      specialty: 'Endocrinologist',
-      count: 5000,
-    },
-    {
-      src: '../../../assets/images/ui/speciality/general.png',
-      key: 8,
-      specialty: 'Pediatrician',
-      count: 5000,
-    },
-    {
-      src: '../../../assets/images/ui/speciality/orthopedist.png',
-      key: 9,
-      specialty: 'Internist',
-      count: 5000,
-    },
-    {
-      src: '../../../assets/images/ui/speciality/neurosurgeon.png',
-      key: 10,
-      specialty: 'Orthopedic Surgeon',
-      count: 5000,
-    },
-    {
-      src: '../../../assets/images/ui/speciality/cardiologist.png',
-      key: 11,
-      specialty: 'Cardiologist',
-      count: 5000,
-    },
-    {
-      src: '../../../assets/images/ui/speciality/dentist.png',
-      key: 12,
-      specialty: 'Dentist',
-      count: 5000,
-    },
-    {
-      src: '../../../assets/images/ui/speciality/ent.png',
-      key: 13,
-      specialty: 'ENT Specialist',
-      count: 5000,
-    },
-    {
-      src: '../../../assets/images/ui/speciality/eye.png',
-      key: 14,
-      specialty: 'Ophthalmologist',
-      count: 5000,
-    },
-  ];
-
-  cartInfo = [
-    {
-      title: 'Online medical consultation',
-      image: '/assets/images/ui/call.png',
-      subtitle: '',
-      description: 'Rapidiously reinvent long-term impact collaboration',
-      paragraph: '180 Doctors',
-    },
-    {
-      title: 'In-person doctor visit',
-      image: '/assets/images/ui/heart.png',
-
-      subtitle: '',
-      description: 'Seamlessly schedule appointments with nearby doctors.',
-      paragraph: '120 Clinics Available',
-    },
-    {
-      title: 'Order prescription medicines',
-      image: '/assets/images/ui/fragile-x-drug-combination.jpg',
-      subtitle: '',
-      description: 'Get your medicines delivered right to your doorstep.',
-      paragraph: '500+ Medications Available',
-    },
-    {
-      title: 'Health check-up packages',
-      image: '/assets/images/ui/discount.jpg',
-      subtitle: '',
-      description: 'Comprehensive health check-up plans for your wellbeing.',
-      paragraph: '40% Discount on Packages',
-    },
-  ];
-
-  imagesDermatology = [
-    {
-      src: '../../../assets/images/ui/imagesDermatology/service01.png',
-      key: 1,
-      specialty: 'Dentistry',
-      count: 3000,
-    },
-    {
-      src: '../../../assets/images/ui/imagesDermatology/service01.png',
-
-      key: 2,
-      specialty: 'Dermatologist and Aesthetic Specialist',
-      count: 5000,
-    },
-    {
-      src: '../../../assets/images/ui/imagesDermatology/service01.png',
-
-      key: 3,
-      specialty: 'Psychologist',
-      count: 5000,
-    },
-    {
-      src: '../../../assets/images/ui/imagesDermatology/service01.png',
-
-      key: 4,
-      specialty: 'Neurologist',
-      count: 5000,
-    },
-
-    {
-      src: '../../../assets/images/ui/imagesDermatology/service01.png',
-
-      key: 5,
-      specialty: 'Internist',
-      count: 5000,
-    },
-    {
-      src: '../../../assets/images/ui/imagesDermatology/service01.png',
-
-      key: 6,
-      specialty: 'Ophthalmologist',
-      count: 5000,
-    },
-
-    {
-      src: '../../../assets/images/ui/imagesDermatology/service01.png',
-
-      key: 7,
-      specialty: 'Nose Surgery',
-      count: 5000,
-    },
-  ];
-
-  beauty = [
-    {
-      key: 1,
-      name: 'Dentistry',
-      title: 'Botox Injection',
-      description: 'Full forehead, frown lines, feet using the Masport brand',
-      imgSergury: '../../../assets/images/ui/blog/blog.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/3.jpg',
-      promotion: '20% Off',
-
-      price: 3000,
-      off: '20%',
-    },
-    {
-      key: 2,
-      name: 'Dentistry',
-      title: 'Botox Injection',
-      description: 'Full forehead, frown lines, feet using the Masport brand',
-      imgSergury: '../../../assets/images/ui/blog/blog.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/3.jpg',
-      promotion: '20% Off',
-
-      price: 3000,
-      off: '20%',
-    },
-    {
-      key: 3,
-      name: 'Dentistry',
-      title: 'Botox Injection',
-      description: 'Full forehead, frown lines, feet using the Masport brand',
-      imgSergury: '../../../assets/images/ui/blog/blog.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/3.jpg',
-      promotion: '20% Off',
-
-      price: 3000,
-      off: '20%',
-    },
-    {
-      key: 4,
-      name: 'Dentistry',
-      title: 'Botox Injection',
-      description: 'Full forehead, frown lines, feet using the Masport brand',
-      imgSergury: '../../../assets/images/ui/blog/blog.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/3.jpg',
-      promotion: '20% Off',
-      price: 3000,
-      off: '20%',
-    },
-
-    {
-      key: 5,
-      name: 'Dentistry',
-      title: 'Botox Injection',
-      description: 'Full forehead, frown lines, feet using the Masport brand',
-      imgSergury: '../../../assets/images/ui/blog/blog.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/3.jpg',
-      promotion: '20% Off',
-      price: 3000,
-      off: '20%',
-    },
-
-    {
-      key: 6,
-      name: 'Dentistry',
-      title: 'Botox Injection',
-      description: 'Full forehead, frown lines, feet using the Masport brand',
-      imgSergury: '../../../assets/images/ui/blog/blog.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/3.jpg',
-      promotion: '20% Off',
-      price: 3000,
-      off: '20%',
-    },
-  ];
+  fileUrls: string[] = [];
+  imageUrl: any;
 
   dental = [
     {
@@ -508,478 +257,6 @@ export class FeatureSectionComponent implements OnInit {
     },
   ];
 
-  psychologyTips = [
-    {
-      imgSergury: '../../../assets/images/ui/psychologyTips/1.jpg',
-      doctorImg: '../../.././assets/images/ui/doctors/5.jpg',
-      centerName: 'Hope Counseling Center',
-      address: '123 Wellness Street, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'Excellent service and professional counselors!',
-        'A very supportive environment for personal growth.',
-      ],
-      starRating: 4.8,
-      promotion: '20% Off',
-      pricePerSession: '4000$',
-      tip: 'In-person individual counseling to improve mental well-being.',
-    },
-    {
-      imgSergury: '../../../assets/images/ui/psychologyTips/2.jpg',
-      doctorImg: '../../.././assets/images/ui/doctors/5.jpg',
-      centerName: 'Peaceful Minds Therapy',
-      address: '456 Serenity Avenue, Johor Bahru, Malaysia',
-      userReviews: [
-        'Great therapists who really listen.',
-        'Highly recommended for stress management.',
-      ],
-      starRating: 4.7,
-      promotion: '20% Off',
-      pricePerSession: '60$ (60-minute session)',
-      tip: 'Group therapy sessions to build resilience and community support.',
-    },
-    {
-      imgSergury: '../../../assets/images/ui/psychologyTips/3.jpg',
-      doctorImg: '../../.././assets/images/ui/doctors/5.jpg',
-      centerName: 'Harmony Psychological Services',
-      address: '789 Balance Road, Penang, Malaysia',
-      userReviews: [
-        'Helped me overcome anxiety with practical techniques.',
-        'The atmosphere is very calming and welcoming.',
-      ],
-      starRating: 4.6,
-      promotion: '20% Off',
-      pricePerSession: '50$ (45-minute session)',
-      tip: 'Online therapy options available for convenience.',
-    },
-    {
-      imgSergury: '../../../assets/images/ui/psychologyTips/4.jpg',
-      doctorImg: '../../.././assets/images/ui/doctors/5.jpg',
-      centerName: 'Mindful Journey Center',
-      address: '10 Peace Lane, Malacca, Malaysia',
-      userReviews: [
-        'Their mindfulness sessions are life-changing.',
-        'Friendly staff and highly skilled psychologists.',
-      ],
-      starRating: 4.9,
-      promotion: '20% Off',
-      pricePerSession: '65$ (60-minute session)',
-      tip: 'Specializes in mindfulness and stress reduction therapies.',
-    },
-    {
-      imgSergury: '../../../assets/images/ui/psychologyTips/5.jpg',
-      doctorImg: '../../.././assets/images/ui/doctors/5.jpg',
-      centerName: 'Bright Horizons Therapy',
-      address: '55 Positive Way, Ipoh, Malaysia',
-      userReviews: [
-        'Helped me with effective anger management techniques.',
-        'I feel more in control of my emotions.',
-      ],
-      starRating: 4.5,
-      promotion: '20% Off',
-      pricePerSession: '80$ (60-minute session)',
-      tip: 'Focus on emotional regulation and positive thinking.',
-    },
-    {
-      imgSergury: '../../../assets/images/ui/psychologyTips/6.jpg',
-      doctorImg: '../../.././assets/images/ui/doctors/5.jpg',
-      centerName: 'Balance Mental Health Clinic',
-      address: '32 Stability Drive, Kuching, Malaysia',
-      userReviews: [
-        'Highly recommended for work-life balance issues.',
-        'I gained valuable insights into my personal challenges.',
-      ],
-      starRating: 4.7,
-      promotion: '20% Off',
-      pricePerSession: '70$ (60-minute session)',
-      tip: 'Tailored programs for work-life balance and productivity.',
-    },
-    {
-      imgSergury: '../../../assets/images/ui/psychologyTips/7.jpg',
-      doctorImg: '../../.././assets/images/ui/doctors/5.jpg',
-      centerName: 'Tranquil Thoughts Therapy',
-      address: '45 Relaxation Avenue, Kota Kinabalu, Malaysia',
-      userReviews: [
-        'A peaceful environment for mental relaxation.',
-        'Therapists are incredibly empathetic and understanding.',
-      ],
-      starRating: 4.8,
-      promotion: '20% Off',
-      pricePerSession: '55$ (45-minute session)',
-      tip: 'Relaxation techniques and anxiety management sessions.',
-    },
-    {
-      imgSergury: '../../../assets/images/ui/psychologyTips/8.jpg',
-      doctorImg: '../../.././assets/images/ui/doctors/5.jpg',
-      centerName: 'Healing Minds Counseling',
-      address: '89 Recovery Street, Shah Alam, Malaysia',
-      userReviews: [
-        'Helped me heal from past trauma.',
-        'The staff is very caring and supportive.',
-      ],
-      starRating: 4.9,
-      promotion: '20% Off',
-      pricePerSession: '90$ (75-minute session)',
-      tip: 'Specialized in trauma recovery and emotional healing.',
-    },
-    {
-      imgSergury: '../../../assets/images/ui/psychologyTips/9.jpg',
-      doctorImg: '../../.././assets/images/ui/doctors/5.jpg',
-      centerName: 'Insight Therapy Center',
-      address: '12 Clarity Boulevard, Putrajaya, Malaysia',
-      userReviews: [
-        'I gained new perspectives on my challenges.',
-        'Their insights were very impactful for my growth.',
-      ],
-      starRating: 4.7,
-      promotion: '20% Off',
-      pricePerSession: '75$ (60-minute session)',
-      tip: 'Provides clarity and insight into personal issues.',
-    },
-    {
-      imgSergury: '../../../assets/images/ui/psychologyTips/10.jpg',
-      doctorImg: '../../.././assets/images/ui/doctors/5.jpg',
-      centerName: 'Serene Path Counseling',
-      address: '34 Calm Road, George Town, Malaysia',
-      userReviews: [
-        'The sessions improved my confidence greatly.',
-        'Very professional and compassionate service.',
-      ],
-      starRating: 4.6,
-      promotion: '20% Off',
-      pricePerSession: '85$ (60-minute session)',
-      tip: 'Building self-esteem and confidence through therapy.',
-    },
-    // Additional entries follow the same format...
-  ];
-
-  ophthalmologyTips = [
-    {
-      title: 'Femto-SMILE',
-      imgSurgery: '../../../assets/images/ui/ophthalmologyTips/1.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/1.jpg',
-      centerName: 'Visionary Eye Center',
-      address: '123 Jalan Tun Razak, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'Exceptional service and modern facilities!',
-        'I had an amazing experience with their advanced treatments.',
-      ],
-      starRating: 4.9,
-      price: '2500$',
-      tip: 'A minimally invasive laser eye surgery for vision correction.',
-    },
-    {
-      title: 'Cataract Surgery',
-      imgSurgery: '../../../assets/images/ui/ophthalmologyTips/1.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/2.jpg',
-      centerName: 'Bright Eyes Clinic',
-      address: '456 Jalan Gasing, Petaling Jaya, Malaysia',
-      userReviews: [
-        'The cataract surgery was smooth and painless.',
-        'Highly professional staff and a caring environment.',
-      ],
-      starRating: 4.8,
-      price: '3000$',
-      tip: 'Safe and effective removal of cataracts for clearer vision.',
-    },
-    {
-      title: 'LASIK',
-      imgSurgery: '../../../assets/images/ui/ophthalmologyTips/1.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/3.jpg',
-      centerName: 'Perfect Vision Center',
-      address: '789 Jalan Sultan Ismail, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'My vision is perfect now thanks to their LASIK procedure.',
-        'State-of-the-art technology and great post-care service.',
-      ],
-      starRating: 4.9,
-      price: '2000$',
-      tip: 'Quick and effective laser eye surgery to correct refractive errors.',
-    },
-    {
-      title: 'Glaucoma Treatment',
-      imgSurgery: '../../../assets/images/ui/ophthalmologyTips/1.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/4.jpg',
-      centerName: 'Eye Wellness Clinic',
-      address: '21 Jalan Meru, Klang, Malaysia',
-      userReviews: [
-        'They helped manage my glaucoma with care and expertise.',
-        'Highly recommend for anyone with eye pressure issues.',
-      ],
-      starRating: 4.7,
-      price: '1500$',
-      tip: 'Comprehensive care for managing intraocular pressure effectively.',
-    },
-    {
-      title: 'Retinal Surgery',
-      imgSurgery: '../../../assets/images/ui/ophthalmologyTips/1.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/5.jpg',
-      centerName: 'Advanced Retina Center',
-      address: '33 Jalan Tebrau, Johor Bahru, Malaysia',
-      userReviews: [
-        'Their expertise in retinal care is unmatched.',
-        'I felt confident throughout my treatment process.',
-      ],
-      starRating: 4.8,
-      price: '4000$',
-      tip: 'Specialized surgery for retinal detachment and other retinal issues.',
-    },
-    {
-      title: 'Dry Eye Treatment',
-      imgSurgery: '../../../assets/images/ui/ophthalmologyTips/1.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/6.jpg',
-      centerName: 'Comfort Vision Clinic',
-      address: '55 Jalan Air Itam, George Town, Malaysia',
-      userReviews: [
-        'Their treatment relieved my dry eye symptoms significantly.',
-        'The clinic is very clean, and the staff is super friendly.',
-      ],
-      starRating: 4.6,
-      price: '1200$',
-      tip: 'Effective solutions for chronic dry eye problems.',
-    },
-    {
-      title: 'Corneal Transplant',
-      imgSurgery: '../../../assets/images/ui/ophthalmologyTips/1.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/7.jpg',
-      centerName: 'Cornea Care Center',
-      address: '14 Jalan Lintas, Kota Kinabalu, Malaysia',
-      userReviews: [
-        'Professional and compassionate care for my transplant.',
-        'I now have clear vision thanks to their expertise.',
-      ],
-      starRating: 4.9,
-      price: '5000$',
-      tip: 'Restores vision by replacing damaged corneal tissue.',
-    },
-    {
-      title: 'Pediatric Ophthalmology',
-      imgSurgery: '../../../assets/images/ui/ophthalmologyTips/1.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/8.jpg',
-      centerName: 'Little Eyes Clinic',
-      address: '28 Jalan Wong Ah Fook, Johor Bahru, Malaysia',
-      userReviews: [
-        'Great care for children’s eye problems.',
-        'They made my child feel comfortable during the treatment.',
-      ],
-      starRating: 4.8,
-      price: '1800$',
-      tip: 'Expert eye care services for children and adolescents.',
-    },
-    {
-      title: 'Orthokeratology',
-      imgSurgery: '../../../assets/images/ui/ophthalmologyTips/1.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/9.jpg',
-      centerName: 'Vision Shapers Center',
-      address: '40 Jalan Ampang, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'Their night lenses have improved my eyesight.',
-        'A unique approach to managing myopia progression.',
-      ],
-      starRating: 4.7,
-      price: '2500$',
-      tip: 'Non-surgical vision correction using customized contact lenses.',
-    },
-    {
-      title: 'Eye Screening',
-      imgSurgery: '../../../assets/images/ui/ophthalmologyTips/1.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/10.jpg',
-      centerName: 'Complete Vision Care',
-      address: '90 Jalan Ipoh, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'Comprehensive screening and detailed explanations.',
-        'The staff was very thorough and professional.',
-      ],
-      starRating: 4.8,
-      price: '100$',
-      tip: 'Routine eye examinations to detect and prevent vision problems.',
-    },
-    {
-      title: 'Contact Lens Fitting',
-      imgSurgery: '../../../assets/images/ui/ophthalmologyTips/1.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/11.jpg',
-      centerName: 'Lens Experts Clinic',
-      address: '22 Jalan Melaka, Melaka City, Malaysia',
-      userReviews: [
-        'Perfectly fitted contact lenses for my needs.',
-        'The staff were patient and helpful in selecting lenses.',
-      ],
-      starRating: 4.8,
-      price: '300$',
-      tip: 'Personalized contact lens fitting for optimal comfort and vision.',
-    },
-    {
-      title: 'Diabetic Retinopathy Treatment',
-      imgSurgery: '../../../assets/images/ui/ophthalmologyTips/1.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/12.jpg',
-      centerName: 'Vision Plus Diabetes Care',
-      address: '10 Jalan Tun Fuad, Sabah, Malaysia',
-      userReviews: [
-        'Excellent care for diabetic eye conditions.',
-        'The doctor explained everything clearly.',
-      ],
-      starRating: 4.7,
-      price: '3500$',
-      tip: 'Specialized treatment for diabetes-related eye problems.',
-    },
-    {
-      title: 'Eyelid Surgery',
-      imgSurgery: '../../../assets/images/ui/ophthalmologyTips/1.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/13.jpg',
-      centerName: 'Eye Beauty Center',
-      address: '80 Jalan Alor, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'My eyelids feel and look amazing after the surgery.',
-        'Great results and caring doctors.',
-      ],
-      starRating: 4.9,
-      price: '2000$',
-      tip: 'Cosmetic and functional surgeries for eyelids.',
-    },
-    {
-      title: 'Strabismus Surgery',
-      imgSurgery: '../../../assets/images/ui/ophthalmologyTips/1.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/14.jpg',
-      centerName: 'Aligned Vision Clinic',
-      address: '15 Jalan Bukit Bintang, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'My child’s strabismus is completely corrected.',
-        'Thankful for their professional approach.',
-      ],
-      starRating: 4.8,
-      price: '2500$',
-      tip: 'Surgery to correct eye misalignment for improved vision.',
-    },
-    {
-      title: 'Macular Degeneration Treatment',
-      imgSurgery: '../../../assets/images/ui/ophthalmologyTips/1.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/15.jpg',
-      centerName: 'Retina Vision Center',
-      address: '60 Jalan Penang, George Town, Malaysia',
-      userReviews: [
-        'Top-notch care for my macular degeneration.',
-        'Highly skilled doctors and great results.',
-      ],
-      starRating: 4.8,
-      price: '5000$',
-      tip: 'Advanced treatments to slow vision loss due to macular degeneration.',
-    },
-    {
-      title: 'Eye Trauma Surgery',
-      imgSurgery: '../../../assets/images/ui/ophthalmologyTips/1.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/16.jpg',
-      centerName: 'Emergency Eye Center',
-      address: '30 Jalan Raja Laut, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'Saved my eye after a severe injury.',
-        'Quick and expert response to my emergency.',
-      ],
-      starRating: 4.9,
-      price: '4500$',
-      tip: 'Urgent care and surgery for traumatic eye injuries.',
-    },
-    {
-      title: 'Eye Prosthetics',
-      imgSurgery: '../../../assets/images/ui/ophthalmologyTips/1.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/17.jpg',
-      centerName: 'Vision Aesthetics Center',
-      address: '77 Jalan Imbi, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'My prosthetic eye looks completely natural.',
-        'Wonderful service and attention to detail.',
-      ],
-      starRating: 4.9,
-      price: '3500$',
-      tip: 'Custom prosthetic eyes for improved aesthetics and confidence.',
-    },
-    {
-      title: 'Optical Coherence Tomography (OCT)',
-      imgSurgery: '../../../assets/images/ui/ophthalmologyTips/1.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/18.jpg',
-      centerName: 'Tech-Eye Diagnostics',
-      address: '42 Jalan Ampang, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'Detailed imaging helped diagnose my eye issue accurately.',
-        'Quick and precise service.',
-      ],
-      starRating: 4.8,
-      price: '1500$',
-      tip: 'Advanced imaging for diagnosing eye conditions.',
-    },
-    {
-      title: 'Vision Therapy',
-      imgSurgery: '../../../assets/images/ui/ophthalmologyTips/1.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/19.jpg',
-      centerName: 'Eye Strength Center',
-      address: '90 Jalan Ipoh, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'My vision has improved drastically after therapy sessions.',
-        'Friendly and experienced therapists.',
-      ],
-      starRating: 4.7,
-      price: '800$',
-      tip: 'Customized therapy to strengthen and improve visual skills.',
-    },
-    {
-      title: 'Eye Tumor Surgery',
-      imgSurgery: '../../../assets/images/ui/ophthalmologyTips/1.jpg',
-      doctorImg: '../../../assets/images/ui/doctors/20.jpg',
-      centerName: 'Vision Oncology Center',
-      address: '50 Jalan Raja Chulan, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'My tumor was removed successfully with great care.',
-        'The team is extremely skilled and compassionate.',
-      ],
-      starRating: 4.9,
-      price: '7000$',
-      tip: 'Specialized care for eye tumors with precision surgery.',
-    },
-  ];
-
-  urologyTips = [
-    {
-      title: 'Prostate Treatment',
-      imgSurgery: '',
-      doctorImg: '',
-      centerName: 'Prostate Wellness Clinic',
-      address: '123 Jalan Tun Razak, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'Highly effective treatment with no side effects.',
-        'The doctor was professional and very caring.',
-      ],
-      starRating: 4.8,
-      price: '$3000',
-      tip: 'Advanced treatments for prostate issues to prevent long-term complications.',
-    },
-    {
-      title: 'Kidney Stone Surgery',
-      imgSurgery: '',
-      doctorImg: '',
-      centerName: 'Renal Health Center',
-      address: '45 Jalan Ampang, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'The surgery was smooth and the recovery quick.',
-        'State-of-the-art facilities and great post-surgery care.',
-      ],
-      starRating: 4.7,
-      price: '$3500',
-      tip: 'Minimally invasive procedures for safe and quick kidney stone removal.',
-    },
-    {
-      title: 'Urinary Tract Infection (UTI) Treatment',
-      imgSurgery: '',
-      doctorImg: '',
-      centerName: 'UTI Care Center',
-      address: '87 Jalan Bukit Bintang, Kuala Lumpur, Malaysia',
-      userReviews: [
-        'The doctor provided clear advice and quick relief.',
-        'Effective medication with no side effects.',
-      ],
-      starRating: 4.9,
-      price: '$150',
-      tip: 'Expert treatment for UTIs with quick diagnosis and effective medication.',
-    },
-  ];
-
   rhinoplastyTips = [
     {
       title: 'Open Rhinoplasty',
@@ -1092,54 +369,6 @@ export class FeatureSectionComponent implements OnInit {
       starRating: 4.9,
       price: '$4500',
       tip: 'Customized rhinoplasty preserving ethnic identity and enhancing aesthetics.',
-    },
-  ];
-
-  suggestions = [
-    {
-      title: 'Advanced Skin Treatment',
-      imgSurgery: '',
-      doctorImg: '',
-      centerName: 'Dermatology Excellence Clinic',
-      address: '12 Jalan Sultan Ismail, Kuala Lumpur, Malaysia',
-      starRating: 4.8,
-      tip: 'Rejuvenate your skin with personalized treatment plans.',
-    },
-    {
-      title: 'Dental Implants',
-      imgSurgery: '',
-      doctorImg: '',
-      centerName: 'Smile Care Dental Center',
-      address: '45 Jalan Ampang, Kuala Lumpur, Malaysia',
-      starRating: 4.9,
-      tip: 'Permanent and natural-looking solutions for missing teeth.',
-    },
-    {
-      title: 'Knee Replacement Surgery',
-      imgSurgery: '',
-      doctorImg: '',
-      centerName: 'Orthopedic Specialist Hospital',
-      address: '87 Jalan Cheras, Kuala Lumpur, Malaysia',
-      starRating: 4.7,
-      tip: 'Regain mobility and comfort with cutting-edge joint surgery.',
-    },
-    {
-      title: 'Lasik Eye Surgery',
-      imgSurgery: '',
-      doctorImg: '',
-      centerName: 'Vision Enhancement Center',
-      address: '60 Jalan Bukit Bintang, Kuala Lumpur, Malaysia',
-      starRating: 4.9,
-      tip: 'Achieve clear vision without glasses or contact lenses.',
-    },
-    {
-      title: 'Weight Loss Program',
-      imgSurgery: '',
-      doctorImg: '',
-      centerName: 'Wellness Clinic Malaysia',
-      address: '33 Jalan Tun Razak, Kuala Lumpur, Malaysia',
-      starRating: 4.8,
-      tip: 'Customized diet and exercise plans to achieve your goals.',
     },
   ];
 
@@ -1278,102 +507,70 @@ export class FeatureSectionComponent implements OnInit {
   ];
 
   ngOnInit() {
-    this.getImageFromAWS();
-
     this.incrementCounter();
     AOS.init({ disable: 'mobile' });
     AOS.refresh();
 
-    const serviceSwiper = new Swiper('.serviceSwiper', {
+    AOS.init({ disable: 'mobile' });
+    AOS.refresh();
+  }
+
+  ngAfterViewInit(): void {}
+
+  suggestionsDentalSwiper(): void {
+    new Swiper('.cardSwiper', {
       slidesPerView: 4,
+      spaceBetween: 1,
       centeredSlides: true,
-      spaceBetween: 30,
       pagination: {
         el: '.swiper-pagination',
-        type: 'fraction',
+        clickable: true,
       },
       navigation: {
         nextEl: '.swiper-button-next',
         prevEl: '.swiper-button-prev',
       },
-    
     });
-
-
-
-
-
-
-
-    // var swiper = new Swiper('.serviceSwiper', {
-    //   slidesPerView: 5,
-    //   spaceBetween: 20,
-    //   pagination: {
-    //     el: '.swiper-pagination',
-    //     clickable: true,
-    //     renderBullet: function (index, className) {
-    //       return '<span class="' + className + '">' + (index + 1) + '</span>';
-    //     },
-    //   },
-    // });
-
-    // var swiper = new Swiper('.DermatologySwiper', {
-    //   slidesPerView: 3,
-    //   spaceBetween: 20,
-    //   pagination: {
-    //     el: '.swiper-pagination',
-    //     clickable: true,
-    //   },
-    //   navigation: {
-    //     nextEl: '.swiper-button-next',
-    //     prevEl: '.swiper-button-prev',
-    //   },
-    // });
-
-    // var swiper = new Swiper('.beautySwiper', {
-    //   slidesPerView: 4,
-    //   spaceBetween: 20,
-    //   centeredSlides: true,
-    //   // autoplay: {
-    //   //   delay: 2500,
-    //   //   disableOnInteraction: false,
-    //   // },
-    //   pagination: {
-    //     el: '.swiper-pagination',
-    //     clickable: true,
-    //   },
-    //   navigation: {
-    //     nextEl: '.swiper-button-next',
-    //     prevEl: '.swiper-button-prev',
-    //   },
-    // });
-
-    // var swiper = new Swiper('.mySwiper', {
-    //   pagination: {
-    //     el: '.swiper-pagination',
-    //     type: 'progressbar',
-    //   },
-    //   navigation: {
-    //     nextEl: '.swiper-button-next',
-    //     prevEl: '.swiper-button-prev',
-    //   },
-    // });
-    AOS.init({ disable: 'mobile' });
-    AOS.refresh();
+  }
+  dentalServiceSwiper(): void {
+    new Swiper('.cardSwiper', {
+      slidesPerView: 4,
+      spaceBetween: 1,
+      centeredSlides: true,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
   }
 
-  fileUrls: string[] = [];
-  imageUrl: any;
-
-
+  initializedentalSwiper(): void {
+    new Swiper('.dentalSwiper', {
+      slidesPerView: 4,
+      spaceBetween: 30,
+      centeredSlides: true,
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
+  }
 
   getImageFromAWS() {
     this.awsService.listFolderContents().subscribe({
       next: (blob: Blob) => {
         this.imageUrl = URL.createObjectURL(blob); // Convert Blob to Object URL
-        console.log('👉👉👉👉👉',this.imageUrl);
+        console.log('👉👉👉👉👉', this.imageUrl);
       },
-      error: (err) => {
+      error: err => {
         console.error('Error fetching the image:', err);
       },
     });
