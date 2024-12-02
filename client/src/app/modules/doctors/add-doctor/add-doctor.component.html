@@ -85,12 +85,12 @@
           </mat-select>
         </mat-form-field>
         <!-- *****Mobile***** -->
-        <mat-form-field
+        <!-- <mat-form-field
           data-testing="phoneNumber"
           appearance="outline"
           class="w-full">
           <mat-label>Mobile</mat-label>
-          <!-- <ngx-mat-intl-tel-input
+          <ngx-mat-intl-tel-input
             [preferredCountries]="['my']"
             [enablePlaceholder]="true"
             placeholder="Write your phone number..."
@@ -99,9 +99,8 @@
             [required]="true"
             formControlName="mobile"
             (cdkAutofill)="onAutofill($event)"
-            [dir]="textDirection"></ngx-mat-intl-tel-input> -->
+            [dir]="textDirection"></ngx-mat-intl-tel-input>
 
-          <!-- Error handling -->
           <mat-error
             *ngIf="mobile?.hasError('mobile') && !mobile?.hasError('required')"
             >Please enter a valid mobile</mat-error
@@ -116,7 +115,7 @@
           <mat-error *ngIf="phoneExists === false" class="success">
             This phone number is available.
           </mat-error>
-        </mat-form-field>
+        </mat-form-field> -->
       </div>
       <div class="desktop:grid grid-cols-2 gap-3">
         <!-- *****Year of birth***** -->

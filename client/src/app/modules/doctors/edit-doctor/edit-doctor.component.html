@@ -55,15 +55,14 @@
     </div>
     <div class="desktop:grid grid-cols-2 gap-3">
       <!-- *****Mobile***** -->
-      <mat-form-field data-testing="mobile" appearance="outline" class="w-full">
+      <!-- <mat-form-field data-testing="mobile" appearance="outline" class="w-full">
         <mat-label>Mobile</mat-label>
-        <!-- <ngx-mat-intl-tel-input
+     <ngx-mat-intl-tel-input
           [preferredCountries]="['my']"
           [enablePlaceholder]="true"
           [enableSearch]="true"
           name="mobile"
-          formControlName="mobile"></ngx-mat-intl-tel-input> -->
-        <!-- Error handling -->
+          formControlName="mobile"></ngx-mat-intl-tel-input> 
         <mat-error
           *ngIf="mobile?.hasError('mobile') && !mobile?.hasError('required')"
           >Please enter a valid mobile</mat-error
@@ -71,7 +70,7 @@
         <mat-error *ngIf="mobile?.hasError('required')"
           >mobile is <strong>required</strong></mat-error
         >
-      </mat-form-field>
+      </mat-form-field> -->
       <!-- *****Age***** -->
       <mat-form-field data-testing="Age" appearance="outline" class="w-full">
         <mat-label>Age</mat-label>

@@ -76,7 +76,6 @@ export class AddDoctorComponent extends BaseComponent implements AfterViewInit {
   }
   ngAfterViewInit(): void {
     this.shareService.getStoreProfileImg$.subscribe(res => {
-      debugger;
       this.profileImg = res;
       this.shareService.setLoading(false);
       console.log('File:📁', this.profileImg);
@@ -120,7 +119,6 @@ export class AddDoctorComponent extends BaseComponent implements AfterViewInit {
   }
 
   onSubmit() {
-    debugger;
     if (this.profileImg) {
 
       const imgProfile = this.profileImg;

@@ -141,18 +141,17 @@
   </div>
   <div class="desktop:grid grid-cols-2 gap-3">
     <!-- *****Contact Number***** -->
-    <mat-form-field
+    <!-- <mat-form-field
       data-testing="phoneNumber"
       appearance="outline"
       class="w-full">
       <mat-label>Contact Number</mat-label>
-      <!-- <ngx-mat-intl-tel-input
+      <ngx-mat-intl-tel-input
         [preferredCountries]="['my']"
         [enablePlaceholder]="true"
         [enableSearch]="true"
         name="phoneNumber"
-        formControlName="phoneNumber"></ngx-mat-intl-tel-input> -->
-      <!-- Error handling -->
+        formControlName="phoneNumber"></ngx-mat-intl-tel-input>
       <mat-error
         *ngIf="
           phoneNumber?.hasError('phoneNumber') &&
@@ -163,7 +162,7 @@
       <mat-error *ngIf="phoneNumber?.hasError('required')"
         >phoneNumber is <strong>required</strong></mat-error
       >
-    </mat-form-field>
+    </mat-form-field> -->
     <!-- *****Select Country***** -->
     <mat-form-field data-testing="gender" appearance="outline" class="w-full">
       <mat-label>Select Country</mat-label>

@@ -590,7 +590,6 @@ export class FeatureSectionComponent implements OnInit, AfterViewInit {
 
   navigateToPage(data: any) {
     const getData = data.specialty;
-    console.log('👉👉👉👉', getData);
 
     switch (getData) {
       case 'Dentist':
@@ -600,6 +599,5 @@ export class FeatureSectionComponent implements OnInit, AfterViewInit {
       default:
         break;
     }
-    debugger;
   }
 }
