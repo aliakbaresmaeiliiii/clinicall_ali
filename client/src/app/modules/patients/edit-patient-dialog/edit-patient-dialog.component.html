@@ -1,5 +1,4 @@
-<div mat-dialog-title>
-  <div class="">
+<div mat-dialog-title >
     <img
       crossorigin="anonymous"
       [src]="patientData.profileImage"
@@ -7,14 +6,13 @@
       width="50"
       height="50"
       [alt]="" />
-  </div>
   <div class="text-sm font-medium flex items-center">
-    {{ patientData.patientName }}  
+    {{ patientData.patientName }}
   </div>
 </div>
-<mat-dialog-content class="mat-typography">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="pt-1">
-    <div class="desktop:grid grid-cols-2 gap-3">
+<mat-dialog-content class="mat-typography ">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" >
+    <div class="desktop:grid grid-cols-2 gap-3 mt-4">
       <!-- *****patientName***** -->
       <mat-form-field
         data-testing="patientName"
@@ -30,7 +28,8 @@
         <!-- Error handling -->
         <mat-error
           *ngIf="
-            patientName?.hasError('patientName') && !patientName?.hasError('required')
+            patientName?.hasError('patientName') &&
+            !patientName?.hasError('required')
           "
           >Please enter a valid patientName</mat-error
         >
@@ -49,10 +48,6 @@
           banned</mat-error
         >
       </mat-form-field>
-
-    </div>
-    <div class="desktop:grid grid-cols-2 gap-3">
-      <!-- *****gender***** -->
       <mat-radio-group aria-label="Select an option">
         <label for="item">Gender :</label>
         @for (item of genders; track $index) {
@@ -61,6 +56,10 @@
         }}</mat-radio-button>
         }
       </mat-radio-group>
+    </div>
+    <div class="desktop:grid grid-cols-2 gap-3">
+      <!-- *****gender***** -->
+
       <!-- *****Mobile***** -->
       <!-- <mat-form-field
         data-testing="phoneNumber"

@@ -1,4 +1,4 @@
-<div class="rounded-lg flex justify-between items-center border-0 bg-white">
+<div class="rounded-lg flex justify-between items-center border-0">
   <div class="flex items-center gap-4 pl-4">
     <h2 class="text-xs font-medium">Patient</h2>
     <div class="pt-2">
@@ -95,7 +95,7 @@
         <ng-container matColumnDef="patientName">
           <th mat-header-cell *matHeaderCellDef>PatientName</th>
           <td mat-cell *matCellDef="let element">
-            {{ element.patientName }} 
+            {{ element.patientName }}
           </td>
         </ng-container>
         <!-- gender Column -->
@@ -196,7 +196,6 @@
                 matTooltip="Delete Patient"
                 mat-icon-button
                 (click)="deletePatient(element, '250ms', '150ms')">
-        
                 <i class="fa-regular fa-trash-can text-red-500 text-xl"></i>
               </button>
             </div>
