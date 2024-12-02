@@ -1,14 +1,18 @@
   .sidenav {
-  width: 260px;
+  max-width: 280px!important;
   padding: 0 8px;
   box-sizing: border-box;
   top: 60px;
+
+
 }
 
 .menu-button {
   transition: 300ms ease-in-out;
   transform: rotate(0deg);
   display: flex;
+  flex-direction: column;
+  justify-content: start;
 }
 
 .submenu {
@@ -24,16 +28,16 @@
 }
 
 .active-menu-item {
-  background-color: #2196f3; /* Blue background */
+  background-color: #581C87; /* Blue background */
   color: white; /* White text */
 }
 
 .active-menu-item:hover {
-  background-color: #1e88e5; /* Darker blue on hover when active */
+  background-color: #581C87; /* Darker blue on hover when active */
 }
 
 .focused-item {
-  background-color: #3182ce; 
+  background-color: #581C87; 
   border-radius: 25px;
   color: white; 
 }

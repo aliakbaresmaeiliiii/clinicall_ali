@@ -1,14 +1,14 @@
-<mat-sidenav-container class="sidenav-container">
+<mat-sidenav-container>
   <mat-sidenav
     #drawer
-    class="sidenav"
+    class="sidenav bg-blue-200"
     fixedInViewport
     [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
     [mode]="(isHandset$ | async) ? 'over' : 'side'"
     [opened]="(isHandset$ | async) === false">
     <mat-toolbar class="flex justify-center items-center gap-2">
       <img src="../../../../assets/images/icons/logo.png" alt="" />
-      <strong>Cilivia</strong>
+      <strong>Yours Doctor</strong>
     </mat-toolbar>
     <div class="flex flex-col justify-center items-center p-6 gap-4">
       <div class="w-20 m-auto">
@@ -29,11 +29,11 @@
     } @for (menuName of getMenuNames(); track $index) { @for (item of
     groupedData[menuName]; track item ) {
     <div
-      class="w-full bg-cover hover:bg-blue-100 hover:shadow-inner focus:bg-white transition-all rounded-2xl ease-linear duration-500">
+      class="w-full bg-cover transition-all text-purple-900 hover:bg-purple-900 px-4 hover:text-white hover:shadow-inner focus:bg-purple-900 rounded-2xl ease-linear duration-200">
       <!-- (click)="toggleSubmenu(item)" -->
       <a
-      (click)="toggleMenu(item)"
-        class="cursor-pointer dark:hover:text-blue-300 mb-4 w-5/6 flex flex-col"
+        (click)="toggleMenu(item)"
+        class="cursor-pointer mb-4 w-full flex flex-col font-semibold"
         mat-list-item
         [ngClass]="{
           'selected-menu-item': isRouteActive(item.path),
@@ -41,23 +41,19 @@
         }"
         #link="routerLinkActive"
         routerLinkActive
-        [activated]="link.isActive"
-        >
-        <div
-          class="focus:text-black flex items-center justify-between hover:text-blue-950 text-blue-950 p-1">
+        [activated]="link.isActive">
+        <div class="focus:text-black flex items-center justify-between p-1">
           <div class="flex items-center cursor-pointer gap-2">
             <i [ngClass]="['fa-solid ', item.icon]" class="text-xl"></i>
-            <span >
+            <span>
               {{ item.menu_name }}
             </span>
           </div>
-     
-
 
           <!-- Chevron icon -->
-          <div *ngIf="item.submenus.length" >
+          <div *ngIf="item.submenus.length">
             <mat-icon
-              class="menu-button hover:text-blue-950"
+              class="menu-button"
               [@iconRotate]="
                 expandedMenus[item.menu_id] ? 'expanded' : 'collapsed'
               ">
@@ -74,7 +70,7 @@
       class="submenu mb-4"
       [ngClass]="{ expanded: expandedMenus[item.menu_id] }">
       <a
-        class="hover:bg-blue-300 hover:text-blue-950 bg-cover cursor-pointer hover:shadow-inner flex items-center rounded-3xl transition-all ease-linear duration-500 gap-2 p-1"
+        class="text-purple-900 w-full hover:bg-purple-900 font-semibold hover:text-white px-4 bg-cover cursor-pointer hover:shadow-inner flex items-center rounded-3xl transition-all ease-linear duration-500 gap-2 p-1"
         [ngClass]="{
           'selected-menu-item': isRouteActive(sub.url),
           'focused-item': focusedRoute === sub.url
@@ -85,11 +81,9 @@
         href="{{ sub.link }}">
         <div class="flex gap-2">
           @if (isActive(sub.url)) {
-          <span class="material-symbols-outlined text-blue-950">
-            chevron_right
-          </span>
+          <span class="material-symbols-outlined"> chevron_right </span>
           }
-          <span class="text-base text-blue-950">
+          <span class="text-base">
             {{ sub.submenu_name }}
           </span>
         </div>
@@ -101,12 +95,10 @@
       <app-loader />
     </div>
     }
-    <span (click)="logout()">
-      logout
-    </span>
+    <span (click)="logout()"> logout </span>
   </mat-sidenav>
 
-  <mat-sidenav-content>
+  <mat-sidenav-content class="max-w-full">
     <mat-toolbar color="primary">
       <div class="w-screen flex justify-between">
         <div>
@@ -127,7 +119,7 @@
         </div>
       </div>
     </mat-toolbar>
-    <div class="sidenav-scroll-wrapper p-4">
+    <div class="sidenav-scroll-wrapper p-4 ">
       <app-bread-crumb />
       <ng-content></ng-content>
     </div>

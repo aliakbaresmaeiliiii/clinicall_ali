@@ -19,7 +19,6 @@ module.exports = {
       'desktop': '1280px',
       // => @media (min-width: 1280px) { ... }
 
-      
     },
 
     extend: {
@@ -27,43 +26,6 @@ module.exports = {
         '1': '1',
       }
     },
-    // colors: {
-    //   primary: "#9cd67d",
-    //   blue: "#8116f3",
-    //   white: '#fff',
-    //   gray: '#97A2B4',
-    //   red: '#E95210',
-    //   blueLight: '#DAE1F3',
-    //   blueSky: '#EFF8FF',
-    //   blueSkyDark:'#CADFF9',
-    //   blueTextLight:'#007eff',
-    //   lightGray: '#D4E5F9',
-    //   blueDark:'#002570',
-    //   bgUi:'#E6F1FF',
-    // },
-
-    
-
-    // keyframes: {
-    //   moveLeftRight: {
-    //     '0%, 100%': { transform: 'translateX(0)' },
-    //     '50%': { transform: 'translateX(-20px)' },
-    //   },
-    //   animation: {
-    //     moveLeftRight: 'moveLeftRight 2s ease-in-out infinite',
-    //   },
-    //   fadeInUp: {
-    //     '0%': { opacity: '0', transform: 'translateY(50px)' },
-    //     '100%': { opacity: '1', transform: 'translateY(0)' },
-    //   },
-    //   animationFade: {
-    //     fadeInUp: 'fadeInUp 1s ease-out forwards',
-    //   },
-    //   animationRotate: {
-    //     'spin-slow': 'spin 3s linear infinite',
-    //     'spin-fast': 'spin 1s linear infinite',
-    //   },
-    // },
 
   },
   plugins: [],

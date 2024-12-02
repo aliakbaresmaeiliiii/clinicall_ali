@@ -22,7 +22,7 @@
             ">
             <a
               [routerLink]="route?.path"
-              class="hover:bg-blue-300 bg-cover w-80 cursor-pointer hover:shadow-inner flex items-center rounded-3xl transition-all ease-linear duration-500 gap-2 p-2"
+              class="hover:bg-blue-300 bg-cover w-80 cursor-pointer hover:shadow-inner flex gap-8 items-center rounded-3xl transition-all ease-linear duration-500  p-2"
               [ngClass]="{ 
                 'selected-menu-item': isRouteActive(route?.path),
                 'focused-item': focusedRoute === route?.path

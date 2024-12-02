@@ -122,29 +122,7 @@
         >
       </mat-form-field>
       <!-- *****department***** -->
-      <mat-form-field
-        data-testing="department"
-        appearance="outline"
-        class="w-full">
-        <mat-label>department</mat-label>
-        <!-- <ngx-mat-intl-tel-input
-          [preferredCountries]="['my']"
-          [enablePlaceholder]="true"
-          [enableSearch]="true"
-          name="department"
-          formControlName="department"></ngx-mat-intl-tel-input> -->
-        <!-- Error handling -->
-        <mat-error
-          *ngIf="
-            department?.hasError('department') &&
-            !department?.hasError('required')
-          "
-          >Please enter a valid department</mat-error
-        >
-        <mat-error *ngIf="department?.hasError('required')"
-          >department is <strong>required</strong></mat-error
-        >
-      </mat-form-field>
+      
     </div>
     <div class="desktop:grid grid-cols-2 gap-3">
       <!-- *****specialization***** -->

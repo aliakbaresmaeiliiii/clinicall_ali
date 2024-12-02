@@ -19,7 +19,7 @@
   </button>
 
   <div class="border-2 p-2 rounded-md flex items-center mobile:hidden">
-    <span class="material-symbols-outlined text-blue"> calendar_today </span>
+    <span class="material-symbols-outlined"> calendar_today </span>
     <span class="text-sm">
       {{ today | date : 'longDate' }}
     </span>
@@ -33,7 +33,7 @@
           class="flag-icon"
           height="50"
           width="50" />
-        <strong class="text-blue-950">{{ showLng.name }}</strong>
+        <strong class="-950">{{ showLng.name }}</strong>
       </div>
     </button>
     <mat-menu #menu="matMenu">
@@ -49,7 +49,7 @@
             class="flag-icon"
             width="25"
             height="25" />
-          <span class="text-blue-950">
+          <span class="-950">
             {{ lng.name }}
           </span>
         </div>
@@ -82,10 +82,10 @@
           width="100%"
           height="100%" />
         <div class="font-medium">
-          <div class="text-blue">
+          <div class="">
             {{ username }}
           </div>
-          <div class="text-sm text-blue">Admin</div>
+          <span class="text-sm">Admin</span>
         </div>
       </div>
       <mat-divider></mat-divider>
