@@ -74,7 +74,6 @@ export class DoctorsComponent extends BaseComponent {
   }
   getData() {
     this.service.getDoctors().subscribe((response: any) => {
-      debugger;
       const newData = response.data.map((doctor: any) => {
         doctor.profileImage = doctor.profileImage
           ? `${environment.urlProfileImg}${doctor.profileImage}`

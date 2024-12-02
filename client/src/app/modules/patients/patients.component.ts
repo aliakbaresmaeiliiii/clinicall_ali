@@ -57,7 +57,6 @@ export class PatientsComponent extends BaseComponent {
     this.dataSource.sort = this.sort();
   }
   getData() {
-    debugger;
     this.service.getPatients().subscribe((response: any) => {
       console.log('asdf',response);
       const newData = response.data.map((patient: any) => {
@@ -118,7 +117,6 @@ export class PatientsComponent extends BaseComponent {
   }
 
   patientDetial(patient_id: number) {
-    debugger;
     this.router.navigate(['aliakbar/patients/patient-detail', patient_id]);
   }
 

@@ -59,7 +59,6 @@ export class HeaderComponent implements OnInit {
     const loggedInUser = localStorage.getItem('userData');
     const getUserInfo = loggedInUser ? JSON.parse(loggedInUser) : null;
     this.imageUser = getUserInfo?.picture;
-    debugger;
     this.username = getUserInfo.name;
 
     this.getUserData();

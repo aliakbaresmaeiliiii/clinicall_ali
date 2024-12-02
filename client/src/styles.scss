@@ -1,16 +1,246 @@
-@use '@angular/material' as mat;
-@use '../m3-theme.scss';
 @use '../src/app/core/layouts/layout-component.theme';
 @use './app/test-component.theme';
 @use 'swiper/swiper-bundle.min.css';
-// regular style toast
-// @import 'ngx-toastr/toastr';
 @use 'ngx-toastr/toastr';
 
+
+@use 'sass:map';
+// @use '@angular/material-experimental' as matx;
+
+@use '@angular/material' as mat;
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+// // default theme (dark)
+// $violet-dark-theme: matx.define-theme(
+//   (
+//     color: (
+//       theme-type: dark,
+//       primary: matx.$violet-palette,
+//     ),
+//     // add density only for default theme config to avoid duplicated theming styles
+//     density:
+//       (
+//         scale: -1,
+//       ),
+//   )
+// );
+
+// // default light theme
+// $violet-light-theme: matx.define-theme(
+//   (
+//     color: (
+//       theme-type: light,
+//       primary: matx.$violet-palette,
+//     ),
+//   )
+// );
+
+// @mixin themable-styles($theme) {
+//   .tonal {
+//     background-color: mat.get-theme-color($theme, secondary-container);
+//     color: mat.get-theme-color($theme, on-secondary-container);
+//   }
+
+//   .filled-table {
+//     --mat-table-row-item-outline-color: mat.get-theme-color($theme, on-secondary-container);
+//     background-color: mat.get-theme-color($theme, secondary-container);
+//     color: mat.get-theme-color($theme, on-secondary-container);
+//     border-radius: 12px;
+//     overflow: hidden;
+//   }
+
+//   * {
+//     scrollbar-width: thin;
+//     scrollbar-color: mat.get-theme-color($theme, secondary-container) transparent;
+//   }
+
+//   // Button color variants
+//   .secondary-button {
+//     @include mat.button-color($theme, $color-variant: secondary);
+//   }
+
+//   .tertiary-button {
+//     @include mat.button-color($theme, $color-variant: tertiary);
+//   }
+
+//   .warn-button {
+//     @include mat.button-color($theme, $color-variant: error);
+//   }
+
+//   // Icon color variants
+//   .primary-icon {
+//     @include mat.icon-color($theme, $color-variant: primary);
+//   }
+
+//   .secondary-icon {
+//     @include mat.icon-color($theme, $color-variant: secondary);
+//   }
+
+//   .tertiary-icon {
+//     @include mat.icon-color($theme, $color-variant: tertiary);
+//   }
+
+//   .warn-icon {
+//     @include mat.icon-color($theme, $color-variant: error);
+//   }
+// }
+
+
+
+$palettes: (
+  "red": mat.$red-palette,
+  "green": mat.$green-palette,
+  "blue": mat.$blue-palette,
+  "yellow": mat.$yellow-palette,
+  "cyan": mat.$cyan-palette,
+  "magenta": mat.$magenta-palette,
+  "orange": mat.$orange-palette,
+  "chartreuse": mat.$chartreuse-palette,
+  "azure": mat.$azure-palette,
+  "rose": mat.$rose-palette,
+);
+
+$theme-map: ();
+@each $theme in ("dark", "light") {
+  @each $color, $palette in $palettes {
+    $theme-name: "#{$color}-#{$theme}-theme";
+    $theme-map: map.merge(
+      $theme-map,
+      (
+        $theme-name:
+          mat.define-theme(
+            (
+              color: (
+                theme-type: $theme,
+                primary: $palette,
+              ),
+            )
+          ),
+      )
+    );
+  }
+}
+
+$violet-dark-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: dark,
+      primary: mat.$violet-palette,
+    ),
+    // add density only for default theme config to avoid duplicated theming styles
+    density:
+      (
+        scale: -1,
+      ),
+  )
+);
+
+// default light theme
+$violet-light-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: light,
+      primary: mat.$violet-palette,
+    ),
+  )
+);
+
+@mixin themable-styles($theme) {
+  .tonal {
+    background-color: mat.get-theme-color($theme, secondary-container);
+    color: mat.get-theme-color($theme, on-secondary-container);
+  }
+
+  .filled-table {
+    --mat-table-row-item-outline-color: mat.get-theme-color($theme, on-secondary-container);
+    background-color: mat.get-theme-color($theme, secondary-container);
+    color: mat.get-theme-color($theme, on-secondary-container);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: mat.get-theme-color($theme, secondary-container) transparent;
+  }
+
+  // Button color variants
+  .secondary-button {
+    @include mat.button-color($theme, $color-variant: secondary);
+  }
+
+  .tertiary-button {
+    @include mat.button-color($theme, $color-variant: tertiary);
+  }
+
+  .warn-button {
+    @include mat.button-color($theme, $color-variant: error);
+  }
+
+  // Icon color variants
+  .primary-icon {
+    @include mat.icon-color($theme, $color-variant: primary);
+  }
+
+  .secondary-icon {
+    @include mat.icon-color($theme, $color-variant: secondary);
+  }
+
+  .tertiary-icon {
+    @include mat.icon-color($theme, $color-variant: tertiary);
+  }
+
+  .warn-icon {
+    @include mat.icon-color($theme, $color-variant: error);
+  }
+}
+
+html {
+  @include mat.all-component-themes($violet-dark-theme);
+
+  &.violet-dark {
+    @include themable-styles($violet-dark-theme);
+  }
+
+  &.violet-light {
+    @include mat.all-component-colors($violet-light-theme);
+    @include themable-styles($violet-light-theme);
+  }
+
+  @each $color, $palette in $palettes {
+    &.#{$color}-dark {
+      @include mat.all-component-colors(map-get($theme-map, "#{$color}-dark-theme"));
+      @include themable-styles(map-get($theme-map, "#{$color}-dark-theme"));
+    }
+
+    &.#{$color}-light {
+      @include mat.all-component-colors(map-get($theme-map, "#{$color}-light-theme"));
+      @include themable-styles(map-get($theme-map, "#{$color}-light-theme"));
+    }
+  }
+}
+
+.example-bright-container {
+  @include mat.theme((
+    color: mat.$cyan-palette,
+  ));
+}
+body {
+  background: var(--mat-sys-surface);
+  color: var(--mat-sys-on-surface);
+}
+
+:host {
+  background: var(--mat-sys-primary-container);
+  color: var(--mat-sys-on-primary-container);
+  border: 1px solid var(--mat-sys-outline-variant);
+  font: var(--mat-sys-body-large);
+}
 
 
 @layer base {
@@ -22,50 +252,23 @@
 
 // @include mat.core();
 
-// $angular-material-3-light-theme: mat.define-theme(
-//   (
-//     color: (
-//       theme-type: light,
-//       use-system-variables: true,
-//       primary: mat.$azure-palette,
-//       tertiary: mat.$blue-palette,
-//     ),
-//     density: (
-//       scale: 0,
-//     ),
-//   )
-// );
-
-// $angular-material-3-dark-theme: mat.define-theme(
-//   (
-//     color: (
-//       theme-type: dark,
-//       primary: mat.$magenta-palette,
-//       tertiary: mat.$violet-palette,
-//     ),
-//     density: (
-//       scale: 0,
-//     ),
-//   )
-// );
-
-// $light-theme: m3-theme.$light-theme;
-// $dark-theme: m3-theme.$dark-theme;
+// $light-theme: theme.$light-theme;
+// $dark-theme: theme.$dark-theme;
 
 // :root {
-//   @include mat.all-component-themes($light-theme);
-//   background: mat.get-theme-color($light-theme, surface);
-//   // Components themes
-//   @include layout-component.themeLayout($light-theme);
-//   @include test-component.themeTest($light-theme);
+//   // Apply the light theme by default
+//   @include mat.all-component-themes(theme.$light-theme);
 
-//   &.dark {
-//     @include mat.all-component-colors($dark-theme);
-//     background: mat.get-theme-color($dark-theme, surface);
-//     @include layout-component.themeLayout($dark-theme);
-//     @include test-component.themeTest($dark-theme);
-//   }
+//   // Optionally set the background color or other theme-specific properties
+//   background: mat.get-theme-color(theme.$light-theme, surface);
 // }
+
+// // Apply the dark theme for elements when `.dark` is present on `body` or `html`
+// :root.dark {
+//   @include mat.all-component-themes(theme.$dark-theme);
+//   background: mat.get-theme-color(theme.$dark-theme, surface);
+// }
+
 
 .mdc-notched-outline__notch {
   border-right: none !important;
@@ -77,41 +280,33 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-  font-family: CustomFont, 'CustomFont', sans-serif;
 }
 
-p,
-h1,
-span,div {
-  font-family: CustomFont, 'CustomFont', sans-serif;
-
-}
-
-// Style to fix the weird border with angular material
 
 
-@font-face {
-  font-family: 'CustomFont';
-  src: url('./assets/fonts/roboto/Roboto-Medium.ttf') format('truetype');
-  font-weight: 300;
-  font-style: normal;
-}
 
-/* Light (700 weight) */
-@font-face {
-  font-family: 'CustomFont';
-  src: url('./assets/fonts/roboto/Roboto-Light.ttf') format('truetype');
-  font-weight: 700;
-  font-style: normal;
-}
+// @font-face {
+//   font-family: 'CustomFont';
+//   src: url('./assets/fonts/roboto/Roboto-Medium.ttf') format('truetype');
+//   font-weight: 300;
+//   font-style: normal;
+// }
 
-/* Bold (900 weight) */
-@font-face {
-  font-family: 'CustomFont';
-  src: url('./assets/fonts/roboto/Roboto-Bold.ttf') format('truetype');
-  font-weight: 900;
-  font-style: normal;
-}
+// /* Light (700 weight) */
+// @font-face {
+//   font-family: 'CustomFont';
+//   src: url('./assets/fonts/roboto/Roboto-Light.ttf') format('truetype');
+//   font-weight: 700;
+//   font-style: normal;
+// }
+
+// /* Bold (900 weight) */
+// @font-face {
+//   font-family: 'CustomFont';
+//   src: url('./assets/fonts/roboto/Roboto-Bold.ttf') format('truetype');
+//   font-weight: 900;
+//   font-style: normal;
+// }
 
 // ScrollBar
 *::-webkit-scrollbar {

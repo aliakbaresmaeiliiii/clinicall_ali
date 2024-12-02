@@ -163,7 +163,6 @@ export class LoginComponent implements OnInit{
         const dataJson = JSON.stringify(stroeDataUser);
         localStorage.setItem('userData', dataJson);
         if(res.data.roles[0] === 'user'){
-          debugger;
           this.router.navigate(['']);
         }else{
           this.router.navigate(['aliakbar/settings']);
