@@ -1,43 +1,48 @@
   .sidenav {
-  max-width: 280px!important;
-  padding: 0 8px;
-  box-sizing: border-box;
-  top: 60px;
+    padding: 0 8px;
+    box-sizing: border-box;
+    top: 60px;
+  }
 
+  .mat-drawer-content .mat-sidenav-content {
+    margin-left: 280px!important;
 
-}
+  }
 
-.menu-button {
-  transition: 300ms ease-in-out;
-  transform: rotate(0deg);
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-}
+  .menu-button {
+    transition: 300ms ease-in-out;
+    transform: rotate(0deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+  }
 
-.submenu {
-  overflow-y: hidden;
-  transition: transform 300ms ease;
-  transform: scaleY(0);
-  transform-origin: top;
-  padding-left: 15px;
-}
+  .submenu {
+    overflow-y: hidden;
+    transition: transform 300ms ease;
+    transform: scaleY(0);
+    transform-origin: top;
+    padding-left: 15px;
+  }
 
-.submenu.expanded {
-  transform: scaleY(1);
-}
+  .submenu.expanded {
+    transform: scaleY(1);
+  }
 
-.active-menu-item {
-  background-color: #581C87; /* Blue background */
-  color: white; /* White text */
-}
+  .active-menu-item {
+    background-color: #581C87;
+    /* Blue background */
+    color: white;
+    /* White text */
+  }
 
-.active-menu-item:hover {
-  background-color: #581C87; /* Darker blue on hover when active */
-}
+  .active-menu-item:hover {
+    background-color: #581C87;
+    /* Darker blue on hover when active */
+  }
 
-.focused-item {
-  background-color: #581C87; 
-  border-radius: 25px;
-  color: white; 
-}
+  .focused-item {
+    background-color: #581C87;
+    border-radius: 25px;
+    color: white;
+  }

@@ -1,16 +1,17 @@
+import { Highlightable } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
+  EventEmitter,
   HostBinding,
   HostListener,
+  Input,
   OnInit,
-  input,
-  output,
+  Output
 } from '@angular/core';
-import { Highlightable } from '@angular/cdk/a11y';
 
 @Component({
   selector: 'app-option',
@@ -20,18 +21,22 @@ import { Highlightable } from '@angular/cdk/a11y';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OptionComponent<T> implements OnInit, Highlightable {
-  readonly value = input<T | null>(null);
+  @Input()
+  value: T | null = null;
 
-  readonly disabledReason = input('');
+  @Input()
+  disabledReason = '';
 
-  @HostBinding('class.disabled')
-  readonly disabledValue = input(false);
+   @Input()
+   @HostBinding('class.disabled')
+   disabled = false;
 
-  readonly selected = output<OptionComponent<T>>();
+   @Output()
+   selected = new EventEmitter<OptionComponent<T>>();
 
   @HostListener('click')
   protected select() {
-    if (!this.disabledValue()) {
+    if (!this.disabled) {
       this.highlightAsSelected();
       this.selected.emit(this);
     }

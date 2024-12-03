@@ -147,13 +147,13 @@ export class CalendarComponent {
       return;
     } else {
       const dialogRef = this.matDialog.open(DialogCalendarComponent, {
-        width: '500px',
         data: { data: c },
       });
       dialogRef.afterClosed().subscribe((res: any) => {
         if (res) {
           c.dataList.push(res)
           const date = c.date;
+          debugger;
           const concatData = { date, ...res };
           this.sendEventData(concatData);
         }
@@ -202,6 +202,7 @@ export class CalendarComponent {
   }
 
   sendEventData(data: any) {
+    debugger;
     const eventData = {
       event_title: data.event_title,
       event_description: data.event_description,
@@ -248,7 +249,7 @@ export class CalendarComponent {
 
   updateAppointment(appintmentData: any) {
 
-    // this.calendarService.updateAppointment(appintmentData).subscribe(res => {
-    // });
+    this.calendarService.updateAppointment(appintmentData).subscribe(res => {
+    });
   }
 }

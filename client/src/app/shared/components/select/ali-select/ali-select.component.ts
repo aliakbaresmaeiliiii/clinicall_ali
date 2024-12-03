@@ -28,7 +28,7 @@ import {
   QueryList,
   signal,
   SimpleChanges,
-  viewChild
+  viewChild,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { merge, startWith, Subject, switchMap, takeUntil, tap } from 'rxjs';
@@ -62,18 +62,28 @@ export type SelectValue<T> = T | null;
 export class AliSelectComponent<T>
   implements OnChanges, AfterContentInit, OnDestroy, ControlValueAccessor
 {
-  readonly label = input('');
+  @Input()
+  label = '';
 
-  readonly searchable = input(false);
+  @Input()
+  searchable = false;
 
+  @Input()
   @HostBinding('class.disabled')
-  disabled = signal<boolean>(false);
+  disabled = false;
 
-  displayWith = input<((value: T) => string | number) | null>(null);
+  // displayWith = input<((value: T) => string | number) | null>(null);
 
-  compareWith = input<(v1: T | null, v2: T | null) => boolean>(
-    (v1, v2) => v1 === v2
-  );
+  // compareWith = input<(v1: T | null, v2: T | null) => boolean>(
+  //   (v1, v2) => v1 === v2
+  // );
+
+  @Input()
+  displayWith: ((value: T) => string | number) | null = null;
+
+  @Input()
+  compareWith: ((v1: T | null, v2: T | null) => boolean) = (v1, v2) => v1 === v2;
+
 
   @Input()
   set value(value: SelectValue<T> | any) {
@@ -94,17 +104,17 @@ export class AliSelectComponent<T>
     coerceBooleanProperty(this.multiple)
   );
 
-  readonly opened = output<void>();
+  opened = output<void>();
 
-  readonly selectionChanged = output<SelectValue<T>>();
+  selectionChanged = output<SelectValue<T>>();
 
-  readonly closed = output<void>();
+  closed = output<void>();
 
-  readonly searchChanged = output<string>();
+  searchChanged = output<string>();
 
   @HostListener('blur')
   markAsTouched() {
-    if (!this.disabled() && !this.isOpen) {
+    if (!this.disabled && !this.isOpen) {
       this.onToched();
       this.cd.markForCheck();
     }
@@ -112,9 +122,9 @@ export class AliSelectComponent<T>
 
   @HostListener('click')
   open() {
-    if (this.disabled()) return;
+    if (this.disabled) return;
     this.isOpen = true;
-    if (this.searchable()) {
+    if (this.searchable) {
       setTimeout(() => {
         this.searchInputEl()?.nativeElement.focus();
       }, 0);
@@ -145,7 +155,6 @@ export class AliSelectComponent<T>
   }
 
   // options = contentChildren(OptionComponent, { descendants: true });
-  // options = contentChildren(OptionComponent, { descendants: true });
   @ContentChildren(OptionComponent, { descendants: true })
   options!: QueryList<OptionComponent<T>>;
 
@@ -158,7 +167,7 @@ export class AliSelectComponent<T>
   tabIndex = input(0);
 
   protected get displayValue() {
-    const displayWith = this.displayWith();
+    const displayWith = this.displayWith;
     if (displayWith && this.value) {
       if (Array.isArray(this.value)) {
         return this.value.map(displayWith);
@@ -193,7 +202,7 @@ export class AliSelectComponent<T>
     this.onToched = fn;
   }
   setDisabledState?(isDisabled: boolean): void {
-    this.disabled.set(isDisabled); // Correct way to update an InputSignal
+    this.disabled = isDisabled; // Correct way to update an InputSignal
     this.cd.markForCheck();
   }
 
@@ -242,7 +251,7 @@ export class AliSelectComponent<T>
 
   clearSelection(e?: Event) {
     e?.stopPropagation();
-    if (this.disabled()) return;
+    if (this.disabled) return;
     this.selectionModel.clear();
     this.selectionChanged.emit(this.value);
     this.onChange(this.value);
@@ -274,8 +283,8 @@ export class AliSelectComponent<T>
   }
 
   private handleSelection(option: OptionComponent<T>) {
-    if (this.disabled()) return;
-    const value = option.value();
+    if (this.disabled) return;
+    const value = option.value;
     if (value) {
       this.selectionModel.toggle(value);
       this.selectionChanged.emit(this.value);
@@ -288,14 +297,14 @@ export class AliSelectComponent<T>
 
   private refreshOptionsMap() {
     this.optionMap.clear();
-    this.options.forEach(o => this.optionMap.set(o.value(), o));
+    this.options.forEach(o => this.optionMap.set(o.value, o));
   }
 
   private highlightSelectedOptions() {
     const valuesWithUpdatedReferences = this.selectionModel.selected.map(
       value => {
         const correspondingOption = this.findOptionsByValue(value);
-        return correspondingOption ? correspondingOption.value()! : value;
+        return correspondingOption ? correspondingOption.value! : value;
       }
     );
     this.selectionModel.clear();
@@ -307,6 +316,6 @@ export class AliSelectComponent<T>
       return this.optionMap.get(value);
     }
     const options = this.options;
-    return options && options.find(o => this.compareWith()(o.value(), value));
+    return options && options.find(o => this.compareWith(o.value, value));
   }
 }

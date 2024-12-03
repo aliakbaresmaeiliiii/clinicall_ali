@@ -1,29 +1,49 @@
 <mat-toolbar>
-  <span>{{title}}</span>
+  <span>{{ title }}</span>
 </mat-toolbar>
 <form [formGroup]="form" (ngSubmit)="submit()">
   <mat-dialog-content class="mat-typography">
-    <div class="section">
-      <mat-form-field appearance="outline">
+    <div class="flex gap-4">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-select
+          name="patientName"
+          formControlName="patientName"
+          placeholder="selected Patient...">
+          <input
+            type="text"
+            placeholder="Pick up patient..."
+            (input)="filterPatient()"
+            style="width: 100%; padding: 8px; margin-bottom: 8px" />
+          <mat-option
+            *ngFor="let p of filteredPatient"
+            [value]="p.patientName"
+            (onSelectionChange)="onSelectedChange(p)">
+            {{ p.patientName }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-full">
         <mat-label>Add title</mat-label>
         <input matInput type="text" formControlName="event_title" />
         @if (value) {
-          <button
-            matSuffix
-            mat-icon-button
-            aria-label="Clear"
-            (click)="value = ''">
-            <mat-icon>close</mat-icon>
-          </button>
+        <button
+          matSuffix
+          mat-icon-button
+          aria-label="Clear"
+          (click)="value = ''">
+          <mat-icon>close</mat-icon>
+        </button>
         }
       </mat-form-field>
+    </div>
 
       <!-- SELECTED Priority -->
       <div class="container">
         <div class="date">
           <span class="material-symbols-outlined ml-3"> schedule </span>
           <strong>
-            {{ date | date: 'short' }}
+            {{ date | date : 'short' }}
           </strong>
         </div>
         <div class="show-date">
@@ -47,8 +67,17 @@
           </mat-form-field>
         </div>
       </div>
-
-      <app-time-picker></app-time-picker>
+      <!-- <mat-form-field appearance="outline" class="w-full mb-1">
+        <mat-label>Choose a date</mat-label>
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="dateOfBirth" />
+        <mat-datepicker-toggle matIconSuffix [for]="picker">
+          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field> -->
       <mat-form-field class="example-full-width" appearance="outline">
         <mat-label>Leave a comment</mat-label>
         <textarea
@@ -56,7 +85,6 @@
           placeholder="Ex. It makes me feel..."
           formControlName="event_description"></textarea>
       </mat-form-field>
-    </div>
     <button
       mat-icon-button
       color="primary"
