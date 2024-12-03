@@ -1,6 +1,6 @@
-<div class="label">{{ label() }}</div>
+<div class="label">{{ label }}</div>
 <div class="control" cdkOverlayOrigin #origin="cdkOverlayOrigin">
-  <ng-container [ngSwitch]="searchable() && isOpen" >
+  <ng-container [ngSwitch]="searchable && isOpen" >
     <input
       #input
       *ngSwitchCase="true"

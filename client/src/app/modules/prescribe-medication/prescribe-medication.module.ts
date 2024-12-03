@@ -16,8 +16,8 @@ import { CustomTabComponent } from '../../shared/components/custom-tab/custom-ta
 import { AliSelectComponent } from '../../shared/components/select/ali-select/ali-select.component';
 import { OptionComponent } from '../../shared/components/select/option/option.component';
 import { AgePipe } from '../../shared/pipes/age.pipe';
-import { PrescribeMedicationComponent } from './prescribe-medication.component';
 import { MatTabsModule } from '@angular/material/tabs';
+import { PrescribeMedicationComponent } from './components/prescribe-medication.component';
 
 export const routes: Routes = [
   {

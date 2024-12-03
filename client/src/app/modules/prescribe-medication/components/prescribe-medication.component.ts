@@ -14,16 +14,17 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { MatTabGroup } from '@angular/material/tabs';
 import { ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
-import { BaseComponent } from '../../shared/components/base/base.component';
-import { AgePipe } from '../../shared/pipes/age.pipe';
-import { ShareService } from '../../shared/services/share.service';
-import { Diseases, SubCategoryDisease } from '../patients/model/disease';
-import { PatientDTO } from '../patients/model/patients.model';
-import { PatientsService } from '../patients/services/patients.service';
-import { IsFavorite } from './enum/isFavorite.enum';
-import { Medicine } from './medicine';
-import { PrescriptionMedicine } from './models/prescribe-medication';
-import { PrescribeMedicationService } from './services/prescribe-medication.service';
+import { BaseComponent } from '../../../shared/components/base/base.component';
+import { AgePipe } from '../../../shared/pipes/age.pipe';
+import { ShareService } from '../../../shared/services/share.service';
+import { Diseases, SubCategoryDisease } from '../../patients/model/disease';
+import { PatientDTO } from '../../patients/model/patients.model';
+import { PatientsService } from '../../patients/services/patients.service';
+import { IsFavorite } from '../enum/isFavorite.enum';
+import { PrescriptionMedicine } from '../models/prescribe-medication';
+import { PrescribeMedicationService } from '../services/prescribe-medication.service';
+import { Medicine } from '../models/medicine';
+
 
 @Component({
     selector: 'app-prescribe-medication',
@@ -136,7 +137,7 @@ export class PrescribeMedicationComponent
     }),
 
     medication: this.fb.group({
-      medicine: ['', Validators.required],
+      medicine: [''],
       duration: [''],
       frequency: [this.frequencyOptions[0].value], // Default to 'Once'
       customFrequency: [''],
@@ -164,10 +165,12 @@ export class PrescribeMedicationComponent
 
   patientNextTab() {
     this.patientInfoTab.push(this.form.controls.patientInfo.value);
+    console.log('this.patientInfoTab',this.patientInfoTab);
     this.selectedIndex++;
   }
   diseasesNextTab() {
     this.diseaseTab.push(this.form.controls.diseases.value);
+    console.log('this.diseaseTab',this.diseaseTab);
     this.selectedIndex++;
   }
 
@@ -341,6 +344,7 @@ export class PrescribeMedicationComponent
 
   medicationNextTab() {
     this.medicationTab.push(this.form.controls.medication.value);
+    console.log('this.medicationTab',this.medicationTab)
     this.selectedIndex++;
   }
   onSubmit(form: any) {
@@ -385,7 +389,7 @@ export class PrescribeMedicationComponent
     medic.isFavorite = !medic.isFavorite;
     this.prescribeService
       .updateIsFavorite(medic.medication_id, medic.isFavorite)
-      .subscribe(res => {
+      .subscribe((res:any) => {
         console.log('Favorite status updated successfully:', res);
       });
   }

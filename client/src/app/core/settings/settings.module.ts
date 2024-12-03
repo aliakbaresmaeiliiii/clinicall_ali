@@ -108,6 +108,6 @@ export const routes: Routes = [
     SharedModule
   ],
   exports:[],
-  providers:[AgePipe,UserService]
+  providers:[AgePipe,UserService,MatDatepickerModule,]
 })
 export class SettingsModule {}

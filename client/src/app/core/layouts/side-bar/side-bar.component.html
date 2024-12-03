@@ -98,7 +98,7 @@
     <span (click)="logout()"> logout </span>
   </mat-sidenav>
 
-  <mat-sidenav-content class="max-w-full">
+  <mat-sidenav-content>
     <mat-toolbar color="primary">
       <div class="w-screen flex justify-between">
         <div>
@@ -119,7 +119,7 @@
         </div>
       </div>
     </mat-toolbar>
-    <div class="sidenav-scroll-wrapper p-4 ">
+    <div class="sidenav-scroll-wrapper p-4 h-screen mb-4">
       <app-bread-crumb />
       <ng-content></ng-content>
     </div>

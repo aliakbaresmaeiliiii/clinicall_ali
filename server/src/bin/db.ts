@@ -295,9 +295,8 @@ export async function getUserInfo(email: string) {
 }
 
 export async function saveAppointment(eventData: IAppointment) {
-  try {
     const insertEvent = await query<RowDataPacket[]>(
-      `INSERT INTO ${coreSchema}.calendar_events 
+      `INSERT INTO ${coreSchema}.appointments 
       (event_title, color, date, event_description)
        VALUES (?, ?, ?, ?)`,
       {
@@ -311,9 +310,7 @@ export async function saveAppointment(eventData: IAppointment) {
     );
 
     return insertEvent;
-  } catch (error) {
-    throw new Error(`Error inserting event: ${error}`);
-  }
+ 
 }
 
 export async function getAppointment() {

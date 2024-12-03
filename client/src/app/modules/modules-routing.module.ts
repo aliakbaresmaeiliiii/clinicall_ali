@@ -37,9 +37,9 @@ const routes: Routes = [
       },
       {
         path: 'schedule',
-        loadComponent: () =>
-          import('./calendar/calendar.component').then(
-            d => d.CalendarComponent
+        loadChildren: () =>
+          import('./calendar/calendar.module').then(
+            d => d.CalendarModule
           ),
         title: 'Schedule',
         data: { breadcrumb: 'dashboard', icon: 'calendar_today' },
@@ -73,6 +73,16 @@ const routes: Routes = [
           ),
         data: { breadcrumb: 'doctors' },
       },
+      // {
+      //   path: 'appointments',
+      //   loadChildren: () =>
+      //     import('./appointments/appointments.module').then(
+      //       p => p.AppointmentsModule
+      //     ),
+      //   data: { breadcrumb: 'appointments' },
+      // },
+  
+      // },
       {
         path: '**',
         redirectTo: 'dashboard',

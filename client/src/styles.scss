@@ -57,7 +57,7 @@ $violet-dark-theme: mat.define-theme(
     // add density only for default theme config to avoid duplicated theming styles
     density:
       (
-        scale: -1,
+        scale: 0,
       ),
   )
 );
@@ -134,17 +134,6 @@ html {
     @include themable-styles($violet-light-theme);
   }
 
-  // @each $color, $palette in $palettes {
-  //   &.#{$color}-dark {
-  //     @include mat.all-component-colors(map-get($theme-map, "#{$color}-dark-theme"));
-  //     @include themable-styles(map-get($theme-map, "#{$color}-dark-theme"));
-  //   }
-
-  //   &.#{$color}-light {
-  //     @include mat.all-component-colors(map-get($theme-map, "#{$color}-light-theme"));
-  //     @include themable-styles(map-get($theme-map, "#{$color}-light-theme"));
-  //   }
-  // }
 }
 
 .example-bright-container {
@@ -172,25 +161,6 @@ body {
   }
 }
 
-// @include mat.core();
-
-// $light-theme: theme.$light-theme;
-// $dark-theme: theme.$dark-theme;
-
-// :root {
-//   // Apply the light theme by default
-//   @include mat.all-component-themes(theme.$light-theme);
-
-//   // Optionally set the background color or other theme-specific properties
-//   background: mat.get-theme-color(theme.$light-theme, surface);
-// }
-
-// // Apply the dark theme for elements when `.dark` is present on `body` or `html`
-// :root.dark {
-//   @include mat.all-component-themes(theme.$dark-theme);
-//   background: mat.get-theme-color(theme.$dark-theme, surface);
-// }
-
 
 .mdc-notched-outline__notch {
   border-right: none !important;
@@ -204,31 +174,6 @@ body {
   padding: 0;
 }
 
-
-
-
-// @font-face {
-//   font-family: 'CustomFont';
-//   src: url('./assets/fonts/roboto/Roboto-Medium.ttf') format('truetype');
-//   font-weight: 300;
-//   font-style: normal;
-// }
-
-// /* Light (700 weight) */
-// @font-face {
-//   font-family: 'CustomFont';
-//   src: url('./assets/fonts/roboto/Roboto-Light.ttf') format('truetype');
-//   font-weight: 700;
-//   font-style: normal;
-// }
-
-// /* Bold (900 weight) */
-// @font-face {
-//   font-family: 'CustomFont';
-//   src: url('./assets/fonts/roboto/Roboto-Bold.ttf') format('truetype');
-//   font-weight: 900;
-//   font-style: normal;
-// }
 
 // ScrollBar
 *::-webkit-scrollbar {
