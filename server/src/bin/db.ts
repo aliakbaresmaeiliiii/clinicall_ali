@@ -295,27 +295,30 @@ export async function getUserInfo(email: string) {
 }
 
 export async function saveAppointment(eventData: IAppointment) {
-    const insertEvent = await query<RowDataPacket[]>(
-      `INSERT INTO ${coreSchema}.appointments 
-      (event_title, color, date, event_description)
-       VALUES (?, ?, ?, ?)`,
-      {
-        values: [
-          eventData.event_title,
-          eventData.color,
-          eventData.date,
-          eventData.event_description,
-        ],
-      }
-    );
+  const insertEvent = await query<RowDataPacket[]>(
+    `INSERT INTO ${coreSchema}.appointments 
+      (patient_id, doctor_id, appointment_date, status,event_title,created_at,updated_at,event_description)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+    {
+      values: [
+        eventData.patient_id,
+        eventData.doctor_id,
+        eventData.date,
+        eventData.status,
+        eventData.event_title,
+        new Date(),
+        new Date(),
+        eventData.event_description,
+      ],
+    }
+  );
 
-    return insertEvent;
- 
+  return insertEvent;
 }
 
 export async function getAppointment() {
   const getEventData = await query<RowDataPacket[]>(
-    `SELECT * FROM ${coreSchema}.calendar_events`
+    `SELECT * FROM ${coreSchema}.appointments`
   );
   return getEventData;
 }
@@ -324,7 +327,7 @@ export async function updateAppointment(
   data: IAppointment
 ): Promise<IAppointment[] | undefined> {
   const result = await query<RowDataPacket[]>(
-    `UPDATE ${coreSchema}.calendar_events
+    `UPDATE ${coreSchema}.appointments
     SET date = ?, updated_at = ?
     WHERE event_id = ?`,
     {
@@ -527,15 +530,11 @@ export async function updateDoctor(doctorData: DoctorsDTO): Promise<any> {
       WHERE doctor_id = ?
     `,
     {
-      values: [
-        doctorData.name,
-        doctorData.doctor_id,
-      ],
+      values: [doctorData.name, doctorData.doctor_id],
     }
   );
   return result;
 }
-
 
 export async function comparePassword(data: any): Promise<any> {
   const result = await query<RowDataPacket[]>(

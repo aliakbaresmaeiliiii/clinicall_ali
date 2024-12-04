@@ -75,14 +75,21 @@
               {{ monthNames[c.date.getMonth()] }}
             </strong>
             <div
-              *ngIf="c.dataList"
+              *ngIf="j"
               cdkDrag
               class="body-event"
               (contextmenu)="onRightClick($event, c)">
               @for (event of c.dataList; track $index) {
               <p class="priority" [style.background-color]="event.color"></p>
-              <p *ngFor="let event of c.dataList" class="event_title">
+              <p *ngFor="let event of apiData" class="event_title">
+                <span [ngClass]="{
+                  'priority-circle': true,
+                  'priority-high': event.priority === 1,
+                  'priority-medium': event.priority === 2,
+                  'priority-low': event.priority === 3
+                }"></span>
                 <strong>{{ event.event_title }}</strong>
+                <strong>{{ event.event_description }}</strong>
               </p>
 
               <!-- <p *ngFor="let event of c.dataList">

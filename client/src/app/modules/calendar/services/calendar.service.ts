@@ -20,7 +20,7 @@ export class CalendarService {
   }
 
   getAppointmentData(): Observable<any> {
-    return this.#http.get<any>(`${this.config}/getAppointment`);
+    return this.#http.get<any>(`${this.config}getAppointment`);
   }
 
   deleteAppointment(id: string): Observable<string> {

@@ -9,9 +9,9 @@ export interface ICalendar {
   attendess?: string;
   reminder_minutes_before?: string;
   create_at?: string;
-  date: string;
+  appointment_date: string;
   dataList?: IDataList;
-  color:string;
+  priority:number;
 }
 
 export interface IDataList {
