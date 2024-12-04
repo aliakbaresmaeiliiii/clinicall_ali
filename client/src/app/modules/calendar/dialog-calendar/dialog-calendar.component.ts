@@ -10,6 +10,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { banWords } from '../../../shared/validators/ban-words.validators';
 import { PatientDTO } from '../../patients/model/patients.model';
 import { PatientsService } from '../../patients/services/patients.service';
+import { Colors } from '../enum/enum-color';
 
 @Component({
   selector: 'app-dialog-calendar',
@@ -111,12 +112,16 @@ export class DialogCalendarComponent {
   }
 
   submit() {
+    const selectedColorHex = this.form.get('color')?.value;
+    const sttus = Object.keys(Colors).find(
+      key => Colors[key as keyof typeof Colors] === selectedColorHex
+    );
     const payload = {
       patient_id: this.selectedPatient,
       doctor_id: 2,
-      appointment_date: this.form.value.event_title,
-      status: this.form.value.color,
-      notes: this.form.value.event_description,
+      status: sttus,
+      event_description: this.form.get('event_description')?.value,
+      event_title: this.form.get('event_title')?.value,
     };
     this.dialogRef.close(payload);
   }

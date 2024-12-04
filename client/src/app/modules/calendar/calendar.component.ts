@@ -127,20 +127,55 @@ export class CalendarComponent {
     });
   }
   mergeData() {
-    this.calendar.forEach(day => {
-      const eventForDay = this.apiData.find((event: ICalendar) => {
-        return (
-          event.date &&
-          new Date(event.date).toDateString() === day.date.toDateString()
-        );
-      });
-      if (eventForDay) {
-        day.dataList.push(eventForDay);
-      } else {
-        day.dataList = []; // Ensure dataList is empty if no events
+    this.apiData.forEach((appointment: ICalendar) => {
+    this.getPriorityColor(appointment.priority)
+      debugger;
+      const appointmentDate = new Date(appointment.appointment_date);
+      // Find the calendar cell that matches the appointment date
+      const calendarCell = this.calendar.find(
+        (cell) => cell.date.toDateString() === appointmentDate.toDateString()
+      );
+  
+
+      if (calendarCell) {
+        // Push the appointment into the cell's dataList
+        calendarCell.dataList.push({
+          event_title: appointment.event_title,
+          priority: appointment.priority,
+          event_description: appointment.event_description,
+        });
       }
     });
+  
+    console.log('Updated calendar:', this.calendar);
   }
+
+
+  getPriorityColor(priority: number): string {
+    switch (priority) {
+      case 1: return 'red'; // High
+      case 2: return 'yellow'; // Medium
+      case 3: return 'green'; // Low
+      default: return 'gray'; // Default or unknown
+    }
+  }
+
+
+  // mergeData() {
+  //   this.calendar.forEach(day => {
+  //     const eventForDay = this.apiData.find((event: ICalendar) => {
+  //       return (
+  //         event.date &&
+  //         new Date(event.date).toDateString() === day.date.toDateString()
+  //       );
+  //     });
+  //     if (eventForDay) {
+  //       day.dataList.push(eventForDay);
+  //     } else {
+  //       day.dataList = []; // Ensure dataList is empty if no events
+  //     }
+  //   });
+  // }
 
   getValueOfMonth(c: any) {
     if (this.isSelected === false) {
@@ -151,7 +186,7 @@ export class CalendarComponent {
       });
       dialogRef.afterClosed().subscribe((res: any) => {
         if (res) {
-          c.dataList.push(res)
+          c.dataList.push(res);
           const date = c.date;
           debugger;
           const concatData = { date, ...res };
@@ -165,7 +200,7 @@ export class CalendarComponent {
     this.isSelected = true;
   }
 
-  dragEnded(event:any) {
+  dragEnded(event: any) {
     this.isSelected = false;
   }
 
@@ -203,18 +238,10 @@ export class CalendarComponent {
 
   sendEventData(data: any) {
     debugger;
-    const eventData = {
-      event_title: data.event_title,
-      event_description: data.event_description,
-      color: data.color,
-      date: data.date,
-    };
-    this.calendarService.createAppointment(eventData).subscribe(res => {
+    this.calendarService.createAppointment(data).subscribe(res => {
       this.ngOnInit();
     });
   }
-
-  
 
   // contex menu
   dataContexMenu!: any;
@@ -248,8 +275,6 @@ export class CalendarComponent {
   }
 
   updateAppointment(appintmentData: any) {
-
-    this.calendarService.updateAppointment(appintmentData).subscribe(res => {
-    });
+    this.calendarService.updateAppointment(appintmentData).subscribe(res => {});
   }
 }
