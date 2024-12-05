@@ -1,14 +1,16 @@
 import { NextFunction, Request, Response } from "express";
-import {asyncHandler} from "../../helper/async-handler";
-import {BuildResponse} from "../../modules/response/app_response";
-import {router} from "../../routes/public";
-import {CalendarService} from "./service";
+import { asyncHandler } from "../../helper/async-handler";
+import { BuildResponse } from "../../modules/response/app_response";
+import { router } from "../../routes/public";
+import { CalendarService } from "./service";
 
 router.post(
   "/insertAppointment",
   asyncHandler(async function insertEvent(req: any, res: any) {
     const eventData = req.body;
-    const data = await CalendarService.insertEvent(eventData);
+    const appointmentDate = new Date(eventData.date); // Input date from client
+    const getResutl = { ...eventData, appointmentDate };
+    const data = await CalendarService.insertEvent(getResutl);
     const buildResponse = BuildResponse.get(data);
     if (buildResponse) {
       return res.status(200).json(buildResponse);
@@ -46,7 +48,7 @@ router.put(
   asyncHandler(async function updateAppointmentItem(
     req: Request,
     res: Response
-  ) : Promise<any>{
+  ): Promise<any> {
     const formData = req.body;
     const data = await CalendarService.updateAppointmentItem(formData);
     const buildResponse = BuildResponse.updated(data);

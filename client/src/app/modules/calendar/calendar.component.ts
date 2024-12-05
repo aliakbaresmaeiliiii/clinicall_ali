@@ -17,7 +17,7 @@ export class CalendarComponent {
   dataList!: ICalendar;
   contextMenuVisible = false;
   contextMenuPosition = { x: '0px', y: '0px' };
-
+  blinking: boolean = true;
   monthNames = [
     'January',
     'February',
@@ -46,8 +46,9 @@ export class CalendarComponent {
   day!: Date;
   isSelected!: boolean;
   apiData: ICalendar[] = []; //
+  dataCalendar: ICalendar[] = []; //
   dateToAdd: any;
-
+  private intervalId: any;
   constructor(
     private matDialog: MatDialog,
     private calendarService: CalendarService
@@ -56,6 +57,9 @@ export class CalendarComponent {
   ngOnInit(): void {
     this.generateCalendarDays(this.monthIndex);
     this.loadApiData();
+    this.intervalId = setInterval(() => {
+      this.blinking = !this.blinking;
+    }, 2000); // Toggle every second
   }
 
   private generateCalendarDays(monthIndex: number): void {
@@ -123,43 +127,47 @@ export class CalendarComponent {
   loadApiData() {
     this.calendarService.getAppointmentData().subscribe(response => {
       this.apiData = response.data;
+      debugger;
       this.mergeData();
     });
   }
   mergeData() {
+    const normalizeDate = (date: Date) =>
+      new Date(date.getFullYear(), date.getMonth(), date.getDate());
+
     this.apiData.forEach((appointment: ICalendar) => {
-    this.getPriorityColor(appointment.priority)
-      debugger;
-      const appointmentDate = new Date(appointment.appointment_date);
-      // Find the calendar cell that matches the appointment date
-      const calendarCell = this.calendar.find(
-        (cell) => cell.date.toDateString() === appointmentDate.toDateString()
+      const appointmentDate = normalizeDate(
+        new Date(appointment.appointment_date)
       );
-  
+
+      const calendarCell = this.calendar.find(
+        cell => normalizeDate(cell.date).getTime() === appointmentDate.getTime()
+      );
 
       if (calendarCell) {
-        // Push the appointment into the cell's dataList
+        calendarCell.dataList = calendarCell.dataList || [];
         calendarCell.dataList.push({
           event_title: appointment.event_title,
           priority: appointment.priority,
           event_description: appointment.event_description,
+          appointment_time: appointment.appointment_time,
         });
       }
     });
-  
-    console.log('Updated calendar:', this.calendar);
   }
-
 
   getPriorityColor(priority: number): string {
     switch (priority) {
-      case 1: return 'red'; // High
-      case 2: return 'yellow'; // Medium
-      case 3: return 'green'; // Low
-      default: return 'gray'; // Default or unknown
+      case 1:
+        return 'red'; // High
+      case 2:
+        return 'yellow'; // Medium
+      case 3:
+        return 'green'; // Low
+      default:
+        return 'gray'; // Default or unknown
     }
   }
-
 
   // mergeData() {
   //   this.calendar.forEach(day => {
@@ -188,8 +196,8 @@ export class CalendarComponent {
         if (res) {
           c.dataList.push(res);
           const date = c.date;
-          debugger;
           const concatData = { date, ...res };
+
           this.sendEventData(concatData);
         }
       });
@@ -236,7 +244,7 @@ export class CalendarComponent {
     this.updateAppointment(getData);
   }
 
-  sendEventData(data: any) {
+  sendEventData(data: ICalendar) {
     debugger;
     this.calendarService.createAppointment(data).subscribe(res => {
       this.ngOnInit();
@@ -276,5 +284,11 @@ export class CalendarComponent {
 
   updateAppointment(appintmentData: any) {
     this.calendarService.updateAppointment(appintmentData).subscribe(res => {});
+  }
+
+  ngOnDestroy(): void {
+    if (this.intervalId) {
+      clearInterval(this.intervalId); // Clear the interval to prevent memory leaks
+    }
   }
 }

@@ -10,7 +10,8 @@ export interface IAppointment {
   reminder_minutes_before?: string;
   create_at?: string;
   date: string;
-  status: string;
+  priority: string;
+  appointmentDate: string;
   event_description: string;
   event_title: string;
 }

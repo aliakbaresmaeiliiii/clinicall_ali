@@ -9,37 +9,22 @@
   <strong class="displayMonth">
     {{ displayMonth }}
   </strong>
-  <div class="example-button-container">
+  <div class="example-button-container flex gap-4">
     <button
       mat-mini-fab
       color="primary"
       aria-label=""
       (click)="decreaseMonth()">
-      <svg
-        matTooltip="last month"
-        xmlns="http://www.w3.org/2000/svg"
-        height="20px"
-        viewBox="0 -960 960 960"
-        width="20px"
-        fill="#75FBFD">
-        <path
-          d="m330-444 201 201-51 51-288-288 288-288 51 51-201 201h438v72H330Z" />
-      </svg>
+      <i class="fa-solid fa-arrow-left"></i>
+
     </button>
     <button
       mat-mini-fab
       color="primary"
       aria-label=""
       (click)="increaseMonth()">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        height="20px"
-        viewBox="0 -960 960 960"
-        width="20px"
-        fill="#75FBFD">
-        <path
-          d="M630-444H192v-72h438L429-717l51-51 288 288-288 288-51-51 201-201Z" />
-      </svg>
+      <i class="fa-solid fa-arrow-right"></i>
+
     </button>
   </div>
 </div>
@@ -68,36 +53,38 @@
             [cdkDropListData]="calendar"
             (cdkDropListDropped)="drop($event)"
             (cdkDragEnded)="dragEnded($event)">
-            <strong>{{ c.date.getDate() }} </strong>
+            <!-- Day of the month -->
+            <strong>{{ c.date.getDate() }}</strong>
 
+            <!-- Display month name for today or the first date -->
             <strong
               *ngIf="c.isToday || (i == 0 && j == 0) || c.date.getDate() == 1">
               {{ monthNames[c.date.getMonth()] }}
             </strong>
+
+            <!-- Events in the dataList -->
             <div
-              *ngIf="j"
+              *ngFor="let event of c.dataList; let k = index"
               cdkDrag
               class="body-event"
-              (contextmenu)="onRightClick($event, c)">
-              @for (event of c.dataList; track $index) {
-              <p class="priority" [style.background-color]="event.color"></p>
-              <p *ngFor="let event of apiData" class="event_title">
-                <span [ngClass]="{
-                  'priority-circle': true,
-                  'priority-high': event.priority === 1,
-                  'priority-medium': event.priority === 2,
-                  'priority-low': event.priority === 3
-                }"></span>
-                <strong>{{ event.event_title }}</strong>
-                <strong>{{ event.event_description }}</strong>
+              >
+              <!-- this is for event right click() -->
+              <!-- (contextmenu)="onRightClick($event, c)" -->
+              <p class="event_title">
+                <span
+                  [ngClass]="{
+                    'priority-circle': true,
+                    'priority-high': event.priority === 'Red' && blinking,
+                    'priority-medium': event.priority === 'Green' && blinking,
+                    'priority-low': event.priority === 'Blue' && blinking
+                  }">
+                </span>
+                <strong>{{ event.event_title }}</strong
+                ><br />
+                <small>{{ event.event_description }}</small
+                ><br />
+                <small>{{ event.appointment_time }}</small>
               </p>
-
-              <!-- <p *ngFor="let event of c.dataList">
-              <strong>{{ event.event_description }}</strong>
-            </p> -->
-              } @empty {
-              <!-- <li>There are no items.</li> -->
-              }
             </div>
           </div>
         </td>

@@ -15,7 +15,7 @@
   max-width: 100%;
   margin-bottom: 1rem;
   border: 1px solid #dee2e6;
-  background-color: #fff;
+  // background-color: #fff;
 }
 
 .calendar-table thead th {
@@ -50,11 +50,11 @@
 }
 
 .calendar-day.past-date {
-  background-color: rgb(248, 248, 248);
+  // background-color: rgb(248, 248, 248);
 }
 
 .calendar-day:hover {
-  background-color: rgb(248, 248, 248);
+  background-color: #DCCBF2;
 }
 
 .blue-date {
@@ -64,7 +64,7 @@
 .content-schedule {
   border: 1px solid gray;
   border-radius: 5px;
-  background-color: #f8f8f8;
+  background-color: #581C87;
   padding: 6px;
 }
 
@@ -101,7 +101,7 @@ p {
 }
 
 .body-event:hover {
-  background-color: lightgray;
+  background-color: #DCCBF2;
   border: 1px solid lightgray;
   transition: 0.2s;
   padding: 5px;
@@ -149,8 +149,8 @@ p {
 
 
 .priority-circle {
-  width: 20px;       /* Size of the circle */
-  height: 20px;      /* Size of the circle */
+  width: 10px;       /* Size of the circle */
+  height: 10px;      /* Size of the circle */
   border-radius: 50%; /* Make the element circular */
   display: inline-block; /* Align the circle with text */
   margin-right: 8px;  /* Space between the circle and the text */
@@ -158,13 +158,19 @@ p {
 
 .priority-high {
   background-color: red; /* High priority - red */
+  transition: background-color 0.8s ease; /* Smooth transition */
+
 }
 
 .priority-medium {
   background-color: yellow; /* Medium priority - yellow */
+  transition: background-color 0.8s ease; /* Smooth transition */
+
 }
 
 .priority-low {
-  background-color: green; /* Low priority - green */
+  background-color: blue; /* Low priority - green */
+  transition: background-color 0.8s ease; /* Smooth transition */
+
 }
 
