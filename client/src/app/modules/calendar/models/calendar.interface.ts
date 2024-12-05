@@ -10,6 +10,7 @@ export interface ICalendar {
   reminder_minutes_before?: string;
   create_at?: string;
   appointment_date: string;
+  appointment_time: string;
   dataList?: IDataList;
   priority:number;
 }

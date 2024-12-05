@@ -1,0 +1,19 @@
+<div class="flex gap-4 items-center">
+  <mat-form-field appearance="outline" class="w-36">
+    <mat-select [value]="defaultTime">
+      <mat-option *ngFor="let time of timeSlots" [value]="time">
+        {{ time }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="separator"></div>
+
+  <mat-form-field appearance="outline" class="w-36">
+    <mat-select [value]="defaultTime">
+      <mat-option *ngFor="let time of timeSlots" [value]="time">
+        {{ time }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>

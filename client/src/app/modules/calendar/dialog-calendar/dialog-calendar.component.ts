@@ -22,9 +22,10 @@ export class DialogCalendarComponent {
   title: string = 'Create Appointment';
   value = 'Clear me';
   date: any;
-  selectedColor: any;
   form!: FormGroup;
-  colors: string[] = ['#FF0000', '#00FF00', '#0000FF'];
+  colors: string[] = ['red', 'green', 'blue', 'yellow', 'purple'];
+  defaultColor = 'blue'; // Set your default color
+  selectedColor = this.defaultColor;
   fb = inject(FormBuilder);
   filteredPatient: any;
   patientInfo: PatientDTO[] = [];
@@ -32,6 +33,12 @@ export class DialogCalendarComponent {
   DATA_KEY_PATIENT = makeStateKey<any>('pateintInfo');
   service = inject(PatientsService);
   selectedPatient: string = '';
+  isShowTime = false;
+  foods: any[] = [
+    { value: 'steak-0', viewValue: 'Steak' },
+    { value: 'pizza-1', viewValue: 'Pizza' },
+    { value: 'tacos-2', viewValue: 'Tacos' },
+  ];
 
   constructor(
     public dialogRef: MatDialogRef<DialogCalendarComponent>,
@@ -46,6 +53,7 @@ export class DialogCalendarComponent {
   ngOnInit(): void {
     this.fetchPatients();
     this.createForm();
+    this.selectedColor = this.defaultColor;
     if (this.data.data) {
       this.updateForm();
     }
@@ -75,7 +83,7 @@ export class DialogCalendarComponent {
       ],
       event_description: [''],
       patientName: [''],
-      color: ['#FF0000'],
+      color: [this.defaultColor] 
     });
   }
 
@@ -119,11 +127,12 @@ export class DialogCalendarComponent {
     const payload = {
       patient_id: this.selectedPatient,
       doctor_id: 2,
-      status: sttus,
+      priority: sttus,
       event_description: this.form.get('event_description')?.value,
       event_title: this.form.get('event_title')?.value,
     };
     this.dialogRef.close(payload);
+    debugger;
   }
 
   updateForm() {

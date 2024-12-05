@@ -36,6 +36,7 @@ import { RatingPickerPageComponent } from './components/rating-picker-page/ratin
 import { AgeValidatorDirective } from './directives/age-validator/age-validator.directive';
 import { ChunkPipe } from './pipes/chunk/chunk.pipe';
 import { SearchBarComponent } from './search-bar/search-bar.component';
+import { TimeSelectorComponent } from './components/time-selector/time-selector.component';
 
 const ANGULR_MATERIAL_MODULES = [
   MatAutocompleteModule,
@@ -85,7 +86,7 @@ const COMMON_MODULES = [CommonModule, ReactiveFormsModule, FormsModule];
 // const SHARED_COMPONENT = [];
 @NgModule({
   declarations: [SearchBarComponent, ChunkPipe],
-  imports: [...COMMON_MODULES, ...ANGULR_MATERIAL_MODULES],
+  imports: [...COMMON_MODULES, ...ANGULR_MATERIAL_MODULES,],
   exports: [...ANGULR_MATERIAL_MODULES, ...COMMON_MODULES, ChunkPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

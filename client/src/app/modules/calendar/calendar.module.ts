@@ -4,6 +4,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { CalendarComponent } from './calendar.component';
 import { DialogCalendarComponent } from './dialog-calendar/dialog-calendar.component';
 import { RouterModule, Routes } from '@angular/router';
+import { TimeSelectorComponent } from '../../shared/components/time-selector/time-selector.component';
 
 export const routes: Routes = [
   {
@@ -14,6 +15,11 @@ export const routes: Routes = [
 ];
 @NgModule({
   declarations: [CalendarComponent, DialogCalendarComponent],
-  imports: [CommonModule, RouterModule.forChild(routes), SharedModule],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    SharedModule,
+    TimeSelectorComponent,
+  ],
 })
 export class CalendarModule {}

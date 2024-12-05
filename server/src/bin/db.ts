@@ -297,14 +297,14 @@ export async function getUserInfo(email: string) {
 export async function saveAppointment(eventData: IAppointment) {
   const insertEvent = await query<RowDataPacket[]>(
     `INSERT INTO ${coreSchema}.appointments 
-      (patient_id, doctor_id, appointment_date, status,event_title,created_at,updated_at,event_description)
+      (patient_id, doctor_id, appointment_date, priority,event_title,created_at,updated_at,event_description)
        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
     {
       values: [
         eventData.patient_id,
         eventData.doctor_id,
-        eventData.date,
-        eventData.status,
+        eventData.appointmentDate,
+        eventData.priority,
         eventData.event_title,
         new Date(),
         new Date(),
