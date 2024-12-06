@@ -16,7 +16,6 @@
       aria-label=""
       (click)="decreaseMonth()">
       <i class="fa-solid fa-arrow-left"></i>
-
     </button>
     <button
       mat-mini-fab
@@ -24,7 +23,6 @@
       aria-label=""
       (click)="increaseMonth()">
       <i class="fa-solid fa-arrow-right"></i>
-
     </button>
   </div>
 </div>
@@ -66,8 +64,7 @@
             <div
               *ngFor="let event of c.dataList; let k = index"
               cdkDrag
-              class="body-event"
-              >
+              class="body-event">
               <!-- this is for event right click() -->
               <!-- (contextmenu)="onRightClick($event, c)" -->
               <p class="event_title">
@@ -76,7 +73,9 @@
                     'priority-circle': true,
                     'priority-high': event.priority === 'Red' && blinking,
                     'priority-medium': event.priority === 'Green' && blinking,
-                    'priority-low': event.priority === 'Blue' && blinking
+                    'priority-normal': event.priority === 'Purple' && blinking,
+                    'priority-low': event.priority === 'Blue' && blinking,
+                    'priority-mid': event.priority === 'Yellow' && blinking
                   }">
                 </span>
                 <strong>{{ event.event_title }}</strong

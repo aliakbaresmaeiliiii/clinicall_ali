@@ -23,7 +23,7 @@ export class DialogCalendarComponent {
   value = 'Clear me';
   date: any;
   form!: FormGroup;
-  colors: string[] = ['red', 'green', 'blue', 'yellow', 'purple'];
+  colors: string[] = ['#FF0000', '#00FF00', '#0000FF', '#F4D204', '#9C1EEA'];
   defaultColor = 'blue'; // Set your default color
   selectedColor = this.defaultColor;
   fb = inject(FormBuilder);
@@ -45,9 +45,7 @@ export class DialogCalendarComponent {
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.date = data.data.date;
-    setTimeout(() => {
-      this.title = 'testing change detection';
-    }, 2000);
+    this.title = 'Add Appointment';
   }
 
   ngOnInit(): void {
@@ -65,10 +63,6 @@ export class DialogCalendarComponent {
       } else {
       }
     }
-
-    // this.form.get('color')?.valueChanges.subscribe(value => {
-    //   this.selectedColor = value;
-    // });
   }
 
   createForm() {
@@ -121,18 +115,17 @@ export class DialogCalendarComponent {
 
   submit() {
     const selectedColorHex = this.form.get('color')?.value;
-    const sttus = Object.keys(Colors).find(
+    const priority = Object.keys(Colors).find(
       key => Colors[key as keyof typeof Colors] === selectedColorHex
     );
     const payload = {
       patient_id: this.selectedPatient,
       doctor_id: 2,
-      priority: sttus,
+      priority: priority,
       event_description: this.form.get('event_description')?.value,
       event_title: this.form.get('event_title')?.value,
     };
     this.dialogRef.close(payload);
-    debugger;
   }
 
   updateForm() {
@@ -143,4 +136,5 @@ export class DialogCalendarComponent {
     });
     this.selectedColor = this.form.get('color')?.value;
   }
+
 }

@@ -50,7 +50,7 @@
 }
 
 .calendar-day.past-date {
-  // background-color: rgb(248, 248, 248);
+  background-color: rgb(248, 248, 248);
 }
 
 .calendar-day:hover {
@@ -90,7 +90,7 @@ p {
 }
 
 .event_title:hover {
-  color: white;
+  // color: white;
 }
 
 .body-event {
@@ -100,13 +100,13 @@ p {
 
 }
 
-.body-event:hover {
-  background-color: #DCCBF2;
-  border: 1px solid lightgray;
-  transition: 0.2s;
-  padding: 5px;
-  border-radius: 5px;
-}
+// .body-event:hover {
+//   // background-color: #DCCBF2;
+//   // border: 1px solid lightgray;
+//   transition: 0.2s;
+//   padding: 5px;
+//   border-radius: 5px;
+// }
 
 
 
@@ -149,28 +149,41 @@ p {
 
 
 .priority-circle {
-  width: 10px;       /* Size of the circle */
-  height: 10px;      /* Size of the circle */
-  border-radius: 50%; /* Make the element circular */
-  display: inline-block; /* Align the circle with text */
-  margin-right: 8px;  /* Space between the circle and the text */
+  width: 10px;
+  /* Size of the circle */
+  height: 10px;
+  /* Size of the circle */
+  border-radius: 50%;
+  /* Make the element circular */
+  display: inline-block;
+  /* Align the circle with text */
+  margin-right: 8px;
+  /* Space between the circle and the text */
 }
 
 .priority-high {
-  background-color: red; /* High priority - red */
-  transition: background-color 0.8s ease; /* Smooth transition */
+  background-color: red;
+  transition: background-color 0.8s ease;
 
 }
 
 .priority-medium {
-  background-color: yellow; /* Medium priority - yellow */
-  transition: background-color 0.8s ease; /* Smooth transition */
+  background-color: green;
+  transition: background-color 0.8s ease;
 
+}
+
+.priority-normal {
+  background-color: purple;
+  transition: background-color 0.8s ease;
 }
 
 .priority-low {
-  background-color: blue; /* Low priority - green */
-  transition: background-color 0.8s ease; /* Smooth transition */
-
+  background-color: blue;
+  transition: background-color 0.8s ease;
 }
 
+.priority-mid {
+  background-color: yellow;
+  transition: background-color 0.8s ease;
+}
