@@ -32,7 +32,8 @@
     </mat-form-field>
 
     <div class="flex justify-between items-center">
-      <div class="flex items-center">
+      <div
+        class="flex items-center gap-2 border-2 border-gray-300 rounded-2xl p-2">
         <span class="material-symbols-outlined ml-3"> schedule </span>
         <strong>
           {{ date | date : 'short' }}
@@ -50,45 +51,80 @@
 
     @if(isShowTime){
 
-    <div class="flex gap-4 pt-5">
-      <app-time-selector />
-      
-      <mat-form-field appearance="outline" class="w-36">
-        <mat-select
-          formControlName="color"
-          (selectionChange)="onColorChange($event)"
-          [value]="defaultColor">
-          <mat-select-trigger>
-            <span
-              class="color-span"
-              [ngStyle]="{
-                'background-color': selectedColor
-              }"></span>
-          </mat-select-trigger>
-          <mat-option *ngFor="let color of colors" [value]="color">
-            <div
-              class="color-span"
-              [ngStyle]="{ 'background-color': color }"></div>
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      
+    <div class="flex flex-col pt-5">
+      <div>
+        <mat-form-field class="example-form-field" formArrayName="campaignDate">
+          <mat-date-range-input
+            [rangePicker]="campaignDatePicker"
+            [comparisonStart]="form.get('campaignDate.start_date')?.value"
+            [comparisonEnd]="form.get('campaignDate.end_date')?.value">
+            <input
+              matStartDate
+              placeholder="Start date"
+              formControlName="start_date" />
+            <input matEndDate placeholder="End date" formControlName="end_date" />
+          </mat-date-range-input>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="campaignDatePicker"></mat-datepicker-toggle>
+          <mat-date-range-picker #campaignDatePicker></mat-date-range-picker>
+        </mat-form-field>
+      </div>
+
+      <div class="flex gap-4">
+        <div class="flex gap-4 items-center" formArrayName="campaignTime">
+          <!-- First Time Picker -->
+          <mat-form-field appearance="outline" class="w-36">
+            <mat-select
+              formControlName="start_time"
+              [(value)]="firstSelectedTime"
+              (selectionChange)="updateSecondTime()">
+              @for (time of timeSlots; track $index) {
+              <mat-option [value]="time">
+                {{ time }}
+              </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <div class="separator"></div>
+
+          <!-- Second Time Picker -->
+          <mat-form-field appearance="outline" class="w-36">
+            <mat-select [(value)]="secondSelectedTime" formControlName="end_time">
+              @for (time of timeSlots; track $index) {
+              <mat-option
+                [value]="time"
+                [disabled]="$index <= timeSlots.indexOf(firstSelectedTime)">
+                {{ time }}
+              </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <mat-form-field appearance="outline" class="w-36">
+          <mat-select
+            formControlName="color"
+            (selectionChange)="onColorChange($event)"
+            [value]="defaultColor">
+            <mat-select-trigger>
+              <span
+                class="color-span"
+                [ngStyle]="{
+                  'background-color': selectedColor
+                }"></span>
+            </mat-select-trigger>
+            <mat-option *ngFor="let color of colors" [value]="color">
+              <div
+                class="color-span"
+                [ngStyle]="{ 'background-color': color }"></div>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
     </div>
     }
 
-    <!-- SELECTED Priority -->
-
-    <!-- <mat-form-field appearance="outline" class="w-full mb-1">
-        <mat-label>Choose a date</mat-label>
-        <input
-          matInput
-          [matDatepicker]="picker"
-          formControlName="dateOfBirth" />
-        <mat-datepicker-toggle matIconSuffix [for]="picker">
-          <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
-        </mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field> -->
     <mat-form-field appearance="outline" class="w-full mt-4">
       <mat-label>Leave a comment</mat-label>
       <textarea

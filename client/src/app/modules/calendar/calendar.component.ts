@@ -127,7 +127,6 @@ export class CalendarComponent {
   loadApiData() {
     this.calendarService.getAppointmentData().subscribe(response => {
       this.apiData = response.data;
-      debugger;
       this.mergeData();
     });
   }
@@ -245,7 +244,6 @@ export class CalendarComponent {
   }
 
   sendEventData(data: ICalendar) {
-    debugger;
     this.calendarService.createAppointment(data).subscribe(res => {
       this.ngOnInit();
     });

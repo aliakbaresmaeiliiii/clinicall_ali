@@ -3,6 +3,7 @@ import {
   inject,
   Inject,
   makeStateKey,
+  SimpleChanges,
   TransferState,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -11,6 +12,10 @@ import { banWords } from '../../../shared/validators/ban-words.validators';
 import { PatientDTO } from '../../patients/model/patients.model';
 import { PatientsService } from '../../patients/services/patients.service';
 import { Colors } from '../enum/enum-color';
+
+const today = new Date();
+const month = today.getMonth();
+const year = today.getFullYear();
 
 @Component({
   selector: 'app-dialog-calendar',
@@ -40,12 +45,18 @@ export class DialogCalendarComponent {
     { value: 'tacos-2', viewValue: 'Tacos' },
   ];
 
+  timeSlots: string[] = [];
+  defaultTime: string = '';
+  firstSelectedTime: string = '';
+  secondSelectedTime: string = '';
+
   constructor(
     public dialogRef: MatDialogRef<DialogCalendarComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
     this.date = data.data.date;
     this.title = 'Add Appointment';
+    debugger;
   }
 
   ngOnInit(): void {
@@ -63,6 +74,10 @@ export class DialogCalendarComponent {
       } else {
       }
     }
+
+    this.generateTimeSlots();
+    this.firstSelectedTime = this.timeSlots[0];
+    this.updateSecondTime();
   }
 
   createForm() {
@@ -77,7 +92,16 @@ export class DialogCalendarComponent {
       ],
       event_description: [''],
       patientName: [''],
-      color: [this.defaultColor] 
+      color: [this.defaultColor],
+
+      campaignDate: this.fb.group({
+        start_date: [new Date(year, month, 1)],
+        end_date: [new Date(year, month, 10)],
+      }),
+      campaignTime: this.fb.group({
+        start_time: [null],
+        end_time: [null],
+      }),
     });
   }
 
@@ -118,13 +142,19 @@ export class DialogCalendarComponent {
     const priority = Object.keys(Colors).find(
       key => Colors[key as keyof typeof Colors] === selectedColorHex
     );
+
     const payload = {
       patient_id: this.selectedPatient,
       doctor_id: 2,
       priority: priority,
       event_description: this.form.get('event_description')?.value,
       event_title: this.form.get('event_title')?.value,
+      start_date: this.form.get('campaignDate.start_date')?.value,
+      end_date: this.form.get('campaignDate.end_date')?.value,
+      campaignTime: this.form.get('campaignTime')?.value,
+      appointmentDate: this.date,
     };
+    debugger;
     this.dialogRef.close(payload);
   }
 
@@ -137,4 +167,39 @@ export class DialogCalendarComponent {
     this.selectedColor = this.form.get('color')?.value;
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['campaignDateStart']) {
+      this.form.value.campaignDate.controls.start_date.setValue(this.date);
+    }
+    if (changes['campaignDateEnd']) {
+      this.form.value.campaignDate.controls.end_date.setValue(this.date);
+    }
+  }
+
+  generateTimeSlots(): void {
+    const interval = 15; // Interval in minutes
+    const startTime = 0; // Start of the day in minutes (00:00)
+    const endTime = 24 * 60; // End of the day in minutes (24:00)
+    for (let minutes = startTime; minutes < endTime; minutes += interval) {
+      const hours = Math.floor(minutes / 60);
+      const mins = minutes % 60;
+      const time = this.formatTime(hours, mins);
+      this.timeSlots.push(time);
+      this.defaultTime = time;
+    }
+  }
+
+  formatTime(hours: number, minutes: number): string {
+    const formattedHours = hours % 12 || 12; // Convert 24-hour time to 12-hour format
+    const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+    const ampm = hours < 12 ? 'AM' : 'PM';
+    return `${formattedHours}:${formattedMinutes} ${ampm}`;
+  }
+
+  updateSecondTime(): void {
+    const firstIndex = this.timeSlots.indexOf(this.firstSelectedTime);
+    const secondIndex = firstIndex;
+    this.secondSelectedTime =
+      this.timeSlots[secondIndex] || this.timeSlots[firstIndex];
+  }
 }

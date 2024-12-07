@@ -31,7 +31,7 @@ export const appConfig: ApplicationConfig = {
     provideNgProgressOptions({ spinner: false, }),
     importProvidersFrom(MatSnackBarModule),
     provideHttpClient(withFetch(), withInterceptorsFromDi()),
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
     
     // Uncomment the following if needed:
     // { provide: ErrorHandler, useClass: CustomErrorHandler },

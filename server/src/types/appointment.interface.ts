@@ -13,5 +13,16 @@ export interface IAppointment {
   priority: string;
   appointmentDate: string;
   event_description: string;
+  campaignTime: campaignTime;
+  start_date: string;
+  end_date: string;
   event_title: string;
+}
+
+export interface campaignDate {
+
+}
+export interface campaignTime {
+  start_time: string;
+  end_time: string;
 }
