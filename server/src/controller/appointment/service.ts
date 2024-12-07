@@ -1,14 +1,40 @@
 import {
   deleteAppointment,
   getAppointment,
-  saveAppointment,
   updateAppointment,
 } from "../../bin/db";
 import { IAppointment } from "../../types/appointment.interface";
+import { saveAppointment } from "./db";
+const moment = require("moment");
 
 export class CalendarService {
   public static async insertEvent(eventData: IAppointment) {
-    const data = await saveAppointment(eventData);
+
+    const receivedStartDate = new Date(eventData.start_date);
+    const receivedEndDate = new Date(eventData.end_date);
+    const receivedAppointmentDate = new Date(eventData.appointmentDate);
+    const startLocalDate = moment(receivedStartDate)
+      .local()
+      .format("YYYY-MM-DD");
+    const endLocalDate = moment(receivedEndDate).local().format("YYYY-MM-DD");
+    
+    const appointmentLocalDate = moment(receivedAppointmentDate).local().format("YYYY-MM-DD");
+
+
+    const payload: any = {
+      appointmentDate: appointmentLocalDate,
+      start_date: startLocalDate,
+      end_date: endLocalDate,
+      campaignTime: eventData.campaignTime,
+      date: eventData.date,
+      doctor_id: eventData.doctor_id,
+      event_description: eventData.event_description,
+      event_title: eventData.event_title,
+      patient_id: eventData.patient_id,
+      priority: eventData.priority,
+    };
+
+    const data = await saveAppointment(payload);
     if (data) {
       return { message: "ok", data };
     } else {
@@ -33,4 +59,3 @@ export class CalendarService {
     data;
   }
 }
-

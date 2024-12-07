@@ -8,9 +8,7 @@ router.post(
   "/insertAppointment",
   asyncHandler(async function insertEvent(req: any, res: any) {
     const eventData = req.body;
-    const appointmentDate = new Date(eventData.date); // Input date from client
-    const getResutl = { ...eventData, appointmentDate };
-    const data = await CalendarService.insertEvent(getResutl);
+    const data = await CalendarService.insertEvent(eventData);
     const buildResponse = BuildResponse.get(data);
     if (buildResponse) {
       return res.status(200).json(buildResponse);

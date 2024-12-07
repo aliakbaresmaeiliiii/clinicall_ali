@@ -12,7 +12,7 @@ export class CalendarService {
   private config = environment.apiEndPoint;
 
   createAppointment(eventData: ICalendar): Observable<ICalendar> {
-    debugger
+    debugger;
     return this.#http.post<ICalendar>(
       `${this.config}/insertAppointment`,
       eventData

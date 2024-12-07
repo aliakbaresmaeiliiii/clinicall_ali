@@ -6,6 +6,9 @@ import { DialogCalendarComponent } from './dialog-calendar/dialog-calendar.compo
 import { RouterModule, Routes } from '@angular/router';
 import { TimeSelectorComponent } from '../../shared/components/time-selector/time-selector.component';
 
+
+
+
 export const routes: Routes = [
   {
     path: '',
@@ -21,5 +24,6 @@ export const routes: Routes = [
     SharedModule,
     TimeSelectorComponent,
   ],
+
 })
 export class CalendarModule {}
