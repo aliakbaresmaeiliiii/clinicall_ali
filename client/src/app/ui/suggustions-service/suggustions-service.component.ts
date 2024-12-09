@@ -1,10 +1,13 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
-import Swiper from 'swiper';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'app-suggustions-service',
   templateUrl: './suggustions-service.component.html',
-  styleUrl: './suggustions-service.component.scss',
+  // styleUrl: './suggustions-service.component.scss',
+  styleUrls: [
+    "../../../../node_modules/keen-slider/keen-slider.min.css",
+    "./suggustions-service.component.scss",
+  ],
   standalone: false,
 })
 export class SuggustionsServiceComponent  {
