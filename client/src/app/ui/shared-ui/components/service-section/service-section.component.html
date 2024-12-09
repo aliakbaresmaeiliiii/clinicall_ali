@@ -6,13 +6,14 @@
         {{ title() }}
       </div>
     </div>
-    <!-- <div class="text-gray-100 mobile:pt-4" data-aos="fade-down">
-      Enthusiastically orchestrate competitive e-services whereas superior
-      Conveniently disintermediate innovative solutions through impactfuls
-      tailers without seamless markets network .
-    </div> -->
+
     <div class="flex justify-end mobile:pt-4 mobile:pb-4">
-      <button dfButton>View All</button>
+      @if (isShowBtn()) {
+      <button dfButton appearance="solid" class="flex">
+        View All
+        <i class="fa-solid fa-arrow-trend-up text-2xl"></i>
+      </button>
+      }
     </div>
   </div>
   <ng-content></ng-content>

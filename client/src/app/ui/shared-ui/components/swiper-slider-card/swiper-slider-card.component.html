@@ -1,4 +1,4 @@
-<app-service-section
+<!-- <app-service-section
   [title]="title()">
   <div class="swiper cardSwiper mobile:w-full desktop:w-10/12">
     <div class="swiper-wrapper">
@@ -21,6 +21,59 @@
     <div class="swiper-button-prev"></div>
     <div class="swiper-pagination"></div>
   </div>
+</app-service-section> -->
+
+
+
+
+<app-service-section [title]="title()">
+  <div class="mobile:w-full desktop:w-11/12 mx-auto">
+    <div class="keen-slider flex" #sliderRef>
+      @for (data of swiperData(); track $index) {
+      <div class="keen-slider__slide flex">
+        <div class="single-service-box aos-init aos-animate ">
+          <app-card
+          [title]="data.title"
+          [description]="data.description"
+          [name]="data.name"
+          [promotion]="data.promotion"
+          [price]="data.price"
+          [off]="data.off"
+          [imgSergury]="data.imgSergury"
+          [doctorImg]="data.doctorImg">
+        </app-card>
+        </div>
+      </div>
+      }
+      <svg
+        [ngClass]="
+          'arrow arrow--left ' + (currentSlide === 0 ? 'arrow--disabled' : '')
+        "
+        (click)="slider.prev()"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24">
+        <path
+          d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z" />
+      </svg>
+      <svg
+        *ngIf="slider"
+        [ngClass]="
+          'arrow arrow--right ' +
+          (slider.track.details.slides.length - 1 === currentSlide
+            ? 'arrow--disabled'
+            : '')
+        "
+        (click)="slider.next()"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24">
+        <path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z" />
+      </svg>
+    </div>
+    <div class="dots">
+      <button
+        (click)="slider.moveToIdx(i)"
+        *ngFor="let slide of dotHelper; let i = index"
+        [class]="'dot ' + (i === currentSlide ? 'active' : '')"></button>
+    </div>
+  </div>
 </app-service-section>
-
-

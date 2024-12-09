@@ -6,13 +6,13 @@ import {
 } from '@angular/core';
 
 @Component({
-    selector: 'app-service-section',
-    templateUrl: './service-section.component.html',
-    styleUrl: './service-section.component.scss',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  selector: 'app-service-section',
+  templateUrl: './service-section.component.html',
+  styleUrl: './service-section.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class ServiceSectionComponent {
   title = input<string>();
-
+  isShowBtn = input<boolean>(false);
 }

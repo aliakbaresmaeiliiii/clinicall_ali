@@ -1,6 +1,5 @@
-import { Component, input, signal } from '@angular/core';
-import { UserReviews } from './model/users-review';
-import Swiper from 'swiper';
+import { Component, ElementRef, input, ViewChild } from '@angular/core';
+import KeenSlider, { KeenSliderInstance } from "keen-slider";
 
 @Component({
     selector: 'app-user-reviews-of-clinic-ali',
@@ -140,28 +139,51 @@ export class UserReviewsOfClinicAliComponent {
     },
   ];
 
-  ngAfterViewInit(): void {
-    this.initializeServiceSwiper();
-  }
-  ngOnInit(): void {}
+  currentSlide: number = 1
+  dotHelper: Array<Number> = []
+  @ViewChild("sliderRef") sliderRef!: ElementRef<HTMLElement>
 
-  initializeServiceSwiper(): void {
-    new Swiper('.aliSwiper', {
-      slidesPerView: 5,
-      spaceBetween: 10,
-      freeMode: true,
-      pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-        renderBullet: function (index, className) {
-          return '<span class="' + className + '">' + (index + 1) + "</span>";
+  slider!: KeenSliderInstance 
+
+  ngAfterViewInit() {
+    this.slider = new KeenSlider(this.sliderRef.nativeElement, {
+      initial: this.currentSlide,
+      slideChanged: (s) => {
+        this.currentSlide = s.track.details.rel;
+      },
+      slides: {
+        perView: 4,
+        spacing: 5,
+      },
+      breakpoints: {
+        "(max-width: 1024px)": {
+          slides: {
+            perView: 3,
+            spacing: 5,
+          },
+        },
+        "(max-width: 768px)": {
+          slides: {
+            perView: 2,
+            spacing: 8,
+          },
+        },
+        "(max-width: 480px)": {
+          slides: {
+            perView: 1,
+            spacing: 5,
+          },
         },
       },
-      autoplay:true,
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
     });
+  
+    this.dotHelper = [
+      ...Array(this.slider.track.details.slides.length).keys(),
+    ];
+  }
+  
+
+  ngOnDestroy() {
+    if (this.slider) this.slider.destroy()
   }
 }

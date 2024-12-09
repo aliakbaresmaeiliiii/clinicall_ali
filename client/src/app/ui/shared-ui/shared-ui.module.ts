@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { SwiperSliderComponent } from './components/swiper-slider/swiper-slider.component';
 import { SwiperSliderCardComponent } from './components/swiper-slider-card/swiper-slider-card.component';
 import { MatCardModule } from '@angular/material/card';
+import { ButtonComponent } from '../../shared/components/button/button.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,10 @@ import { MatCardModule } from '@angular/material/card';
     SwiperSliderComponent,
     SwiperSliderCardComponent,
   ],
-  imports: [CommonModule, MatCardModule],
+  imports: [CommonModule, MatCardModule,
+    ButtonComponent
+
+  ],
   exports: [
     ServiceSectionComponent,
     CardComponent,
@@ -24,6 +28,7 @@ import { MatCardModule } from '@angular/material/card';
     MatButtonModule,
     SwiperSliderComponent,
     SwiperSliderCardComponent,
+    
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
