@@ -1,7 +1,7 @@
 /* From Uiverse.io by alexruix */
 .card {
     width: 100%;
-    max-width: 18rem;
+    max-width: 22rem;
     height: 100%;
     padding: 0.8em;
     background: transparent;
@@ -9,7 +9,8 @@
     overflow: visible;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     cursor: pointer;
-    border-radius: 5px;
+    border-radius: 10px;
+    border: 1px solid gray;
 }
 
 

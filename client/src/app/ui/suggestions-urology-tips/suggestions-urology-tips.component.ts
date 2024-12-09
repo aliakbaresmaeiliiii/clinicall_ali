@@ -8,7 +8,6 @@ import Swiper from 'swiper';
   styleUrl: './suggestions-urology-tips.component.scss',
 })
 export class SuggestionsUrologyTipsComponent {
-
   ophthalmologyTips = [
     {
       title: 'Femto-SMILE',
@@ -291,25 +290,4 @@ export class SuggestionsUrologyTipsComponent {
       tip: 'Specialized care for eye tumors with precision surgery.',
     },
   ];
-
-  ngAfterViewInit(): void {
-    this.initializeServiceSwiper();
-  }
-  ngOnInit(): void {}
-
-  initializeServiceSwiper(): void {
-    new Swiper('.ophthalmologyTipsSwiper', {
-      slidesPerView: 5,
-      spaceBetween: 10,
-      freeMode: true,
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-      },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-    });
-  }
 }

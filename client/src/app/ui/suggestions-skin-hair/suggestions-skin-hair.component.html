@@ -1,24 +1,4 @@
-<app-service-section
-[title]="'Suggestions Related to Skin, Hair, and Beauty Tips'">
-<div class="swiper skinSwiper mobile:w-full desktop:w-10/12">
-  <div class="swiper-wrapper">
-    @for (data of beauty; track $index) {
-    <div class="swiper-slide">
-      <app-card
-        [title]="data.title"
-        [description]="data.description"
-        [name]="data.name"
-        [promotion]="data.promotion"
-        [price]="data.price"
-        [off]="data.off"
-        [imgSergury]="data.imgSergury"
-        [doctorImg]="data.doctorImg">
-      </app-card>
-    </div>
-    }
-  </div>
-  <div class="swiper-button-next"></div>
-  <div class="swiper-button-prev"></div>
-  <div class="swiper-pagination"></div>
-</div>
-</app-service-section>
+
+
+
+<app-swiper-slider-card [swiperData]="swiperData" [title]="' Suggestions Related to Skin, Hair, and Beauty Tips '"/>

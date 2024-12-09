@@ -1,22 +1,2 @@
-<app-service-section [title]="'Suggestions psychologyTips'">
-    <div class="swiper psychologySwiper mobile:w-full desktop:w-10/12">
-      <div class="swiper-wrapper">
-        @for (data of psychologyTips; track $index) {
-        <div class="swiper-slide">
-          <app-card
-            [title]="data.centerName"
-            [description]="data.address"
-            [name]="data.centerName"
-            [price]="data.pricePerSession"
-            [imgSergury]="data.imgSergury"
-            [promotion]="data.promotion"
-            [doctorImg]="data.doctorImg">
-          </app-card>
-        </div>
-        }
-      </div>
-      <div class="swiper-button-next"></div>
-      <div class="swiper-button-prev"></div>
-      <div class="swiper-pagination"></div>
-    </div>
-  </app-service-section>
+
+<app-swiper-slider-card [swiperData]="psychologyTips" [title]="'Suggestions psychologyTips'"/>

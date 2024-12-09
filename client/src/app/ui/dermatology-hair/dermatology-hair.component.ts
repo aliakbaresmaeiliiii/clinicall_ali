@@ -1,5 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
-import Swiper from 'swiper';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-dermatology-hair',
@@ -7,8 +6,8 @@ import Swiper from 'swiper';
   templateUrl: './dermatology-hair.component.html',
   styleUrl: './dermatology-hair.component.scss',
 })
-export class DermatologyHairComponent implements AfterViewInit {
-  imagesDermatology = [
+export class DermatologyHairComponent   {
+  swiperData = [
     {
       src: '../../../assets/images/ui/imagesDermatology/service01.png',
       key: 1,
@@ -75,24 +74,5 @@ export class DermatologyHairComponent implements AfterViewInit {
     },
   ];
 
-  ngAfterViewInit(): void {
-    this.initializeDermatologySwiper();
-  }
-
-  initializeDermatologySwiper(): void {
-    console.log('Initializing Dermatology Swiper...');
-    new Swiper('.dermatologySwiper', {
-      slidesPerView: 4,
-      centeredSlides: true,
-      spaceBetween: 30,
-      pagination: {
-        el: '.dermatology-pagination',
-        type: 'fraction',
-      },
-      navigation: {
-        nextEl: '.dermatology-next',
-        prevEl: '.dermatology-prev',
-      },
-    });
-  }
+ 
 }

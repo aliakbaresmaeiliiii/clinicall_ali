@@ -1,5 +1,4 @@
-import { AfterViewInit, Component } from '@angular/core';
-import Swiper from 'swiper';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-suggestions-skin-hair',
@@ -7,8 +6,8 @@ import Swiper from 'swiper';
   templateUrl: './suggestions-skin-hair.component.html',
   styleUrl: './suggestions-skin-hair.component.scss',
 })
-export class SuggestionsSkinHairComponent implements AfterViewInit {
-  beauty = [
+export class SuggestionsSkinHairComponent {
+  swiperData = [
     {
       key: 1,
       name: 'Dentistry',
@@ -17,7 +16,6 @@ export class SuggestionsSkinHairComponent implements AfterViewInit {
       imgSergury: '../../../assets/images/ui/blog/blog.jpg',
       doctorImg: '../../../assets/images/ui/doctors/3.jpg',
       promotion: '20% Off',
-
       price: 3000,
       off: '20%',
     },
@@ -113,24 +111,4 @@ export class SuggestionsSkinHairComponent implements AfterViewInit {
       off: '20%',
     },
   ];
-
-  ngAfterViewInit(): void {
-    this.initializeSkinSwiper();
-  }
-
-  initializeSkinSwiper(): void {
-    new Swiper('.skinSwiper', {
-      slidesPerView: 5,
-      spaceBetween: 10,
-      freeMode: true,
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-      },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-    });
-  }
 }
