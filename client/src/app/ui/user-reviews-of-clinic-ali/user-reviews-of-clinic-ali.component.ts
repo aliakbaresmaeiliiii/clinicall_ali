@@ -146,13 +146,16 @@ export class UserReviewsOfClinicAliComponent {
   ngOnInit(): void {}
 
   initializeServiceSwiper(): void {
-    new Swiper('.ali', {
+    new Swiper('.aliSwiper', {
       slidesPerView: 5,
       spaceBetween: 10,
       freeMode: true,
       pagination: {
-        el: '.swiper-pagination',
+        el: ".swiper-pagination",
         clickable: true,
+        renderBullet: function (index, className) {
+          return '<span class="' + className + '">' + (index + 1) + "</span>";
+        },
       },
       autoplay:true,
       navigation: {

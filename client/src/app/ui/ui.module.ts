@@ -112,7 +112,8 @@ const routes: Routes = [
     SuggestionsOphthalmologyTipsComponent,
     SuggestionsUrologyTipsComponent,
     SuggestionsRhinoplastyTipsComponent,
-    SuggestionsComponent
+    SuggestionsComponent,
+    
   ],
   imports: [
     CommonModule,

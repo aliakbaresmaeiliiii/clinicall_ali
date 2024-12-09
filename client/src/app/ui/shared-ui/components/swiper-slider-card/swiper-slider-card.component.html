@@ -1,0 +1,26 @@
+<app-service-section
+  [title]="title()">
+  <div class="swiper cardSwiper mobile:w-full desktop:w-10/12">
+    <div class="swiper-wrapper">
+      @for (data of swiperData(); track $index) {
+      <div class="swiper-slide">
+        <app-card
+          [title]="data.title"
+          [description]="data.description"
+          [name]="data.name"
+          [promotion]="data.promotion"
+          [price]="data.price"
+          [off]="data.off"
+          [imgSergury]="data.imgSergury"
+          [doctorImg]="data.doctorImg">
+        </app-card>
+      </div>
+      }
+    </div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-pagination"></div>
+  </div>
+</app-service-section>
+
+

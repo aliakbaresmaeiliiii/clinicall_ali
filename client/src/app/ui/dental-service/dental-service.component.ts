@@ -7,7 +7,7 @@ import Swiper from 'swiper';
   templateUrl: './dental-service.component.html',
   styleUrl: './dental-service.component.scss',
 })
-export class DentalServiceComponent implements AfterViewInit {
+export class DentalServiceComponent  {
   dentalSuggestions = [
     {
       imgSergury: '../../../assets/images/ui/psychologyTips/1.jpg',
@@ -169,24 +169,5 @@ export class DentalServiceComponent implements AfterViewInit {
   ];
 
 
-  ngAfterViewInit(): void {
-    this.initializeSkinSwiper();
-  }
-
-  initializeSkinSwiper(): void {
-    new Swiper('.dentalSwiper', {
-      slidesPerView: 5,
-      spaceBetween: 10,
-      freeMode: true,
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-      },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-    });
-  }
 
 }

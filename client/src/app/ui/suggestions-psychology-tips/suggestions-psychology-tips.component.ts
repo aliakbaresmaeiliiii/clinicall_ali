@@ -7,7 +7,7 @@ import Swiper from 'swiper';
   templateUrl: './suggestions-psychology-tips.component.html',
   styleUrl: './suggestions-psychology-tips.component.scss',
 })
-export class SuggestionsPsychologyTipsComponent implements AfterViewInit {
+export class SuggestionsPsychologyTipsComponent  {
   psychologyTips = [
     {
       imgSergury: '../../../assets/images/ui/psychologyTips/1.jpg',
@@ -152,25 +152,6 @@ export class SuggestionsPsychologyTipsComponent implements AfterViewInit {
     // Additional entries follow the same format...
   ];
 
-  ngAfterViewInit(): void {
-    this.initializeServiceSwiper();
-  }
-  ngOnInit(): void {}
 
-  initializeServiceSwiper(): void {
-    console.log('Initializing Service Swiper...');
-    new Swiper('.psychologySwiper', {
-      slidesPerView: 5,
-      spaceBetween: 10,
-      freeMode: true,
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-      },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-    });
-  }
+
 }

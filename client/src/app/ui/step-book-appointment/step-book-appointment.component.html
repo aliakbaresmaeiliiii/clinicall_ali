@@ -1,4 +1,4 @@
-<mat-card appearance="outlined">
+<mat-card appearance="outlined" class="mx-4">
   <mat-card-header class="flex justify-center">
     <mat-card-title class="!font-semibold">
       {{ title() }}
@@ -9,15 +9,15 @@
   </mat-card-header>
 
   <mat-card-content>
-    <div class="grid grid-cols-3 gap-4 text-center mt-16">
+    <div class="desktop:grid desktop:grid-cols-3 mobile:grid-cols-1  gap-4 text-center mt-16">
       <div class="flex flex-col gap-6 justify-center items-center">
         <img src="../../../assets/images/ui/icons/HowToReserve1.png" alt="" />
         <p>1- Search and select the service.</p>
-        <p class="text-gray-400 w-80 text-sm">
+        <p class="text-gray-400 w-80 text-sm mobile:pb-4">
           Search for your desired service or select from the available options.
         </p>
       </div>
-      <div class="flex flex-col gap-6 justify-center items-center">
+      <div class="flex flex-col gap-6 justify-center items-center mobile:pb-4">
         <img src="../../../assets/images/ui/icons/HowToReserve2.png" alt="" />
         <p>2- Book and confirm your appointment.</p>
         <p class="text-gray-400 w-80 text-sm">

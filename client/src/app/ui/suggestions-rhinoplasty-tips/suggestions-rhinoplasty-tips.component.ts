@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import Swiper from 'swiper';
 
 @Component({
   selector: 'app-suggestions-rhinoplasty-tips',
@@ -291,25 +290,4 @@ export class SuggestionsRhinoplastyTipsComponent {
     },
   ];
 
-  ngAfterViewInit(): void {
-    this.initializeServiceSwiper();
-  }
-  ngOnInit(): void {}
-
-  initializeServiceSwiper(): void {
-    console.log('Initializing Service Swiper...');
-    new Swiper('.ophthalmologyTipsSwiper', {
-      slidesPerView: 5,
-      spaceBetween: 10,
-      freeMode: true,
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-      },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-    });
-  }
 }

@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import Swiper from 'swiper';
 
 @Component({
   selector: 'app-suggestions-ophthalmology-tips',
@@ -8,8 +7,6 @@ import Swiper from 'swiper';
   styleUrl: './suggestions-ophthalmology-tips.component.scss',
 })
 export class SuggestionsOphthalmologyTipsComponent {
-
-  
   ophthalmologyTips = [
     {
       title: 'Femto-SMILE',
@@ -292,26 +289,4 @@ export class SuggestionsOphthalmologyTipsComponent {
       tip: 'Specialized care for eye tumors with precision surgery.',
     },
   ];
-
-  ngAfterViewInit(): void {
-    this.initializeServiceSwiper();
-  }
-  ngOnInit(): void {}
-
-  initializeServiceSwiper(): void {
-    console.log('Initializing Service Swiper...');
-    new Swiper('.ophthalmologyTipsSwiper', {
-      slidesPerView: 5,
-      spaceBetween: 10,
-      freeMode: true,
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-      },
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-    });
-  }
 }

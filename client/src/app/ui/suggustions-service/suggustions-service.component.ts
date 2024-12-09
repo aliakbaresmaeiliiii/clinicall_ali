@@ -7,8 +7,8 @@ import Swiper from 'swiper';
   styleUrl: './suggustions-service.component.scss',
   standalone: false,
 })
-export class SuggustionsServiceComponent implements OnInit, AfterViewInit {
-  imagesServices = [
+export class SuggustionsServiceComponent  {
+  swiperData = [
     {
       src: '../../../assets/images/ui/speciality/women.png',
       key: 1,
@@ -103,27 +103,5 @@ export class SuggustionsServiceComponent implements OnInit, AfterViewInit {
     },
   ];
 
-  ngAfterViewInit(): void {
-    this.initializeServiceSwiper();
 
-  }
-  ngOnInit(): void {}
-
-
-  initializeServiceSwiper(): void {
-    console.log('Initializing Service Swiper...');
-    new Swiper('.serviceSwiper', {
-      slidesPerView: 4,
-      centeredSlides: true,
-      spaceBetween: 30,
-      pagination: {
-        el: '.service-pagination',
-        type: 'fraction',
-      },
-      navigation: {
-        nextEl: '.service-next',
-        prevEl: '.service-prev',
-      },
-    });
-  }
 }
