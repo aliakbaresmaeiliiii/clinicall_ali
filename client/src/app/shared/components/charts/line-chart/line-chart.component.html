@@ -1,14 +1,16 @@
-<!--The content below is only a placeholder and can be replaced.-->
 <div id="chart" class="w-full">
   <div class="flex justify-between">
     <ng-content></ng-content>
   </div>
   <apx-chart
-    [series]="chartOptions.series"
-    [chart]="chartOptions.chart"
-    [xaxis]="chartOptions.xaxis"
-    [tooltip]="chartOptions.tooltip"
-    [dataLabels]="chartOptions.dataLabels"></apx-chart>
+    [series]="series"
+    [chart]="chart"
+    [dataLabels]="dataLabels"
+    [markers]="markers"
+    [title]="title"
+    [fill]="fill"
+    [yaxis]="yaxis"
+    [xaxis]="xaxis"
+    [tooltip]="tooltip"
+    [autoUpdateSeries]="true"></apx-chart>
 </div>
-
-

@@ -1,0 +1,123 @@
+.text-circle {
+    position: absolute;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.text-circle svg {
+    width: 131px;
+    height: auto;
+    overflow: visible;
+    word-spacing: 10px;
+    transform: rotate(0) scaleX(1) scaleY(1);
+    animation: rotate 8s linear infinite;
+}
+
+@media (min-width: 320px) {
+    .thumbs-bxs {
+        top: 0;
+        right: 0;
+        width: 140px;
+        height: 146px;
+        line-height: 100px;
+        text-align: center;
+        border-radius: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .text-circle svg {
+        width: 109px;
+    }
+}
+
+
+@media (min-width: 1024px) {
+    .thumbs-bxs {
+        top: 0;
+        right: 183px;
+        width: 200px;
+        height: 200px;
+        line-height: 200px;
+        text-align: center;
+        border-radius: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.text-circle svg {
+    width: 97px;
+}
+
+.svgCircle {
+    vertical-align: middle !important;
+}
+
+.text-circle path {
+    fill: transparent;
+    stroke: transparent;
+    stroke-width: 1px;
+    transition: 0.3s stroke, 0.3s fill;
+}
+
+.text-circle text {
+    fill: #ffffff;
+    direction: ltr;
+    transition: 0.3s stroke, 0.3s stroke-width, 0.3s fill;
+    font-size: 30px;
+}
+
+
+
+@keyframes circle {
+    0% {
+        transform: rotate(0deg);
+        /* Start position */
+    }
+
+    100% {
+        transform:
+            rotate(-360deg);
+        /* Complete rotation */
+    }
+}
+
+
+@keyframes rotate {
+    0% {
+        transform: rotate(360deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+.rotate {
+    animation: rotate 8s linear infinite;
+}
+
+.slider {
+    flex-shrink: 0;
+    display: -webkit-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    justify-content: space-around;
+    animation: slider 30s linear infinite;
+}
+
+@keyframes slider {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(calc(-100% - 1rem));
+    }
+}

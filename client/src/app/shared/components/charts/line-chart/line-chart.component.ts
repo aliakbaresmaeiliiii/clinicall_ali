@@ -1,7 +1,13 @@
-import { Component, Input, viewChild } from '@angular/core';
+import { Component } from '@angular/core';
 
-import { ChartComponent, NgApexchartsModule } from 'ng-apexcharts';
-import { ChartOptions } from '../../../models/chart-option';
+import {
+  ApexAxisChartSeries,
+  ApexChart, ApexDataLabels,
+  ApexFill,
+  ApexMarkers, ApexTitleSubtitle, ApexTooltip, ApexXAxis, ApexYAxis, NgApexchartsModule
+} from 'ng-apexcharts';
+import { dataSeries } from "./data";
+
 
 @Component({
     selector: 'app-line-chart',
@@ -10,47 +16,85 @@ import { ChartOptions } from '../../../models/chart-option';
     styleUrl: './line-chart.component.scss'
 })
 export class LineChartComponent {
-  readonly chart = viewChild.required<ChartComponent>('chart');
-  public chartOptions: Partial<ChartOptions>;
- 
+  public series!: ApexAxisChartSeries;
+  public chart!: ApexChart;
+  public dataLabels!: ApexDataLabels;
+  public markers!: ApexMarkers;
+  public title!: ApexTitleSubtitle;
+  public fill!: ApexFill;
+  public yaxis!: ApexYAxis;
+  public xaxis!: ApexXAxis;
+  public tooltip!: ApexTooltip;
 
   constructor() {
-    this.chartOptions = {
-      series: [
-        {
-          name: "series1",
-          data: [31, 40, 28, 51, 42, 109, 100]
-        },
-        {
-          name: "series2",
-          data: [11, 32, 45, 32, 34, 52, 41]
+    this.initChartData();
+  }
+
+  public initChartData(): void {
+    let ts2 = 1484418600000;
+    let dates = [];
+    for (let i = 0; i < 120; i++) {
+      ts2 = ts2 + 86400000;
+      dates.push([ts2, dataSeries[1][i].value]);
+    }
+
+    this.series = [
+      {
+        name: "XYZ MOTORS",
+        data: dates
+      }
+    ];
+    this.chart = {
+      type: "area",
+      stacked: false,
+      height: 350,
+      zoom: {
+        type: "x",
+        enabled: true,
+        autoScaleYaxis: true
+      },
+      toolbar: {
+        autoSelected: "zoom"
+      }
+    };
+    this.dataLabels = {
+      enabled: false
+    };
+    this.markers = {
+      size: 0
+    };
+    this.title = {
+      text: "Stock Price Movement",
+      align: "left"
+    };
+    this.fill = {
+      type: "gradient",
+      gradient: {
+        shadeIntensity: 1,
+        inverseColors: false,
+        opacityFrom: 0.5,
+        opacityTo: 0,
+        stops: [0, 90, 100]
+      }
+    };
+    this.yaxis = {
+      labels: {
+        formatter: function(val) {
+          return (val / 1000000).toFixed(0);
         }
-      ],
-      chart: {
-        height: 200,
-        type: "area"
       },
-      dataLabels: {
-        enabled: false
-      },
-      stroke: {
-        curve: "smooth"
-      },
-      xaxis: {
-        type: "datetime",
-        categories: [
-          "2018-09-19T00:00:00.000Z",
-          "2018-09-19T01:30:00.000Z",
-          "2018-09-19T02:30:00.000Z",
-          "2018-09-19T03:30:00.000Z",
-          "2018-09-19T04:30:00.000Z",
-          "2018-09-19T05:30:00.000Z",
-          "2018-09-19T06:30:00.000Z"
-        ]
-      },
-      tooltip: {
-        x: {
-          format: "dd/MM/yy HH:mm"
+      title: {
+        text: "Price"
+      }
+    };
+    this.xaxis = {
+      type: "datetime"
+    };
+    this.tooltip = {
+      shared: false,
+      y: {
+        formatter: function(val) {
+          return (val / 1000000).toFixed(0);
         }
       }
     };

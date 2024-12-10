@@ -55,6 +55,7 @@ import { SuggestionsOphthalmologyTipsComponent } from './suggestions-ophthalmolo
 import { SuggestionsUrologyTipsComponent } from './suggestions-urology-tips/suggestions-urology-tips.component';
 import { SuggestionsRhinoplastyTipsComponent } from './suggestions-rhinoplasty-tips/suggestions-rhinoplasty-tips.component';
 import { SuggestionsComponent } from './suggestions/suggestions.component';
+import { YoursDoctorComponent } from './yours-doctor/yours-doctor.component';
 
 const routes: Routes = [
   {
@@ -113,6 +114,7 @@ const routes: Routes = [
     SuggestionsUrologyTipsComponent,
     SuggestionsRhinoplastyTipsComponent,
     SuggestionsComponent,
+    YoursDoctorComponent
     
   ],
   imports: [

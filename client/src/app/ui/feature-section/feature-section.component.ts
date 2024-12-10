@@ -508,14 +508,16 @@ export class FeatureSectionComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.incrementCounter();
-    AOS.init({ disable: 'mobile' });
-    AOS.refresh();
+    // AOS.init({ disable: 'mobile' });
+   
 
-    AOS.init({ disable: 'mobile' });
-    AOS.refresh();
+
   }
 
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    AOS.init()
+    AOS.refresh();
+  }
 
   suggestionsDentalSwiper(): void {
     new Swiper('.cardSwiper', {

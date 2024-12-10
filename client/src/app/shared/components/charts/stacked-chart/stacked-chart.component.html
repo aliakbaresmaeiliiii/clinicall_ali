@@ -4,14 +4,14 @@
       <ng-content></ng-content>
     </div>
     <apx-chart
-      [series]="chartOptions.series"
-      [chart]="chartOptions.chart"
-      [dataLabels]="chartOptions.dataLabels"
-      [plotOptions]="chartOptions.plotOptions"
-      [legend]="chartOptions.legend"
-      [fill]="chartOptions.fill"
-      [stroke]="chartOptions.stroke"
-      [tooltip]="chartOptions.tooltip"
-      [xaxis]="chartOptions.xaxis"
-    ></apx-chart>
+    [series]="series"
+    [chart]="chart"
+    [dataLabels]="dataLabels"
+    [markers]="markers"
+    [title]="title"
+    [fill]="fill"
+    [yaxis]="yaxis"
+    [xaxis]="xaxis"
+    [tooltip]="tooltip"
+    [autoUpdateSeries]="true"></apx-chart>
   </div>
