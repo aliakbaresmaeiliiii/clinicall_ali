@@ -1,82 +1,100 @@
-import { Component, viewChild } from '@angular/core';
-import { ChartComponent, NgApexchartsModule } from 'ng-apexcharts';
-import { ChartOptions } from '../../../models/chart-option';
+import { Component } from '@angular/core';
+import {
+  ApexAxisChartSeries,
+  ApexChart, ApexMarkers, ApexTitleSubtitle, ApexXAxis, ApexYAxis, NgApexchartsModule
+} from 'ng-apexcharts';
+
+import { dataSeries } from '../line-chart/data';
+import { } from "./data";
+
 
 @Component({
-    selector: 'app-stacked-chart',
-    imports: [NgApexchartsModule],
-    templateUrl: './stacked-chart.component.html',
-    styleUrl: './stacked-chart.component.scss'
+  selector: 'app-stacked-chart',
+  imports: [NgApexchartsModule],
+  templateUrl: './stacked-chart.component.html',
+  styleUrl: './stacked-chart.component.scss',
 })
 export class StackedChartComponent {
-  readonly chart = viewChild.required<ChartComponent>("chart");
-  public chartOptions: Partial<ChartOptions>;
+  public series!: ApexAxisChartSeries;
+  public chart!: ApexChart;
+  public dataLabels!: ApexDataLabels;
+  public markers!: ApexMarkers;
+  public title!: ApexTitleSubtitle;
+  public fill!: ApexFill;
+  public yaxis!: ApexYAxis;
+  public xaxis!: ApexXAxis;
+  public tooltip!: ApexTooltip;
 
   constructor() {
-    this.chartOptions = {
-      series: [
-        {
-          name: "PRODUCT A",
-          data: [44, 55, 41, 67, 22, 43]
-        },
-        {
-          name: "PRODUCT B",
-          data: [13, 23, 20, 8, 13, 27]
-        },
-        {
-          name: "PRODUCT C",
-          data: [11, 17, 15, 15, 21, 14]
-        },
-        {
-          name: "PRODUCT D",
-          data: [21, 7, 25, 13, 22, 8]
-        }
-      ],
-      chart: {
-        type: "bar",
-        height: 272,
-        stacked: true,
-        toolbar: {
-          show: true
-        },
-        zoom: {
-          enabled: true
+    this.initChartData();
+  }
+
+  public initChartData(): void {
+    let ts2 = 1484418600000;
+    let dates = [];
+    for (let i = 0; i < 120; i++) {
+      ts2 = ts2 + 86400000;
+      dates.push([ts2, dataSeries[1][i].value]);
+    }
+
+    this.series = [
+      {
+        name: "XYZ MOTORS",
+        data: dates
+      }
+    ];
+    this.chart = {
+      type: "area",
+      stacked: false,
+      height: 350,
+      zoom: {
+        type: "x",
+        enabled: true,
+        autoScaleYaxis: true
+      },
+      toolbar: {
+        autoSelected: "zoom"
+      }
+    };
+    this.dataLabels = {
+      enabled: false
+    };
+    this.markers = {
+      size: 0
+    };
+    this.title = {
+      text: "Stock Price Movement",
+      align: "left"
+    };
+    this.fill = {
+      type: "gradient",
+      gradient: {
+        shadeIntensity: 1,
+        inverseColors: false,
+        opacityFrom: 0.5,
+        opacityTo: 0,
+        stops: [0, 90, 100]
+      }
+    };
+    this.yaxis = {
+      labels: {
+        formatter: function(val) {
+          return (val / 1000000).toFixed(0);
         }
       },
-      responsive: [
-        {
-          breakpoint: 480,
-          options: {
-            legend: {
-              position: "bottom",
-              offsetX: -10,
-              offsetY: 0
-            }
-          }
+      title: {
+        text: "Price"
+      }
+    };
+    this.xaxis = {
+      type: "datetime"
+    };
+    this.tooltip = {
+      shared: false,
+      y: {
+        formatter: function(val) {
+          return (val / 1000000).toFixed(0);
         }
-      ],
-      plotOptions: {
-        bar: {
-          horizontal: false
-        }
-      },
-      xaxis: {
-        type: "category",
-        categories: [
-          "01/2011",
-          "02/2011",
-          "03/2011",
-          "04/2011",
-          "05/2011",
-          "06/2011"
-        ]
-      },
-      legend: {
-        position: "right",
-        offsetY: 40
-      },
-      fill: {
-        opacity: 1
       }
     };
   }

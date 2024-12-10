@@ -65,10 +65,7 @@
               *ngFor="let event of c.dataList; let k = index"
               cdkDrag
               class="body-event">
-              <!-- this is for event right click() -->
-              <!-- (contextmenu)="onRightClick($event, c)" -->
-              <p class="event_title">
-                <span
+              <span
                   [ngClass]="{
                     'priority-circle': true,
                     'priority-high': event.priority === 'Red' && blinking,
@@ -78,11 +75,23 @@
                     'priority-mid': event.priority === 'Yellow' && blinking
                   }">
                 </span>
-                <strong>{{ event.event_title }}</strong
+              <!-- this is for event right click() -->
+              <!-- (contextmenu)="onRightClick($event, c)" -->
+
+              <div class="uiverse">
+                <span class="tooltip">uiverse.io</span>
+                <span>
+                    Tooltip
+                </span>
+            </div>
+              <p
+                class="event_title flex items-center gap-3 bg-blue-600 rounded-2xl whitespace-nowrap overflow-hidden text-ellipsis text-sm max-w-64 p-1">
+                
+                <strong class="text-white">{{ event.event_title }}</strong
                 ><br />
-                <small>{{ event.event_description }}</small
+                <small class="text-white">{{ event.event_description }}</small
                 ><br />
-                <small>{{ event.appointment_time }}</small>
+                <small class="text-white">{{ event.appointment_time }}</small>
               </p>
             </div>
           </div>
