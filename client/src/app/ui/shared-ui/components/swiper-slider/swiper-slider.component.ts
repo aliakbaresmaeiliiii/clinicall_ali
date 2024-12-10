@@ -29,13 +29,12 @@ export class SwiperSliderComponent {
       },
       slides: {
         perView: 4,
-        spacing: 15,
+        spacing: 5,
       },
       breakpoints: {
         "(max-width: 1024px)": {
           slides: {
             perView: 3,
-            spacing: 10,
           },
         },
         "(max-width: 768px)": {

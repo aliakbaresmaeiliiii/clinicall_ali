@@ -1,142 +1,88 @@
 <app-slider />
-<!---------------- What service do you need?  --------------->
-<section><app-suggustions-service /></section>
+<div class="mx-auto desktop:w-11/12">
+  <!---------------- What service do you need?  --------------->
+  <section><app-suggustions-service /></section>
 
-<!---------------- Clinic Information  --------------->
-<section>
-  <app-clinic-info />
-</section>
+  <!---------------- Clinic Information  --------------->
+  <section>
+    <app-clinic-info />
+  </section>
 
-<!---------------- Dermatology, Hair, and Aesthetic Services  --------------->
-<section>
-  <app-dermatology-hair />
-</section>
+  <!---------------- Dermatology, Hair, and Aesthetic Services  --------------->
+  <section>
+    <app-dermatology-hair />
+  </section>
 
-<!---------------- How to reserve it  --------------->
-<section class="pt-10">
-  <app-book-appointment />
-</section>
+  <!---------------- How to reserve it  --------------->
+  <section class="pt-10">
+    <app-book-appointment />
+  </section>
 
-<!---------------- Suggestions Related to Skin, Hair, and Beauty Tips  --------------->
-<section class="px-2">
-  <app-suggestions-skin-hair />
-</section>
+  <!---------------- Suggestions Related to Skin, Hair, and Beauty Tips  --------------->
+  <section class="px-2">
+    <app-suggestions-skin-hair />
+  </section>
 
-<!---------------- Dental Services  --------------->
-<section class="px-2">
-  <app-dental-service />
-</section>
+  <!---------------- Dental Services  --------------->
+  <section class="px-2">
+    <app-dental-service />
+  </section>
 
-<!----------------Suggestions psychologyTips  --------------->
-<section class="px-2">
-  <app-suggestions-psychology-tips />
-</section>
+  <!----------------Suggestions psychologyTips  --------------->
+  <section class="px-2">
+    <app-suggestions-psychology-tips />
+  </section>
 
-<!----------------Suggestions ophthalmologyTips  --------------->
-<section class="px-2">
-  <app-suggestions-ophthalmology-tips />
-</section>
+  <!----------------Suggestions ophthalmologyTips  --------------->
+  <section class="px-2">
+    <app-suggestions-ophthalmology-tips />
+  </section>
 
-<!----------------Suggestions urologyTips   --------------->
-<section class="px-2">
-  <app-suggestions-urology-tips />
-</section>
+  <!----------------Suggestions urologyTips   --------------->
+  <section class="px-2">
+    <app-suggestions-urology-tips />
+  </section>
 
-<!----------------Suggestions rhinoplastyTips    --------------->
+  <!----------------Suggestions rhinoplastyTips    --------------->
 
-<section class="px-2">
-  <app-suggestions-rhinoplasty-tips />
-</section>
+  <section class="px-2">
+    <app-suggestions-rhinoplasty-tips />
+  </section>
 
-<!---------------- Suggestions   --------------->
+  <!---------------- Suggestions   --------------->
 
-<section class="px-2">
-  <app-suggestions />
-</section>
+  <section class="px-2">
+    <app-suggestions />
+  </section>
 
-<!------------------- About Medical  ------------------------>
-<app-yours-doctor [counter]="counter" />
+  <!------------------- About Medical  ------------------------>
+  <app-custom-title
+    [counter]="counter"
+    [title]="'About Medical'"
+    [subtitle]="'Experience'" />
+  <app-yours-doctor [counter]="counter" />
 
-<!------------- start mediic-appointment  ------------------>
-<section>
-  <!-- <app-mediic-appointment/> -->
-  <!-- <div class="py-20 text-center">
-    <div class="desktop:text-4xl mobile:text-2xl font-bold text-blue-950">
-      <span class="font-bold">MAKE APPOINMENT</span>
-    </div>
-  </div>
+  <!---------------- start best-doctors ---------------------->
+  <app-custom-title
+    [counter]="counter"
+    [title]="'Meet our  Doctor'"
+    [subtitle]="'professional DR'" />
 
-  <div
-    class="mediic-appoinment relative mx-auto desktop:pl-32 desktop:pr-32 pb-10">
-    <img
-      src="../../../assets/images/ui/appoinment.png"
-      class="mobile:hidden desktop:block"
-      alt=""
-      width="100%" />
-
-    <div
-      class="desktop:absolute top-0 mobile:px-4 desktop:right-44 h-full desktop:flex desktop:items-center desktop:justify-end desktop:w-2/6 mobile:w-full">
-      <app-mediic-appointment />
-    </div>
-  </div> -->
-</section>
-<!---------------- start best-doctors ---------------------->
-<section>
-  <div
-    class="desktop:flex desktop:items-center desktop:justify-between pt-12 m-auto gap-20 desktop:w-9/12 border-b-2 border-gray-300 pl-4">
-    <div class="flex items-center gap-2">
-      <div
-        class="desktop:text-4xl mobile:text-2xl text-blue-950 desktop:pt-4 uppercase">
-        MEET OUR BEST DOCTORS
-      </div>
-      <span class="animate-spin">
-        <i
-          class="fa-solid fa-star-of-life desktop:text-5xl mobile:text-2xl text-blue-700 rotate"></i>
-      </span>
-    </div>
-    <div class="desktop:w-48 mobile:py-4 mobile:gap-4">
-      <span class="text-blue-950 flex items-center">
-        <span class="font-bold text-4xl flex items-center">
-          {{ counter }}
-          <i class="fa-solid fa-plus text-1xl text-blue-950"></i>
-        </span>
-        <span class="text-center uppercase">Professional Doctors</span>
-      </span>
-    </div>
-  </div>
   <hr class="text-blue-950 m-auto w-9/12" />
-  <div class="m-auto w-9/12 pt-12">
+  <div class="mx-auto desktop:w-11/12 w-full desktop:pt-12">
     <app-best-doctors />
   </div>
-</section>
 
-<!---------------- user-reviews-of-clinic-ali ---------------------->
-<section>
-  <app-user-reviews-of-clinic-ali />
-</section>
+  <!---------------- user-reviews-of-clinic-ali ---------------------->
+  <section>
+    <app-user-reviews-of-clinic-ali />
+  </section>
 
-<!---------------- start Blog section ---------------------->
-<div
-  class="desktop:flex desktop:items-center desktop:justify-between pt-12 m-auto gap-20 desktop:w-9/12 border-b-2 border-gray-300 pl-4">
-  <div class="flex items-center gap-4" data-aos="zoom-out">
-    <div class="desktop:text-4xl mobile:text-2xl text-blue-950 desktop:pt-4">
-      Read Our Latest Blog
-    </div>
-    <span class="animate-spin">
-      <i
-        class="fa-solid fa-star-of-life desktop:text-5xl mobile:text-2xl text-blue-700 rotate"></i>
-    </span>
+  <!---------------- start Blog section ---------------------->
+  <app-custom-title [counter]="counter" [title]="'Read Our Latest Blog'"  [subtitle]="'Our blogs'"/>
+
+  <hr class="text-blue-950 mx-auto desktop:w-9/12" />
+  <div class="mx-auto desktop:w-9/12 pt-12 pb-7">
+    <app-blog />
   </div>
-  <div class="desktop:w-48 mobile:py-4 mobile:gap-4">
-    <span class="text-blue-950 flex items-cente" data-aos="zoom-out">
-      <span class="font-bold text-4xl flex items-center">
-        38<i class="fa-solid fa-plus text-1xl text-blue-950"></i>
-      </span>
-      <span class="text-center uppercase">Professional Doctors</span>
-    </span>
-  </div>
-</div>
-<hr class="text-blue-950 mx-auto desktop:w-9/12" />
-<div class="mx-auto desktop:w-9/12 pt-12 pb-7">
-  <app-blog />
 </div>

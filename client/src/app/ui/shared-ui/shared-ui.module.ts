@@ -8,6 +8,7 @@ import { SwiperSliderComponent } from './components/swiper-slider/swiper-slider.
 import { SwiperSliderCardComponent } from './components/swiper-slider-card/swiper-slider-card.component';
 import { MatCardModule } from '@angular/material/card';
 import { ButtonComponent } from '../../shared/components/button/button.component';
+import { CustomTitleComponent } from './components/custom-title/custom-title.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { ButtonComponent } from '../../shared/components/button/button.component
     PlaceholderComponent,
     SwiperSliderComponent,
     SwiperSliderCardComponent,
+    CustomTitleComponent
   ],
   imports: [CommonModule, MatCardModule,
     ButtonComponent
@@ -28,6 +30,7 @@ import { ButtonComponent } from '../../shared/components/button/button.component
     MatButtonModule,
     SwiperSliderComponent,
     SwiperSliderCardComponent,
+    CustomTitleComponent
     
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
