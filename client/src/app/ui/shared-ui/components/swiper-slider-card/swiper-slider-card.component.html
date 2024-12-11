@@ -1,20 +1,21 @@
-
 <app-service-section [title]="title()">
   <div class="mobile:w-full desktop:w-11/12 mx-auto">
     <div class="keen-slider flex" #sliderRef>
       @for (data of swiperData(); track $index) {
       <div class="keen-slider__slide flex">
-        <div class="single-service-box aos-init aos-animate ">
+        <div class="single-service-box aos-init aos-animate">
           <app-card
-          [title]="data.title"
-          [description]="data.description"
-          [name]="data.name"
-          [promotion]="data.promotion"
-          [price]="data.price"
-          [off]="data.off"
-          [imgSergury]="data.imgSergury"
-          [doctorImg]="data.doctorImg">
-        </app-card>
+            [prodcutImage]="data.prodcutImage"
+            [title]="data.title"
+            [description]="data.description"
+            [doctorImage]="data.doctorImage"
+            [doctorName]="data.doctorName"
+            [star]="data.star"
+            [discount]="data.discount"
+            [address]="data.address"
+            [price]="data.price"
+            [count]="data.count">
+          </app-card>
         </div>
       </div>
       }

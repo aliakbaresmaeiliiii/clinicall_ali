@@ -5,7 +5,6 @@
   margin-bottom: 30px;
   transition: 0.5s;
   overflow: hidden;
-  width: 22rem;
 }
 .keen-slider {
   display: flex;
@@ -15,8 +14,8 @@
 }
 
 .keen-slider__slide {
-  max-width: 22rem;
   min-width: 100%;
+  width: 22rem;
   flex: 0 0 auto;
   display: flex;
   align-items: center;

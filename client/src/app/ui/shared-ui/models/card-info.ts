@@ -1,14 +1,16 @@
 export interface CardInfo {
-  key?: number;
-  name?: string;
+  id?: number;
+  prodcutImage?: string;
   title?: string;
-  subtitle?: number;
+  name?: string;
   description?: string;
-  paragraph?: string;
-  image?: string;
-  promotion?: string;
-  price?: string | number;
-  off?: string;
-  imgSergury?: string;
-  doctorImg?: string;
+  src?: string;
+  count?: number;
+  price?: number;
+  discount?: number;
+  doctorName?: string;
+  doctorImage?: string;
+  star?: number;
+  address?: string;
+  briefDescription?: string;
 }

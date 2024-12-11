@@ -13,98 +13,61 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 export class SuggustionsServiceComponent  {
   swiperData = [
     {
-      src: '../../../assets/images/ui/speciality/women.png',
-      key: 1,
-      specialty: 'Gynecologist & Obstetrician',
-      count: 3000,
+      id: 1,
+      name: "Dentistry",
+      description: "Comprehensive dental care and treatments.",
+      src: "../../../assets/images/ui/services/Dentistry.jpeg",
+      count:400
     },
     {
-      src: '../../../assets/images/ui/speciality/women.png',
-      key: 1,
-      specialty: 'Gynecologist & Obstetrician',
-      count: 3000,
-    },
-    {
-      src: '../../../assets/images/ui/speciality/women.png',
-      key: 1,
-      specialty: 'Gynecologist & Obstetrician',
-      count: 3000,
-    },
-    {
-      src: '../../../assets/images/ui/speciality/skin.png',
-      key: 2,
-      specialty: 'Dermatologist & Aesthetic Specialist',
-      count: 5000,
-    },
-    {
-      src: '../../../assets/images/ui/speciality/neurologist.png',
+      id: 2,
+      name: "Skin, Hair, and Beauty",
+      description: "Advanced treatments for skin, hair, and beauty enhancement.",
+      src: "../../../assets/images/ui/services/Skin, Hair, and Beauty.jpeg",
+      count:400
 
-      key: 3,
-      specialty: 'Neurologist',
-      count: 5000,
     },
     {
-      src: '../../../assets/images/ui/speciality/psychology.png',
-      key: 4,
-      specialty: 'Psychologist',
-      count: 5000,
-    },
+      id: 3,
+      name: "Psychology",
+      description: "Mental health support and therapy services.",
+      src: "../../../assets/images/ui/services/Psychology.jpeg",
+      count:500
 
-    {
-      src: '../../../assets/images/ui/speciality/endocrinologist.png',
-      key: 6,
-      specialty: 'Urologist',
-      count: 5000,
     },
     {
-      src: '../../../assets/images/ui/speciality/kids.png',
-      key: 7,
-      specialty: 'Endocrinologist',
-      count: 5000,
+      id: 4,
+      name: "Gynecology & Obstetrics",
+      description: "Specialized care for women's health and pregnancy.",
+      src: "../../../assets/images/ui/services/Gynecology & Obstetrics.jpeg",
+      count:600
+
     },
     {
-      src: '../../../assets/images/ui/speciality/general.png',
-      key: 8,
-      specialty: 'Pediatrician',
-      count: 5000,
+      id: 5,
+      name: "Urology",
+      description: "Expertise in urinary tract and reproductive health.",
+      src: "../../../assets/images/ui/services/Urology.jpeg",
+      count:700
+
     },
     {
-      src: '../../../assets/images/ui/speciality/orthopedist.png',
-      key: 9,
-      specialty: 'Internist',
-      count: 5000,
+      id: 6,
+      name: "Ophthalmology",
+      description: "Eye care and vision correction services.",
+      src: "../../../assets/images/ui/services/Ophthalmology.jpeg",
+      count:700
+
     },
     {
-      src: '../../../assets/images/ui/speciality/neurosurgeon.png',
-      key: 10,
-      specialty: 'Orthopedic Surgeon',
-      count: 5000,
-    },
-    {
-      src: '../../../assets/images/ui/speciality/cardiologist.png',
-      key: 11,
-      specialty: 'Cardiologist',
-      count: 5000,
-    },
-    {
-      src: '../../../assets/images/ui/speciality/dentist.png',
-      key: 12,
-      specialty: 'Dentist',
-      count: 5000,
-    },
-    {
-      src: '../../../assets/images/ui/speciality/ent.png',
-      key: 13,
-      specialty: 'ENT Specialist',
-      count: 5000,
-    },
-    {
-      src: '../../../assets/images/ui/speciality/eye.png',
-      key: 14,
-      specialty: 'Ophthalmologist',
-      count: 5000,
+      id: 7,
+      name: "Nose Surgery",
+      description: "Cosmetic and reconstructive nasal surgeries.",
+      src: "../../../assets/images/ui/services/Nose Surgery.jpeg",
+      count:1200
+
     },
   ];
-
+  
 
 }

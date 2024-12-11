@@ -20,7 +20,7 @@ export class SuggestionsUrologyTipsComponent {
         'I had an amazing experience with their advanced treatments.',
       ],
       starRating: 4.9,
-      price: '2500$',
+      price: 2500,
       tip: 'A minimally invasive laser eye surgery for vision correction.',
     },
     {
@@ -34,7 +34,7 @@ export class SuggestionsUrologyTipsComponent {
         'Highly professional staff and a caring environment.',
       ],
       starRating: 4.8,
-      price: '3000$',
+      price: 3000,
       tip: 'Safe and effective removal of cataracts for clearer vision.',
     },
     {
@@ -48,7 +48,7 @@ export class SuggestionsUrologyTipsComponent {
         'State-of-the-art technology and great post-care service.',
       ],
       starRating: 4.9,
-      price: '2000$',
+      price: 2000,
       tip: 'Quick and effective laser eye surgery to correct refractive errors.',
     },
     {
@@ -62,7 +62,7 @@ export class SuggestionsUrologyTipsComponent {
         'Highly recommend for anyone with eye pressure issues.',
       ],
       starRating: 4.7,
-      price: '1500$',
+      price: 1500,
       tip: 'Comprehensive care for managing intraocular pressure effectively.',
     },
     {
@@ -76,7 +76,7 @@ export class SuggestionsUrologyTipsComponent {
         'I felt confident throughout my treatment process.',
       ],
       starRating: 4.8,
-      price: '4000$',
+      price: 4000,
       tip: 'Specialized surgery for retinal detachment and other retinal issues.',
     },
     {
@@ -90,7 +90,7 @@ export class SuggestionsUrologyTipsComponent {
         'The clinic is very clean, and the staff is super friendly.',
       ],
       starRating: 4.6,
-      price: '1200$',
+      price: 1200,
       tip: 'Effective solutions for chronic dry eye problems.',
     },
     {
@@ -104,7 +104,7 @@ export class SuggestionsUrologyTipsComponent {
         'I now have clear vision thanks to their expertise.',
       ],
       starRating: 4.9,
-      price: '5000$',
+      price: 5000,
       tip: 'Restores vision by replacing damaged corneal tissue.',
     },
     {
@@ -118,7 +118,7 @@ export class SuggestionsUrologyTipsComponent {
         'They made my child feel comfortable during the treatment.',
       ],
       starRating: 4.8,
-      price: '1800$',
+      price: 1800,
       tip: 'Expert eye care services for children and adolescents.',
     },
     {
@@ -132,7 +132,7 @@ export class SuggestionsUrologyTipsComponent {
         'A unique approach to managing myopia progression.',
       ],
       starRating: 4.7,
-      price: '2500$',
+      price: 2500,
       tip: 'Non-surgical vision correction using customized contact lenses.',
     },
     {
@@ -146,7 +146,7 @@ export class SuggestionsUrologyTipsComponent {
         'The staff was very thorough and professional.',
       ],
       starRating: 4.8,
-      price: '100$',
+      price: 100,
       tip: 'Routine eye examinations to detect and prevent vision problems.',
     },
     {
@@ -160,7 +160,7 @@ export class SuggestionsUrologyTipsComponent {
         'The staff were patient and helpful in selecting lenses.',
       ],
       starRating: 4.8,
-      price: '300$',
+      price: 300,
       tip: 'Personalized contact lens fitting for optimal comfort and vision.',
     },
     {
@@ -174,7 +174,7 @@ export class SuggestionsUrologyTipsComponent {
         'The doctor explained everything clearly.',
       ],
       starRating: 4.7,
-      price: '3500$',
+      price: 3500,
       tip: 'Specialized treatment for diabetes-related eye problems.',
     },
     {
@@ -188,7 +188,7 @@ export class SuggestionsUrologyTipsComponent {
         'Great results and caring doctors.',
       ],
       starRating: 4.9,
-      price: '2000$',
+      price: 2000,
       tip: 'Cosmetic and functional surgeries for eyelids.',
     },
     {
@@ -202,7 +202,7 @@ export class SuggestionsUrologyTipsComponent {
         'Thankful for their professional approach.',
       ],
       starRating: 4.8,
-      price: '2500$',
+      price: 2500,
       tip: 'Surgery to correct eye misalignment for improved vision.',
     },
     {
@@ -216,7 +216,7 @@ export class SuggestionsUrologyTipsComponent {
         'Highly skilled doctors and great results.',
       ],
       starRating: 4.8,
-      price: '5000$',
+      price: 5000,
       tip: 'Advanced treatments to slow vision loss due to macular degeneration.',
     },
     {
@@ -230,7 +230,7 @@ export class SuggestionsUrologyTipsComponent {
         'Quick and expert response to my emergency.',
       ],
       starRating: 4.9,
-      price: '4500$',
+      price: 4500,
       tip: 'Urgent care and surgery for traumatic eye injuries.',
     },
     {
@@ -244,7 +244,7 @@ export class SuggestionsUrologyTipsComponent {
         'Wonderful service and attention to detail.',
       ],
       starRating: 4.9,
-      price: '3500$',
+      price: 3500,
       tip: 'Custom prosthetic eyes for improved aesthetics and confidence.',
     },
     {
@@ -258,7 +258,7 @@ export class SuggestionsUrologyTipsComponent {
         'Quick and precise service.',
       ],
       starRating: 4.8,
-      price: '1500$',
+      price: 1500,
       tip: 'Advanced imaging for diagnosing eye conditions.',
     },
     {
@@ -272,7 +272,7 @@ export class SuggestionsUrologyTipsComponent {
         'Friendly and experienced therapists.',
       ],
       starRating: 4.7,
-      price: '800$',
+      price: 800,
       tip: 'Customized therapy to strengthen and improve visual skills.',
     },
     {
@@ -286,7 +286,7 @@ export class SuggestionsUrologyTipsComponent {
         'The team is extremely skilled and compassionate.',
       ],
       starRating: 4.9,
-      price: '7000$',
+      price: 7000,
       tip: 'Specialized care for eye tumors with precision surgery.',
     },
   ];

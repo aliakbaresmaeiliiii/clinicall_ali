@@ -8,24 +8,30 @@
     <app-clinic-info />
   </section>
 
-  <!---------------- Dermatology, Hair, and Aesthetic Services  --------------->
+  <!---------------- Skin, hair and beauty services  --------------->
   <section>
     <app-dermatology-hair />
-  </section>
-
-  <!---------------- How to reserve it  --------------->
-  <section class="pt-10">
-    <app-book-appointment />
   </section>
 
   <!---------------- Suggestions Related to Skin, Hair, and Beauty Tips  --------------->
   <section class="px-2">
     <app-suggestions-skin-hair />
   </section>
-
+  
   <!---------------- Dental Services  --------------->
   <section class="px-2">
     <app-dental-service />
+  </section>
+  
+  
+  <!---------------- Suggestions Dental  --------------->
+  <section class="px-2">
+    <app-suggestions-dental />
+  </section>
+
+  <!---------------- How to reserve it  --------------->
+  <section class="pt-10">
+    <app-book-appointment />
   </section>
 
   <!----------------Suggestions psychologyTips  --------------->
@@ -79,7 +85,10 @@
   </section>
 
   <!---------------- start Blog section ---------------------->
-  <app-custom-title [counter]="counter" [title]="'Read Our Latest Blog'"  [subtitle]="'Our blogs'"/>
+  <app-custom-title
+    [counter]="counter"
+    [title]="'Read Our Latest Blog'"
+    [subtitle]="'Our blogs'" />
 
   <hr class="text-blue-950 mx-auto desktop:w-9/12" />
   <div class="mx-auto desktop:w-9/12 pt-12 pb-7">
