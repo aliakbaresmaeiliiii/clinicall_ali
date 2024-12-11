@@ -1,6 +1,7 @@
 export interface SwiperData {
+  id: number;
+  name: string;
+  description: string;
   src: string;
-  key: number;
-  specialty: string;
-  count: number;
+  count?: number;
 }

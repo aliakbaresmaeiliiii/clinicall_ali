@@ -119,15 +119,16 @@
         <div class="swiper-slide">
           <div class="aos-init aos-animate">
             <app-card
-              [title]="data.drName"
-              [description]="data.description"
-              [name]="data.opinion"
-              [promotion]="data.promotion"
-              [price]="data.price"
-              [off]="data.off"
-              [imgSergury]="data.imgSergury"
-              [doctorImg]="data.doctorImg">
-            </app-card>
+            [prodcutImage]="data.prodcutImage"
+            [title]="data.title"
+            [description]="data.description"
+            [doctorImage]="data.doctorImage"
+            [doctorName]="data.doctorName"
+            [star]="data.star"
+            [discount]="data.discount"
+            [price]="data.price"
+            [count]="data.count">
+          </app-card>
           </div>
         </div>
         }
@@ -144,19 +145,20 @@
   <app-service-section [title]="'The highest dental discounts:'">
     <div class="swiper serviceSwiper mobile:w-full desktop:w-10/12">
       <div class="swiper-wrapper">
-        @for (data of dentalDiscount; track $index) {
+        @for (data of bestSelling; track $index) {
         <div class="swiper-slide">
           <div class="aos-init aos-animate">
             <app-card
-              [title]="data.drName"
-              [description]="data.description"
-              [name]="data.opinion"
-              [promotion]="data.promotion"
-              [price]="data.price"
-              [off]="data.off"
-              [imgSergury]="data.imgSergury"
-              [doctorImg]="data.doctorImg">
-            </app-card>
+            [prodcutImage]="data.prodcutImage"
+            [title]="data.title"
+            [description]="data.description"
+            [doctorImage]="data.doctorImage"
+            [doctorName]="data.doctorName"
+            [star]="data.star"
+            [discount]="data.discount"
+            [price]="data.price"
+            [count]="data.count">
+          </app-card>
           </div>
         </div>
         }
@@ -174,19 +176,20 @@
   <app-service-section [title]="'The latest dental services:'">
     <div class="swiper serviceSwiper mobile:w-full desktop:w-10/12">
       <div class="swiper-wrapper">
-        @for (data of dentalDiscount; track $index) {
+        @for (data of bestSelling; track $index) {
         <div class="swiper-slide">
           <div class="aos-init aos-animate">
             <app-card
-              [title]="data.drName"
-              [description]="data.description"
-              [name]="data.opinion"
-              [promotion]="data.promotion"
-              [price]="data.price"
-              [off]="data.off"
-              [imgSergury]="data.imgSergury"
-              [doctorImg]="data.doctorImg">
-            </app-card>
+            [prodcutImage]="data.prodcutImage"
+            [title]="data.title"
+            [description]="data.description"
+            [doctorImage]="data.doctorImage"
+            [doctorName]="data.doctorName"
+            [star]="data.star"
+            [discount]="data.discount"
+            [price]="data.price"
+            [count]="data.count">
+          </app-card>
           </div>
         </div>
         }
@@ -200,19 +203,20 @@
 
 <!---------------- ALl  --------------->
 <generic-tab [tabs]="tabs" (selectedIndexChange)="handleTabChange($event)">
-  @for (data of dentalDiscount; track $index) {
+  @for (data of bestSelling; track $index) {
   <div class="grid grid-row-4 w-80 pr-6 pb-6">
     <div class="aos-init aos-animate">
       <app-card
-        [title]="data.drName"
-        [description]="data.description"
-        [name]="data.opinion"
-        [promotion]="data.promotion"
-        [price]="data.price"
-        [off]="data.off"
-        [imgSergury]="data.imgSergury"
-        [doctorImg]="data.doctorImg">
-      </app-card>
+      [prodcutImage]="data.prodcutImage"
+      [title]="data.title"
+      [description]="data.description"
+      [doctorImage]="data.doctorImage"
+      [doctorName]="data.doctorName"
+      [star]="data.star"
+      [discount]="data.discount"
+      [price]="data.price"
+      [count]="data.count">
+    </app-card>
     </div>
   </div>
   } @empty { There is no Data... }
