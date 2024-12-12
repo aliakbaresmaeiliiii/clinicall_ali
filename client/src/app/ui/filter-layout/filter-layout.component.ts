@@ -1,4 +1,13 @@
-import { Component, TemplateRef, viewChild } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  TemplateRef,
+  viewChild,
+} from '@angular/core';
+import { DoctorsDTO } from '../../modules/doctors/models/doctors';
+import { DoctorsService } from '../../modules/doctors/doctors.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-filter-layout',
@@ -6,14 +15,15 @@ import { Component, TemplateRef, viewChild } from '@angular/core';
   templateUrl: './filter-layout.component.html',
   styleUrl: './filter-layout.component.scss',
 })
-export class FilterLayoutComponent {
+export class FilterLayoutComponent implements OnInit {
+  defualtData: DoctorsDTO[] = [];
+  doctorService = inject(DoctorsService);
 
-  templateOne = viewChild.required<TemplateRef<any>>('templateOne'); 
-  templateTwo = viewChild.required<TemplateRef<any>>('templateTwo'); 
-  templateThree = viewChild.required<TemplateRef<any>>('templateThree'); 
-  templatefour = viewChild.required<TemplateRef<any>>('templatefour'); 
+  templateOne = viewChild.required<TemplateRef<any>>('templateOne');
+  templateTwo = viewChild.required<TemplateRef<any>>('templateTwo');
+  templateThree = viewChild.required<TemplateRef<any>>('templateThree');
+  templatefour = viewChild.required<TemplateRef<any>>('templatefour');
 
-  
   bestSelling = [
     {
       id: 1,
@@ -33,7 +43,6 @@ export class FilterLayoutComponent {
     },
   ];
 
-
   tabs: {
     id: number;
     title: string;
@@ -41,6 +50,9 @@ export class FilterLayoutComponent {
     context?: any;
   }[] = [];
 
+  ngOnInit(): void {
+    this.fetchData();
+  }
   setDataInTabs() {
     this.tabs = [
       {
@@ -69,8 +81,19 @@ export class FilterLayoutComponent {
       },
     ];
   }
-
-
   handleTabChange(index: number) {}
 
+  fetchData() {
+    this.doctorService.doctorDetial(1).subscribe((response: any) => {
+      debugger;
+      const newData = response.map((doctor: any) => {
+        doctor.profileImage = doctor.profileImage
+          ? `${environment.urlProfileImg}${doctor.profileImage}`
+          : '../../../assets/images/bg-01.png';
+        return doctor;
+      });
+      this.defualtData = newData;
+      console.log(this.defualtData);
+    });
+  }
 }

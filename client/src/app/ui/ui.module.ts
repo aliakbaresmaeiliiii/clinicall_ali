@@ -58,6 +58,7 @@ import { SuggestionsComponent } from './suggestions/suggestions.component';
 import { YoursDoctorComponent } from './yours-doctor/yours-doctor.component';
 import { SuggestionsDentalComponent } from './suggestions-dental/suggestions-dental.component';
 import { FilterLayoutComponent } from './filter-layout/filter-layout.component';
+import { LoaderComponent } from "../shared/components/loader/loader.component";
 
 const routes: Routes = [
   {
@@ -148,7 +149,8 @@ const routes: Routes = [
     MatDialogModule,
     SharedUiModule,
     CustomTabComponent,
-  ],
+    LoaderComponent
+],
   exports: [],
 })
 export class UiModule {}

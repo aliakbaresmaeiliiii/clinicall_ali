@@ -4,12 +4,15 @@ import {
   ChangeDetectionStrategy,
   Component,
   TemplateRef,
+  inject,
   input,
   output,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
+import { DoctorsService } from '../../../modules/doctors/doctors.service';
+import { DoctorsDTO } from '../../../modules/doctors/models/doctors';
 @Component({
   selector: 'generic-tab',
   imports: [MatTabsModule, CommonModule, MatButtonModule, MatSelectModule],
@@ -19,6 +22,7 @@ import { MatSelectModule } from '@angular/material/select';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomTabComponent implements AfterViewInit {
+
   filterOptions = [
     { key: 'default', label: 'Default' },
     { key: 'mostPopular', label: 'Most Popular' },
@@ -70,7 +74,6 @@ export class CustomTabComponent implements AfterViewInit {
       context?: any;
     }[]
   >();
-
   readonly selectedIndexChange = output<number>();
   selectedTemplate!: TemplateRef<any>;
   context: any;
@@ -78,7 +81,8 @@ export class CustomTabComponent implements AfterViewInit {
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   ngAfterViewInit() {
     const data = this.tabs();
@@ -100,7 +104,9 @@ export class CustomTabComponent implements AfterViewInit {
     this.context = { $implicit: selectedTab.context };
   }
 
-  setActiveFilter(key: string) {
+  setActiveFilter(key: any) {
     this.activeFilter = key;
   }
+
+
 }

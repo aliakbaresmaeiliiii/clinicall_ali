@@ -1,5 +1,22 @@
-<div class="grid grid-rows-4 grid-flow-col gap-4 w-10/12 m-auto">
-  <div class="row-span-6">
+<!-- <div class="grid grid-cols-4 grid-flow-col w-10/12 mx-auto mb-2">
+  <div class="grid-cols-1"></div>
+
+</div>
+
+<div class="flex flex-col w-10/12 mx-auto mb-2">
+  <div class="grid grid-cols-4 grid-flow-col">
+    <div class="grid-cols-1 mr-6">
+      
+    </div>
+
+   
+
+   
+  </div>
+</div> -->
+
+<div class="grid grid-rows-10 grid-flow-col gap-4 w-10/12 m-auto">
+  <div class="row-span-10 col-span-1">
     <div class="flex flex-col bg-white rounded-2xl p-4">
       <h2 class="pb-2">Filters</h2>
       <hr />
@@ -63,23 +80,39 @@
       </mat-form-field>
     </div>
   </div>
-
   <div
-    class="bg-white row-span-5 col-span-1 flex items-center gap-4 p-4 rounded-2xl h-16">
-    <span>Sort:</span>
-    @for (option of filterOptions; track $index) {
-    <div class="flex justify-center">
+    class="col-span-2 bg-slate-100 font-bold flex items-center p-4 rounded-2xl h-16">
+    Online appointment of the best doctors in Malaysia
+  </div>
+
+  <div class="row-span-8 col-span-2 bg-slate-100 p-4 rounded-2xl h-16">
+    <div class="grid grid-cols-8 my-auto">
+      <span class="flex items-center gap-1 opacity-55">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          width="24"
+          height="24">
+          <path
+            d="M17.5 6.458h-15a.63.63 0 0 1-.625-.625.63.63 0 0 1 .625-.625h15a.63.63 0 0 1 .625.625.63.63 0 0 1-.625.625M15 10.625H5A.63.63 0 0 1 4.375 10 .63.63 0 0 1 5 9.375h10a.63.63 0 0 1 .625.625.63.63 0 0 1-.625.625M11.665 14.792H8.332a.63.63 0 0 1-.625-.625.63.63 0 0 1 .625-.625h3.333a.63.63 0 0 1 .625.625.63.63 0 0 1-.625.625"
+            stroke="black"
+            stroke-width="2"
+            stroke-linecap="round" />
+        </svg>
+        Sort by:</span
+      >
+      @for (option of filterOptions; track $index) {
       <button
         mat-button
         class="filter-item"
         (click)="setActiveFilter(option.key)"
         [class.active]="option.key === activeFilter">
-        <span>{{ option.label }}</span>
+        <span class="text-xs">{{ option.label }}</span>
       </button>
+      }
     </div>
-    }
-  </div>
-  <div class="flex flex-wrap pt-4">
-    <ng-content></ng-content>
+    <div class="flex flex-wrap mt-6 overflow-scroll max-h-[36rem] border-2 rounded-xl p-2 border-gray-300">
+      <ng-content></ng-content>
+    </div>
   </div>
 </div>

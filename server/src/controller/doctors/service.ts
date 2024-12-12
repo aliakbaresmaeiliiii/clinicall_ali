@@ -1,11 +1,11 @@
+import { DoctorsDTO } from "../../models/doctors";
 import {
   addDoctor,
   checkDoctorPhoneNumberExists,
   doctorDetail,
   getDoctors,
   updateDoctor,
-} from "../../bin/db";
-import { DoctorsDTO } from "../../models/doctors";
+} from "./db";
 
 export class DoctorsService {
   public static async getDoctors() {
@@ -17,7 +17,9 @@ export class DoctorsService {
     }
   }
 
-  public static async checkDoctorPhoneNumberExists(mobile: string): Promise<boolean> {
+  public static async checkDoctorPhoneNumberExists(
+    mobile: string
+  ): Promise<boolean> {
     const data = await checkDoctorPhoneNumberExists(mobile);
     if (data) {
       return true;
@@ -43,7 +45,6 @@ export class DoctorsService {
     }
   }
 
-
   public static async updateDoctor(formData: DoctorsDTO) {
     const data = await updateDoctor(formData);
     if (data) {
@@ -52,4 +53,5 @@ export class DoctorsService {
       return null;
     }
   }
+  
 }
