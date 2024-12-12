@@ -20,7 +20,7 @@ export class DoctorsService {
     return this.#http.get<DoctorsDTO[]>(`${this.config}admin/doctors`);
   }
 
-  addDoctor(formData: DoctorsDTO): Observable<DoctorsDTO[]> {
+  addDoctor(formData: any): Observable<DoctorsDTO[]> {
     return this.#http.post<DoctorsDTO[]>(
       `${this.config}admin/add-doctor`,
       formData

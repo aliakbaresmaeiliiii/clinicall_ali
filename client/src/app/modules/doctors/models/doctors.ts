@@ -1,11 +1,11 @@
 export interface DoctorsDTO {
   position?: number | any;
   doctor_id?: string | null | undefined;
-  name?: string | null | undefined;
+  name: string;
   mobile?: string | undefined | null;
   specialization?: string | null | undefined;
   dateOfBirth?: string | undefined | any;
-  address?: string| null ;
+  address?: string | null;
   department?: string | undefined | any;
   degree?: string | undefined | any;
   email?: string | null | undefined;
@@ -14,6 +14,7 @@ export interface DoctorsDTO {
   joingin_date?: Date;
   gender?: string | null | undefined;
   location?: string | null | undefined;
+  average_rating: any;
 }
 
 export interface LocaitonDTO {

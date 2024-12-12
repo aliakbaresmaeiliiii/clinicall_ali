@@ -52,7 +52,7 @@ export class DoctorsComponent extends BaseComponent {
   tooltipVisibility = 'View Detail';
 
   ngOnInit(): void {
-    this.getData();
+    this.fetchData();
     this.hasAccess = this.permissionService.hasAllPermissions([
       'create',
       'edit',
@@ -72,7 +72,7 @@ export class DoctorsComponent extends BaseComponent {
     this.dataSource.paginator = this.paginator();
     this.dataSource.sort = this.sort();
   }
-  getData() {
+  fetchData() {
     this.service.getDoctors().subscribe((response: any) => {
       const newData = response.data.map((doctor: any) => {
         doctor.profileImage = doctor.profileImage
@@ -127,12 +127,12 @@ export class DoctorsComponent extends BaseComponent {
     //   exitAnimationDuration,
     // });
     // dialogRef.afterClosed().subscribe(result => {
-    //   this.getData();
+    //   this.fetchData();
     // });
   }
 
   refreshGrid() {
-    this.getData();
+    this.fetchData();
   }
 
   export() {
@@ -182,7 +182,7 @@ export class DoctorsComponent extends BaseComponent {
       data: row,
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.getData();
+      this.fetchData();
     });
   }
 
@@ -198,7 +198,7 @@ export class DoctorsComponent extends BaseComponent {
     //   data: row,
     // });
     // dialogRef.afterClosed().subscribe(result => {
-    //   this.getData();
+    //   this.fetchData();
     // });
   }
   ngOnDestroy(): void {}

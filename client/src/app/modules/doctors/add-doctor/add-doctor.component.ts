@@ -122,7 +122,7 @@ export class AddDoctorComponent extends BaseComponent implements AfterViewInit {
     if (this.profileImg) {
 
       const imgProfile = this.profileImg;
-      const payload: DoctorsDTO = {
+      const payload = {
         name: this.form.value.name,
         gender: this.form.value.gender,
         mobile: this.form.value.mobile,
