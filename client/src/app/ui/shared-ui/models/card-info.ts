@@ -1,6 +1,6 @@
 export interface CardInfo {
   id?: number;
-  prodcutImage?: string;
+  productImage?: string;
   title?: string;
   name?: string;
   description?: string;

@@ -1,4 +1,4 @@
-<div class="grid grid-rows-4 grid-flow-col gap-4 w-10/12 m-auto ">
+<div class="grid grid-rows-4 grid-flow-col gap-4 w-10/12 m-auto">
   <div class="row-span-6">
     <div class="flex flex-col bg-white rounded-2xl p-4">
       <h2 class="pb-2">Filters</h2>
@@ -64,16 +64,19 @@
     </div>
   </div>
 
-  <div class="bg-white row-span-5 col-span-1 flex items-center gap-4 p-4 rounded-2xl">
+  <div
+    class="bg-white row-span-5 col-span-1 flex items-center gap-4 p-4 rounded-2xl h-16">
     <span>Sort:</span>
     @for (option of filterOptions; track $index) {
-    <button
-      mat-button
-      class="filter-item"
-      (click)="setActiveFilter(option.key)"
-      [class.active]="option.key === activeFilter">
-      <span>{{ option.label }}</span>
-    </button>
+    <div class="flex justify-center">
+      <button
+        mat-button
+        class="filter-item"
+        (click)="setActiveFilter(option.key)"
+        [class.active]="option.key === activeFilter">
+        <span>{{ option.label }}</span>
+      </button>
+    </div>
     }
   </div>
   <div class="flex flex-wrap pt-4">

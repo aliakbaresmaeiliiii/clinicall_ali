@@ -2,7 +2,7 @@
   <div class="mobile:w-full desktop:w-11/12 mx-auto">
     <div class="keen-slider" #sliderRef>
       @for (data of swiperData(); track $index) {
-      <div class="keen-slider__slide">
+      <div class="keen-slider__slide" (click)="navigateToURl(data)">
         <div class="single-service-box aos-init aos-animate">
           <div class="service-thumb">
             <div class="img-slide bg-gray-100">

@@ -17,7 +17,7 @@ export class SuggestionsSkinHairComponent {
       discount: 10,
       doctorName: 'Dr. Sarah Johnson',
       doctorImage: '../../../assets/images/ui/doctors/1.jpg',
-      prodcutImage: '../../../assets/images/ui/hair&skin/Mesotherapy.webp',
+      productImage: '../../../assets/images/ui/hair&skin/Mesotherapy.webp',
       star: 4.5,
       address: '123 SkinCare Ave, Beauty City',
     },
@@ -30,7 +30,7 @@ export class SuggestionsSkinHairComponent {
       discount: 15,
       doctorName: 'Dr. Michael Lee',
       doctorImage: '../../../assets/images/ui/doctors/2.jpg',
-      prodcutImage:
+      productImage:
         '../../../assets/images/ui/hair&skin/Laser Hair Removal.jpg',
       star: 4.7,
       address: '456 Glow Street, Shine Town',
@@ -44,7 +44,7 @@ export class SuggestionsSkinHairComponent {
       discount: 20,
       doctorName: 'Dr. Emily Carter',
       doctorImage: '../../../assets/images/ui/doctors/3.jpg',
-      prodcutImage:
+      productImage:
         '../../../assets/images/ui/hair&skin/Filler and Gel Injections.jpg',
       star: 4.8,
       address: '789 Glow Plaza, Wellness Town',
@@ -53,7 +53,7 @@ export class SuggestionsSkinHairComponent {
       id: 4,
       title: 'Carboxy Therapy',
       doctorImage: '../../../assets/images/ui/doctors/4.jpg',
-      prodcutImage: '../../../assets/images/ui/hair&skin/Carboxy Therapy.jpg',
+      productImage: '../../../assets/images/ui/hair&skin/Carboxy Therapy.jpg',
       count: 400,
       price: 200,
       discount: 5,
@@ -69,7 +69,7 @@ export class SuggestionsSkinHairComponent {
       description: 'Hair removal for smooth skin.',
       count: 400,
       doctorImage: '../../../assets/images/ui/doctors/5.jpg',
-      prodcutImage:
+      productImage:
         '../../../assets/images/ui/hair&skin/Skin Rejuvenation Laser.png',
       price: 350,
       discount: 25,
@@ -86,7 +86,7 @@ export class SuggestionsSkinHairComponent {
       discount: 10,
       doctorName: 'Dr. Ethan Cooper',
       doctorImage: '../../../assets/images/ui/doctors/7.jpg',
-      prodcutImage:
+      productImage:
         '../../../assets/images/ui/hair&skin/Eyelid Puffiness Removal.jpg',
       star: 4.4,
       address: '303 Calm Corner, Peace City',
@@ -100,7 +100,7 @@ export class SuggestionsSkinHairComponent {
       discount: 15,
       doctorName: 'Dr. Ava Morgan',
       doctorImage: '../../../assets/images/ui/doctors/7.jpg',
-      prodcutImage:
+      productImage:
         '../../../assets/images/ui/hair&skin/Facial Skin Rejuvenation.png',
       star: 4.7,
       address: '404 Radiance St, Beauty Town',
@@ -112,7 +112,7 @@ export class SuggestionsSkinHairComponent {
       count: 400,
       price: 400,
       doctorImage: '../../../assets/images/ui/doctors/8.jpg',
-      prodcutImage:
+      productImage:
         '../../../assets/images/ui/hair&skin/Localized Fat Reduction.jpg',
 
       discount: 20,
@@ -129,7 +129,7 @@ export class SuggestionsSkinHairComponent {
       price: 500,
       discount: 30,
       doctorImage: '../../../assets/images/ui/doctors/1.jpg',
-      prodcutImage:
+      productImage:
         '../../../assets/images/ui/hair&skin/Vaginal Rejuvenation.jpg',
       doctorName: 'Dr. Grace Miller',
       star: 4.9,
@@ -144,7 +144,7 @@ export class SuggestionsSkinHairComponent {
       discount: 12,
       doctorName: 'Dr. Lucas Brown',
       doctorImage: '../../../assets/images/ui/doctors/2.jpg',
-      prodcutImage: '../../../assets/images/ui/hair&skin/Microneedling.webp',
+      productImage: '../../../assets/images/ui/hair&skin/Microneedling.webp',
       star: 4.5,
       address: '707 SkinCare Lane, Renewal Town',
     },

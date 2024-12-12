@@ -10,36 +10,48 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-header',
-    templateUrl: './header.component.html',
-    styleUrl: './header.component.scss',
-    animations: [
-        trigger('openClose', [
-            state('open', style({
-                opacity: 1,
-                transform: 'translateY(0)',
-                transition: '500ms',
-            })),
-            state('closed', style({
-                opacity: 0,
-                transform: 'translateY(-100%)',
-                transition: '500ms',
-            })),
-            transition('open => closed', [animate('1s ease-in-out')]),
-            transition('closed => open', [animate('1s ease-in-out')]),
-        ]),
-        trigger('bgColorChange', [
-            state('default', style({
-                backgroundColor: '#fff',
-            })),
-            state('scrolled', style({
-                backgroundColor: '#002570',
-            })),
-            transition('default => scrolled', [animate('1s ease')]),
-            transition('scrolled => default', [animate('1s ease')]),
-        ]),
-    ],
-    standalone: false
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrl: './header.component.scss',
+  animations: [
+    trigger('openClose', [
+      state(
+        'open',
+        style({
+          opacity: 1,
+          transform: 'translateY(0)',
+          transition: '500ms',
+        })
+      ),
+      state(
+        'closed',
+        style({
+          opacity: 0,
+          transform: 'translateY(-100%)',
+          transition: '500ms',
+        })
+      ),
+      transition('open => closed', [animate('1s ease-in-out')]),
+      transition('closed => open', [animate('1s ease-in-out')]),
+    ]),
+    trigger('bgColorChange', [
+      state(
+        'default',
+        style({
+          backgroundColor: '#fff',
+        })
+      ),
+      state(
+        'scrolled',
+        style({
+          backgroundColor: '#002570',
+        })
+      ),
+      transition('default => scrolled', [animate('1s ease')]),
+      transition('scrolled => default', [animate('1s ease')]),
+    ]),
+  ],
+  standalone: false,
 })
 export class HeaderComponent {
   navbarVisible = signal(true);
@@ -243,18 +255,18 @@ export class HeaderComponent {
   hoveredCategoryIndex: number | null = null;
 
   toggleCategory(index: number | null): void {
-   console.log(index);
-   
+    console.log(index);
+
     this.hoveredCategoryIndex = index;
   }
-  
 
-
+  setAppointment() {
+    this.router.navigate(['doctors']);
+  }
 
   loginUser() {
     this.router.navigate(['login']);
   }
-
   ngOnDestroy(): void {
     window.removeEventListener('scroll', this.onWindowScroll.bind(this));
   }

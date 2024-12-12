@@ -17,7 +17,7 @@ export class UserReviewsOfClinicAliComponent {
     {
       name: 'John Doe',
       star: 5,
-      description: 'Excellent service and very professional staff.',
+      description: 'Excellent service and very professional staff Excellent service and very professional staff. Excellent service and very professional staff.',
       date: '2024-11-01',
     },
     {
