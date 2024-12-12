@@ -38,56 +38,14 @@ export class SpecialityComponent implements OnInit {
       discount: 10,
       doctorName: 'Dr. Sarah Johnson',
       doctorImage: '../../../assets/images/doctors/DrSarah.jpg',
-      prodcutImage: '../../../assets/images/ui/hair&skin/Mesotherapy.webp',
+      productImage: '../../../assets/images/ui/hair&skin/Mesotherapy.webp',
       star: 4.5,
       address: '123 SkinCare Ave, Beauty City',
       briefDescription:
         'Mesotherapy revitalizes your skin by delivering essential nutrients directly to the dermis.',
     },
   ];
-
-
-  readonly templateOne = viewChild.required<TemplateRef<any>>('templateOne');
-  readonly templateTwo = viewChild.required<TemplateRef<any>>('templateTwo');
-  readonly templateThree = viewChild.required<TemplateRef<any>>('templateThree');
-  readonly templatefour = viewChild.required<TemplateRef<any>>('templatefour');
-
-  tabs: {
-    id: number;
-    title: string;
-    template: TemplateRef<any>;
-    context?: any;
-  }[] = [];
-
-  setDataInTabs() {
-    this.tabs = [
-      {
-        id: 0,
-        title: 'Tab 1',
-        template: this.templateOne(),
-        context: { data: 'Data for Tab 1' },
-      },
-      {
-        id: 1,
-        title: 'Tab 2',
-        template: this.templateTwo(),
-        context: { data: 'Data for Tab 2' },
-      },
-      {
-        id: 3,
-        title: 'Tab 3',
-        template: this.templateThree(),
-        context: { data: 'Data for Tab 3' },
-      },
-      {
-        id: 4,
-        title: 'Tab 4',
-        template: this.templatefour(),
-        context: { data: 'Data for Tab 4' },
-      },
-    ];
-  }
-  handleTabChange(index: number) {}
+ 
 
   ngOnInit(): void {
     const serviceSwiper = new Swiper('.serviceSwiper', {

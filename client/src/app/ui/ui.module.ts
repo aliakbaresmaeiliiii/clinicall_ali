@@ -57,6 +57,7 @@ import { SuggestionsRhinoplastyTipsComponent } from './suggestions-rhinoplasty-t
 import { SuggestionsComponent } from './suggestions/suggestions.component';
 import { YoursDoctorComponent } from './yours-doctor/yours-doctor.component';
 import { SuggestionsDentalComponent } from './suggestions-dental/suggestions-dental.component';
+import { FilterLayoutComponent } from './filter-layout/filter-layout.component';
 
 const routes: Routes = [
   {
@@ -67,7 +68,9 @@ const routes: Routes = [
         path: '',
         component: FeatureSectionComponent,
       },
-      { path: 'doctors', component: DoctorsComponent },
+
+      { path: 'doctors', component: FilterLayoutComponent},
+      
       { path: 'services', component: ServicesDoctorComponent },
       { path: 'contact-us', component: ContactUsComponent },
       { path: 'about-us', component: AboutUsComponent },
@@ -116,8 +119,8 @@ const routes: Routes = [
     SuggestionsRhinoplastyTipsComponent,
     SuggestionsComponent,
     YoursDoctorComponent,
-    SuggestionsDentalComponent
-    
+    SuggestionsDentalComponent,
+    FilterLayoutComponent,
   ],
   imports: [
     CommonModule,

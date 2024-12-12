@@ -1,0 +1,21 @@
+<div class="mt-36">
+  <generic-tab [tabs]="tabs" (selectedIndexChange)="handleTabChange($event)">
+    @for (data of bestSelling; track $index) {
+    <div class="grid grid-row-4 w-80 pr-6 pb-6">
+      <div class="aos-init aos-animate">
+        <app-card
+          [productImage]="data.productImage"
+          [title]="data.title"
+          [description]="data.description"
+          [doctorImage]="data.doctorImage"
+          [doctorName]="data.doctorName"
+          [star]="data.star"
+          [discount]="data.discount"
+          [price]="data.price"
+          [count]="data.count">
+        </app-card>
+      </div>
+    </div>
+    } @empty { There is no Data... }
+  </generic-tab>
+</div>

@@ -8,7 +8,7 @@ import { CardInfo } from '../../models/card-info';
   standalone: false,
 })
 export class CardComponent {
-  prodcutImage = input<string>();
+  productImage = input<string>();
   title = input<string>();
   description = input<string>();
   doctorImage = input<string>();
