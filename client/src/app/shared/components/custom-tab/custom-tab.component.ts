@@ -4,15 +4,14 @@ import {
   ChangeDetectionStrategy,
   Component,
   TemplateRef,
-  inject,
   input,
   output,
+  signal,
+  viewChild,
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
-import { DoctorsService } from '../../../modules/doctors/doctors.service';
-import { DoctorsDTO } from '../../../modules/doctors/models/doctors';
+import { MatTabsModule } from '@angular/material/tabs';
 @Component({
   selector: 'generic-tab',
   imports: [MatTabsModule, CommonModule, MatButtonModule, MatSelectModule],
@@ -22,15 +21,14 @@ import { DoctorsDTO } from '../../../modules/doctors/models/doctors';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CustomTabComponent implements AfterViewInit {
-
   filterOptions = [
-    { key: 'default', label: 'Default' },
-    { key: 'mostPopular', label: 'Most Popular' },
-    { key: 'lowestPrice', label: 'The Lowest Price' },
-    { key: 'highestPrice', label: 'The Highest Price' },
-    { key: 'nearestVisited', label: 'Nearest Visited' },
-    { key: 'closelyAppointment', label: 'Closely Appointment' },
-    { key: 'highestScore', label: 'Highest Score' },
+    { key: 0, label: 'Default' },
+    { key: 1, label: 'Most Popular' },
+    { key: 2, label: 'The Lowest Price' },
+    { key: 3, label: 'The Highest Price' },
+    { key: 4, label: 'Nearest Visited' },
+    { key: 5, label: 'Closely Appointment' },
+    { key: 6, label: 'Highest Score' },
   ];
 
   dentalServices = [
@@ -64,7 +62,7 @@ export class CustomTabComponent implements AfterViewInit {
     { id: 8, price: 350 },
   ];
 
-  activeFilter = 'default';
+  activeFilter = 0;
 
   tabs = input.required<
     {
@@ -74,15 +72,14 @@ export class CustomTabComponent implements AfterViewInit {
       context?: any;
     }[]
   >();
-  readonly selectedIndexChange = output<number>();
   selectedTemplate!: TemplateRef<any>;
   context: any;
   readonly selectedIndex = input(0);
+  tabTitle = output<string>();
 
   constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngAfterViewInit() {
     const data = this.tabs();
@@ -94,7 +91,6 @@ export class CustomTabComponent implements AfterViewInit {
   onTabChanged(data: any) {
     if (this.tabs().length > data.index) {
       this.setSelectedTab(data.index);
-      this.selectedIndexChange.emit(data.index);
     }
   }
 
@@ -104,9 +100,8 @@ export class CustomTabComponent implements AfterViewInit {
     this.context = { $implicit: selectedTab.context };
   }
 
-  setActiveFilter(key: any) {
-    this.activeFilter = key;
+  setActiveFilter(tab: any) {
+    this.activeFilter = tab.key;
+    this.tabTitle.emit(tab);
   }
-
-
 }

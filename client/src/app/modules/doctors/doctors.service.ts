@@ -20,6 +20,10 @@ export class DoctorsService {
     return this.#http.get<DoctorsDTO[]>(`${this.config}admin/doctors`);
   }
 
+  getMostPopularDoctor(){
+    return this.#http.get<DoctorsDTO[]>(`${this.config}getMostPopularDoctor`)
+  }
+
   addDoctor(formData: any): Observable<DoctorsDTO[]> {
     return this.#http.post<DoctorsDTO[]>(
       `${this.config}admin/add-doctor`,
@@ -29,7 +33,7 @@ export class DoctorsService {
 
   doctorDetial(id: number): Observable<DoctorsDTO[]> {
     return this.#http
-      .get<{ data: DoctorsDTO[] }>(`${this.config}admin/doctor-detial/${id}`)
+      .get<{ data: DoctorsDTO[] }>(`${this.config}admin/getDoctors/${id}`)
       .pipe(map(response => response.data));
     // Extract the array from the response
   }
@@ -44,6 +48,7 @@ export class DoctorsService {
     formData.append('file', fileToUpload, fileToUpload.name);
     return this.#http.post(`${this.config}admin/uploadImage`, formData);
   }
+
   updateDoctor(formData: any): Observable<DoctorsDTO[]> {
     return this.#http.put<DoctorsDTO[]>(
       `${this.config}admin/updateDoctor`,
