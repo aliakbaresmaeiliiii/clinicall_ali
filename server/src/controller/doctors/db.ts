@@ -1,13 +1,58 @@
 import { coreSchema, query, RowDataPacket } from "../../bin/mysql";
 import { DoctorsDTO } from "../../models/doctors";
 
-export async function getDoctors(): Promise<DoctorsDTO[]> {
-  const doctors = await query<RowDataPacket[]>(`
-      SELECT * FROM ${coreSchema}.doctors`);
-  return doctors as DoctorsDTO[];
+// export async function getDoctors(): Promise<DoctorsDTO[]> {
+//   const doctors = await query<RowDataPacket[]>(`
+//       SELECT * FROM ${coreSchema}.doctors`);
+//   return doctors as DoctorsDTO[];
+// }
+
+export async function getDoctors(): Promise<any> {
+  const result = await query<RowDataPacket>(
+    `
+      SELECT 
+        d.*, 
+        ld.*, 
+        (SELECT AVG(rating) 
+         FROM ${coreSchema}.ratings r 
+         WHERE r.doctor_id = d.doctor_id) AS average_rating
+      FROM 
+        ${coreSchema}.doctors d
+      LEFT JOIN 
+        ${coreSchema}.locations_doctors ld ON d.doctor_id = ld.doctor_id;
+      `,
+    { values: [] } // No parameters needed for this query
+  );
+  return result;
 }
 
-// ***********Doctors *********
+export async function getMostPopularDoctor() {
+  const result = await query<RowDataPacket[]>(
+    `
+    SELECT 
+      d.doctor_id AS doctor_id,
+      d.name AS name,
+      AVG(r.rating) AS average_rating,
+      COUNT(r.id) AS total_ratings
+    FROM 
+      ${coreSchema}.doctors d
+    INNER JOIN 
+      ${coreSchema}.ratings r ON d.doctor_id = r.doctor_id
+    GROUP BY 
+      d.doctor_id, d.name
+    HAVING 
+      COUNT(r.rating) > 2
+    ORDER BY 
+      average_rating DESC,
+      total_ratings DESC
+    LIMIT 10;
+        `,
+    {
+      values: [],
+    }
+  );
+  return result;
+}
 
 export async function checkDoctorPhoneNumberExists(mobile: string) {
   const result = await query<RowDataPacket>(
@@ -56,9 +101,7 @@ export async function addDoctor(doctorInfo: DoctorsDTO) {
 
 export async function doctorDetail(doctorId: number): Promise<any> {
   const result = await query<RowDataPacket>(
-    `SELECT  d.*,ld.*,
-    (SELECT AVG(rating) FROM ${coreSchema}.ratings r WHERE  r.doctor_id = d.doctor_id) AS average_rating
-    FROM ${coreSchema}.doctors d
+    `SELECT * FROM ${coreSchema}.doctors d
       LEFT JOIN 
       ${coreSchema}.locations_doctors ld ON d.doctor_id = ld.doctor_id
        WHERE 

@@ -16,7 +16,8 @@ import { environment } from '../../environments/environment';
   styleUrl: './filter-layout.component.scss',
 })
 export class FilterLayoutComponent implements OnInit {
-  defualtData: DoctorsDTO[] = [];
+  tabData: DoctorsDTO[] = [];
+  mostPopular: DoctorsDTO[] = [];
   doctorService = inject(DoctorsService);
 
   templateOne = viewChild.required<TemplateRef<any>>('templateOne');
@@ -51,7 +52,7 @@ export class FilterLayoutComponent implements OnInit {
   }[] = [];
 
   ngOnInit(): void {
-    this.fetchData();
+    this.fetchDefaultData();
   }
   setDataInTabs() {
     this.tabs = [
@@ -81,19 +82,39 @@ export class FilterLayoutComponent implements OnInit {
       },
     ];
   }
-  handleTabChange(index: number) {}
 
-  fetchData() {
-    this.doctorService.doctorDetial(1).subscribe((response: any) => {
-      debugger;
-      const newData = response.map((doctor: any) => {
+  handleTabChange(data: any) {
+    this.tabData = [];
+    if (data.label === 'Default') {
+      this.fetchDefaultData();
+    } else if (data.label === 'Most Popular') {
+      this.fetchMostPopularData();
+    }
+    // switch (data.key) {
+    //   case 0:
+    //     break;
+    //   case 1:
+    //     break;
+    //   default:
+    //     break;
+    // }
+  }
+
+  fetchDefaultData() {
+    this.doctorService.getDoctors().subscribe((response: any) => {
+      const newData = response.data.map((doctor: any) => {
         doctor.profileImage = doctor.profileImage
           ? `${environment.urlProfileImg}${doctor.profileImage}`
           : '../../../assets/images/bg-01.png';
         return doctor;
       });
-      this.defualtData = newData;
-      console.log(this.defualtData);
+      this.tabData = newData;
+    });
+  }
+
+  fetchMostPopularData() {
+    this.doctorService.getMostPopularDoctor().subscribe((data: any) => {
+      this.tabData = data.data;
     });
   }
 }

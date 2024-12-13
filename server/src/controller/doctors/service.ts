@@ -4,12 +4,22 @@ import {
   checkDoctorPhoneNumberExists,
   doctorDetail,
   getDoctors,
+  getMostPopularDoctor,
   updateDoctor,
 } from "./db";
 
 export class DoctorsService {
   public static async getDoctors() {
     const data = await getDoctors();
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
+  }
+
+  public static async getMostPopularDoctor() {
+    const data = await getMostPopularDoctor();
     if (data) {
       return { message: "ok", data };
     } else {
@@ -53,5 +63,4 @@ export class DoctorsService {
       return null;
     }
   }
-  
 }

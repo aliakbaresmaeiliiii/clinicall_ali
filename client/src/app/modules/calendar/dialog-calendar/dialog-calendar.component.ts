@@ -56,7 +56,6 @@ export class DialogCalendarComponent {
   ) {
     this.date = data.data.date;
     this.title = 'Add Appointment';
-    debugger;
   }
 
   ngOnInit(): void {
@@ -154,7 +153,6 @@ export class DialogCalendarComponent {
       campaignTime: this.form.get('campaignTime')?.value,
       appointmentDate: this.date,
     };
-    debugger;
     this.dialogRef.close(payload);
   }
 

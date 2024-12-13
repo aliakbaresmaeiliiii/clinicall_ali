@@ -16,6 +16,17 @@ router.get(
   })
 );
 
+router.get(
+  "/getMostPopularDoctor",
+  asyncHandler(async (req: any, res: any) => {
+    const data = await DoctorsService.getMostPopularDoctor();
+    const buildResponse = BuildResponse.get(data);
+    if (buildResponse) {
+      return res.status(200).json(buildResponse);
+    }
+  })
+);
+
 // **** checkPhoneNumberExists
 router.get(
   "/admin/check-phone/:phone",
@@ -68,5 +79,3 @@ router.put(
     return formData;
   })
 );
-
-
