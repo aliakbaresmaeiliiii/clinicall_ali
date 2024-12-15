@@ -19,7 +19,7 @@ router.get(
 router.get(
   "/getMostPopularDoctor",
   asyncHandler(async (req: any, res: any) => {
-    const data = await DoctorsService.getMostPopularDoctor();
+    const data = await DoctorsService.getMostPopularDoctors();
     const buildResponse = BuildResponse.get(data);
     if (buildResponse) {
       return res.status(200).json(buildResponse);

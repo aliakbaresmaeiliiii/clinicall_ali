@@ -10,46 +10,46 @@ import { DoctorsDTO } from "../../models/doctors";
 export async function getDoctors(): Promise<any> {
   const result = await query<RowDataPacket>(
     `
-      SELECT 
-        d.*, 
-        ld.*, 
-        (SELECT AVG(rating) 
-         FROM ${coreSchema}.ratings r 
-         WHERE r.doctor_id = d.doctor_id) AS average_rating
-      FROM 
-        ${coreSchema}.doctors d
-      LEFT JOIN 
-        ${coreSchema}.locations_doctors ld ON d.doctor_id = ld.doctor_id;
-      `,
-    { values: [] } // No parameters needed for this query
+   SELECT 
+  d.*, 
+  COALESCE(ld.location, 'No Location') AS location,
+  (SELECT AVG(rating) 
+   FROM ${coreSchema}.ratings r 
+   WHERE r.doctor_id = d.doctor_id) AS average_rating
+FROM 
+  ${coreSchema}.doctors d
+LEFT JOIN 
+  ${coreSchema}.locations_doctors ld ON d.doctor_id = ld.doctor_id;
+      `
   );
   return result;
 }
 
-export async function getMostPopularDoctor() {
+export async function getMostPopularDoctors(): Promise<any> {
   const result = await query<RowDataPacket[]>(
     `
     SELECT 
       d.doctor_id AS doctor_id,
       d.name AS name,
+      d.mobile AS mobile,
+      d.email AS email,
+      d.profileImage AS profileImage,
+      d.address AS address,
       AVG(r.rating) AS average_rating,
-      COUNT(r.id) AS total_ratings
+      COUNT(r.rating) AS total_ratings
     FROM 
       ${coreSchema}.doctors d
     INNER JOIN 
       ${coreSchema}.ratings r ON d.doctor_id = r.doctor_id
     GROUP BY 
-      d.doctor_id, d.name
+      d.doctor_id, d.name, d.mobile, d.email
     HAVING 
       COUNT(r.rating) > 2
     ORDER BY 
       average_rating DESC,
       total_ratings DESC
     LIMIT 10;
-        `,
-    {
-      values: [],
-    }
+    `
   );
   return result;
 }

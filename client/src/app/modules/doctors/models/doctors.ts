@@ -14,7 +14,7 @@ export interface DoctorsDTO {
   joingin_date?: Date;
   gender?: string | null | undefined;
   location?: string | null | undefined;
-  average_rating: any;
+  average_rating: number;
 }
 
 export interface LocaitonDTO {

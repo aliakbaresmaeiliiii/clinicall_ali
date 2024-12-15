@@ -58,7 +58,9 @@ import { SuggestionsComponent } from './suggestions/suggestions.component';
 import { YoursDoctorComponent } from './yours-doctor/yours-doctor.component';
 import { SuggestionsDentalComponent } from './suggestions-dental/suggestions-dental.component';
 import { FilterLayoutComponent } from './filter-layout/filter-layout.component';
-import { LoaderComponent } from "../shared/components/loader/loader.component";
+import { LoaderComponent } from '../shared/components/loader/loader.component';
+import { FloorPipe } from '../shared/pipes/floor.pipe';
+import { GetDoctorApointmentComponent } from './get-doctor-apointment/get-doctor-apointment.component';
 
 const routes: Routes = [
   {
@@ -70,8 +72,8 @@ const routes: Routes = [
         component: FeatureSectionComponent,
       },
 
-      { path: 'doctors', component: FilterLayoutComponent},
-      
+      { path: 'doctors', component: FilterLayoutComponent },
+
       { path: 'services', component: ServicesDoctorComponent },
       { path: 'contact-us', component: ContactUsComponent },
       { path: 'about-us', component: AboutUsComponent },
@@ -79,6 +81,10 @@ const routes: Routes = [
       { path: 'detail-dr-project', component: DetailDrProjectComponent },
       { path: 'profile-pateint', component: ProfilePatientComponent },
       { path: 'speciality', component: SpecialityComponent },
+      {
+        path: 'doctor/:name/:id',
+        component: GetDoctorApointmentComponent,
+      },
       // {
       //   path: 'speciality',
       //   loadChildren: () => import('./speciality/speciality.module').then(c => c.SpecialityModule),
@@ -122,6 +128,7 @@ const routes: Routes = [
     YoursDoctorComponent,
     SuggestionsDentalComponent,
     FilterLayoutComponent,
+    GetDoctorApointmentComponent,
   ],
   imports: [
     CommonModule,
@@ -149,8 +156,9 @@ const routes: Routes = [
     MatDialogModule,
     SharedUiModule,
     CustomTabComponent,
-    LoaderComponent
-],
+    LoaderComponent,
+    FloorPipe,
+  ],
   exports: [],
 })
 export class UiModule {}
