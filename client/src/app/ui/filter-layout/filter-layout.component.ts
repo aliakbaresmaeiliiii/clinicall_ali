@@ -1,4 +1,5 @@
 import {
+  ChangeDetectorRef,
   Component,
   inject,
   OnInit,
@@ -8,6 +9,7 @@ import {
 import { DoctorsDTO } from '../../modules/doctors/models/doctors';
 import { DoctorsService } from '../../modules/doctors/doctors.service';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-filter-layout',
@@ -19,7 +21,10 @@ export class FilterLayoutComponent implements OnInit {
   tabData: DoctorsDTO[] = [];
   mostPopular: DoctorsDTO[] = [];
   doctorService = inject(DoctorsService);
-
+  router = inject(Router);
+  get floor() {
+    return Math.floor;
+  }
   templateOne = viewChild.required<TemplateRef<any>>('templateOne');
   templateTwo = viewChild.required<TemplateRef<any>>('templateTwo');
   templateThree = viewChild.required<TemplateRef<any>>('templateThree');
@@ -90,14 +95,6 @@ export class FilterLayoutComponent implements OnInit {
     } else if (data.label === 'Most Popular') {
       this.fetchMostPopularData();
     }
-    // switch (data.key) {
-    //   case 0:
-    //     break;
-    //   case 1:
-    //     break;
-    //   default:
-    //     break;
-    // }
   }
 
   fetchDefaultData() {
@@ -114,7 +111,21 @@ export class FilterLayoutComponent implements OnInit {
 
   fetchMostPopularData() {
     this.doctorService.getMostPopularDoctor().subscribe((data: any) => {
-      this.tabData = data.data;
+      const newData = data.data.map((doctor: any) => {
+        doctor.profileImage = doctor.profileImage
+          ? `${environment.urlProfileImg}${doctor.profileImage}`
+          : '../../../assets/images/bg-01.png';
+        return doctor;
+      });
+      this.tabData = newData;
+      debugger;
     });
+  }
+
+  takeTurn(data: any) {
+    const doctorName = data.name;
+    const doctorId = data.doctor_id;
+    debugger;
+    this.router.navigate([`/doctor/${doctorName}/${doctorId}`]);
   }
 }

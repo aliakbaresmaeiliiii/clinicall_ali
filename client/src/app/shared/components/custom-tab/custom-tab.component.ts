@@ -24,11 +24,11 @@ export class CustomTabComponent implements AfterViewInit {
   filterOptions = [
     { key: 0, label: 'Default' },
     { key: 1, label: 'Most Popular' },
-    { key: 2, label: 'The Lowest Price' },
-    { key: 3, label: 'The Highest Price' },
+    // { key: 2, label: 'The Lowest Price' },
+    // { key: 3, label: 'The Highest Price' },
     { key: 4, label: 'Nearest Visited' },
     { key: 5, label: 'Closely Appointment' },
-    { key: 6, label: 'Highest Score' },
+    { key: 6, label: 'Most successful turns' },
   ];
 
   dentalServices = [

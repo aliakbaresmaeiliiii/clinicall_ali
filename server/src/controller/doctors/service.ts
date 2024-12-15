@@ -4,7 +4,7 @@ import {
   checkDoctorPhoneNumberExists,
   doctorDetail,
   getDoctors,
-  getMostPopularDoctor,
+  getMostPopularDoctors,
   updateDoctor,
 } from "./db";
 
@@ -18,8 +18,8 @@ export class DoctorsService {
     }
   }
 
-  public static async getMostPopularDoctor() {
-    const data = await getMostPopularDoctor();
+  public static async getMostPopularDoctors() {
+    const data = await getMostPopularDoctors();
     if (data) {
       return { message: "ok", data };
     } else {
