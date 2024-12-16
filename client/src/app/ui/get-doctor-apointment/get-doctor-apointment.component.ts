@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { DilogDotorAppointmentComponent } from './dilog-dotor-appointment/dilog-dotor-appointment.component';
 
 @Component({
   selector: 'app-get-doctor-apointment',
@@ -7,6 +9,8 @@ import { Component } from '@angular/core';
   styleUrl: './get-doctor-apointment.component.scss',
 })
 export class GetDoctorApointmentComponent {
+  dialog = inject(MatDialog);
+
   briefText: string =
     'Has a specialized board for diseases of infants and children, treatment of digestive and allergic disorders...';
   fullText: string = `
@@ -29,5 +33,15 @@ export class GetDoctorApointmentComponent {
 
   toggleText() {
     this.isExpanded = !this.isExpanded;
+  }
+
+  comment() {}
+
+  getConsultation() {
+    this.dialog.open(DilogDotorAppointmentComponent);
+  }
+
+  takeTurn(){
+    
   }
 }
