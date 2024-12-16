@@ -61,6 +61,8 @@ import { FilterLayoutComponent } from './filter-layout/filter-layout.component';
 import { LoaderComponent } from '../shared/components/loader/loader.component';
 import { FloorPipe } from '../shared/pipes/floor.pipe';
 import { GetDoctorApointmentComponent } from './get-doctor-apointment/get-doctor-apointment.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { DilogDotorAppointmentComponent } from './get-doctor-apointment/dilog-dotor-appointment/dilog-dotor-appointment.component';
 
 const routes: Routes = [
   {
@@ -129,6 +131,7 @@ const routes: Routes = [
     SuggestionsDentalComponent,
     FilterLayoutComponent,
     GetDoctorApointmentComponent,
+    DilogDotorAppointmentComponent
   ],
   imports: [
     CommonModule,
@@ -158,6 +161,7 @@ const routes: Routes = [
     CustomTabComponent,
     LoaderComponent,
     FloorPipe,
+    MatTabsModule,
   ],
   exports: [],
 })
