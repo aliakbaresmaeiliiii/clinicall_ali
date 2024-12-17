@@ -4,6 +4,7 @@ import {
   checkDoctorPhoneNumberExists,
   doctorDetail,
   getDoctors,
+  getDoctorSpecializations,
   getMostPopularDoctors,
   updateDoctor,
 } from "./db";
@@ -62,5 +63,15 @@ export class DoctorsService {
     } else {
       return null;
     }
+  }
+
+  public static async getDoctorSpecializations (doctorId:number){
+    const data = await getDoctorSpecializations(doctorId)
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
+
   }
 }

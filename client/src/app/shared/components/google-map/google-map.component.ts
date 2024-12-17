@@ -22,12 +22,12 @@ import { MapService } from './map.service';
     styleUrl: './google-map.component.scss'
 })
 export class GoogleMapComponent implements OnInit {
-  readonly coordinates = input<{
+   coordinates = input<{
     lat: number;
     lng: number;
 }[]>([]);
-  readonly zoomLevel = input<number>(14);
-  readonly markerMoved = output<any>();
+   zoomLevel = input<number>(14);
+   markerMoved = output<any>();
 
   style = 'mapbox://styles/mapbox/streets-v11';
   lng: number = 51.375447552429875;

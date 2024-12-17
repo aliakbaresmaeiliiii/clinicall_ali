@@ -63,6 +63,7 @@ import { FloorPipe } from '../shared/pipes/floor.pipe';
 import { GetDoctorApointmentComponent } from './get-doctor-apointment/get-doctor-apointment.component';
 import { MatTabsModule } from '@angular/material/tabs';
 import { DilogDotorAppointmentComponent } from './get-doctor-apointment/dilog-dotor-appointment/dilog-dotor-appointment.component';
+import { DialogLocationDrComponent } from './get-doctor-apointment/dialog-location-dr/dialog-location-dr.component';
 
 const routes: Routes = [
   {
@@ -131,7 +132,8 @@ const routes: Routes = [
     SuggestionsDentalComponent,
     FilterLayoutComponent,
     GetDoctorApointmentComponent,
-    DilogDotorAppointmentComponent
+    DilogDotorAppointmentComponent,
+    DialogLocationDrComponent
   ],
   imports: [
     CommonModule,

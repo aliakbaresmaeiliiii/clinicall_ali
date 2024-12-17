@@ -33,6 +33,7 @@ export class SettingsComponent
   genders: string[] = ['Man', 'Woman', 'Custom'];
   skills$!: Observable<string[]>;
   mapCoordinates = [{ lat: 3.022130075276455, lng: 101.57977844022147 }];
+  
   zoomlevel!: number;
   hasAccess = false;
   agePipe = inject(AgePipe);

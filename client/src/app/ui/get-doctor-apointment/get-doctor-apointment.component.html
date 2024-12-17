@@ -1,3 +1,5 @@
+@for (doctor of doctorInfo; track $index) {
+
 <div class="w-3/4 grid grid-cols-3 mx-auto gap-3">
   <div class="flex flex-col gap-4">
     <div
@@ -6,20 +8,19 @@
         <div class="flex space-x-4">
           <div>
             <img
-              src="../../../assets/images/bg-01.png"
               crossorigin="anonymous"
-              class="rounded-3xl"
-              height="48"
+              [src]="doctor?.profileImage"
               width="48"
-              alt="Doctor's Profile Image" />
+              height="48"
+              class="rounded-full p-1" />
           </div>
 
           <div>
             <div class="text-lg font-bold dark:text-white">
-              Dr.Aliakbar Esmaeili
+              {{ doctor.name }}
             </div>
             <div class="text-sm text-gray-500 dark:text-gray-200">
-              Dentistry
+              {{ doctor.specialization }}
             </div>
             <div
               class="flex gap-1 text-sm text-gray-500 dark:text-gray-200 pt-2">
@@ -40,7 +41,7 @@
                   fill="white"></path>
               </svg>
 
-              Medical system code : 53255
+              Medical system code : {{ doctor.medical_code }}
             </div>
           </div>
         </div>
@@ -53,6 +54,8 @@
             @for (star of [1,2,3,4,5]; track $index) {
             <svg
               class="text-yellow-500 flex"
+              [class.fill-yellow]="$index < doctor.average_rating"
+              [class.fill-gray]="$index >= doctor.average_rating"
               fill="none"
               height="15"
               stroke="currentColor"
@@ -187,51 +190,33 @@
 
     <mat-card appearance="outlined" class="w-full">
       <mat-card-content>
-        <h2 class="pt-2 font-bold">About Dr. Behrouz Moqdadi</h2>
+        <h2 class="pt-2 font-bold">About {{ doctor.name }}</h2>
         <div class="flex flex-col gap-1 pt-2">
-          <p>
-            {{ isExpanded ? fullText : briefText }}
-            <span *ngIf="!isExpanded">...</span>
-          </p>
-          <button
-            class="flex flex-col text-center"
-            (click)="toggleText()"
-            aria-label="Toggle full text">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-              height="20"
-              width="20">
-              <path
-                [attr.d]="
-                  isExpanded ? 'M18 15l-6-6-6 6' : 'M6 9l6 6 6-6'
-                "></path>
-            </svg>
-            {{ isExpanded ? 'Show Less' : 'Show More' }}
-          </button>
+          {{ doctor.description }}
         </div>
       </mat-card-content>
     </mat-card>
 
     <mat-card appearance="outlined" class="w-full">
       <mat-card-content>
-        <h2 class="pt-2 font-bold">Address Clinic Dr.Aliakbar Esmaeili:</h2>
+        <h2 class="pt-2 font-bold">Address Clinic Dr.{{ doctor.name }}:</h2>
         <div
           class="border-2 border-gray-400 rounded-lg border-opacity-30 p-4 mt-4 bg-slate-100">
           <h2 class="pt-2 font-bold">Clinic Subang Jaya :</h2>
           <div class="flex gap-1 pt-2">
             <i class="fa-solid fa-location-dot text-blue-600 text-lg"></i>
-            <strong>Address</strong>
+            <strong>Address: </strong>
             <p>
-              North Shahran Blvd., above the second floor of Shahran, after Imam
-              Ali Mosque, Dr. Kariman's 24-hour pharmacy building, third floor,
-              eastern block, unit 31
+              {{ doctor.address }}
             </p>
           </div>
 
-          <div class="flex items-center gap-1 pt-2">Phone: +601121956540</div>
-          <a href="" class="flex items-center gap-2 text-blue-600 pt-2">
+          <div class="flex items-center gap-1 pt-2">
+            Phone: {{ doctor.mobile }}
+          </div>
+          <a
+            class="flex items-center gap-2 text-blue-600 pt-2"
+            (click)="showMap(doctor, '250ms', '150ms')">
             Show on map
             <i class="fa-solid fa-map text-blue-600"></i>
           </a>
@@ -240,24 +225,20 @@
     </mat-card>
     <mat-card appearance="outlined" class="w-full">
       <mat-card-content>
-        <h2 class="pt-2 font-bold">Services Dr.Aliakbar Esmaeili:</h2>
+        <h2 class="pt-2 font-bold">Services Dr.{{ doctor.name }}:</h2>
         <div class="flex items-center justify-center gap-3 mt-4">
+          @for (s of specialization; track $index) {
           <span class="bg-slate-300 rounded-2xl text-xs p-2"
-            >Assessment/treatment
+            >{{ s.specialization_name }}
           </span>
-          <span class="bg-slate-300 rounded-2xl text-xs p-2"
-            >Growth retardation</span
-          >
-          <span class="bg-slate-300 rounded-2xl text-xs p-2">
-            Abdominal pain in children</span
-          >
+          }
         </div>
       </mat-card-content>
     </mat-card>
 
     <mat-card appearance="outlined" class="w-full">
       <mat-card-content>
-        <h2 class="pt-2 font-bold">Reviewes about Dr.Aliakbar Esmaeili:</h2>
+        <h2 class="pt-2 font-bold">Reviewes about Dr.{{ doctor.name }}:</h2>
         <div
           class="flex items-center flex-row-reverse justify-center gap-3 mt-4">
           <div class="flex flex-col gap-1">
@@ -266,25 +247,27 @@
             </span>
             <div class="flex pl-2">
               @for (star of [1,2,3,4,5]; track $index) {
-              <svg
-                class="text-yellow-500"
-                fill="none"
-                height="15"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                viewBox="0 0 24 24"
-                width="15"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M17.919 14.32a1.1 1.1 0 0 0-.32.97l.89 4.92a1.08 1.08 0 0 1-.45 1.08 1.1 1.1 0 0 1-1.17.08l-4.43-2.31a1.1 1.1 0 0 0-.5-.13h-.27a.8.8 0 0 0-.27.09l-4.43 2.32c-.22.11-.467.15-.71.11a1.11 1.11 0 0 1-.89-1.27l.89-4.92a1.12 1.12 0 0 0-.32-.98l-3.61-3.5a1.08 1.08 0 0 1-.27-1.13c.135-.396.477-.685.89-.75l4.97-.72c.378-.04.71-.27.88-.61l2.19-4.49q.078-.152.2-.27l.09-.07a.7.7 0 0 1 .16-.13l.11-.04.17-.07h.42c.377.04.708.264.88.6l2.22 4.47c.16.327.47.554.83.61l4.97.72c.42.06.77.35.91.75.13.401.018.841-.29 1.13z"></path>
-              </svg>
-              }
+                <svg
+                  class="text-yellow-500"
+                  [class.fill-yellow]="$index < doctor.average_rating"
+                  [class.fill-gray]="$index >= doctor.average_rating"
+                  fill="none"
+                  height="15"
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  width="15"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M17.919 14.32a1.1 1.1 0 0 0-.32.97l.89 4.92a1.08 1.08 0 0 1-.45 1.08 1.1 1.1 0 0 1-1.17.08l-4.43-2.31a1.1 1.1 0 0 0-.5-.13h-.27a.8.8 0 0 0-.27.09l-4.43 2.32c-.22.11-.467.15-.71.11a1.11 1.11 0 0 1-.89-1.27l.89-4.92a1.12 1.12 0 0 0-.32-.98l-3.61-3.5a1.08 1.08 0 0 1-.27-1.13c.135-.396.477-.685.89-.75l4.97-.72c.378-.04.71-.27.88-.61l2.19-4.49q.078-.152.2-.27l.09-.07a.7.7 0 0 1 .16-.13l.11-.04.17-.07h.42c.377.04.708.264.88.6l2.22 4.47c.16.327.47.554.83.61l4.97.72c.42.06.77.35.91.75.13.401.018.841-.29 1.13z"></path>
+                </svg>
+                }
             </div>
           </div>
           <span class="text-3xl">
-            <strong>4.8</strong>
+            <strong> {{ formatRating(doctor.average_rating) }} </strong>
           </span>
         </div>
 
@@ -345,6 +328,8 @@
                     @for (star of [1,2,3,4,5]; track $index) {
                     <svg
                       class="text-yellow-500"
+                      [class.fill-yellow]="$index < doctor.average_rating"
+                      [class.fill-gray]="$index >= doctor.average_rating"
                       fill="none"
                       height="15"
                       stroke="currentColor"
@@ -544,9 +529,7 @@
           <div class="flex gap-1 pt-2">
             <i class="fa-solid fa-location-dot text-blue-600 text-lg"></i>
             <p>
-              North Shahran Blvd., above the second floor of Shahran, after Imam
-              Ali Mosque, Dr. Kariman's 24-hour pharmacy building, third floor,
-              eastern block, unit 31
+              {{ doctor.address }}
             </p>
           </div>
           <div
@@ -675,6 +658,8 @@
               @for (star of [1,2,3,4,5]; track $index) {
               <svg
                 class="text-yellow-500"
+                [class.fill-yellow]="$index < doctor.average_rating"
+                [class.fill-gray]="$index >= doctor.average_rating"
                 fill="none"
                 height="15"
                 stroke="currentColor"
@@ -832,3 +817,4 @@
     </mat-card>
   </div>
 </div>
+}

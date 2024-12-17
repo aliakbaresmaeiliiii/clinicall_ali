@@ -14,4 +14,6 @@ export interface DoctorsDTO {
   age: string;
   lat: number;
   lng: number;
+  medical_code: string;
+  description: string;
 }
