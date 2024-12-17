@@ -20,8 +20,8 @@ export class DoctorsService {
     return this.#http.get<DoctorsDTO[]>(`${this.config}admin/doctors`);
   }
 
-  getMostPopularDoctor(){
-    return this.#http.get<DoctorsDTO[]>(`${this.config}getMostPopularDoctor`)
+  getMostPopularDoctor() {
+    return this.#http.get<DoctorsDTO[]>(`${this.config}getMostPopularDoctor`);
   }
 
   addDoctor(formData: any): Observable<DoctorsDTO[]> {
@@ -33,9 +33,8 @@ export class DoctorsService {
 
   doctorDetial(id: number): Observable<DoctorsDTO[]> {
     return this.#http
-      .get<{ data: DoctorsDTO[] }>(`${this.config}admin/getDoctors/${id}`)
+      .get<{ data: DoctorsDTO[] }>(`${this.config}admin/doctor-detial/${id}`)
       .pipe(map(response => response.data));
-    // Extract the array from the response
   }
 
   getAddresses(): Observable<{ lat: number; lng: number }[]> {
@@ -54,5 +53,13 @@ export class DoctorsService {
       `${this.config}admin/updateDoctor`,
       formData
     );
+  }
+
+  getDoctorSpecialization(doctorId: number) {
+    return this.#http
+      .get<{ data: DoctorsDTO[] }>(
+        `${this.config}admin/getDoctor-specialization/${doctorId}`
+      )
+      
   }
 }

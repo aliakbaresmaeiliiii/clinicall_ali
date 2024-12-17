@@ -66,6 +66,8 @@ router.get(
   })
 );
 
+
+
 // **** updatePatient
 router.put(
   "/admin/updateDoctor",
@@ -77,5 +79,15 @@ router.put(
       return res.status(200).json(buildResponse);
     }
     return formData;
+  })
+);
+
+router.get(
+  `/admin/getDoctor-specialization/:doctorId`,
+  asyncHandler(async (req: Request, res: Response): Promise<any> => {
+    const doctorId = +req.params.doctorId;
+    const data = await DoctorsService.getDoctorSpecializations(doctorId);
+    const buildResponse = BuildResponse.get(data);
+    res.status(200).json(buildResponse);
   })
 );

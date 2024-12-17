@@ -101,12 +101,20 @@ export async function addDoctor(doctorInfo: DoctorsDTO) {
 
 export async function doctorDetail(doctorId: number): Promise<any> {
   const result = await query<RowDataPacket>(
-    `SELECT * FROM ${coreSchema}.doctors d
-      LEFT JOIN 
+    `
+  SELECT 
+      d.*,
+      COALESCE(ld.location, 'No Location') AS location,
+      (SELECT AVG(r.rating) 
+       FROM ${coreSchema}.ratings r 
+       WHERE r.doctor_id = d.doctor_id) AS average_rating
+    FROM 
+      ${coreSchema}.doctors d
+    LEFT JOIN 
       ${coreSchema}.locations_doctors ld ON d.doctor_id = ld.doctor_id
-       WHERE 
+    WHERE 
       d.doctor_id = ?;
-  `,
+      `,
     { values: [doctorId] }
   );
   return result;
@@ -121,6 +129,23 @@ export async function updateDoctor(doctorData: DoctorsDTO): Promise<any> {
       `,
     {
       values: [doctorData.name, doctorData.doctor_id],
+    }
+  );
+  return result;
+}
+
+export async function getDoctorSpecializations(doctorId: number) {
+  const result = await query<RowDataPacket>(
+    `
+    SELECT 
+    d.name AS doctor_name,s.specialization_name
+    FROM doctors d
+    JOIN doctor_specializations ds ON d.doctor_id = ds.doctor_id
+    JOIN specializations s ON ds.specialization_id = s.specialization_id
+    WHERE d.doctor_id =1
+    `,
+    {
+      values: [doctorId],
     }
   );
   return result;

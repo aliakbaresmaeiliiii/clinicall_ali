@@ -15,6 +15,8 @@ export interface DoctorsDTO {
   gender?: string | null | undefined;
   location?: string | null | undefined;
   average_rating: number;
+  medical_code: string;
+  description: string;
 }
 
 export interface LocaitonDTO {

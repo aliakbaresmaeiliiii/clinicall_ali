@@ -1,6 +1,20 @@
-import { Component, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  inject,
+  makeStateKey,
+  OnInit,
+  TransferState,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DilogDotorAppointmentComponent } from './dilog-dotor-appointment/dilog-dotor-appointment.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
+import { DoctorsService } from '../../modules/doctors/doctors.service';
+import { environment } from '../../environments/environment';
+import { DoctorsDTO } from '../../modules/doctors/models/doctors';
+import { DialogLocationDrComponent } from './dialog-location-dr/dialog-location-dr.component';
+import { ISpecialization } from './models/specializtion.model';
 
 @Component({
   selector: 'app-get-doctor-apointment',
@@ -8,28 +22,88 @@ import { DilogDotorAppointmentComponent } from './dilog-dotor-appointment/dilog-
   templateUrl: './get-doctor-apointment.component.html',
   styleUrl: './get-doctor-apointment.component.scss',
 })
-export class GetDoctorApointmentComponent {
+export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   dialog = inject(MatDialog);
-
+  route = inject(ActivatedRoute);
+  doctorService = inject(DoctorsService);
+  transferState = inject(TransferState);
+  specialization: ISpecialization[] = [];
+  DATA_KEY = makeStateKey<any>('doctorInfo');
+  doctorInfo: DoctorsDTO[] = [];
+  coordinates: { lat: number; lng: number }[] = [];
+  doctorId!: number;
+  private destroy$ = new Subject<void>();
   briefText: string =
     'Has a specialized board for diseases of infants and children, treatment of digestive and allergic disorders...';
-  fullText: string = `
-  Has a specialized board for diseases of infants and children,
-  treatment of digestive and allergic disorders of infants and
-  children, growth and development disorders of infants and children,
-  growth and maturation disorders of adolescents in the office of
-  abdominal ultrasound, milk casein sensitivity test, milk lactose
-  sensitivity test, breathing test (spirometry), attendance Senior
-  expert assistant, consultant for children and adolescents, for
-  additional guidance and answers to clients' questions, experience of
-  more than 20 years in neonatal intensive care units, cooperation
-  with children and burns in Prophets hospital Ibn Sina and experience
-  of 10 years of work in Shohdai Yafet Hospital, Abad, Instagram page
-  of dr.behrouzmeghdadi, personal website www.drbehrouzmeghdadi.com,
-  please click to make an appointment for a child's leg scan and
-  orthopedic visit.
-`;
+
   isExpanded: boolean = false;
+
+  
+
+  ngAfterViewInit() {
+    this.fetchData(this.doctorId);
+  }
+
+  ngOnInit(): void {
+    this.route.paramMap
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((params: any) => {
+        const getID = params.get('id');
+        this.doctorId = getID;
+      });
+  }
+
+  fetchData(doctorId: number) {
+    this.transferState.remove(this.DATA_KEY);
+    const storedData = this.transferState.get(this.DATA_KEY, null);
+
+    if (!storedData) {
+      this.doctorService
+        .getDoctorSpecialization(doctorId)
+        .subscribe((special: any) => {
+          console.log('special', special);
+          this.specialization = special.data;
+        });
+      this.doctorService.doctorDetial(doctorId).subscribe({
+        next: (response: any) => {
+          if (response && response.length > 0) {
+            const newData = response.map((patient: any) => {
+              patient.profileImage = patient.profileImage
+                ? `${environment.urlProfileImg}${patient.profileImage}`
+                : '../../../assets/images/bg-01.png';
+              return patient;
+            });
+            this.doctorInfo = newData;
+            this.transferState.set(this.DATA_KEY, this.doctorInfo);
+
+            this.coordinates = this.doctorInfo
+              .filter(item => item.location)
+              .map((loc: any) => {
+                return {
+                  lng: loc.location.x,
+                  lat: loc.location.y,
+                };
+              });
+          }
+        },
+
+        error: e => console.error(e),
+        complete: () => console.info('complete'),
+      });
+    } else {
+      this.doctorInfo = storedData;
+      this.coordinates = this.doctorInfo
+        .filter(item => item.location)
+        .map((loc: any) => {
+          console.log('📌', loc.location);
+          return {
+            lng: loc.location.x,
+            lat: loc.location.y,
+          };
+        });
+      return;
+    }
+  }
 
   toggleText() {
     this.isExpanded = !this.isExpanded;
@@ -41,7 +115,30 @@ export class GetDoctorApointmentComponent {
     this.dialog.open(DilogDotorAppointmentComponent);
   }
 
-  takeTurn(){
-    
+  takeTurn() {}
+
+  showMap(
+    row: DoctorsDTO,
+    enterAnimationDuration: string,
+    exitAnimationDuration: string
+  ) {
+    const dialogRef = this.dialog.open(DialogLocationDrComponent, {
+      width: '800px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: row,
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      // this.getData();
+    });
   }
+
+
+  formatRating(rating: number | string): string {
+    return parseFloat(rating.toString()).toFixed(1);
+  }
+
+
+  
 }

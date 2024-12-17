@@ -118,14 +118,12 @@ export class FilterLayoutComponent implements OnInit {
         return doctor;
       });
       this.tabData = newData;
-      debugger;
     });
   }
 
-  takeTurn(data: any) {
-    const doctorName = data.name;
+  getAppointment(data: any) {
+    let doctorName = data.name.replace(/\s+/g, '-');
     const doctorId = data.doctor_id;
-    debugger;
     this.router.navigate([`/doctor/${doctorName}/${doctorId}`]);
   }
 }
