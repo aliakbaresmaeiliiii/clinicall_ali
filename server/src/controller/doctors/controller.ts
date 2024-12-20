@@ -100,9 +100,8 @@ router.post(
   })
 );
 router.post(
-  `/admin/toggleLike/:doctor_id`,
+  `/admin/toggleLike`,
   asyncHandler(async (req: Request, res: Response) => {
-    const doctorId = +req.params.doctor_id;
     const likes = req.body;
     const data = await DoctorsService.toggleLike(likes); 
     const buildResponse = BuildResponse.get(data);

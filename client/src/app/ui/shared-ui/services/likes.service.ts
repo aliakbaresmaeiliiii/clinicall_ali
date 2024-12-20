@@ -11,10 +11,10 @@ export class LikesService {
   http = inject(HttpClient);
   private config = environment.apiEndPoint;
 
-  addLike(likeInfo: likeDTO, id: number): Observable<likeDTO> {
+  addLike(likeInfo: likeDTO): Observable<likeDTO> {
     debugger;
     return this.http.post<likeDTO>(
-      `${this.config}admin/toggleLike/${id}`,
+      `${this.config}admin/toggleLike`,
       likeInfo
     );
   }

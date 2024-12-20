@@ -172,48 +172,43 @@ export async function logDoctorClick(doctor_id: number): Promise<any> {
   return { insertResult, updateResult };
 }
 
-// export async function like(data: likeDTO) {
-  
-//   const result = query<RowDataPacket>(
-//     `INSERT INTO ${coreSchema}.likes 
-//       (user_id,entity_id,entity_type)
-//       VALUES (?, ?, ?)
-//       `,
-//     { values: [data.user_id, data.entity_id, data.entity_type] }
-//   );
-//   return result;
-// }
-
-
-
-
-
-
 export async function like(data: likeDTO) {
   const existingLike = await query<RowDataPacket>(
     `SELECT * FROM ${coreSchema}.likes 
-     WHERE user_id = ? AND entity_id = ? AND entity_type = ?`,
+     WHERE user_id = ? AND doctor_id = ? AND entity_type = ?`,
     {
-      values: [data.user_id, data.entity_id, data.entity_type],
+      values: [data.user_id, data.doctor_id, data.entity_type],
     }
   );
 
   if (existingLike.length > 0) {
+    const changeStatusLike = await query<RowDataPacket>(
+      ` UPDATE ${coreSchema}.doctors
+        SET is_liked = 0
+        WHERE doctor_id = ? `,
+      { values: [data.doctor_id] }
+    );
     const deleteLike = await query<RowDataPacket>(
       `DELETE FROM ${coreSchema}.likes 
-       WHERE user_id = ? AND entity_id = ? AND entity_type = ?`,
+      WHERE user_id = ? AND doctor_id = ? AND entity_type = ?`,
       {
-        values: [data.user_id, data.entity_id, data.entity_type],
+        values: [data.user_id, data.doctor_id, data.entity_type],
       }
     );
-    return deleteLike; // return the result of deletion
+    return { deleteLike, changeStatusLike }; // return the result of deletion
   } else {
+    const changeStatusLike = await query<RowDataPacket>(
+      ` UPDATE ${coreSchema}.doctors
+      SET is_liked = 1
+      WHERE doctor_id = ? `,
+      { values: [data.doctor_id] }
+    );
     // If the like doesn't exist, add it
     const insertLike = await query<RowDataPacket>(
-      `INSERT INTO ${coreSchema}.likes (user_id, entity_id, entity_type) 
+      `INSERT INTO ${coreSchema}.likes (user_id, doctor_id, entity_type) 
        VALUES (?, ?, ?)`,
-      { values: [data.user_id, data.entity_id, data.entity_type] }
+      { values: [data.user_id, data.doctor_id, data.entity_type] }
     );
-    return insertLike; // return the result of insertion
+    return { insertLike, changeStatusLike }; // return the result of insertion
   }
 }
