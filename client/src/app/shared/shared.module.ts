@@ -38,6 +38,7 @@ import { ChunkPipe } from './pipes/chunk/chunk.pipe';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { TimeSelectorComponent } from './components/time-selector/time-selector.component';
 import { RangePickerComponent } from './components/range-picker/range-picker.component';
+import { CopyLinkDialogComponent } from './components/copy-link-dialog/copy-link-dialog.component';
 
 const ANGULR_MATERIAL_MODULES = [
   MatAutocompleteModule,
@@ -82,6 +83,7 @@ const ANGULR_MATERIAL_MODULES = [
   ImgUploaderComponent,
   RatingPickerPageComponent,
   MatNativeDateModule,
+  CopyLinkDialogComponent,
 ];
 const COMMON_MODULES = [CommonModule, ReactiveFormsModule, FormsModule];
 // const SHARED_COMPONENT = [];

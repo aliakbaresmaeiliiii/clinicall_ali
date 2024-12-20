@@ -5,9 +5,7 @@ import {
   Component,
   OnDestroy,
   OnInit,
-  TemplateRef,
-  inject,
-  viewChild
+  inject
 } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';

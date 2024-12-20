@@ -55,11 +55,18 @@ export class DoctorsService {
     );
   }
 
-  getDoctorSpecialization(doctorId: number) {
-    return this.#http
-      .get<{ data: DoctorsDTO[] }>(
-        `${this.config}admin/getDoctor-specialization/${doctorId}`
-      )
-      
+  getDoctorSpecialization(doctorId: number): Observable<{}> {
+    return this.#http.get<{ data: DoctorsDTO[] }>(
+      `${this.config}admin/getDoctor-specialization/${doctorId}`
+    );
+  }
+
+
+
+  countDoctorClick(doctor_id: number): Observable<number> {
+    return this.#http.post<number>(
+      `${this.config}admin/countDoctorClick`,
+      { doctor_id } 
+    );
   }
 }

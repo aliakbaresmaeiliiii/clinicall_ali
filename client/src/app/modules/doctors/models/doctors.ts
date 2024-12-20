@@ -1,6 +1,8 @@
+import { likeDTO } from '../../../ui/shared-ui/models/like';
+
 export interface DoctorsDTO {
   position?: number | any;
-  doctor_id?: string | null | undefined;
+  doctor_id?: any;
   name: string;
   mobile?: string | undefined | null;
   specialization?: string | null | undefined;
@@ -17,6 +19,9 @@ export interface DoctorsDTO {
   average_rating: number;
   medical_code: string;
   description: string;
+  click_count: number;
+  likeInfo: likeDTO;
+  is_liked:boolean
 }
 
 export interface LocaitonDTO {

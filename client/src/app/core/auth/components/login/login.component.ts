@@ -157,13 +157,14 @@ export class LoginComponent implements OnInit{
   // ****login Google
   login(event: AnimationEvent) {
     if (this.form.value) {
+      debugger;
       this.#authService.signIn(this.form.value).subscribe((res: any) => {
         this.permissionService.setPermissions(res.data.permissions);
         const stroeDataUser = res.data;
         const dataJson = JSON.stringify(stroeDataUser);
         localStorage.setItem('userData', dataJson);
         if(res.data.roles[0] === 'user'){
-          this.router.navigate(['']);
+          this.router.navigate(['/']);
         }else{
           this.router.navigate(['aliakbar/settings']);
         }
