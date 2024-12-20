@@ -160,12 +160,12 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   toggleLike(info: DoctorsDTO,doctor_id:number) {
     const user_id = this.userData;
     const payload: likeDTO = {
-      entity_id: info.doctor_id,
+      doctor_id: info.doctor_id,
       entity_type: info.name,
       user_id: user_id,
     };
     this.isLiked = !this.isLiked;
-    this.likeService.addLike(payload,doctor_id).subscribe((res)=>{
+    this.likeService.addLike(payload).subscribe((res)=>{
 
     });
   }

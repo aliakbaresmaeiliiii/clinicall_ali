@@ -21,6 +21,6 @@ export interface DoctorsDTO {
 
 export interface likeDTO {
   user_id: number;
-  entity_id: number;
+  doctor_id: number;
   entity_type: string;
 }

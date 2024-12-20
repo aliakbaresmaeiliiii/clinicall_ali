@@ -147,16 +147,17 @@ export class FilterLayoutComponent implements OnInit {
     this.doctorService.countDoctorClick(doctor_id).subscribe(res => {});
   }
 
-  toggleLike(data: DoctorsDTO, i: any) {
-    debugger;
-    this.tabData[i].is_liked = !this.tabData[i].is_liked;
+  toggleLike(data: DoctorsDTO, doctor_id: any) {
+    this.tabData[doctor_id].is_liked = !this.tabData[doctor_id].is_liked;
     const user_id = this.userData;
+    
     const payload: likeDTO = {
-      entity_id: data.doctor_id,
+      doctor_id: data.doctor_id,
       entity_type: data.name,
       user_id: user_id,
+
     };
-    this.likeService.addLike(payload, i).subscribe(res => {});
+    this.likeService.addLike(payload).subscribe(res => {});
   }
 
   shareInfo(docotoInfo: DoctorsDTO) {

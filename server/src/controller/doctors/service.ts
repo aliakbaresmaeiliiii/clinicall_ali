@@ -8,7 +8,7 @@ import {
   getMostPopularDoctors,
   like,
   logDoctorClick,
-  updateDoctor
+  updateDoctor,
 } from "./db";
 
 export class DoctorsService {
