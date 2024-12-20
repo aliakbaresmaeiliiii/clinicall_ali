@@ -1,11 +1,5 @@
 import { coreSchema, query, RowDataPacket } from "../../bin/mysql";
-import { DoctorsDTO } from "../../models/doctors";
-
-// export async function getDoctors(): Promise<DoctorsDTO[]> {
-//   const doctors = await query<RowDataPacket[]>(`
-//       SELECT * FROM ${coreSchema}.doctors`);
-//   return doctors as DoctorsDTO[];
-// }
+import { DoctorsDTO, likeDTO } from "../../models/doctors";
 
 export async function getDoctors(): Promise<any> {
   const result = await query<RowDataPacket>(
@@ -54,7 +48,9 @@ export async function getMostPopularDoctors(): Promise<any> {
   return result;
 }
 
-export async function checkDoctorPhoneNumberExists(mobile: string) {
+export async function checkDoctorPhoneNumberExists(
+  mobile: string
+): Promise<any> {
   const result = await query<RowDataPacket>(
     `
       SELECT mobile FROM ${coreSchema}.doctors
@@ -67,7 +63,7 @@ export async function checkDoctorPhoneNumberExists(mobile: string) {
   return result;
 }
 
-export async function addDoctor(doctorInfo: DoctorsDTO) {
+export async function addDoctor(doctorInfo: DoctorsDTO): Promise<any> {
   try {
     const result = await query<RowDataPacket[]>(
       `INSERT INTO ${coreSchema}.doctors
@@ -134,7 +130,7 @@ export async function updateDoctor(doctorData: DoctorsDTO): Promise<any> {
   return result;
 }
 
-export async function getDoctorSpecializations(doctorId: number) {
+export async function getDoctorSpecializations(doctorId: number): Promise<any> {
   const result = await query<RowDataPacket>(
     `
     SELECT 
@@ -149,4 +145,75 @@ export async function getDoctorSpecializations(doctorId: number) {
     }
   );
   return result;
+}
+
+export async function logDoctorClick(doctor_id: number): Promise<any> {
+  const insertResult = await query<RowDataPacket>(
+    `
+    INSERT INTO ${coreSchema}.doctor_clicks (doctor_id)
+    VALUES (?)
+    `,
+    {
+      values: [doctor_id],
+    }
+  );
+
+  const updateResult = await query<RowDataPacket>(
+    `
+    UPDATE ${coreSchema}.doctors
+    SET click_count = click_count + 1
+    WHERE doctor_id = ?
+    `,
+    {
+      values: [doctor_id],
+    }
+  );
+
+  return { insertResult, updateResult };
+}
+
+// export async function like(data: likeDTO) {
+  
+//   const result = query<RowDataPacket>(
+//     `INSERT INTO ${coreSchema}.likes 
+//       (user_id,entity_id,entity_type)
+//       VALUES (?, ?, ?)
+//       `,
+//     { values: [data.user_id, data.entity_id, data.entity_type] }
+//   );
+//   return result;
+// }
+
+
+
+
+
+
+export async function like(data: likeDTO) {
+  const existingLike = await query<RowDataPacket>(
+    `SELECT * FROM ${coreSchema}.likes 
+     WHERE user_id = ? AND entity_id = ? AND entity_type = ?`,
+    {
+      values: [data.user_id, data.entity_id, data.entity_type],
+    }
+  );
+
+  if (existingLike.length > 0) {
+    const deleteLike = await query<RowDataPacket>(
+      `DELETE FROM ${coreSchema}.likes 
+       WHERE user_id = ? AND entity_id = ? AND entity_type = ?`,
+      {
+        values: [data.user_id, data.entity_id, data.entity_type],
+      }
+    );
+    return deleteLike; // return the result of deletion
+  } else {
+    // If the like doesn't exist, add it
+    const insertLike = await query<RowDataPacket>(
+      `INSERT INTO ${coreSchema}.likes (user_id, entity_id, entity_type) 
+       VALUES (?, ?, ?)`,
+      { values: [data.user_id, data.entity_id, data.entity_type] }
+    );
+    return insertLike; // return the result of insertion
+  }
 }

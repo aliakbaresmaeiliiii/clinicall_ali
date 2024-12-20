@@ -66,8 +66,6 @@ router.get(
   })
 );
 
-
-
 // **** updatePatient
 router.put(
   "/admin/updateDoctor",
@@ -87,6 +85,26 @@ router.get(
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const doctorId = +req.params.doctorId;
     const data = await DoctorsService.getDoctorSpecializations(doctorId);
+    const buildResponse = BuildResponse.get(data);
+    res.status(200).json(buildResponse);
+  })
+);
+
+router.post(
+  `/admin/countDoctorClick`,
+  asyncHandler((req: Request, res: Response) => {
+    const doctor_id = req.body.doctor_id;
+    const data = DoctorsService.logDoctorClick(doctor_id);
+    const buildResponse = BuildResponse.get(data);
+    res.status(200).json(buildResponse);
+  })
+);
+router.post(
+  `/admin/toggleLike/:doctor_id`,
+  asyncHandler(async (req: Request, res: Response) => {
+    const doctorId = +req.params.doctor_id;
+    const likes = req.body;
+    const data = await DoctorsService.toggleLike(likes); 
     const buildResponse = BuildResponse.get(data);
     res.status(200).json(buildResponse);
   })

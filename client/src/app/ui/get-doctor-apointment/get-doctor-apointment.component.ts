@@ -15,6 +15,9 @@ import { environment } from '../../environments/environment';
 import { DoctorsDTO } from '../../modules/doctors/models/doctors';
 import { DialogLocationDrComponent } from './dialog-location-dr/dialog-location-dr.component';
 import { ISpecialization } from './models/specializtion.model';
+import { CopyLinkDialogComponent } from '../../shared/components/copy-link-dialog/copy-link-dialog.component';
+import { LikesService } from '../shared-ui/services/likes.service';
+import { likeDTO } from '../shared-ui/models/like';
 
 @Component({
   selector: 'app-get-doctor-apointment',
@@ -25,6 +28,7 @@ import { ISpecialization } from './models/specializtion.model';
 export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   dialog = inject(MatDialog);
   route = inject(ActivatedRoute);
+  likeService = inject(LikesService);
   doctorService = inject(DoctorsService);
   transferState = inject(TransferState);
   specialization: ISpecialization[] = [];
@@ -35,11 +39,10 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   private destroy$ = new Subject<void>();
   briefText: string =
     'Has a specialized board for diseases of infants and children, treatment of digestive and allergic disorders...';
-
   isExpanded: boolean = false;
-
-  
-
+  addressBreifly: string = '';
+  isLiked = false;
+  userData: any;
   ngAfterViewInit() {
     this.fetchData(this.doctorId);
   }
@@ -51,6 +54,12 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
         const getID = params.get('id');
         this.doctorId = getID;
       });
+
+    const getUserData = localStorage.getItem('userData');
+    if (getUserData) {
+      this.userData = JSON.parse(getUserData).user_id;
+    }
+
   }
 
   fetchData(doctorId: number) {
@@ -74,6 +83,9 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
               return patient;
             });
             this.doctorInfo = newData;
+            const match = newData[0].address.match(/^Klinik Kesihatan\s*/);
+            this.addressBreifly = match ? match[0] : '';
+
             this.transferState.set(this.DATA_KEY, this.doctorInfo);
 
             this.coordinates = this.doctorInfo
@@ -134,11 +146,27 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
     });
   }
 
-
   formatRating(rating: number | string): string {
     return parseFloat(rating.toString()).toFixed(1);
   }
 
+  shareInfo(docotoInfo: DoctorsDTO) {
+    const doctorLink = `localhost:4200/doctor/${docotoInfo.name}/${docotoInfo.doctor_id}`; // Generate the doctor's link
+    this.dialog.open(CopyLinkDialogComponent, {
+      data: { link: doctorLink },
+    });
+  }
 
-  
+  toggleLike(info: DoctorsDTO,doctor_id:number) {
+    const user_id = this.userData;
+    const payload: likeDTO = {
+      entity_id: info.doctor_id,
+      entity_type: info.name,
+      user_id: user_id,
+    };
+    this.isLiked = !this.isLiked;
+    this.likeService.addLike(payload,doctor_id).subscribe((res)=>{
+
+    });
+  }
 }

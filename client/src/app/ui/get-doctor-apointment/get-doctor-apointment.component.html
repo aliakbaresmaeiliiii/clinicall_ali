@@ -71,7 +71,7 @@
             }
           </div>
           <span>
-            <strong>(4358 review)</strong>
+            <strong>({{ doctor.click_count }}&nbsp;review)</strong>
           </span>
         </div>
         <span class="flex flex-col items-center gap-1">
@@ -107,7 +107,7 @@
       <div
         class="flex justify-between items-center space-x-4 pt-4 border-t border-gray-200 dark:border-gray-700 p-4">
         <div class="flex items-center space-x-4">
-          <svg
+          <!-- <svg
             class="h-4 w-4 text-gray-500 dark:text-gray-200"
             fill="none"
             height="24"
@@ -123,10 +123,12 @@
             <path
               d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
             <path d="M8 16H3v5"></path>
-          </svg>
+          </svg> -->
           <svg
-            class="h-4 w-4 text-gray-500 dark:text-gray-200"
-            fill="none"
+            (click)="toggleLike(doctor, doctor.doctor_id)"
+            [class.text-red-500]="isLiked"
+            [class.text-gray-500]="!isLiked"
+            [attr.fill]="isLiked ? 'currentColor' : 'none'"
             height="24"
             stroke="currentColor"
             stroke-linecap="round"
@@ -139,6 +141,7 @@
               d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
           </svg>
           <svg
+            (click)="shareInfo(doctor)"
             class="h-4 w-4 text-gray-500 dark:text-gray-200"
             fill="none"
             height="24"
@@ -202,7 +205,7 @@
         <h2 class="pt-2 font-bold">Address Clinic Dr.{{ doctor.name }}:</h2>
         <div
           class="border-2 border-gray-400 rounded-lg border-opacity-30 p-4 mt-4 bg-slate-100">
-          <h2 class="pt-2 font-bold">Clinic Subang Jaya :</h2>
+          <h2 class="pt-2 font-bold">{{ addressBreifly }} :</h2>
           <div class="flex gap-1 pt-2">
             <i class="fa-solid fa-location-dot text-blue-600 text-lg"></i>
             <strong>Address: </strong>
@@ -211,14 +214,19 @@
             </p>
           </div>
 
-          <div class="flex items-center gap-1 pt-2">
-            Phone: {{ doctor.mobile }}
+          <div class="flex gap-1 pt-2">
+            <i class="fa-solid fa-phone text-blue-600 text-lg"></i>
+            <strong>Phone: </strong>
+            <p>
+              {{ doctor.mobile }}
+            </p>
           </div>
+
           <a
-            class="flex items-center gap-2 text-blue-600 pt-2"
+            class="flex items-center gap-2 text-blue-600 pt-2 cursor-pointer"
             (click)="showMap(doctor, '250ms', '150ms')">
-            Show on map
             <i class="fa-solid fa-map text-blue-600"></i>
+            <strong>Show on map</strong>
           </a>
         </div>
       </mat-card-content>
@@ -243,27 +251,27 @@
           class="flex items-center flex-row-reverse justify-center gap-3 mt-4">
           <div class="flex flex-col gap-1">
             <span>
-              <strong>From 44896 users</strong>
+              <strong>From {{ doctor.click_count }} users</strong>
             </span>
             <div class="flex pl-2">
               @for (star of [1,2,3,4,5]; track $index) {
-                <svg
-                  class="text-yellow-500"
-                  [class.fill-yellow]="$index < doctor.average_rating"
-                  [class.fill-gray]="$index >= doctor.average_rating"
-                  fill="none"
-                  height="15"
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                  width="15"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M17.919 14.32a1.1 1.1 0 0 0-.32.97l.89 4.92a1.08 1.08 0 0 1-.45 1.08 1.1 1.1 0 0 1-1.17.08l-4.43-2.31a1.1 1.1 0 0 0-.5-.13h-.27a.8.8 0 0 0-.27.09l-4.43 2.32c-.22.11-.467.15-.71.11a1.11 1.11 0 0 1-.89-1.27l.89-4.92a1.12 1.12 0 0 0-.32-.98l-3.61-3.5a1.08 1.08 0 0 1-.27-1.13c.135-.396.477-.685.89-.75l4.97-.72c.378-.04.71-.27.88-.61l2.19-4.49q.078-.152.2-.27l.09-.07a.7.7 0 0 1 .16-.13l.11-.04.17-.07h.42c.377.04.708.264.88.6l2.22 4.47c.16.327.47.554.83.61l4.97.72c.42.06.77.35.91.75.13.401.018.841-.29 1.13z"></path>
-                </svg>
-                }
+              <svg
+                class="text-yellow-500"
+                [class.fill-yellow]="$index < doctor.average_rating"
+                [class.fill-gray]="$index >= doctor.average_rating"
+                fill="none"
+                height="15"
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                width="15"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M17.919 14.32a1.1 1.1 0 0 0-.32.97l.89 4.92a1.08 1.08 0 0 1-.45 1.08 1.1 1.1 0 0 1-1.17.08l-4.43-2.31a1.1 1.1 0 0 0-.5-.13h-.27a.8.8 0 0 0-.27.09l-4.43 2.32c-.22.11-.467.15-.71.11a1.11 1.11 0 0 1-.89-1.27l.89-4.92a1.12 1.12 0 0 0-.32-.98l-3.61-3.5a1.08 1.08 0 0 1-.27-1.13c.135-.396.477-.685.89-.75l4.97-.72c.378-.04.71-.27.88-.61l2.19-4.49q.078-.152.2-.27l.09-.07a.7.7 0 0 1 .16-.13l.11-.04.17-.07h.42c.377.04.708.264.88.6l2.22 4.47c.16.327.47.554.83.61l4.97.72c.42.06.77.35.91.75.13.401.018.841-.29 1.13z"></path>
+              </svg>
+              }
             </div>
           </div>
           <span class="text-3xl">
@@ -380,7 +388,7 @@
     <mat-card appearance="outlined" class="w-full">
       <mat-card-content>
         <h2 class="font-bold !text-sm">
-          Frequently Asked Questions about Dr. Behrooz Mogaddadi:
+          Frequently Asked Questions about Dr.{{ doctor.name }}
         </h2>
 
         <div class="dropdown w-full mt-4">
@@ -394,18 +402,13 @@
             aria-label="dropdown scrollbar"
             for="state-dropdown"
             class="trigger"
-            >How can we book an appointment with Dr.Aliakbar Esmaeili</label
+            >How can we book an appointment with Dr.{{ doctor.name }}</label
           >
 
           <ul class="list webkit-scrollbar" role="list" dir="auto">
             <li class="listitem" role="listitem">
               <article class="article">
-                At your doctor, you can make an appointment with Dr. Behrouz
-                Moqdadi as soon as possible. It is possible to see Dr. Behrouz
-                Moqdadi's free appointments, office address, office contact
-                number and phone number, office attendance schedule, doctor's
-                photos, working hours and other information related to medical
-                services and appointment booking in his profile in Doctorto.
+                {{ doctor.description }}
               </article>
             </li>
           </ul>
@@ -416,51 +419,51 @@
     <mat-card appearance="outlined" class="w-full">
       <mat-card-content>
         <h2 class="font-bold !text-base">
-          Appointment guide from Dr. Behrooz Mogaddadi:
+          Appointment guide from Dr.{{ doctor.name }}
         </h2>
         <article class="pt-7">
           <h2 class="font-bold !text-sm !text-gray-500">
-            Biography and Introduction of Dr. Behrooz Mogaddadi
+            Biography and Introduction of Dr.{{ doctor.name }}
           </h2>
           <p class="text-xs text-gray-500">
-            Welcome to the online appointment booking platform for Dr. Behrooz
-            Mogaddadi (dr-behrooz-meghdadi). In this section, we will provide a
-            detailed biography of Dr. Behrooz Mogaddadi, including information
-            about his specialties, cities where he practices, the diseases and
-            symptoms he treats, as well as details about the medical centers he
-            operates in (clinic address, phone number). Let me know if you'd
-            like me to add more details or tailor the text further!
+            Welcome to the online appointment booking platform for Dr.{{
+              doctor.name
+            }}
+            In this section, we will provide a detailed biography of Dr.
+            {{ doctor.name }}, including information about his specialties,
+            cities where he practices, the diseases and symptoms he treats, as
+            well as details about the medical centers he operates in (clinic
+            address, phone number). Let me know if you'd like me to add more
+            details or tailor the text further!
           </p>
         </article>
         <article class="pt-7">
           <h2 class="font-bold !text-sm !text-gray-500">
-            What are Dr. Behrooz Mogaddadi's areas of expertise and the cities
+            What are Dr. {{ doctor.name }}'s areas of expertise and the cities
             where he practices?
           </h2>
           <p class="text-xs text-gray-500">
-            Dr. Behrooz Mogaddadi specializes in 1 field and practices in 1
+            Dr. {{ doctor.name }} specializes in 1 field and practices in 1
             city: Pediatrician in Tehran
           </p>
         </article>
         <article class="pt-7">
           <h2 class="font-bold !text-sm !text-gray-500">
-            For which diseases and symptoms can one visit Dr. Behrooz Mogaddadi?
+            For which diseases and symptoms can one visit Dr. {{ doctor.name }}?
           </h2>
 
           <p class="text-xs text-gray-500">
-            Dr. Behrooz Mogaddadi specializes in 1 field and practices in 1
+            Dr. {{ doctor.name }} specializes in 1 field and practices in 1
             city: Pediatrician in Tehran
           </p>
         </article>
         <article class="pt-7">
           <h2 class="font-bold !text-sm !text-gray-500">
-            Dr. Behrooz Mogaddadi specializes in diagnosing and treating the
+            Dr. {{ doctor.name }} specializes in diagnosing and treating the
             following symptoms and diseases:"
           </h2>
           <ol class="text-xs">
-            <li>Abdominal pain in children</li>
-            <li>Growth delay</li>
-            <li>Evaluation / Treatment of congenital disorders</li>
+            <li>{{ doctor.specialization }}</li>
           </ol>
         </article>
 
@@ -468,45 +471,29 @@
           <mat-tab label="Specialist" class="!text-sm">
             <div class="flex items-center justify-center gap-3 p-2">
               <span class="bg-slate-300 rounded-2xl text-xs p-1"
-                >Assessment/treatment
+                >{{ doctor.specialization }}
               </span>
-              <span class="bg-slate-300 rounded-2xl text-xs p-1"
-                >Growth retardation</span
-              >
-              <span class="bg-slate-300 rounded-2xl text-xs p-1">
-                Abdominal pain in children</span
-              >
             </div>
           </mat-tab>
           <mat-tab label="Specialist city" class="!text-sm">
             <div class="flex items-center justify-center gap-3 p-2">
-              <span class="bg-slate-300 rounded-2xl text-xs p-1"
-                >Growth retardation</span
-              >
-              <span class="bg-slate-300 rounded-2xl text-xs p-1">
-                Abdominal pain in children</span
-              >
+              <span class="bg-slate-300 rounded-2xl text-xs p-1">{{
+                doctor.specialization
+              }}</span>
             </div></mat-tab
           >
           <mat-tab label="Specialist neighborhood" class="!text-sm">
             <div class="flex items-center justify-center gap-3 p-2">
               <span class="bg-slate-300 rounded-2xl text-xs p-1"
-                >Assessment/treatment
+                >{{ doctor.specialization }}
               </span>
-
-              <span class="bg-slate-300 rounded-2xl text-xs p-1">
-                Abdominal pain in children</span
-              >
             </div>
           </mat-tab>
           <mat-tab label="Diseases" class="!text-sm">
             <div class="flex items-center justify-center gap-3 p-2">
               <span class="bg-slate-300 rounded-2xl text-xs p-1"
-                >Assessment/treatment
+                >{{ doctor.specialization }}
               </span>
-              <span class="bg-slate-300 rounded-2xl text-xs p-1"
-                >Growth retardation</span
-              >
             </div>
           </mat-tab>
         </mat-tab-group>
@@ -521,7 +508,7 @@
           <img
             src="../../../assets/images/ui/svg/online-appointment.svg"
             alt="" />
-          Online appointment of Dr. Behrouz Moqdadi's office
+          Online appointment of Dr.{{ doctor.name }} office
         </h2>
         <div
           class="border-2 border-gray-400 rounded-lg border-opacity-30 p-4 mt-4 bg-slate-100">
@@ -575,7 +562,7 @@
             Phone consultation appointment
           </span>
           <div class="text-sm text-gray-600 pt-2">
-            <p>Conversation 10 minuts</p>
+            <p>Conversation 10 minutes</p>
             <p>First available appointment: Tomorrow | 16:00</p>
           </div>
 
@@ -641,10 +628,10 @@
 
               <div>
                 <div class="text-lg font-bold dark:text-white">
-                  Dr.Aliakbar Esmaeli
+                  Dr.{{ doctor.name }}
                 </div>
                 <div class="text-sm text-gray-500 dark:text-gray-200">
-                  Dentris
+                  {{ doctor.specialization }}
                 </div>
               </div>
             </div>
@@ -653,7 +640,7 @@
           <div class="flex items-center gap-4 text-xs text-gray-200 pt-4 pl-6">
             <span class="flex items-center gap-1">
               <p>
-                <strong>(4358 review)</strong>
+                <strong>(review {{ doctor.click_count }})</strong>
               </p>
               @for (star of [1,2,3,4,5]; track $index) {
               <svg
@@ -708,7 +695,7 @@
             <div class="flex gap-2 pt-2">
               <i
                 class="fa-solid fa-location-dot text-blue-600 text-lg pt-1"></i>
-              <p class="text-gray-100">Subang jaya</p>
+              <p class="text-gray-100">{{ addressBreifly }}</p>
             </div>
           </div>
           <div class="flex justify-between items-center mx-4 mb-2">
@@ -732,7 +719,7 @@
           <div
             class="flex justify-between items-center space-x-4 pt-4 border-t border-gray-200 dark:border-gray-700 p-4">
             <div class="flex items-center space-x-4">
-              <svg
+              <!-- <svg
                 class="h-4 w-4 text-gray-500 dark:text-gray-200"
                 fill="none"
                 height="24"
@@ -749,10 +736,12 @@
                 <path
                   d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
                 <path d="M8 16H3v5"></path>
-              </svg>
+              </svg> -->
               <svg
-                class="h-4 w-4 text-gray-500 dark:text-gray-200"
-                fill="none"
+                (click)="toggleLike(doctor, doctor.doctor_id)"
+                [class.text-red-500]="isLiked"
+                [class.text-gray-500]="!isLiked"
+                [attr.fill]="isLiked ? 'currentColor' : 'none'"
                 height="24"
                 stroke="currentColor"
                 stroke-linecap="round"
@@ -765,6 +754,7 @@
                   d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"></path>
               </svg>
               <svg
+                (click)="shareInfo(doctor)"
                 class="h-4 w-4 text-gray-500 dark:text-gray-200"
                 fill="none"
                 height="24"

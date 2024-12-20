@@ -10,6 +10,10 @@ import { DoctorsDTO } from '../../modules/doctors/models/doctors';
 import { DoctorsService } from '../../modules/doctors/doctors.service';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
+import { likeDTO } from '../shared-ui/models/like';
+import { LikesService } from '../shared-ui/services/likes.service';
+import { MatDialog } from '@angular/material/dialog';
+import { CopyLinkDialogComponent } from '../../shared/components/copy-link-dialog/copy-link-dialog.component';
 
 @Component({
   selector: 'app-filter-layout',
@@ -22,6 +26,11 @@ export class FilterLayoutComponent implements OnInit {
   mostPopular: DoctorsDTO[] = [];
   doctorService = inject(DoctorsService);
   router = inject(Router);
+  isLiked = false;
+  userData: any;
+  likeService = inject(LikesService);
+  dialog = inject(MatDialog);
+
   get floor() {
     return Math.floor;
   }
@@ -58,6 +67,11 @@ export class FilterLayoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchDefaultData();
+
+    const getUserData = localStorage.getItem('userData');
+    if (getUserData) {
+      this.userData = JSON.parse(getUserData).user_id;
+    }
   }
   setDataInTabs() {
     this.tabs = [
@@ -106,6 +120,7 @@ export class FilterLayoutComponent implements OnInit {
         return doctor;
       });
       this.tabData = newData;
+      debugger;
     });
   }
 
@@ -124,6 +139,30 @@ export class FilterLayoutComponent implements OnInit {
   getAppointment(data: any) {
     let doctorName = data.name.replace(/\s+/g, '-');
     const doctorId = data.doctor_id;
+    this.countDoctorClick(doctorId);
     this.router.navigate([`/doctor/${doctorName}/${doctorId}`]);
+  }
+
+  countDoctorClick(doctor_id: number) {
+    this.doctorService.countDoctorClick(doctor_id).subscribe(res => {});
+  }
+
+  toggleLike(data: DoctorsDTO, i: any) {
+    debugger;
+    this.tabData[i].is_liked = !this.tabData[i].is_liked;
+    const user_id = this.userData;
+    const payload: likeDTO = {
+      entity_id: data.doctor_id,
+      entity_type: data.name,
+      user_id: user_id,
+    };
+    this.likeService.addLike(payload, i).subscribe(res => {});
+  }
+
+  shareInfo(docotoInfo: DoctorsDTO) {
+    const doctorLink = `localhost:4200/doctor/${docotoInfo.name}/${docotoInfo.doctor_id}`; // Generate the doctor's link
+    this.dialog.open(CopyLinkDialogComponent, {
+      data: { link: doctorLink },
+    });
   }
 }

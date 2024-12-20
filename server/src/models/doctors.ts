@@ -16,4 +16,11 @@ export interface DoctorsDTO {
   lng: number;
   medical_code: string;
   description: string;
+  click_count: number;
+}
+
+export interface likeDTO {
+  user_id: number;
+  entity_id: number;
+  entity_type: string;
 }

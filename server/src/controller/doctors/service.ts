@@ -1,4 +1,4 @@
-import { DoctorsDTO } from "../../models/doctors";
+import { DoctorsDTO, likeDTO } from "../../models/doctors";
 import {
   addDoctor,
   checkDoctorPhoneNumberExists,
@@ -6,7 +6,9 @@ import {
   getDoctors,
   getDoctorSpecializations,
   getMostPopularDoctors,
-  updateDoctor,
+  like,
+  logDoctorClick,
+  updateDoctor
 } from "./db";
 
 export class DoctorsService {
@@ -65,13 +67,29 @@ export class DoctorsService {
     }
   }
 
-  public static async getDoctorSpecializations (doctorId:number){
-    const data = await getDoctorSpecializations(doctorId)
+  public static async getDoctorSpecializations(doctorId: number) {
+    const data = await getDoctorSpecializations(doctorId);
     if (data) {
       return { message: "ok", data };
     } else {
       return null;
     }
+  }
 
+  public static async logDoctorClick(doctor_id: number) {
+    const data = await logDoctorClick(doctor_id);
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
+  }
+  public static async toggleLike(likeInfo: likeDTO) {
+    const data = await like(likeInfo);
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
   }
 }

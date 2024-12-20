@@ -1,0 +1,11 @@
+<mat-toolbar>
+  <h2>Copy the Doctor <link rel="apple-touch-icon" href="favicon.png">:</h2>
+</mat-toolbar>
+<div class="container">
+  <span class="prefix">http://</span>
+  <input class="myinput-link" #linkInput [value]="data.link" readonly />
+  <span class="link-icon" (click)="copyLink(linkInput)">
+    🔗
+    <span class="tooltip">COPY</span>
+  </span>
+</div>
