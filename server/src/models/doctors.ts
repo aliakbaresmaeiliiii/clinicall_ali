@@ -24,3 +24,11 @@ export interface likeDTO {
   doctor_id: number;
   entity_type: string;
 }
+
+export interface CommentsDTO {
+  id: number;
+  user_id: number;
+  doctor_id: number;
+  comment_text: string;
+  rating: any;
+}

@@ -1,5 +1,5 @@
 import { coreSchema, query, RowDataPacket } from "../../bin/mysql";
-import { DoctorsDTO, likeDTO } from "../../models/doctors";
+import { CommentsDTO, DoctorsDTO, likeDTO } from "../../models/doctors";
 
 export async function getDoctors(): Promise<any> {
   const result = await query<RowDataPacket>(
@@ -64,35 +64,29 @@ export async function checkDoctorPhoneNumberExists(
 }
 
 export async function addDoctor(doctorInfo: DoctorsDTO): Promise<any> {
-  try {
-    const result = await query<RowDataPacket[]>(
-      `INSERT INTO ${coreSchema}.doctors
+  const result = await query<RowDataPacket[]>(
+    `INSERT INTO ${coreSchema}.doctors
         (name,gender,mobile,degree,dateOfBirth,department,
          age,email,address,profileImage,specialization,joingin_date)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      {
-        values: [
-          doctorInfo.name,
-          doctorInfo.gender,
-          doctorInfo.mobile,
-          doctorInfo.degree,
-          doctorInfo.dateOfBirth,
-          doctorInfo.department,
-          doctorInfo.age,
-          doctorInfo.email,
-          doctorInfo.address,
-          doctorInfo.profileImage,
-          doctorInfo.specialization,
-          new Date(),
-        ],
-      }
-    );
-    return result;
-  } catch (error) {
-    console.log();
-    console.error("Error inserting doctor data:", error);
-    throw error;
-  }
+    {
+      values: [
+        doctorInfo.name,
+        doctorInfo.gender,
+        doctorInfo.mobile,
+        doctorInfo.degree,
+        doctorInfo.dateOfBirth,
+        doctorInfo.department,
+        doctorInfo.age,
+        doctorInfo.email,
+        doctorInfo.address,
+        doctorInfo.profileImage,
+        doctorInfo.specialization,
+        new Date(),
+      ],
+    }
+  );
+  return result;
 }
 
 export async function doctorDetail(doctorId: number): Promise<any> {
@@ -211,4 +205,17 @@ export async function like(data: likeDTO) {
     );
     return { insertLike, changeStatusLike }; // return the result of insertion
   }
+}
+
+export async function addComment(data: CommentsDTO) {
+  const result = await query<RowDataPacket>(
+    `INSERT INTO ${coreSchema}.comments
+     (user_id,doctor_id,comment_text,rating)
+         VALUES (?, ?, ?, ?),
+    `,
+    {
+      values: [data.user_id, data.doctor_id, data.comment_text, data.rating],
+    }
+  );
+  return result;
 }

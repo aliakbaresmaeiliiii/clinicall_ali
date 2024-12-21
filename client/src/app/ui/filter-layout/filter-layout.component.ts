@@ -120,7 +120,6 @@ export class FilterLayoutComponent implements OnInit {
         return doctor;
       });
       this.tabData = newData;
-      debugger;
     });
   }
 
@@ -150,7 +149,7 @@ export class FilterLayoutComponent implements OnInit {
   toggleLike(data: DoctorsDTO, doctor_id: any) {
     this.tabData[doctor_id].is_liked = !this.tabData[doctor_id].is_liked;
     const user_id = this.userData;
-    
+  
     const payload: likeDTO = {
       doctor_id: data.doctor_id,
       entity_type: data.name,
