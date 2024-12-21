@@ -31,8 +31,9 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   likeService = inject(LikesService);
   doctorService = inject(DoctorsService);
   transferState = inject(TransferState);
-  specialization: ISpecialization[] = [];
   DATA_KEY = makeStateKey<any>('doctorInfo');
+
+  specialization: ISpecialization[] = [];
   doctorInfo: DoctorsDTO[] = [];
   coordinates: { lat: number; lng: number }[] = [];
   doctorId!: number;
@@ -43,6 +44,8 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   addressBreifly: string = '';
   isLiked = false;
   userData: any;
+  isShowComment = false;
+  commentValue = '';
   ngAfterViewInit() {
     this.fetchData(this.doctorId);
   }
@@ -59,7 +62,6 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
     if (getUserData) {
       this.userData = JSON.parse(getUserData).user_id;
     }
-
   }
 
   fetchData(doctorId: number) {
@@ -121,7 +123,13 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
     this.isExpanded = !this.isExpanded;
   }
 
-  comment() {}
+  comment(doctor: any) {
+    this.isShowComment = !this.isShowComment;
+    debugger;
+    if (this.commentValue) {
+      this.commentValue = '';
+    }
+  }
 
   getConsultation() {
     this.dialog.open(DilogDotorAppointmentComponent);
@@ -157,16 +165,15 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
     });
   }
 
-  toggleLike(info: DoctorsDTO,doctor_id:number) {
+  toggleLike(info: DoctorsDTO, doctor_id: number) {
+    debugger;
+    this.doctorInfo[doctor_id].is_liked = !this.doctorInfo[doctor_id].is_liked;
     const user_id = this.userData;
     const payload: likeDTO = {
       doctor_id: info.doctor_id,
       entity_type: info.name,
       user_id: user_id,
     };
-    this.isLiked = !this.isLiked;
-    this.likeService.addLike(payload).subscribe((res)=>{
-
-    });
+    this.likeService.addLike(payload).subscribe(res => {});
   }
 }

@@ -17,7 +17,7 @@ import { CustomTitleComponent } from './components/custom-title/custom-title.com
     PlaceholderComponent,
     SwiperSliderComponent,
     SwiperSliderCardComponent,
-    CustomTitleComponent
+    CustomTitleComponent,
   ],
   imports: [CommonModule, MatCardModule,
     ButtonComponent

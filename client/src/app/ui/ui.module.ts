@@ -64,6 +64,7 @@ import { GetDoctorApointmentComponent } from './get-doctor-apointment/get-doctor
 import { MatTabsModule } from '@angular/material/tabs';
 import { DilogDotorAppointmentComponent } from './get-doctor-apointment/dilog-dotor-appointment/dilog-dotor-appointment.component';
 import { DialogLocationDrComponent } from './get-doctor-apointment/dialog-location-dr/dialog-location-dr.component';
+import { SuggestionReplacedDoctorComponent } from './suggestion-replaced-doctor/suggestion-replaced-doctor.component';
 
 const routes: Routes = [
   {
@@ -133,7 +134,8 @@ const routes: Routes = [
     FilterLayoutComponent,
     GetDoctorApointmentComponent,
     DilogDotorAppointmentComponent,
-    DialogLocationDrComponent
+    DialogLocationDrComponent,
+    SuggestionReplacedDoctorComponent
   ],
   imports: [
     CommonModule,
