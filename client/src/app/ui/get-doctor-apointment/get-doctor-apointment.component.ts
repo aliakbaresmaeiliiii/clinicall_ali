@@ -18,6 +18,9 @@ import { ISpecialization } from './models/specializtion.model';
 import { CopyLinkDialogComponent } from '../../shared/components/copy-link-dialog/copy-link-dialog.component';
 import { LikesService } from '../shared-ui/services/likes.service';
 import { likeDTO } from '../shared-ui/models/like';
+import { FormControl, FormGroup } from '@angular/forms';
+import { UserService } from '../../core/services/user.service';
+import { UserInfo } from '../../shared/models/userInfo';
 
 @Component({
   selector: 'app-get-doctor-apointment',
@@ -30,8 +33,10 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   route = inject(ActivatedRoute);
   likeService = inject(LikesService);
   doctorService = inject(DoctorsService);
+  userService = inject(UserService);
   transferState = inject(TransferState);
   DATA_KEY = makeStateKey<any>('doctorInfo');
+  userInfo: UserInfo[] = [];
 
   specialization: ISpecialization[] = [];
   doctorInfo: DoctorsDTO[] = [];
@@ -45,9 +50,16 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   isLiked = false;
   userData: any;
   isShowComment = false;
-  commentValue = '';
+  commentForm!: FormGroup;
+
   ngAfterViewInit() {
     this.fetchData(this.doctorId);
+  }
+
+  createForm() {
+    this.commentForm = new FormGroup({
+      comment: new FormControl(''),
+    });
   }
 
   ngOnInit(): void {
@@ -60,8 +72,11 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
 
     const getUserData = localStorage.getItem('userData');
     if (getUserData) {
-      this.userData = JSON.parse(getUserData).user_id;
+      this.userData = JSON.parse(getUserData);
     }
+
+    this.createForm();
+    this.getComment();
   }
 
   fetchData(doctorId: number) {
@@ -123,12 +138,23 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
     this.isExpanded = !this.isExpanded;
   }
 
-  comment(doctor: any) {
+  comment(doctor_id: number) {
     this.isShowComment = !this.isShowComment;
-    debugger;
-    if (this.commentValue) {
-      this.commentValue = '';
-    }
+    const comment = this.commentForm.value.comment;
+    const payload: any = {
+      user_id: this.userData.user_id,
+      doctor_id: doctor_id,
+      comment_text: comment,
+      rating: 5,
+    };
+    this.doctorService.addComment(payload).subscribe((res: any) => {});
+  }
+
+  getComment() {
+    this.userService.getUserInfo(this.userData.email).subscribe((res: any) => {
+      this.userInfo = res.data;
+      console.log('aaaaaaaaaaaaa', this.userInfo);
+    });
   }
 
   getConsultation() {
@@ -168,7 +194,7 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   toggleLike(info: DoctorsDTO, doctor_id: number) {
     debugger;
     this.doctorInfo[doctor_id].is_liked = !this.doctorInfo[doctor_id].is_liked;
-    const user_id = this.userData;
+    const user_id = this.userData.user_id;
     const payload: likeDTO = {
       doctor_id: info.doctor_id,
       entity_type: info.name,

@@ -1,12 +1,10 @@
 import { Request, Response } from "express";
-import {asyncHandler} from "../../helper/async-handler";
+import { asyncHandler } from "../../helper/async-handler";
 import { getUniqueCodev3 } from "../../helper/common";
-import {BuildResponse} from "../../modules/response/app_response";
-import {router} from "../../routes/public";
-import {UserService} from "./sercvice";
+import { BuildResponse } from "../../modules/response/app_response";
+import { router } from "../../routes/public";
+import { UserService } from "./sercvice";
 import multer from "multer";
-
-
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -34,7 +32,7 @@ router.get(
   async function getAllUserData(req: Request, res: Response) {
     const data = req.params.email;
     const userData = await UserService.getUserInfo(data);
-    const buildResponse = await BuildResponse.get(userData);
+    const buildResponse = BuildResponse.get(userData);
     return res.json(buildResponse);
   }
 );

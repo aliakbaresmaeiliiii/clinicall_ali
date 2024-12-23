@@ -3,6 +3,7 @@ import { inject, Injectable, TransferState } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { DoctorsDTO } from './models/doctors';
+import { UserInfo } from '../../shared/models/userInfo';
 
 @Injectable({
   providedIn: 'root',
@@ -61,12 +62,19 @@ export class DoctorsService {
     );
   }
 
-
-
   countDoctorClick(doctor_id: number): Observable<number> {
-    return this.#http.post<number>(
-      `${this.config}admin/countDoctorClick`,
-      { doctor_id } 
+    return this.#http.post<number>(`${this.config}admin/countDoctorClick`, {
+      doctor_id,
+    });
+  }
+
+  addComment( comment: UserInfo): Observable<string> {
+    debugger;
+    return this.#http.post<string>(
+      `${this.config}admin/addComment`,
+      { comment }
     );
   }
+
+
 }

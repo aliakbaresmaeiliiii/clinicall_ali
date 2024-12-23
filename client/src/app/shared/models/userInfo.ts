@@ -1,3 +1,4 @@
+
 export interface UserInfo {
   user_id: number;
   patientName: string;
@@ -19,6 +20,8 @@ export interface UserInfo {
   city?: string;
   street?: string;
   suite?: string;
+  comments: CommentsDTO[];
+
 }
 
 export interface UserRole {
@@ -28,3 +31,14 @@ export interface UserRole {
   assignmentDate: Date;
   updateDate: Date;
 }
+
+
+
+
+export interface CommentsDTO {
+  user_id: number;
+  doctor_id: number;
+  text: string;
+  rating: any;
+}
+

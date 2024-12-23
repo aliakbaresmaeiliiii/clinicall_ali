@@ -4,7 +4,6 @@ import { router } from "../../routes/public";
 import { DoctorsService } from "./service";
 import { Request, Response } from "express";
 
-// **** GetAll
 router.get(
   "/admin/doctors",
   asyncHandler(async (req: any, res: any) => {
@@ -27,7 +26,6 @@ router.get(
   })
 );
 
-// **** checkPhoneNumberExists
 router.get(
   "/admin/check-phone/:phone",
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
@@ -42,7 +40,6 @@ router.get(
   })
 );
 
-// **** add-doctor
 router.post(
   `/admin/add-doctor`,
   asyncHandler(async function addDocror(req: Request, res: Response) {
@@ -66,7 +63,6 @@ router.get(
   })
 );
 
-// **** updatePatient
 router.put(
   "/admin/updateDoctor",
   asyncHandler(async function updateDocror(req: Request, res: Response) {
@@ -103,8 +99,30 @@ router.post(
   `/admin/toggleLike`,
   asyncHandler(async (req: Request, res: Response) => {
     const likes = req.body;
-    const data = await DoctorsService.toggleLike(likes); 
+    const data = await DoctorsService.toggleLike(likes);
     const buildResponse = BuildResponse.get(data);
     res.status(200).json(buildResponse);
   })
 );
+
+router.post(
+  `/admin/addComment`,
+  asyncHandler(async (req: Request, res: Response) => {
+    const comment = req.body.comment;
+    const data = await DoctorsService.addComment(comment);
+    const buildResponse = BuildResponse.get(data);
+    res.status(200).json(buildResponse);
+  })
+);
+
+// router.get(
+//   `/admin/getComment/:doctor_id`,
+//   asyncHandler(async (req: Request, res: Response) => {
+//     const doctor_id = +req.params.doctor_id;
+//     const data = await DoctorsService.getComments(doctor_id);
+//     const buildResponse = BuildResponse.get(data);
+//     res.status(200).json(buildResponse);
+//   })
+// );
+
+
