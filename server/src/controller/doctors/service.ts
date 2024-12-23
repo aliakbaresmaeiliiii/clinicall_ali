@@ -1,5 +1,6 @@
-import { DoctorsDTO, likeDTO } from "../../models/doctors";
+import { CommentsDTO, DoctorsDTO, likeDTO } from "../../models/doctors";
 import {
+  addComment,
   addDoctor,
   checkDoctorPhoneNumberExists,
   doctorDetail,
@@ -20,7 +21,6 @@ export class DoctorsService {
       return null;
     }
   }
-
   public static async getMostPopularDoctors() {
     const data = await getMostPopularDoctors();
     if (data) {
@@ -29,7 +29,6 @@ export class DoctorsService {
       return null;
     }
   }
-
   public static async checkDoctorPhoneNumberExists(
     mobile: string
   ): Promise<boolean> {
@@ -40,7 +39,6 @@ export class DoctorsService {
       return false;
     }
   }
-
   public static async registerDoctor(formData: DoctorsDTO) {
     const data = await addDoctor(formData);
     if (data) {
@@ -57,7 +55,6 @@ export class DoctorsService {
       return null;
     }
   }
-
   public static async updateDoctor(formData: DoctorsDTO) {
     const data = await updateDoctor(formData);
     if (data) {
@@ -66,7 +63,6 @@ export class DoctorsService {
       return null;
     }
   }
-
   public static async getDoctorSpecializations(doctorId: number) {
     const data = await getDoctorSpecializations(doctorId);
     if (data) {
@@ -75,7 +71,6 @@ export class DoctorsService {
       return null;
     }
   }
-
   public static async logDoctorClick(doctor_id: number) {
     const data = await logDoctorClick(doctor_id);
     if (data) {
@@ -92,4 +87,20 @@ export class DoctorsService {
       return null;
     }
   }
+  public static async addComment( comment: CommentsDTO) {
+    const data = await addComment(comment);
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
+  }
+  // public static async getComments( doctor_id:number) {
+  //   const data = await getComments(doctor_id);
+  //   if (data) {
+  //     return { message: "ok", data };
+  //   } else {
+  //     return null;
+  //   }
+  // }
 }

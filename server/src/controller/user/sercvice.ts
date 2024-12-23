@@ -1,3 +1,12 @@
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import ms from "ms";
+import { getUniqueCodev2, getUniqueCodev3 } from "../../helper/common";
+import SendMail from "../../helper/send_email";
+import { useValidation } from "../../helper/use_validation";
+import { ResponseError } from "../../modules/error/response_error";
+import { BuildResponse } from "../../modules/response/app_response";
+import { ConfirmEmail, User } from "../../types/user";
 import {
   changePassword,
   checkNickName,
@@ -8,17 +17,8 @@ import {
   getUserInfo,
   updateProfileUser,
   updateUserVerifyCode,
-} from "../../bin/db";
-import {useValidation} from "../../helper/use_validation";
-import {BuildResponse} from "../../modules/response/app_response";
-import { ConfirmEmail, User } from "../../types/user";
-import { getUniqueCodev2, getUniqueCodev3 } from "../../helper/common";
-import jwt from "jsonwebtoken";
-import ms from "ms";
-import {ResponseError} from "../../modules/error/response_error";
-import bcrypt from "bcrypt";
+} from "./db";
 import { checkEmailSchema, confirmEmailSchema } from "./schema";
-import SendMail from "../../helper/send_email";
 
 const { JWT_SECRET_ACCESS_TOKEN, JWT_SECRET_REFRESH_TOKEN }: any = process.env;
 const JWT_ACCESS_TOKEN_EXPIRED = process.env.JWT_ACCESS_TOKEN_EXPIRED || "1d"; // 1 Days
@@ -26,8 +26,14 @@ const JWT_ACCESS_TOKEN_EXPIRED = process.env.JWT_ACCESS_TOKEN_EXPIRED || "1d"; /
 const expiresIn = ms(JWT_ACCESS_TOKEN_EXPIRED) / 1000;
 
 export class UserService {
+
   public static async getUserInfo(email: string) {
-    return await getUserInfo(email);
+    const data = await getUserInfo(email);
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
   }
   /**
    * @param email
@@ -72,7 +78,7 @@ export class UserService {
 
     if (getComparePassword) {
       const getNewPassword = await changePassword(formData);
-      return getNewPassword
+      return getNewPassword;
     }
   }
   /**
@@ -136,4 +142,3 @@ export class UserService {
     return { status: 5, message: "code has been send successfully !" };
   }
 }
-

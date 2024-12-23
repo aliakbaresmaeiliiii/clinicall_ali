@@ -1,3 +1,5 @@
+import { CommentsDTO } from "../models/doctors";
+
 export interface User {
   user_id: string;
   userName?: string;
@@ -5,8 +7,8 @@ export interface User {
   gender?: string;
   email: string;
   phoneNumber?: string;
-  newPassword:string;
-  confirmPassword:string;
+  newPassword: string;
+  confirmPassword: string;
   dateOfBirth?: string;
   password?: string | any;
   emailConfirmed?: number;
@@ -23,6 +25,7 @@ export interface User {
   role_name: string;
   permission_name: string;
   oldPassword: string;
+  comment: CommentsDTO;
 }
 
 export interface CreateUser {

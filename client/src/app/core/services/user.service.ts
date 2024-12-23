@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { UserInfo } from '../../shared/models/userInfo';
 import { CurrentUser, User } from '../auth/models/user';
+import { UserInfo } from '../../shared/models/userInfo';
 
 @Injectable({
   providedIn: 'root',
@@ -18,8 +18,8 @@ export class UserService {
     `https://jsonplaceholder.typicode.com/users`
   );
 
-  getUserInfo(email: string): Observable<User[]> {
-    return this.#http.get<User[]>(`${this.config}getUserInfo/${email}`);
+  getUserInfo(email: string): Observable<UserInfo> {
+    return this.#http.get<UserInfo>(`${this.config}getUserInfo/${email}`);
   }
 
   checkRoles(roles: string[]) {

@@ -207,15 +207,30 @@ export async function like(data: likeDTO) {
   }
 }
 
-export async function addComment(data: CommentsDTO) {
+export async function addComment(comment: CommentsDTO) {
   const result = await query<RowDataPacket>(
     `INSERT INTO ${coreSchema}.comments
-     (user_id,doctor_id,comment_text,rating)
-         VALUES (?, ?, ?, ?),
-    `,
+     (user_id, doctor_id, comment_text, rating)
+         VALUES (?, ?, ?, ?)`,
     {
-      values: [data.user_id, data.doctor_id, data.comment_text, data.rating],
+      values: [
+        comment.user_id,
+        comment.doctor_id,
+        comment.comment_text,
+        comment.rating,
+      ],
     }
   );
   return result;
 }
+
+// export async function getComments(doctor_id: number) {
+//   const result = await query<RowDataPacket>(
+//     `SELECT * FROM ${coreSchema}.comments
+//     WHERE doctor_id =?`,
+//     {
+//       values: [doctor_id],
+//     }
+//   );
+//   return result;
+// }
