@@ -224,13 +224,24 @@ export async function addComment(comment: CommentsDTO) {
   return result;
 }
 
-// export async function getComments(doctor_id: number) {
-//   const result = await query<RowDataPacket>(
-//     `SELECT * FROM ${coreSchema}.comments
-//     WHERE doctor_id =?`,
-//     {
-//       values: [doctor_id],
-//     }
-//   );
-//   return result;
-// }
+export async function getSpecialties() {
+  const result = query<RowDataPacket[]>(
+    `SELECT * FROM ${coreSchema}.specialties`
+  );
+  return result;
+}
+
+export async function filterSpeciality(value: any) {
+  const result = await query<RowDataPacket>(
+    `
+    SELECT ${coreSchema}.doctors.*
+    FROM ${coreSchema}.doctors
+    INNER JOIN ${coreSchema}.specialties ON doctors.specialty_id = specialties.id
+    WHERE specialties.name = ?
+    `,
+    {
+      values: [value],
+    }
+  );
+  return result;
+}

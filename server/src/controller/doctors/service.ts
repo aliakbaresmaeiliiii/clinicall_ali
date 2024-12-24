@@ -4,9 +4,11 @@ import {
   addDoctor,
   checkDoctorPhoneNumberExists,
   doctorDetail,
+  filterSpeciality,
   getDoctors,
   getDoctorSpecializations,
   getMostPopularDoctors,
+  getSpecialties,
   like,
   logDoctorClick,
   updateDoctor,
@@ -87,7 +89,7 @@ export class DoctorsService {
       return null;
     }
   }
-  public static async addComment( comment: CommentsDTO) {
+  public static async addComment(comment: CommentsDTO) {
     const data = await addComment(comment);
     if (data) {
       return { message: "ok", data };
@@ -95,12 +97,20 @@ export class DoctorsService {
       return null;
     }
   }
-  // public static async getComments( doctor_id:number) {
-  //   const data = await getComments(doctor_id);
-  //   if (data) {
-  //     return { message: "ok", data };
-  //   } else {
-  //     return null;
-  //   }
-  // }
+  public static async getSpecialties() {
+    const data = await getSpecialties();
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
+  }
+  public static async filterSpeciality(value: string) {
+    const data = await filterSpeciality(value);
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
+  }
 }

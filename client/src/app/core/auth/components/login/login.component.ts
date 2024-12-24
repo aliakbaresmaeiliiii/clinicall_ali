@@ -157,7 +157,6 @@ export class LoginComponent implements OnInit{
   // ****login Google
   login(event: AnimationEvent) {
     if (this.form.value) {
-      debugger;
       this.#authService.signIn(this.form.value).subscribe((res: any) => {
         this.permissionService.setPermissions(res.data.permissions);
         const stroeDataUser = res.data;

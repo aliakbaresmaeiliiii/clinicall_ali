@@ -2,7 +2,8 @@ import { asyncHandler } from "../../helper/async-handler";
 import { BuildResponse } from "../../modules/response/app_response";
 import { router } from "../../routes/public";
 import { DoctorsService } from "./service";
-import { Request, Response } from "express";
+import { Request, Response } from 'express'
+
 
 router.get(
   "/admin/doctors",
@@ -115,14 +116,20 @@ router.post(
   })
 );
 
-// router.get(
-//   `/admin/getComment/:doctor_id`,
-//   asyncHandler(async (req: Request, res: Response) => {
-//     const doctor_id = +req.params.doctor_id;
-//     const data = await DoctorsService.getComments(doctor_id);
-//     const buildResponse = BuildResponse.get(data);
-//     res.status(200).json(buildResponse);
-//   })
-// );
-
-
+router.get(
+  `/admin/getSpecialties`,
+  asyncHandler(async (req: Request, res: Response): Promise<any> => {
+    const data = await DoctorsService.getSpecialties();
+    const buildResponse = BuildResponse.get(data);
+    res.status(200).json(buildResponse);
+  })
+);
+router.post(
+  `/admin/filterSpeciality`,
+  asyncHandler(async (req: Request, res: Response): Promise<any> => {
+    const queryParams = req.body.value;
+    const data = await DoctorsService.filterSpeciality(queryParams);
+    const buildResponse = BuildResponse.get(data);
+    res.status(200).json(buildResponse);
+  })
+);

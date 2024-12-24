@@ -223,6 +223,8 @@ export async function getUserInfo(email: string) {
      u.user_id = c.user_id
      WHERE 
      u.email =?
+     LIMIT 1;
+
     `,
     {
       values: [email],

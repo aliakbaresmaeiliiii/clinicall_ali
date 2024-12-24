@@ -56,10 +56,8 @@ export class DoctorsService {
     );
   }
 
-  getDoctorSpecialization(doctorId: number): Observable<{}> {
-    return this.#http.get<{ data: DoctorsDTO[] }>(
-      `${this.config}admin/getDoctor-specialization/${doctorId}`
-    );
+  getSpecialties(): Observable<{}> {
+    return this.#http.get<string[]>(`${this.config}admin/getSpecialties`);
   }
 
   countDoctorClick(doctor_id: number): Observable<number> {
@@ -68,13 +66,13 @@ export class DoctorsService {
     });
   }
 
-  addComment( comment: UserInfo): Observable<string> {
-    debugger;
-    return this.#http.post<string>(
-      `${this.config}admin/addComment`,
-      { comment }
-    );
+  addComment(comment: UserInfo): Observable<string> {
+    return this.#http.post<string>(`${this.config}admin/addComment`, {
+      comment,
+    });
   }
 
-
+  filterSpeciality(value: string): Observable<string> {
+    return this.#http.post<string>(`${this.config}admin/filterSpeciality`,{value});
+  }
 }
