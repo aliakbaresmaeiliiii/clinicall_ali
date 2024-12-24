@@ -2,19 +2,45 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  ElementRef,
+  Inject,
   TemplateRef,
+  contentChild,
+  contentChildren,
+  inject,
   input,
   output,
   signal,
   viewChild,
+  viewChildren,
 } from '@angular/core';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
+import { map, Observable, startWith } from 'rxjs';
+import { DoctorsService } from '../../../modules/doctors/doctors.service';
+import { MatDividerModule } from '@angular/material/divider';
+import { FilterLayoutComponent } from '../../../ui/filter-layout/filter-layout.component';
 @Component({
   selector: 'generic-tab',
-  imports: [MatTabsModule, CommonModule, MatButtonModule, MatSelectModule],
+  imports: [
+    MatTabsModule,
+    CommonModule,
+    MatButtonModule,
+    MatSelectModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatAutocompleteModule,
+    ReactiveFormsModule,
+    AsyncPipe,
+    MatDividerModule,
+  ],
   providers: [AsyncPipe],
   templateUrl: './custom-tab.component.html',
   styleUrl: './custom-tab.component.scss',
@@ -62,7 +88,15 @@ export class CustomTabComponent implements AfterViewInit {
     { id: 8, price: 350 },
   ];
 
+  myControl = new FormControl('');
+  specialties: string[] = [];
+  filteredOptions!: Observable<string[]>;
+  doctorService = inject(DoctorsService);
   activeFilter = 0;
+  tabTitle = output<string>();
+  onChangeValueInput = output<string>();
+  onDeleteValue = output<string>();
+  valueOfSpeciality: string = '';
 
   tabs = input.required<
     {
@@ -75,12 +109,43 @@ export class CustomTabComponent implements AfterViewInit {
   selectedTemplate!: TemplateRef<any>;
   context: any;
   readonly selectedIndex = input(0);
-  tabTitle = output<string>();
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getSpecialties();
+  }
 
+  getSpecialties() {
+    this.doctorService.getSpecialties().subscribe((data: any) => {
+      this.specialties = data.data;
+      this.filteredOptions = this.myControl.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value || ''))
+      );
+    });
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    const specialtyNames = this.specialties.map(
+      (specialty: any) => specialty.name
+    );
+    return specialtyNames.filter(option =>
+      option.toLowerCase().includes(filterValue)
+    );
+  }
+
+  getValueSpecialty(option: string) {
+    this.valueOfSpeciality = option;
+    this.onChangeValueInput.emit(option);
+  }
+
+  deleteFilter(value: string) {
+    this.valueOfSpeciality = '';
+    this.myControl.reset()
+    this.onDeleteValue.emit(value);
+  }
   ngAfterViewInit() {
     const data = this.tabs();
     if (data.length > 0) {

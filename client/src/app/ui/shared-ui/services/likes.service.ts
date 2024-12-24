@@ -12,7 +12,6 @@ export class LikesService {
   private config = environment.apiEndPoint;
 
   addLike(likeInfo: likeDTO): Observable<likeDTO> {
-    debugger;
     return this.http.post<likeDTO>(
       `${this.config}admin/toggleLike`,
       likeInfo

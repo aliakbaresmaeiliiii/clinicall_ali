@@ -1,6 +1,10 @@
-<generic-tab [tabs]="tabs" (tabTitle)="handleTabChange($event)">
+<generic-tab
+  [tabs]="tabs"
+  (tabTitle)="handleTabChange($event)"
+  (onChangeValueInput)="handleChangeValueInput($event)"
+  (onDeleteValue)="handleTabChange($event)">
   <div class="grid grid-cols-2 gap-4">
-    @for (data of tabData; track $index ; let i = $index) {
+    @for (data of tabData(); track $index ; let i = $index) {
     <div
       class="w-full min-w-96 bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden mx-auto">
       <div class="flex justify-between items-center px-6 py-4">
@@ -190,9 +194,10 @@
       </div>
     </div>
     } @empty {
-    <div class="flex justify-end">
+    <div>
       <app-loader />
     </div>
+
     }
   </div>
 </generic-tab>

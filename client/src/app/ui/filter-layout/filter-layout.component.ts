@@ -1,8 +1,13 @@
 import {
   ChangeDetectorRef,
   Component,
+  contentChild,
+  contentChildren,
+  ElementRef,
   inject,
   OnInit,
+  signal,
+  Signal,
   TemplateRef,
   viewChild,
 } from '@angular/core';
@@ -14,6 +19,7 @@ import { likeDTO } from '../shared-ui/models/like';
 import { LikesService } from '../shared-ui/services/likes.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CopyLinkDialogComponent } from '../../shared/components/copy-link-dialog/copy-link-dialog.component';
+import { CustomTabComponent } from '../../shared/components/custom-tab/custom-tab.component';
 
 @Component({
   selector: 'app-filter-layout',
@@ -22,7 +28,7 @@ import { CopyLinkDialogComponent } from '../../shared/components/copy-link-dialo
   styleUrl: './filter-layout.component.scss',
 })
 export class FilterLayoutComponent implements OnInit {
-  tabData: DoctorsDTO[] = [];
+  tabData = signal<DoctorsDTO[]>([]);
   mostPopular: DoctorsDTO[] = [];
   doctorService = inject(DoctorsService);
   router = inject(Router);
@@ -103,12 +109,20 @@ export class FilterLayoutComponent implements OnInit {
   }
 
   handleTabChange(data: any) {
-    this.tabData = [];
+    if(data === 'Default'){
+      this.fetchDefaultData();
+    }
     if (data.label === 'Default') {
       this.fetchDefaultData();
     } else if (data.label === 'Most Popular') {
       this.fetchMostPopularData();
+    } else {
+      this.tabData.set([])
     }
+  }
+
+  handleChangeValueInput(data: any) {
+    this.featchSpecialty(data)
   }
 
   fetchDefaultData() {
@@ -119,7 +133,7 @@ export class FilterLayoutComponent implements OnInit {
           : '../../../assets/images/bg-01.png';
         return doctor;
       });
-      this.tabData = newData;
+      this.tabData.set(newData);
     });
   }
 
@@ -131,7 +145,13 @@ export class FilterLayoutComponent implements OnInit {
           : '../../../assets/images/bg-01.png';
         return doctor;
       });
-      this.tabData = newData;
+      this.tabData.set(newData);
+    });
+  }
+
+  featchSpecialty(option: string) {
+    this.doctorService.filterSpeciality(option).subscribe((res: any) => {
+      this.tabData.set(res.data);
     });
   }
 
@@ -147,14 +167,13 @@ export class FilterLayoutComponent implements OnInit {
   }
 
   toggleLike(data: DoctorsDTO, doctor_id: any) {
-    this.tabData[doctor_id].is_liked = !this.tabData[doctor_id].is_liked;
+    this.tabData()[doctor_id].is_liked = !this.tabData()[doctor_id].is_liked;
     const user_id = this.userData;
-  
+
     const payload: likeDTO = {
       doctor_id: data.doctor_id,
       entity_type: data.name,
       user_id: user_id,
-
     };
     this.likeService.addLike(payload).subscribe(res => {});
   }

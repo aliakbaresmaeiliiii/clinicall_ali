@@ -1,7 +1,80 @@
-<div class="grid grid-rows-9 grid-cols-5 grid-flow-col gap-4 w-10/12 m-auto">
-  <div class="row-span-9 col-span-1 bg-white rounded-2xl p-4">
+<div class="grid grid-rows-9 grid-cols-9 grid-flow-col gap-4 w-10/12 m-auto">
+  <div class="row-span-9 col-span-2 bg-white rounded-2xl p-4">
     <h2 class="pb-2">Filters</h2>
-    <hr />
+    <ng-content></ng-content>
+    <mat-tab-group>
+      <mat-tab>
+        <div class="mx-4">
+          @if (valueOfSpeciality) {
+          <span
+            class="bg-gray-300 rounded-2xl w-fit max-w-56 flex items-center gap-4 my-3 px-3"
+            (click)="deleteFilter('Default')"
+            >{{ valueOfSpeciality }}
+            <i class="fa-solid fa-xmark"></i>
+          </span>
+          <mat-divider></mat-divider>
+          }
+        </div>
+        <ng-template mat-tab-label>
+          <div class="flex gap-1">
+            <img
+              src="../../../../assets/images/ui/svg/clinic-appointment.svg"
+              alt="" />
+            <span class="text-xs"> Clinic Appointment </span>
+          </div>
+        </ng-template>
+        <mat-form-field appearance="outline" class="w-full mt-6">
+          <mat-label>Specialty and Super-specialty</mat-label>
+          <div class="flex">
+            <input
+              type="text"
+              placeholder="Select your desired specialty"
+              aria-label="Number"
+              matInput
+              [formControl]="myControl"
+              [matAutocomplete]="auto" />
+            <i class="fa-solid fa-xmark" (click)="myControl.reset()"></i>
+          </div>
+
+          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+            @for (option of filteredOptions | async; track option) {
+            <mat-option
+              [value]="option"
+              (onSelectionChange)="getValueSpecialty(option)"
+              >{{ option }}</mat-option
+            >
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <div class="flex gap-1">
+            <img
+              src="../../../../assets/images/ui/svg/phone-consultaion.svg"
+              alt="" />
+            <span class="text-xs"> Phone Consultation </span>
+          </div>
+        </ng-template>
+        Content 2
+      </mat-tab>
+
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <div class="flex gap-1">
+            <img
+              src="../../../../assets/images/ui/svg/text-consultaion.svg"
+              alt="" />
+            <span class="text-xs"> Text Consultation </span>
+          </div>
+        </ng-template>
+
+        Content 3
+      </mat-tab>
+    </mat-tab-group>
+
+    <!-- <hr />
     <h2 class="pb-2">Services</h2>
     <hr />
     <mat-form-field appearance="outline" class="pt-2">
@@ -59,14 +132,14 @@
         <mat-option [value]="dental.id">{{ dental.price }}</mat-option>
         }
       </mat-select>
-    </mat-form-field>
+    </mat-form-field> -->
   </div>
 
-  <div class="bg-slate-100 col-span-4 font-bold p-4 rounded-2xl">
+  <div class="bg-slate-100 col-span-7 font-bold p-4 rounded-2xl">
     Online appointment of the best doctors in Malaysia
   </div>
 
-  <div class="row-span-8 col-span-4 bg-slate-100 p-4 rounded-2xl">
+  <div class="row-span-8 col-span-7 bg-slate-100 p-4 rounded-2xl">
     <div class="grid grid-cols-8 my-auto">
       <span class="flex items-center gap-1 opacity-55">
         <svg
@@ -93,8 +166,8 @@
       }
     </div>
     <div
-      class="flex flex-wrap mt-6 overflow-auto border-2 rounded-xl p-2 border-gray-300 max-h-[35rem]">
-      <ng-content></ng-content>
+      class="flex flex-wrap justify-center mt-6 overflow-auto border-2 rounded-xl p-2 border-gray-300 max-h-[35rem]">
+      <ng-content ></ng-content>
     </div>
   </div>
 </div>

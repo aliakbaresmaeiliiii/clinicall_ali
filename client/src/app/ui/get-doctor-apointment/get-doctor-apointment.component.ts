@@ -6,21 +6,22 @@ import {
   OnInit,
   TransferState,
 } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { DilogDotorAppointmentComponent } from './dilog-dotor-appointment/dilog-dotor-appointment.component';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subject, takeUntil } from 'rxjs';
-import { DoctorsService } from '../../modules/doctors/doctors.service';
-import { environment } from '../../environments/environment';
-import { DoctorsDTO } from '../../modules/doctors/models/doctors';
-import { DialogLocationDrComponent } from './dialog-location-dr/dialog-location-dr.component';
-import { ISpecialization } from './models/specializtion.model';
-import { CopyLinkDialogComponent } from '../../shared/components/copy-link-dialog/copy-link-dialog.component';
-import { LikesService } from '../shared-ui/services/likes.service';
-import { likeDTO } from '../shared-ui/models/like';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { Subject, takeUntil } from 'rxjs';
 import { UserService } from '../../core/services/user.service';
+import { environment } from '../../environments/environment';
+import { DoctorsService } from '../../modules/doctors/doctors.service';
+import { DoctorsDTO } from '../../modules/doctors/models/doctors';
+import { CopyLinkDialogComponent } from '../../shared/components/copy-link-dialog/copy-link-dialog.component';
 import { UserInfo } from '../../shared/models/userInfo';
+import { likeDTO } from '../shared-ui/models/like';
+import { LikesService } from '../shared-ui/services/likes.service';
+import { DialogLocationDrComponent } from './dialog-location-dr/dialog-location-dr.component';
+import { DilogDotorAppointmentComponent } from './dilog-dotor-appointment/dilog-dotor-appointment.component';
+import { ISpecialization } from './models/specializtion.model';
 
 @Component({
   selector: 'app-get-doctor-apointment',
@@ -37,6 +38,7 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   transferState = inject(TransferState);
   DATA_KEY = makeStateKey<any>('doctorInfo');
   userInfo: UserInfo[] = [];
+  toast = inject(ToastrService);
 
   specialization: ISpecialization[] = [];
   doctorInfo: DoctorsDTO[] = [];
@@ -83,62 +85,66 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
     this.transferState.remove(this.DATA_KEY);
     const storedData = this.transferState.get(this.DATA_KEY, null);
 
-    if (!storedData) {
-      this.doctorService
-        .getDoctorSpecialization(doctorId)
-        .subscribe((special: any) => {
-          console.log('special', special);
-          this.specialization = special.data;
-        });
-      this.doctorService.doctorDetial(doctorId).subscribe({
-        next: (response: any) => {
-          if (response && response.length > 0) {
-            const newData = response.map((patient: any) => {
-              patient.profileImage = patient.profileImage
-                ? `${environment.urlProfileImg}${patient.profileImage}`
-                : '../../../assets/images/bg-01.png';
-              return patient;
-            });
-            this.doctorInfo = newData;
-            const match = newData[0].address.match(/^Klinik Kesihatan\s*/);
-            this.addressBreifly = match ? match[0] : '';
+    // if (!storedData) {
+    //   this.doctorService
+    //     .getDoctorSpecialization(doctorId)
+    //     .subscribe((special: any) => {
+    //       console.log('special', special);
+    //       this.specialization = special.data;
+    //     });
+    //   this.doctorService.doctorDetial(doctorId).subscribe({
+    //     next: (response: any) => {
+    //       if (response && response.length > 0) {
+    //         const newData = response.map((patient: any) => {
+    //           patient.profileImage = patient.profileImage
+    //             ? `${environment.urlProfileImg}${patient.profileImage}`
+    //             : '../../../assets/images/bg-01.png';
+    //           return patient;
+    //         });
+    //         this.doctorInfo = newData;
+    //         const match = newData[0].address.match(/^Klinik Kesihatan\s*/);
+    //         this.addressBreifly = match ? match[0] : '';
 
-            this.transferState.set(this.DATA_KEY, this.doctorInfo);
+    //         this.transferState.set(this.DATA_KEY, this.doctorInfo);
 
-            this.coordinates = this.doctorInfo
-              .filter(item => item.location)
-              .map((loc: any) => {
-                return {
-                  lng: loc.location.x,
-                  lat: loc.location.y,
-                };
-              });
-          }
-        },
+    //         this.coordinates = this.doctorInfo
+    //           .filter(item => item.location)
+    //           .map((loc: any) => {
+    //             return {
+    //               lng: loc.location.x,
+    //               lat: loc.location.y,
+    //             };
+    //           });
+    //       }
+    //     },
 
-        error: e => console.error(e),
-        complete: () => console.info('complete'),
-      });
-    } else {
-      this.doctorInfo = storedData;
-      this.coordinates = this.doctorInfo
-        .filter(item => item.location)
-        .map((loc: any) => {
-          console.log('📌', loc.location);
-          return {
-            lng: loc.location.x,
-            lat: loc.location.y,
-          };
-        });
-      return;
-    }
+    //     error: e => console.error(e),
+    //     complete: () => console.info('complete'),
+    //   });
+    // } else {
+    //   this.doctorInfo = storedData;
+    //   this.coordinates = this.doctorInfo
+    //     .filter(item => item.location)
+    //     .map((loc: any) => {
+    //       console.log('📌', loc.location);
+    //       return {
+    //         lng: loc.location.x,
+    //         lat: loc.location.y,
+    //       };
+    //     });
+    //   return;
+    // }
   }
 
   toggleText() {
     this.isExpanded = !this.isExpanded;
   }
 
-  comment(doctor_id: number) {
+  comment(doctor_id: number): void {
+    if (this.commentForm.invalid) {
+      this.toast.error('Please enter a valid comment.');
+      return;
+    }
     this.isShowComment = !this.isShowComment;
     const comment = this.commentForm.value.comment;
     const payload: any = {
@@ -147,13 +153,27 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
       comment_text: comment,
       rating: 5,
     };
-    this.doctorService.addComment(payload).subscribe((res: any) => {});
+
+    this.doctorService.addComment(payload).subscribe({
+      next: (res: { code: number; message: string } | any) => {
+        if (res.code === 200) {
+          this.getComment()
+          this.toast.success('Message is successfully sent.');
+          this.commentForm.reset();
+        } else {
+          this.toast.error(res.message || 'Failed to send the comment.');
+        }
+      },
+      error: err => {
+        this.toast.error('An error occurred while sending the comment.');
+        console.error('Error:', err);
+      },
+    });
   }
 
   getComment() {
     this.userService.getUserInfo(this.userData.email).subscribe((res: any) => {
       this.userInfo = res.data;
-      console.log('aaaaaaaaaaaaa', this.userInfo);
     });
   }
 

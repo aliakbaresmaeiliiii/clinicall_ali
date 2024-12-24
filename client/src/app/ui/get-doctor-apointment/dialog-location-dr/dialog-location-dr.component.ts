@@ -32,7 +32,6 @@ export class DialogLocationDrComponent implements OnInit, AfterViewInit {
 
   onAddressInput(): void {
     const address = this.data.address;
-    debugger;
     this.mapService.geocodeAddress(address).subscribe(response => {
       if (response.features && response.features.length > 0) {
         const coordinates = response.features[0].center;
