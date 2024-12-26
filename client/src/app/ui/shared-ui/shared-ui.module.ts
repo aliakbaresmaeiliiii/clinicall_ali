@@ -9,6 +9,9 @@ import { SwiperSliderCardComponent } from './components/swiper-slider-card/swipe
 import { MatCardModule } from '@angular/material/card';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { CustomTitleComponent } from './components/custom-title/custom-title.component';
+import { FeedbackComponent } from './components/feedback/feedback.component';
+import { SharedModule } from '../../shared/shared.module';
+import { NgxStarsModule } from 'ngx-stars';
 
 @NgModule({
   declarations: [
@@ -18,11 +21,9 @@ import { CustomTitleComponent } from './components/custom-title/custom-title.com
     SwiperSliderComponent,
     SwiperSliderCardComponent,
     CustomTitleComponent,
+    FeedbackComponent,
   ],
-  imports: [CommonModule, MatCardModule,
-    ButtonComponent
-
-  ],
+  imports: [CommonModule, NgxStarsModule,MatCardModule, ButtonComponent, SharedModule],
   exports: [
     ServiceSectionComponent,
     CardComponent,
@@ -30,8 +31,8 @@ import { CustomTitleComponent } from './components/custom-title/custom-title.com
     MatButtonModule,
     SwiperSliderComponent,
     SwiperSliderCardComponent,
-    CustomTitleComponent
-    
+    CustomTitleComponent,
+    FeedbackComponent,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

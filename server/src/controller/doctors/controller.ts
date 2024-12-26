@@ -77,16 +77,6 @@ router.put(
   })
 );
 
-router.get(
-  `/admin/getDoctor-specialization/:doctorId`,
-  asyncHandler(async (req: Request, res: Response): Promise<any> => {
-    const doctorId = +req.params.doctorId;
-    const data = await DoctorsService.getDoctorSpecializations(doctorId);
-    const buildResponse = BuildResponse.get(data);
-    res.status(200).json(buildResponse);
-  })
-);
-
 router.post(
   `/admin/countDoctorClick`,
   asyncHandler((req: Request, res: Response) => {

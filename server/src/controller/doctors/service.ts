@@ -6,7 +6,6 @@ import {
   doctorDetail,
   filterSpeciality,
   getDoctors,
-  getDoctorSpecializations,
   getMostPopularDoctors,
   getSpecialties,
   like,
@@ -65,14 +64,7 @@ export class DoctorsService {
       return null;
     }
   }
-  public static async getDoctorSpecializations(doctorId: number) {
-    const data = await getDoctorSpecializations(doctorId);
-    if (data) {
-      return { message: "ok", data };
-    } else {
-      return null;
-    }
-  }
+ 
   public static async logDoctorClick(doctor_id: number) {
     const data = await logDoctorClick(doctor_id);
     if (data) {

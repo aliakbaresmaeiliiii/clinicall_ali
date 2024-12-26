@@ -68,7 +68,7 @@ export class EditDoctorComponent extends BaseComponent {
       gender: this.doctorInfo.gender,
       email: this.doctorInfo.email,
       age: this.doctorInfo.age,
-      specialization: this.doctorInfo.specialization,
+      specialization: this.doctorInfo.specialty_name,
       address: this.doctorInfo.address,
     });
   }
