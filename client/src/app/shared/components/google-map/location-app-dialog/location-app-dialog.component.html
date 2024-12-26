@@ -1,0 +1,49 @@
+<div class="flex gap-5"></div>
+
+<h2 mat-dialog-title>Select an action</h2>
+<mat-dialog-content>
+  <div class="flex flex-col gap-2">
+    <span
+      class="flex items-center gap-3 p-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:bg-blue-100 hover:shadow-lg cursor-pointer group"
+      (click)="openInWaze()">
+      <img
+        src="../../../../../assets/images/ui/locations/gps.png"
+        alt="Waze Icon"
+        class="w-8 h-8 transition-transform duration-300 transform group-hover:rotate-12" />
+      <span
+        class="text-gray-800 font-semibold transition-colors duration-300 group-hover:text-blue-600">
+        Open in Waze
+      </span>
+    </span>
+
+    <span
+      class="flex items-center gap-3 p-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:bg-blue-100 hover:shadow-lg cursor-pointer group"
+      (click)="opneGoogleMaps()">
+      <img
+        src="../../../../../assets/images/ui/locations/google-maps.png"
+        alt="Waze Icon"
+        class="w-8 h-8 transition-transform duration-300 transform group-hover:rotate-12" />
+      <span
+        class="text-gray-800 font-semibold transition-colors duration-300 group-hover:text-blue-600">
+        Open in Google Maps
+      </span>
+    </span>
+
+    <span
+      class="flex items-center gap-3 p-3 rounded-lg transition-all duration-300 transform hover:scale-105 hover:bg-blue-100 hover:shadow-lg cursor-pointer group"
+      (click)="opneInMaps()">
+      <img
+        src="../../../../../assets/images/ui/locations/placeholder.png"
+        alt="Waze Icon"
+        class="w-8 h-8 transition-transform duration-300 transform group-hover:rotate-12" />
+      <span
+        class="text-gray-800 font-semibold transition-colors duration-300 group-hover:text-blue-600">
+        Open in Maps
+      </span>
+    </span>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button cdkFocusInitial>Ok</button>
+</mat-dialog-actions>

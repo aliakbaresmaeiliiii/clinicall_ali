@@ -7,13 +7,16 @@ export async function getDoctors(): Promise<any> {
    SELECT 
   d.*, 
   COALESCE(ld.location, 'No Location') AS location,
+  s.name AS specialty_name,
   (SELECT AVG(rating) 
    FROM ${coreSchema}.ratings r 
    WHERE r.doctor_id = d.doctor_id) AS average_rating
-FROM 
+   FROM 
   ${coreSchema}.doctors d
-LEFT JOIN 
-  ${coreSchema}.locations_doctors ld ON d.doctor_id = ld.doctor_id;
+  LEFT JOIN 
+  ${coreSchema}.locations_doctors ld ON d.doctor_id = ld.doctor_id
+  LEFT JOIN 
+  ${coreSchema}.specialties s ON d.specialty_id = s.id;
       `
   );
   return result;
@@ -23,22 +26,23 @@ export async function getMostPopularDoctors(): Promise<any> {
   const result = await query<RowDataPacket[]>(
     `
     SELECT 
-      d.doctor_id AS doctor_id,
-      d.name AS name,
-      d.mobile AS mobile,
-      d.email AS email,
-      d.profileImage AS profileImage,
-      d.address AS address,
-      AVG(r.rating) AS average_rating,
-      COUNT(r.rating) AS total_ratings
+      d.*, 
+      COALESCE(ld.location, 'No Location') AS location,
+      s.name AS specialty_name,
+      (SELECT AVG(r.rating) 
+       FROM ${coreSchema}.ratings r 
+       WHERE r.doctor_id = d.doctor_id) AS average_rating,
+      (SELECT COUNT(r.rating) 
+       FROM ${coreSchema}.ratings r 
+       WHERE r.doctor_id = d.doctor_id) AS total_ratings
     FROM 
       ${coreSchema}.doctors d
-    INNER JOIN 
-      ${coreSchema}.ratings r ON d.doctor_id = r.doctor_id
-    GROUP BY 
-      d.doctor_id, d.name, d.mobile, d.email
+    LEFT JOIN 
+      ${coreSchema}.locations_doctors ld ON d.doctor_id = ld.doctor_id
+    LEFT JOIN 
+      ${coreSchema}.specialties s ON d.specialty_id = s.id
     HAVING 
-      COUNT(r.rating) > 2
+      total_ratings > 3
     ORDER BY 
       average_rating DESC,
       total_ratings DESC
@@ -47,6 +51,7 @@ export async function getMostPopularDoctors(): Promise<any> {
   );
   return result;
 }
+
 
 export async function checkDoctorPhoneNumberExists(
   mobile: string
@@ -81,7 +86,7 @@ export async function addDoctor(doctorInfo: DoctorsDTO): Promise<any> {
         doctorInfo.email,
         doctorInfo.address,
         doctorInfo.profileImage,
-        doctorInfo.specialization,
+        doctorInfo.specialty_name,
         new Date(),
       ],
     }
@@ -92,19 +97,25 @@ export async function addDoctor(doctorInfo: DoctorsDTO): Promise<any> {
 export async function doctorDetail(doctorId: number): Promise<any> {
   const result = await query<RowDataPacket>(
     `
-  SELECT 
+    SELECT 
       d.*,
       COALESCE(ld.location, 'No Location') AS location,
       (SELECT AVG(r.rating) 
        FROM ${coreSchema}.ratings r 
-       WHERE r.doctor_id = d.doctor_id) AS average_rating
+       WHERE r.doctor_id = d.doctor_id) AS average_rating,
+      s.name AS specialty_name,
+      c.comment AS comment
     FROM 
       ${coreSchema}.doctors d
     LEFT JOIN 
       ${coreSchema}.locations_doctors ld ON d.doctor_id = ld.doctor_id
+    LEFT JOIN 
+      ${coreSchema}.specialties s ON d.specialty_id = s.id
+    LEFT JOIN 
+      ${coreSchema}.comments c ON d.doctor_id = c.rating_id
     WHERE 
       d.doctor_id = ?;
-      `,
+    `,
     { values: [doctorId] }
   );
   return result;
@@ -119,23 +130,6 @@ export async function updateDoctor(doctorData: DoctorsDTO): Promise<any> {
       `,
     {
       values: [doctorData.name, doctorData.doctor_id],
-    }
-  );
-  return result;
-}
-
-export async function getDoctorSpecializations(doctorId: number): Promise<any> {
-  const result = await query<RowDataPacket>(
-    `
-    SELECT 
-    d.name AS doctor_name,s.specialization_name
-    FROM doctors d
-    JOIN doctor_specializations ds ON d.doctor_id = ds.doctor_id
-    JOIN specializations s ON ds.specialization_id = s.specialization_id
-    WHERE d.doctor_id =1
-    `,
-    {
-      values: [doctorId],
     }
   );
   return result;

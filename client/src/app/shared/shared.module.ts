@@ -39,6 +39,7 @@ import { SearchBarComponent } from './search-bar/search-bar.component';
 import { TimeSelectorComponent } from './components/time-selector/time-selector.component';
 import { RangePickerComponent } from './components/range-picker/range-picker.component';
 import { CopyLinkDialogComponent } from './components/copy-link-dialog/copy-link-dialog.component';
+import { LocationAppDialogComponent } from './components/google-map/location-app-dialog/location-app-dialog.component';
 
 const ANGULR_MATERIAL_MODULES = [
   MatAutocompleteModule,
@@ -88,9 +89,19 @@ const ANGULR_MATERIAL_MODULES = [
 const COMMON_MODULES = [CommonModule, ReactiveFormsModule, FormsModule];
 // const SHARED_COMPONENT = [];
 @NgModule({
-  declarations: [SearchBarComponent, ChunkPipe,RangePickerComponent],
-  imports: [...COMMON_MODULES, ...ANGULR_MATERIAL_MODULES,],
-  exports: [...ANGULR_MATERIAL_MODULES, ...COMMON_MODULES, ChunkPipe,RangePickerComponent],
+  declarations: [
+    SearchBarComponent,
+    ChunkPipe,
+    RangePickerComponent,
+    LocationAppDialogComponent,
+  ],
+  imports: [...COMMON_MODULES, ...ANGULR_MATERIAL_MODULES],
+  exports: [
+    ...ANGULR_MATERIAL_MODULES,
+    ...COMMON_MODULES,
+    ChunkPipe,
+    RangePickerComponent,
+  ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SharedModule {}

@@ -7,27 +7,31 @@ import {
   PLATFORM_ID,
   SimpleChanges,
   input,
-  output
+  output,
 } from '@angular/core';
 import * as mapboxGl from 'mapbox-gl';
 import { LngLat } from 'mapbox-gl';
 import { environment } from '../../../environments/environment';
 import { MapService } from './map.service';
-
-
+import { MatDialog } from '@angular/material/dialog';
+import { DilogDotorAppointmentComponent } from '../../../ui/get-doctor-apointment/dilog-dotor-appointment/dilog-dotor-appointment.component';
+import { LocationAppDialogComponent } from './location-app-dialog/location-app-dialog.component';
 
 @Component({
-    selector: 'app-google-map',
-    templateUrl: './google-map.component.html',
-    styleUrl: './google-map.component.scss'
+  selector: 'app-google-map',
+  templateUrl: './google-map.component.html',
+  styleUrl: './google-map.component.scss',
 })
 export class GoogleMapComponent implements OnInit {
-   coordinates = input<{
-    lat: number;
-    lng: number;
-}[]>([]);
-   zoomLevel = input<number>(14);
-   markerMoved = output<any>();
+  coordinates = input<
+    {
+      lat: number;
+      lng: number;
+    }[]
+  >([]);
+  zoomLevel = input<number>(14);
+  markerMoved = output<any>();
+  dialog = inject(MatDialog);
 
   style = 'mapbox://styles/mapbox/streets-v11';
   lng: number = 51.375447552429875;
@@ -50,7 +54,7 @@ export class GoogleMapComponent implements OnInit {
       this.updateMapLocation(coordinates);
     }
   }
-  
+
   ngOnInit(): void {
     this.setCurrentLocation();
   }
@@ -75,6 +79,9 @@ export class GoogleMapComponent implements OnInit {
         //   // this.addEssentialMapControls();
         // });
 
+        this.marker.getElement().addEventListener('click', () => {
+          this.openDialog(); // Call a function to open the dialog
+        });
         const coordinatesValue = this.coordinates();
         if (
           (coordinatesValue[0],
@@ -110,6 +117,8 @@ export class GoogleMapComponent implements OnInit {
           });
         });
 
+      
+
         this.map.on('click', (event: mapboxGl.MapMouseEvent): void => {
           this.marker.remove();
           const updatedCoordinates: LngLat = this.marker.getLngLat();
@@ -124,6 +133,8 @@ export class GoogleMapComponent implements OnInit {
       });
     }
   }
+
+
 
   updateMapLocation(coordinates: [number, number] | any): void {
     const [lng, lat] = coordinates; // Destructure the array into lng and lat
@@ -174,5 +185,17 @@ export class GoogleMapComponent implements OnInit {
   }
   validateCoordinates(lng: number, lat: number): boolean {
     return lng >= -180 && lng <= 180 && lat >= -90 && lat <= 90;
+  }
+
+
+  openDialog() {
+    // Example: If you're using Angular Material Dialog
+    const dialogRef = this.dialog.open(LocationAppDialogComponent, {
+      
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('Dialog closed', result);
+    });
   }
 }

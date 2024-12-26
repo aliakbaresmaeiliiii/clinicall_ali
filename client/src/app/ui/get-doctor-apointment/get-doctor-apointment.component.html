@@ -20,7 +20,7 @@
               {{ doctor.name }}
             </div>
             <div class="text-sm text-gray-500 dark:text-gray-200">
-              {{ doctor.specialization }}
+              {{ doctor.specialty_name }}
             </div>
             <div
               class="flex gap-1 text-sm text-gray-500 dark:text-gray-200 pt-2">
@@ -50,25 +50,15 @@
       <div
         class="flex justify-center items-center gap-8 text-xs text-gray-200 py-4 pl-6">
         <div class="flex flex-col gap-1">
-          <div class="flex">
-            @for (star of [1,2,3,4,5]; track $index) {
-            <svg
-              class="text-yellow-500 flex"
-              [class.fill-yellow]="$index < doctor.average_rating"
-              [class.fill-gray]="$index >= doctor.average_rating"
-              fill="none"
-              height="15"
-              stroke="currentColor"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-              width="15"
-              xmlns="http://www.w3.org/2000/svg">
-              <path
-                d="M17.919 14.32a1.1 1.1 0 0 0-.32.97l.89 4.92a1.08 1.08 0 0 1-.45 1.08 1.1 1.1 0 0 1-1.17.08l-4.43-2.31a1.1 1.1 0 0 0-.5-.13h-.27a.8.8 0 0 0-.27.09l-4.43 2.32c-.22.11-.467.15-.71.11a1.11 1.11 0 0 1-.89-1.27l.89-4.92a1.12 1.12 0 0 0-.32-.98l-3.61-3.5a1.08 1.08 0 0 1-.27-1.13c.135-.396.477-.685.89-.75l4.97-.72c.378-.04.71-.27.88-.61l2.19-4.49q.078-.152.2-.27l.09-.07a.7.7 0 0 1 .16-.13l.11-.04.17-.07h.42c.377.04.708.264.88.6l2.22 4.47c.16.327.47.554.83.61l4.97.72c.42.06.77.35.91.75.13.401.018.841-.29 1.13z"></path>
-            </svg>
-            }
+          <div class="flex gap-2 text-yellow-400">
+            <ngx-stars
+              [readonly]="true"
+              [size]="1"
+              [maxStars]="5"
+              [initialStars]="doctor.average_rating"
+              [wholeStars]="false"
+              [color]="'#FFD700'"
+              [customStarIcons]="urlIcon"></ngx-stars>
           </div>
           <span>
             <strong>({{ doctor.click_count }}&nbsp;review)</strong>
@@ -235,11 +225,9 @@
       <mat-card-content>
         <h2 class="pt-2 font-bold">Services Dr.{{ doctor.name }}:</h2>
         <div class="flex items-center justify-center gap-3 mt-4">
-          @for (s of specialization; track $index) {
           <span class="bg-slate-300 rounded-2xl text-xs p-2"
-            >{{ s.specialization_name }}
+            >{{ doctor.specialty_name }}
           </span>
-          }
         </div>
       </mat-card-content>
     </mat-card>
@@ -253,25 +241,15 @@
             <span>
               <strong>From {{ doctor.click_count }} users</strong>
             </span>
-            <div class="flex pl-2">
-              @for (star of [1,2,3,4,5]; track $index) {
-              <svg
-                class="text-yellow-500"
-                [class.fill-yellow]="$index < doctor.average_rating"
-                [class.fill-gray]="$index >= doctor.average_rating"
-                fill="none"
-                height="15"
-                stroke="currentColor"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                viewBox="0 0 24 24"
-                width="15"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M17.919 14.32a1.1 1.1 0 0 0-.32.97l.89 4.92a1.08 1.08 0 0 1-.45 1.08 1.1 1.1 0 0 1-1.17.08l-4.43-2.31a1.1 1.1 0 0 0-.5-.13h-.27a.8.8 0 0 0-.27.09l-4.43 2.32c-.22.11-.467.15-.71.11a1.11 1.11 0 0 1-.89-1.27l.89-4.92a1.12 1.12 0 0 0-.32-.98l-3.61-3.5a1.08 1.08 0 0 1-.27-1.13c.135-.396.477-.685.89-.75l4.97-.72c.378-.04.71-.27.88-.61l2.19-4.49q.078-.152.2-.27l.09-.07a.7.7 0 0 1 .16-.13l.11-.04.17-.07h.42c.377.04.708.264.88.6l2.22 4.47c.16.327.47.554.83.61l4.97.72c.42.06.77.35.91.75.13.401.018.841-.29 1.13z"></path>
-              </svg>
-              }
+            <div class="flex gap-2 text-yellow-400">
+              <ngx-stars
+                [readonly]="true"
+                [size]="1"
+                [maxStars]="5"
+                [initialStars]="doctor.average_rating"
+                [wholeStars]="false"
+                [color]="'#FFD700'"
+                [customStarIcons]="urlIcon"></ngx-stars>
             </div>
           </div>
           <span class="text-3xl">
@@ -297,16 +275,40 @@
           </div>
         </div>
 
-        @if(isShowComment){
+        <button
+          (click)="feedback(doctor.doctor_id)"
+          type="button"
+          class="flex justify-between gap-2 mt-4 w-full shadow-xl text-base bg-gray-200 backdrop-blur-md lg:font-semibold isolation-auto border-gray-50 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-blue-800 hover:text-white before:-z-10 before:aspect-square before:hover:scale-150 before:hover:duration-700 relative z-10 px-3 py-1 overflow-hidden border-2 rounded-full group">
+          <span>feedback</span>
+          <svg
+            class="w-8 h-8 justify-end group-hover:rotate-90 group-hover:bg-gray-50 text-gray-50 ease-linear duration-300 rounded-full border border-gray-700 group-hover:border-none p-2 rotate-45"
+            viewBox="0 0 16 19"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M7 18C7 18.5523 7.44772 19 8 19C8.55228 19 9 18.5523 9 18H7ZM8.70711 0.292893C8.31658 -0.0976311 7.68342 -0.0976311 7.29289 0.292893L0.928932 6.65685C0.538408 7.04738 0.538408 7.68054 0.928932 8.07107C1.31946 8.46159 1.95262 8.46159 2.34315 8.07107L8 2.41421L13.6569 8.07107C14.0474 8.46159 14.6805 8.46159 15.0711 8.07107C15.4616 7.68054 15.4616 7.04738 15.0711 6.65685L8.70711 0.292893ZM9 18L9 1H7L7 18H9Z"
+              class="fill-gray-800 group-hover:fill-gray-800"></path>
+          </svg>
+        </button>
+
+        <!-- @if(isShowComment){
         <form [formGroup]="commentForm">
           <div class="mt-6">
             <mat-form-field appearance="outline" class="w-full">
-              <mat-label>Leave a comment</mat-label>
+              <mat-label>Leave a comment...</mat-label>
+
               <textarea
                 matInput
                 placeholder="Ex. It makes me feel..."
                 formControlName="comment"></textarea>
+              @if (commentForm.hasError('email') &&
+              !commentForm.hasError('required')) {
+              <mat-error>Please enter a valid email address</mat-error>
+              } @if (commentForm.hasError('required')) {
+              <mat-error>comment is <strong>required</strong></mat-error>
+              }
             </mat-form-field>
+
+            
           </div>
         </form>
         } @if (!isShowComment) {
@@ -326,6 +328,7 @@
         </button>
         }@else {
         <button
+          [disabled]="!commentForm.valid"
           type="button"
           (click)="comment(doctor.doctor_id)"
           class="flex justify-between gap-2 w-full shadow-xl text-base bg-gray-200 backdrop-blur-md lg:font-semibold isolation-auto border-gray-50 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-blue-800 hover:text-white before:-z-10 before:aspect-square before:hover:scale-150 before:hover:duration-700 relative z-10 px-3 py-1 overflow-hidden border-2 rounded-full group">
@@ -339,7 +342,7 @@
               class="fill-gray-800 group-hover:fill-gray-800"></path>
           </svg>
         </button>
-        }
+        } -->
 
         <!-- comment -->
 
@@ -361,25 +364,15 @@
               <div>
                 <span class="text-lg font-bold"> Aliakbar </span>
                 <span class="text-xs">(22/22/2024)</span>
-                <div class="flex">
-                  @for (star of [1,2,3,4,5]; track $index) {
-                  <svg
-                    class="text-yellow-500"
-                    [class.fill-yellow]="$index < doctor.average_rating"
-                    [class.fill-gray]="$index >= doctor.average_rating"
-                    fill="none"
-                    height="15"
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    viewBox="0 0 24 24"
-                    width="15"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path
-                      d="M17.919 14.32a1.1 1.1 0 0 0-.32.97l.89 4.92a1.08 1.08 0 0 1-.45 1.08 1.1 1.1 0 0 1-1.17.08l-4.43-2.31a1.1 1.1 0 0 0-.5-.13h-.27a.8.8 0 0 0-.27.09l-4.43 2.32c-.22.11-.467.15-.71.11a1.11 1.11 0 0 1-.89-1.27l.89-4.92a1.12 1.12 0 0 0-.32-.98l-3.61-3.5a1.08 1.08 0 0 1-.27-1.13c.135-.396.477-.685.89-.75l4.97-.72c.378-.04.71-.27.88-.61l2.19-4.49q.078-.152.2-.27l.09-.07a.7.7 0 0 1 .16-.13l.11-.04.17-.07h.42c.377.04.708.264.88.6l2.22 4.47c.16.327.47.554.83.61l4.97.72c.42.06.77.35.91.75.13.401.018.841-.29 1.13z"></path>
-                  </svg>
-                  }
+                <div class="flex gap-2 text-yellow-400">
+                  <ngx-stars
+                    [readonly]="true"
+                    [size]="1"
+                    [maxStars]="5"
+                    [initialStars]="doctor.average_rating"
+                    [wholeStars]="false"
+                    [color]="'#FFD700'"
+                    [customStarIcons]="urlIcon"></ngx-stars>
                 </div>
               </div>
             </div>
@@ -408,11 +401,11 @@
           </div>
 
           @for (comment of user.comments; track $index) {
-            <div class="flex text-base gap-1 ml-4 pt-2">
-              <strong>{{ comment.text }}</strong>
-            </div>
-          }
+          <div class="flex text-base gap-1 ml-4 pt-2">
+            <strong>{{ comment.text }}</strong>
           </div>
+          }
+        </div>
         }
       </mat-card-content>
     </mat-card>
@@ -494,7 +487,7 @@
             following symptoms and diseases:"
           </h2>
           <ol class="text-xs">
-            <li>{{ doctor.specialization }}</li>
+            <li>{{ doctor.specialty_name }}</li>
           </ol>
         </article>
 
@@ -502,28 +495,28 @@
           <mat-tab label="Specialist" class="!text-sm">
             <div class="flex items-center justify-center gap-3 p-2">
               <span class="bg-slate-300 rounded-2xl text-xs p-1"
-                >{{ doctor.specialization }}
+                >{{ doctor.specialty_name }}
               </span>
             </div>
           </mat-tab>
           <mat-tab label="Specialist city" class="!text-sm">
             <div class="flex items-center justify-center gap-3 p-2">
               <span class="bg-slate-300 rounded-2xl text-xs p-1">{{
-                doctor.specialization
+                doctor.specialty_name
               }}</span>
             </div></mat-tab
           >
           <mat-tab label="Specialist neighborhood" class="!text-sm">
             <div class="flex items-center justify-center gap-3 p-2">
               <span class="bg-slate-300 rounded-2xl text-xs p-1"
-                >{{ doctor.specialization }}
+                >{{ doctor.specialty_name }}
               </span>
             </div>
           </mat-tab>
           <mat-tab label="Diseases" class="!text-sm">
             <div class="flex items-center justify-center gap-3 p-2">
               <span class="bg-slate-300 rounded-2xl text-xs p-1"
-                >{{ doctor.specialization }}
+                >{{ doctor.specialty_name }}
               </span>
             </div>
           </mat-tab>
@@ -539,11 +532,11 @@
           <img
             src="../../../assets/images/ui/svg/online-appointment.svg"
             alt="" />
-          Online appointment of Dr.{{ doctor.name }} office
+          Online Appointment Booking for Top Doctors in Malaysia
         </h2>
         <div
           class="border-2 border-gray-400 rounded-lg border-opacity-30 p-4 mt-4 bg-slate-100">
-          <h2 class="pt-2 font-bold">Title Test</h2>
+          <h2 class="pt-2 font-bold">{{ addressBreifly }}</h2>
           <div class="flex gap-1 pt-2">
             <i class="fa-solid fa-location-dot text-blue-600 text-lg"></i>
             <p>

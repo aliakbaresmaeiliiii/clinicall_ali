@@ -155,12 +155,9 @@
     background: #c1c2c5;
 }
 
-.fill-yellow {
-    fill: #facc15; /* Yellow color for filled stars */
-  }
-  
-  .fill-gray {
-    fill: #e5e7eb; /* Gray color for empty stars */
-  }
-  
- 
+
+::ng-deep .cdk-overlay-pane .mat-mdc-dialog-panel {
+    max-width: 70rem !important;
+}
+
+

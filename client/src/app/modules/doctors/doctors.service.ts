@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, TransferState } from '@angular/core';
+import { inject, Injectable, signal, TransferState } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { DoctorsDTO } from './models/doctors';
@@ -16,6 +16,7 @@ export class DoctorsService {
   config = environment.apiEndPoint;
   doctorImg = new BehaviorSubject<any>([]);
   doctorImg$ = this.doctorImg.asObservable();
+  doctorInfo = signal<any>(null)
 
   getDoctors(): Observable<DoctorsDTO[]> {
     return this.#http.get<DoctorsDTO[]>(`${this.config}admin/doctors`);

@@ -214,7 +214,7 @@ export async function getUserInfo(email: string) {
     `
      SELECT 
        u.*, 
-       c.comment_text, 
+       c.comment, 
        c.created_at AS comment_created_at
      FROM ${coreSchema}.users u
      LEFT JOIN 

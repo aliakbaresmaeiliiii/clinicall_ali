@@ -13,6 +13,12 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  @include mat.dialog-overrides((
+    container-max-width:70rem
+  ));
+}
+
 
 $palettes: (
   "red": mat.$red-palette,

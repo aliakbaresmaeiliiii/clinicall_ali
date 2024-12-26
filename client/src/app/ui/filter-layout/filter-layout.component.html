@@ -6,7 +6,7 @@
   <div class="grid grid-cols-2 gap-4">
     @for (data of tabData(); track $index ; let i = $index) {
     <div
-      class="w-full min-w-96 bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden mx-auto">
+      class="w-full min-w-[36rem] bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden mx-auto">
       <div class="flex justify-between items-center px-6 py-4">
         <div class="flex space-x-4">
           <div>
@@ -24,7 +24,7 @@
               Dr.{{ data.name }}
             </div>
             <div class="text-sm text-gray-500 dark:text-gray-200">
-              {{ data.specialization }}
+              {{ data.specialty_name }}
             </div>
           </div>
         </div>
@@ -35,30 +35,30 @@
           <p>
             <strong>({{ data.click_count }}&nbsp;review)</strong>
           </p>
-          @for (star of [1,2,3,4,5]; track $index) {
-          <svg
-            class="text-yellow-500"
-            [class.fill-yellow]="$index < data.average_rating"
-            [class.fill-gray]="$index >= data.average_rating"
-            fill="none"
-            height="15"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            width="15"
-            xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M17.919 14.32a1.1 1.1 0 0 0-.32.97l.89 4.92a1.08 1.08 0 0 1-.45 1.08 1.1 1.1 0 0 1-1.17.08l-4.43-2.31a1.1 1.1 0 0 0-.5-.13h-.27a.8.8 0 0 0-.27.09l-4.43 2.32c-.22.11-.467.15-.71.11a1.11 1.11 0 0 1-.89-1.27l.89-4.92a1.12 1.12 0 0 0-.32-.98l-3.61-3.5a1.08 1.08 0 0 1-.27-1.13c.135-.396.477-.685.89-.75l4.97-.72c.378-.04.71-.27.88-.61l2.19-4.49q.078-.152.2-.27l.09-.07a.7.7 0 0 1 .16-.13l.11-.04.17-.07h.42c.377.04.708.264.88.6l2.22 4.47c.16.327.47.554.83.61l4.97.72c.42.06.77.35.91.75.13.401.018.841-.29 1.13z"></path>
-          </svg>
-          }
+
+          <div class="flex gap-2 text-yellow-400">
+            <ngx-stars
+              [readonly]="true"
+              [size]="1"
+              [maxStars]="5"
+              [initialStars]="data.average_rating"
+              [wholeStars]="true"
+              [color]="'#FFD700'"
+              [customStarIcons]="urlIcon"
+            ></ngx-stars>
+            <!-- <span style="font-weight: bold; font-size: 20px"
+              >Rating is {{ ratingDisplay }} out of 5</span
+            > -->
+          </div>
+          <!-- @for (star of [1,2,3,4,5]; track $index;let i = $index) {
+       
+          } -->
         </span>
         <span class="flex items-center gap-1">
           <span> 96% User suggestion </span>
           <span>
             <svg
-              class="text-green-700"
+              class="text-green-700 "
               fill="none"
               height="20"
               stroke="currentColor"

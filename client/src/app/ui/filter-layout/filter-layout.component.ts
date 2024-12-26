@@ -9,6 +9,7 @@ import {
   signal,
   Signal,
   TemplateRef,
+  ViewChild,
   viewChild,
 } from '@angular/core';
 import { DoctorsDTO } from '../../modules/doctors/models/doctors';
@@ -20,6 +21,7 @@ import { LikesService } from '../shared-ui/services/likes.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CopyLinkDialogComponent } from '../../shared/components/copy-link-dialog/copy-link-dialog.component';
 import { CustomTabComponent } from '../../shared/components/custom-tab/custom-tab.component';
+import { NgxStarsComponent } from 'ngx-stars';
 
 @Component({
   selector: 'app-filter-layout',
@@ -36,10 +38,15 @@ export class FilterLayoutComponent implements OnInit {
   userData: any;
   likeService = inject(LikesService);
   dialog = inject(MatDialog);
+  @ViewChild(NgxStarsComponent)
+  starsComponent!: NgxStarsComponent;
 
-  get floor() {
-    return Math.floor;
-  }
+  urlIcon = {
+    empty: '../../../assets/images/ui/svg/star-empty.svg',
+    half: '../../../assets/images/ui/svg/star-half.svg',
+    full: '../../../assets/images/ui/svg/star-full.svg',
+  };
+
   templateOne = viewChild.required<TemplateRef<any>>('templateOne');
   templateTwo = viewChild.required<TemplateRef<any>>('templateTwo');
   templateThree = viewChild.required<TemplateRef<any>>('templateThree');
@@ -79,6 +86,7 @@ export class FilterLayoutComponent implements OnInit {
       this.userData = JSON.parse(getUserData).user_id;
     }
   }
+
   setDataInTabs() {
     this.tabs = [
       {
@@ -109,7 +117,7 @@ export class FilterLayoutComponent implements OnInit {
   }
 
   handleTabChange(data: any) {
-    if(data === 'Default'){
+    if (data === 'Default') {
       this.fetchDefaultData();
     }
     if (data.label === 'Default') {
@@ -117,14 +125,14 @@ export class FilterLayoutComponent implements OnInit {
     } else if (data.label === 'Most Popular') {
       this.fetchMostPopularData();
     } else {
-      this.tabData.set([])
+      this.tabData.set([]);
     }
   }
 
   handleChangeValueInput(data: any) {
-    this.featchSpecialty(data)
+    this.featchSpecialty(data);
   }
-
+  getAvrage= 4.2;
   fetchDefaultData() {
     this.doctorService.getDoctors().subscribe((response: any) => {
       const newData = response.data.map((doctor: any) => {
@@ -151,7 +159,13 @@ export class FilterLayoutComponent implements OnInit {
 
   featchSpecialty(option: string) {
     this.doctorService.filterSpeciality(option).subscribe((res: any) => {
-      this.tabData.set(res.data);
+      const newData = res.data.map((doctor: any) => {
+        doctor.profileImage = doctor.profileImage
+          ? `${environment.urlProfileImg}${doctor.profileImage}`
+          : '../../../assets/images/bg-01.png';
+        return doctor;
+      });
+      this.tabData.set(newData);
     });
   }
 
@@ -169,7 +183,6 @@ export class FilterLayoutComponent implements OnInit {
   toggleLike(data: DoctorsDTO, doctor_id: any) {
     this.tabData()[doctor_id].is_liked = !this.tabData()[doctor_id].is_liked;
     const user_id = this.userData;
-
     const payload: likeDTO = {
       doctor_id: data.doctor_id,
       entity_type: data.name,
@@ -183,5 +196,11 @@ export class FilterLayoutComponent implements OnInit {
     this.dialog.open(CopyLinkDialogComponent, {
       data: { link: doctorLink },
     });
+  }
+
+  ratingDisplay: number = 0;
+
+  onRatingSet(rating: number): void {
+    this.ratingDisplay = rating;
   }
 }

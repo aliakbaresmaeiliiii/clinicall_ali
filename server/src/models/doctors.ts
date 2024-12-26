@@ -5,7 +5,7 @@ export interface DoctorsDTO {
   email?: string | null | undefined;
   profileImage?: string | undefined | any;
   department?: string | undefined | any;
-  specialization?: string | undefined | any;
+  specialty_name?: string | undefined | any;
   degree?: string | undefined | any;
   address?: string | undefined | any;
   joingin_date: Date;

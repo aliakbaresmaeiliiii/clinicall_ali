@@ -1,7 +1,9 @@
 .fill-yellow {
-    fill: #FFEB3B;
+    fill: gold;
 }
 
-.fill-gray {
-    fill: gray;
-}
+
+
+.fill-half {
+    fill: linear-gradient(to right, yellow 50%, gray 50%);
+  }

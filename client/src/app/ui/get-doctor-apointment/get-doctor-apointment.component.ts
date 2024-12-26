@@ -5,8 +5,9 @@ import {
   makeStateKey,
   OnInit,
   TransferState,
+  ViewEncapsulation,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
@@ -22,12 +23,14 @@ import { LikesService } from '../shared-ui/services/likes.service';
 import { DialogLocationDrComponent } from './dialog-location-dr/dialog-location-dr.component';
 import { DilogDotorAppointmentComponent } from './dilog-dotor-appointment/dilog-dotor-appointment.component';
 import { ISpecialization } from './models/specializtion.model';
+import { FeedbackComponent } from '../shared-ui/components/feedback/feedback.component';
 
 @Component({
   selector: 'app-get-doctor-apointment',
   standalone: false,
   templateUrl: './get-doctor-apointment.component.html',
   styleUrl: './get-doctor-apointment.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   dialog = inject(MatDialog);
@@ -39,7 +42,11 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   DATA_KEY = makeStateKey<any>('doctorInfo');
   userInfo: UserInfo[] = [];
   toast = inject(ToastrService);
-
+  urlIcon = {
+    empty: '../../../assets/images/ui/svg/star-empty.svg',
+    half: '../../../assets/images/ui/svg/star-half.svg',
+    full: '../../../assets/images/ui/svg/star-full.svg',
+  };
   specialization: ISpecialization[] = [];
   doctorInfo: DoctorsDTO[] = [];
   coordinates: { lat: number; lng: number }[] = [];
@@ -60,7 +67,10 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
 
   createForm() {
     this.commentForm = new FormGroup({
-      comment: new FormControl(''),
+      comment: new FormControl('', [
+        Validators.required,
+        Validators.minLength(4),
+      ]),
     });
   }
 
@@ -71,7 +81,6 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
         const getID = params.get('id');
         this.doctorId = getID;
       });
-
     const getUserData = localStorage.getItem('userData');
     if (getUserData) {
       this.userData = JSON.parse(getUserData);
@@ -84,91 +93,88 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   fetchData(doctorId: number) {
     this.transferState.remove(this.DATA_KEY);
     const storedData = this.transferState.get(this.DATA_KEY, null);
+    if (!storedData) {
+      this.doctorService.doctorDetial(doctorId).subscribe({
+        next: (response: any) => {
+          if (response && response.length > 0) {
+            const newData = response.map((patient: any) => {
+              patient.profileImage = patient.profileImage
+                ? `${environment.urlProfileImg}${patient.profileImage}`
+                : '../../../assets/images/bg-01.png';
+              return patient;
+            });
+            this.doctorInfo = newData;
+            const match = newData[0].address.match(/^Subang Jaya\s*/);
+            this.addressBreifly = match ? match[0] : '';
+            this.doctorService.doctorInfo.set(newData);
 
-    // if (!storedData) {
-    //   this.doctorService
-    //     .getDoctorSpecialization(doctorId)
-    //     .subscribe((special: any) => {
-    //       console.log('special', special);
-    //       this.specialization = special.data;
-    //     });
-    //   this.doctorService.doctorDetial(doctorId).subscribe({
-    //     next: (response: any) => {
-    //       if (response && response.length > 0) {
-    //         const newData = response.map((patient: any) => {
-    //           patient.profileImage = patient.profileImage
-    //             ? `${environment.urlProfileImg}${patient.profileImage}`
-    //             : '../../../assets/images/bg-01.png';
-    //           return patient;
-    //         });
-    //         this.doctorInfo = newData;
-    //         const match = newData[0].address.match(/^Klinik Kesihatan\s*/);
-    //         this.addressBreifly = match ? match[0] : '';
+            this.transferState.set(this.DATA_KEY, this.doctorInfo);
 
-    //         this.transferState.set(this.DATA_KEY, this.doctorInfo);
+            this.coordinates = this.doctorInfo
+              .filter(item => item.location)
+              .map((loc: any) => {
+                return {
+                  lng: loc.location.x,
+                  lat: loc.location.y,
+                };
+              });
+          }
+        },
 
-    //         this.coordinates = this.doctorInfo
-    //           .filter(item => item.location)
-    //           .map((loc: any) => {
-    //             return {
-    //               lng: loc.location.x,
-    //               lat: loc.location.y,
-    //             };
-    //           });
-    //       }
-    //     },
-
-    //     error: e => console.error(e),
-    //     complete: () => console.info('complete'),
-    //   });
-    // } else {
-    //   this.doctorInfo = storedData;
-    //   this.coordinates = this.doctorInfo
-    //     .filter(item => item.location)
-    //     .map((loc: any) => {
-    //       console.log('📌', loc.location);
-    //       return {
-    //         lng: loc.location.x,
-    //         lat: loc.location.y,
-    //       };
-    //     });
-    //   return;
-    // }
+        error: e => console.error(e),
+        complete: () => console.info('complete'),
+      });
+    } else {
+      this.doctorInfo = storedData;
+      this.coordinates = this.doctorInfo
+        .filter(item => item.location)
+        .map((loc: any) => {
+          console.log('📌', loc.location);
+          return {
+            lng: loc.location.x,
+            lat: loc.location.y,
+          };
+        });
+      return;
+    }
   }
 
   toggleText() {
     this.isExpanded = !this.isExpanded;
   }
 
-  comment(doctor_id: number): void {
-    if (this.commentForm.invalid) {
-      this.toast.error('Please enter a valid comment.');
-      return;
-    }
-    this.isShowComment = !this.isShowComment;
-    const comment = this.commentForm.value.comment;
-    const payload: any = {
-      user_id: this.userData.user_id,
-      doctor_id: doctor_id,
-      comment_text: comment,
-      rating: 5,
-    };
-
-    this.doctorService.addComment(payload).subscribe({
-      next: (res: { code: number; message: string } | any) => {
-        if (res.code === 200) {
-          this.getComment()
-          this.toast.success('Message is successfully sent.');
-          this.commentForm.reset();
-        } else {
-          this.toast.error(res.message || 'Failed to send the comment.');
-        }
-      },
-      error: err => {
-        this.toast.error('An error occurred while sending the comment.');
-        console.error('Error:', err);
-      },
+  feedback(doctor_id: number): void {
+    this.dialog.open(FeedbackComponent, {
+      width: '50rem',
     });
+    // if (this.commentForm.invalid) {
+    //   this.toast.error('Please enter a valid comment.');
+    //   return;
+    // }
+    // this.isShowComment = !this.isShowComment;
+    // const comment = this.commentForm.value.comment;
+    // const payload: any = {
+    //   user_id: this.userData.user_id,
+    //   doctor_id: doctor_id,
+    //   comment_text: comment,
+    //   rating: 5,
+    // };
+
+    // this.doctorService.addComment(payload).subscribe({
+    //   next: (res: { code: number; message: string } | any) => {
+    //     if (res.code === 200) {
+    //       this.getComment();
+    //       this.toast.success('Message is successfully sent.');
+    //       this.commentForm.reset();
+    //     } else {
+    //       this.toast.error(res.message || 'Failed to send the comment.');
+    //     }
+    //   },
+    //   error: err => {
+    //     this.toast.error('An error occurred while sending the comment.');
+    //     console.error('Error:', err);
+    //   },
+    // });
   }
 
   getComment() {
@@ -201,7 +207,7 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   }
 
   formatRating(rating: number | string): string {
-    return parseFloat(rating.toString()).toFixed(1);
+    return parseFloat(rating.toString())?.toFixed(1);
   }
 
   shareInfo(docotoInfo: DoctorsDTO) {
@@ -212,7 +218,6 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   }
 
   toggleLike(info: DoctorsDTO, doctor_id: number) {
-    debugger;
     this.doctorInfo[doctor_id].is_liked = !this.doctorInfo[doctor_id].is_liked;
     const user_id = this.userData.user_id;
     const payload: likeDTO = {
