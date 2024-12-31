@@ -2,31 +2,22 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  ElementRef,
-  Inject,
-  TemplateRef,
-  contentChild,
-  contentChildren,
   inject,
   input,
   output,
-  signal,
-  viewChild,
-  viewChildren,
+  TemplateRef
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { map, Observable, startWith } from 'rxjs';
-import { DoctorsService } from '../../../modules/doctors/doctors.service';
-import { MatDividerModule } from '@angular/material/divider';
-import { FilterLayoutComponent } from '../../../ui/filter-layout/filter-layout.component';
+import { DoctorsService } from '../../../modules/doctors/services/doctors.service';
 @Component({
   selector: 'generic-tab',
   imports: [

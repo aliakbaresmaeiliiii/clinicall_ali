@@ -1,27 +1,21 @@
 import {
-  ChangeDetectorRef,
   Component,
-  contentChild,
-  contentChildren,
-  ElementRef,
   inject,
   OnInit,
   signal,
-  Signal,
   TemplateRef,
   ViewChild,
-  viewChild,
+  viewChild
 } from '@angular/core';
-import { DoctorsDTO } from '../../modules/doctors/models/doctors';
-import { DoctorsService } from '../../modules/doctors/doctors.service';
-import { environment } from '../../environments/environment';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { NgxStarsComponent } from 'ngx-stars';
+import { environment } from '../../environments/environment';
+import { DoctorsDTO } from '../../modules/doctors/models/doctors';
+import { CopyLinkDialogComponent } from '../../shared/components/copy-link-dialog/copy-link-dialog.component';
 import { likeDTO } from '../shared-ui/models/like';
 import { LikesService } from '../shared-ui/services/likes.service';
-import { MatDialog } from '@angular/material/dialog';
-import { CopyLinkDialogComponent } from '../../shared/components/copy-link-dialog/copy-link-dialog.component';
-import { CustomTabComponent } from '../../shared/components/custom-tab/custom-tab.component';
-import { NgxStarsComponent } from 'ngx-stars';
+import { DoctorsService } from '../../modules/doctors/services/doctors.service';
 
 @Component({
   selector: 'app-filter-layout',
@@ -79,6 +73,7 @@ export class FilterLayoutComponent implements OnInit {
   }[] = [];
 
   ngOnInit(): void {
+    debugger;
     this.fetchDefaultData();
 
     const getUserData = localStorage.getItem('userData');

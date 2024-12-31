@@ -123,3 +123,12 @@ router.post(
     res.status(200).json(buildResponse);
   })
 );
+router.post(
+  `/admin/insertReviews`,
+  asyncHandler(async (req: Request, res: Response): Promise<any> => {
+    const dataReviews  = req.body;
+    const data = await DoctorsService.insertReviews(dataReviews);
+    const buildResponse = BuildResponse.get(data);
+    res.status(200).json(buildResponse);
+  })
+);

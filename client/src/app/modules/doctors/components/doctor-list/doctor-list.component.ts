@@ -8,10 +8,10 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { AddUserInfoDialogComponent } from '../../users/components/add-user-info-dialog/add-user-info-dialog.component';
-import { FilterComponent } from '../../users/filter/filter.component';
-import { Customers } from '../../users/models/customers';
-import { CustomersService } from '../../users/services/customers.service';
+import { AddUserInfoDialogComponent } from '../../../users/components/add-user-info-dialog/add-user-info-dialog.component';
+import { FilterComponent } from '../../../users/filter/filter.component';
+import { Customers } from '../../../users/models/customers';
+import { CustomersService } from '../../../users/services/customers.service';
 
 @Component({
     selector: 'app-doctor-list',

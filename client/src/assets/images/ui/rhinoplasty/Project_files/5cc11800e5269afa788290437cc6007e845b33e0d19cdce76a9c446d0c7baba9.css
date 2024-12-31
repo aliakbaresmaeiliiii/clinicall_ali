@@ -1,0 +1,96 @@
+
+
+.footer-section[_ngcontent-ng-c19483828] {
+  padding: 151px 0 0px;
+  position: relative;
+  z-index: 1;
+}
+.footer-thumb[_ngcontent-ng-c19483828] {
+  position: absolute;
+  top: 0;
+  left: -46px;
+  z-index: -1;
+}
+.footer-thumb1[_ngcontent-ng-c19483828] {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  text-align: right;
+  z-index: -1;
+}
+.wrapper[_ngcontent-ng-c19483828] {
+  display: inline-flex;
+  list-style: none;
+  width: 100%;
+  font-family: "Poppins", sans-serif;
+  justify-content: center;
+}
+.wrapper[_ngcontent-ng-c19483828]   .icon[_ngcontent-ng-c19483828] {
+  position: relative;
+  background: #fff;
+  border-radius: 50%;
+  margin: 10px;
+  width: 50px;
+  height: 50px;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.wrapper[_ngcontent-ng-c19483828]   .tooltip[_ngcontent-ng-c19483828] {
+  position: absolute;
+  top: 0;
+  font-size: 14px;
+  background: #fff;
+  color: #fff;
+  padding: 5px 8px;
+  border-radius: 5px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.wrapper[_ngcontent-ng-c19483828]   .tooltip[_ngcontent-ng-c19483828]::before {
+  position: absolute;
+  content: "";
+  height: 8px;
+  width: 8px;
+  background: #fff;
+  bottom: -3px;
+  left: 50%;
+  transform: translate(-50%) rotate(45deg);
+  transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.wrapper[_ngcontent-ng-c19483828]   .icon[_ngcontent-ng-c19483828]:hover   .tooltip[_ngcontent-ng-c19483828] {
+  top: -45px;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.wrapper[_ngcontent-ng-c19483828]   .icon[_ngcontent-ng-c19483828]:hover   span[_ngcontent-ng-c19483828], 
+.wrapper[_ngcontent-ng-c19483828]   .icon[_ngcontent-ng-c19483828]:hover   .tooltip[_ngcontent-ng-c19483828] {
+  text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+}
+.wrapper[_ngcontent-ng-c19483828]   .facebook[_ngcontent-ng-c19483828]:hover, 
+.wrapper[_ngcontent-ng-c19483828]   .facebook[_ngcontent-ng-c19483828]:hover   .tooltip[_ngcontent-ng-c19483828], 
+.wrapper[_ngcontent-ng-c19483828]   .facebook[_ngcontent-ng-c19483828]:hover   .tooltip[_ngcontent-ng-c19483828]::before {
+  background: #1877f2;
+  color: #fff;
+}
+.wrapper[_ngcontent-ng-c19483828]   .twitter[_ngcontent-ng-c19483828]:hover, 
+.wrapper[_ngcontent-ng-c19483828]   .twitter[_ngcontent-ng-c19483828]:hover   .tooltip[_ngcontent-ng-c19483828], 
+.wrapper[_ngcontent-ng-c19483828]   .twitter[_ngcontent-ng-c19483828]:hover   .tooltip[_ngcontent-ng-c19483828]::before {
+  background: #1da1f2;
+  color: #fff;
+}
+.wrapper[_ngcontent-ng-c19483828]   .instagram[_ngcontent-ng-c19483828]:hover, 
+.wrapper[_ngcontent-ng-c19483828]   .instagram[_ngcontent-ng-c19483828]:hover   .tooltip[_ngcontent-ng-c19483828], 
+.wrapper[_ngcontent-ng-c19483828]   .instagram[_ngcontent-ng-c19483828]:hover   .tooltip[_ngcontent-ng-c19483828]::before {
+  background: #e4405f;
+  color: #fff;
+}
+/*# sourceMappingURL=5cc11800e5269afa788290437cc6007e845b33e0d19cdce76a9c446d0c7baba9.css.map */

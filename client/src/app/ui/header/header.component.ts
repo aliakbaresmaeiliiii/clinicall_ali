@@ -261,11 +261,16 @@ export class HeaderComponent {
   }
 
   setAppointment() {
-    this.router.navigate(['doctors']);
+    debugger;
+    this.router.navigate(['/doctors']);
   }
 
   loginUser() {
     this.router.navigate(['login']);
+  }
+  
+  loginDoctor(){
+    this.router.navigate(['doctors/request']);
   }
   ngOnDestroy(): void {
     window.removeEventListener('scroll', this.onWindowScroll.bind(this));

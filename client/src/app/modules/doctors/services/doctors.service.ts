@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal, TransferState } from '@angular/core';
-import { environment } from '../../environments/environment';
+import { UserInfo } from 'os';
 import { BehaviorSubject, map, Observable } from 'rxjs';
-import { DoctorsDTO } from './models/doctors';
-import { UserInfo } from '../../shared/models/userInfo';
+import { environment } from '../../../environments/environment';
+import { DoctorsDTO, ReviewsDTO } from '../models/doctors';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +16,7 @@ export class DoctorsService {
   config = environment.apiEndPoint;
   doctorImg = new BehaviorSubject<any>([]);
   doctorImg$ = this.doctorImg.asObservable();
-  doctorInfo = signal<any>(null)
+  doctorInfo = signal<any>(null);
 
   getDoctors(): Observable<DoctorsDTO[]> {
     return this.#http.get<DoctorsDTO[]>(`${this.config}admin/doctors`);
@@ -67,13 +67,23 @@ export class DoctorsService {
     });
   }
 
-  addComment(comment: UserInfo): Observable<string> {
+  addComment(comment: any): Observable<string> {
     return this.#http.post<string>(`${this.config}admin/addComment`, {
       comment,
     });
   }
 
   filterSpeciality(value: string): Observable<string> {
-    return this.#http.post<string>(`${this.config}admin/filterSpeciality`,{value});
+    return this.#http.post<string>(`${this.config}admin/filterSpeciality`, {
+      value,
+    });
+  }
+
+  insertReviews(dataReviews: ReviewsDTO): Observable<ReviewsDTO> {
+    debugger;
+    return this.#http.post<ReviewsDTO>(
+      `${this.config}admin/insertReviews`,
+      dataReviews
+    );
   }
 }

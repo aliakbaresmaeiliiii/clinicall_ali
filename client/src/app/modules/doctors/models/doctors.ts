@@ -4,7 +4,7 @@ export interface DoctorsDTO {
   position?: number | any;
   doctor_id?: any;
   name: string;
-  mobile?: string | undefined | null;
+  contact_info?: string | undefined | null;
   specialty_name?: string | null | undefined;
   dateOfBirth?: string | undefined | any;
   address?: string | null;
@@ -27,4 +27,17 @@ export interface DoctorsDTO {
 export interface LocaitonDTO {
   x: number;
   y: number;
+}
+
+
+export interface ReviewsDTO {
+  doctor_id: number;
+  user_id: number;
+  rating: number;
+  recommendation?: string;
+  professional_demeanor: number;
+  sufficient_time: number;
+  skill: number;
+  staff_behavior: number;
+  clinic_condition: number;
 }

@@ -1,4 +1,4 @@
-@for (item of userData(); track $index) {
+@for (item of doctorInfo; track $index) {
 <div mat-dialog-title class="container breatcome-section">
   <div class="flex items-center gap-2 top-12 left-8 absolute">
     <img
@@ -10,7 +10,7 @@
     <h2 class="!text-white">{{ item.name }}</h2>
   </div>
 </div>
-<mat-dialog-content>
+<mat-dialog-content [formGroup]="feedbackForm">
   <div class="pt-4">
     <h2>How would you rate your experience with the booked appointment?*</h2>
     <div class="flex gap-2 text-yellow-400 py-4">
@@ -20,13 +20,14 @@
         [maxStars]="5"
         [wholeStars]="false"
         [color]="'#FFD700'"
-        [customStarIcons]="urlIcon"></ngx-stars>
+        [customStarIcons]="urlIcon"
+        (ratingOutput)="onRatingSetAppointment($event)"></ngx-stars>
     </div>
     <mat-divider></mat-divider>
     <div class="py-4">
       <h2>Would you recommend the doctor to other users?*</h2>
       <div class="flex gap-4 pt-4">
-        <button dfButton>
+        <button dfButton (click)="recommended(true)">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -47,7 +48,7 @@
           </svg>
           I recommend
         </button>
-        <button dfButton>
+        <button dfButton (click)="doNotRecommended(false)">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -88,7 +89,8 @@
             [maxStars]="5"
             [wholeStars]="false"
             [color]="'#FFD700'"
-            [customStarIcons]="urlIcon"></ngx-stars>
+            [customStarIcons]="urlIcon"
+            (ratingOutput)="onRatingSetPatient($event)"></ngx-stars>
         </div>
       </div>
 
@@ -104,7 +106,8 @@
             [maxStars]="5"
             [wholeStars]="false"
             [color]="'#FFD700'"
-            [customStarIcons]="urlIcon"></ngx-stars>
+            [customStarIcons]="urlIcon"
+            (ratingOutput)="onRatingSetAllocating($event)"></ngx-stars>
         </div>
       </div>
       <div class="flex justify-between items-center">
@@ -116,7 +119,8 @@
             [maxStars]="5"
             [wholeStars]="false"
             [color]="'#FFD700'"
-            [customStarIcons]="urlIcon"></ngx-stars>
+            [customStarIcons]="urlIcon"
+            (ratingOutput)="onRatingSetSkill($event)"></ngx-stars>
         </div>
       </div>
 
@@ -131,12 +135,15 @@
             [maxStars]="5"
             [wholeStars]="false"
             [color]="'#FFD700'"
-            [customStarIcons]="urlIcon"></ngx-stars>
+            [customStarIcons]="urlIcon"
+            (ratingOutput)="onRatingSetProcess($event)"></ngx-stars>
         </div>
       </div>
 
       <div class="flex justify-between items-center">
-        <h2 class="!text-sm">The condition of the clinic environment and waiting room</h2>
+        <h2 class="!text-sm">
+          The condition of the clinic environment and waiting room
+        </h2>
         <div class="flex gap-2 text-yellow-400">
           <ngx-stars
             [readonly]="false"
@@ -144,16 +151,33 @@
             [maxStars]="5"
             [wholeStars]="false"
             [color]="'#FFD700'"
-            [customStarIcons]="urlIcon"></ngx-stars>
+            [customStarIcons]="urlIcon"
+            (ratingOutput)="onRatingSetCondition($event)"></ngx-stars>
         </div>
       </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="py-4">
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>Leave a comment...</mat-label>
+        <textarea formControlName="comment" matInput #message maxlength="256"></textarea>
+        <mat-hint align="start"
+          ><strong>Don't disclose personal info</strong>
+        </mat-hint>
+        <mat-hint align="end">{{ message.value.length }} / 256</mat-hint>
+      </mat-form-field>
     </div>
   </div>
 </mat-dialog-content>
 }
 <mat-dialog-actions align="end">
   <button mat-button mat-dialog-close>Cancel</button>
-  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>
+  <button
+    mat-button
+    [mat-dialog-close]="true"
+    cdkFocusInitial
+    (click)="submitFeedback()"
+    [disabled]="!feedbackForm.valid">
     Submit Your Experience
   </button>
 </mat-dialog-actions>

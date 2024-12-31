@@ -1,13 +1,21 @@
-import { CommentsDTO, DoctorsDTO, likeDTO } from "../../models/doctors";
+import {
+  CommentsDTO,
+  DoctorsDTO,
+  likeDTO,
+  ReviewsDTO,
+} from "../../models/doctors";
+import { ResponseError } from "../../modules/error/response_error";
 import {
   addComment,
   addDoctor,
   checkDoctorPhoneNumberExists,
   doctorDetail,
+  existingFeedback,
   filterSpeciality,
   getDoctors,
   getMostPopularDoctors,
   getSpecialties,
+  insertReviews,
   like,
   logDoctorClick,
   updateDoctor,
@@ -64,7 +72,7 @@ export class DoctorsService {
       return null;
     }
   }
- 
+
   public static async logDoctorClick(doctor_id: number) {
     const data = await logDoctorClick(doctor_id);
     if (data) {
@@ -103,6 +111,18 @@ export class DoctorsService {
       return { message: "ok", data };
     } else {
       return null;
+    }
+  }
+
+  public static async insertReviews(reviewData: ReviewsDTO) {
+    const checkExistingFeedback = await existingFeedback(reviewData);
+    if (checkExistingFeedback.length > 0) {
+      throw new ResponseError.BadRequest(
+        "You have already submitted feedback for this doctor."
+      );
+    } else {
+      const data = await insertReviews(reviewData);
+      return { message: "ok", data };
     }
   }
 }

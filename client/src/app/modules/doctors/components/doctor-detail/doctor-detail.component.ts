@@ -1,9 +1,9 @@
 import { Component, inject, makeStateKey, TransferState } from '@angular/core';
-import { DoctorsDTO } from '../models/doctors';
-import { DoctorsService } from '../doctors.service';
+import { DoctorsDTO } from '../../models/doctors';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { BaseComponent } from '../../../shared/components/base/base.component';
-import { environment } from '../../../environments/environment';
+import { BaseComponent } from '../../../../shared/components/base/base.component';
+import { environment } from '../../../../environments/environment';
+import { DoctorsService } from '../../services/doctors.service';
 
 @Component({
     selector: 'app-doctor-detail',

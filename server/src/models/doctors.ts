@@ -1,7 +1,7 @@
 export interface DoctorsDTO {
   doctor_id: number;
   name?: string | null | undefined;
-  mobile?: string | undefined | null;
+  contact_info?: string | undefined | null;
   email?: string | null | undefined;
   profileImage?: string | undefined | any;
   department?: string | undefined | any;
@@ -31,4 +31,21 @@ export interface CommentsDTO {
   doctor_id: number;
   comment_text: string;
   rating: any;
+}
+
+export interface ReviewsDTO {
+  doctor_id: number;
+  user_id: number;
+  rating: number;
+  comment: string;
+  recommendation?: string;
+  ratings: Ratings;
+}
+
+interface Ratings {
+  professional_demeanor: number;
+  sufficient_time: number;
+  skill: number;
+  staff_behavior: number;
+  clinic_condition: number;
 }

@@ -7,7 +7,6 @@ import {
   TransferState,
 } from '@angular/core';
 import { DoctorsDTO } from '../../modules/doctors/models/doctors';
-import { DoctorsService } from '../../modules/doctors/doctors.service';
 import { ISpecialization } from '../get-doctor-apointment/models/specializtion.model';
 import { environment } from '../../environments/environment';
 import { MatDialog } from '@angular/material/dialog';
@@ -15,6 +14,7 @@ import { CopyLinkDialogComponent } from '../../shared/components/copy-link-dialo
 import { likeDTO } from '../shared-ui/models/like';
 import { LikesService } from '../shared-ui/services/likes.service';
 import { Router } from '@angular/router';
+import { DoctorsService } from '../../modules/doctors/services/doctors.service';
 
 @Component({
   selector: 'app-suggestion-replaced-doctor',

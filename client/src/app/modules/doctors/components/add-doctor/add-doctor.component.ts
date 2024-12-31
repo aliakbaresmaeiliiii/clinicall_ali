@@ -1,24 +1,18 @@
 import {
-  AfterViewChecked,
   AfterViewInit,
   Component,
-  ComponentRef,
   HostListener,
-  inject,
-  ViewChild,
-  ViewContainerRef,
+  inject
 } from '@angular/core';
-import { UniqueNicknameValidator } from '../../../shared/validators/unique-nickname.validators';
-import { DoctorsService } from '../doctors.service';
-import { ErrorStateMatcher } from '@angular/material/core';
 import { AbstractControl, Validators } from '@angular/forms';
-import { banWords } from '../../../shared/validators/ban-words.validators';
-import { BaseComponent } from '../../../shared/components/base/base.component';
-import { debounceTime, min, switchMap } from 'rxjs';
-import { DoctorsDTO } from '../models/doctors';
-import { ShareService } from '../../../shared/services/share.service';
-import { AgePipe } from '../../../shared/pipes/age.pipe';
-import { ImgUploaderComponent } from '../../../shared/components/img-uploader/img-uploader.component';
+import { ErrorStateMatcher } from '@angular/material/core';
+import { debounceTime, switchMap } from 'rxjs';
+import { BaseComponent } from '../../../../shared/components/base/base.component';
+import { AgePipe } from '../../../../shared/pipes/age.pipe';
+import { ShareService } from '../../../../shared/services/share.service';
+import { banWords } from '../../../../shared/validators/ban-words.validators';
+import { UniqueNicknameValidator } from '../../../../shared/validators/unique-nickname.validators';
+import { DoctorsService } from '../../services/doctors.service';
 
 @Component({
     selector: 'app-add-doctor',

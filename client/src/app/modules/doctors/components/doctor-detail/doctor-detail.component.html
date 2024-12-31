@@ -23,8 +23,8 @@
           </div>
           <div class="card__title">{{ doctor.address }}</div>
           <div class="flex items-center mt-3 font-normal text-base">
-            <mat-icon class="text-base">phone</mat-icon>
-            {{ doctor.mobile }}
+            <mat-icon class="text-base">Contact info</mat-icon>
+            {{ doctor.contact_info }}
           </div>
           <div class="grid grid-cols-3 w-full text-center pt-10 pb-2">
             <div>
@@ -53,8 +53,8 @@
               <p class="text-sm opacity-70">{{ doctor.email }}</p>
               <hr class="opacity-40 mb-3" />
 
-              <small class="text-sm opacity-45">Phone:</small>
-              <p class="text-sm opacity-70">{{ doctor.mobile }}</p>
+              <small class="text-sm opacity-45">Contact info:</small>
+              <p class="text-sm opacity-70">{{ doctor.contact_info }}</p>
               <hr class="opacity-40 mb-3" />
 
               <small class="text-sm opacity-45">Address:</small>
@@ -117,8 +117,8 @@
             <p class="opacity-55 text-xs pt-2">{{ doctor.name }}</p>
           </div>
           <div>
-            <strong>Mobile</strong>
-            <p class="opacity-55 text-xs pt-2">{{ doctor.mobile }}</p>
+            <strong>Contact info</strong>
+            <p class="opacity-55 text-xs pt-2">{{ doctor.contact_info }}</p>
           </div>
           <div>
             <strong>Email</strong>

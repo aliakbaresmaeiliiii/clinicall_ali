@@ -1,17 +1,16 @@
 import {
-  ChangeDetectionStrategy,
   Component,
   inject,
-  OnInit,
+  OnInit
 } from '@angular/core';
+import { AngularFireFunctions } from '@angular/fire/compat/functions';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { banWords } from '../../shared/validators/ban-words.validators';
-import { debounceTime, switchMap } from 'rxjs';
-import { DoctorsService } from '../../modules/doctors/doctors.service';
 import AOS from 'aos';
-import { AngularFireFunctions } from '@angular/fire/compat/functions';
 import { ToastrService } from 'ngx-toastr';
+import { debounceTime, switchMap } from 'rxjs';
+import { DoctorsService } from '../../modules/doctors/services/doctors.service';
+import { banWords } from '../../shared/validators/ban-words.validators';
 
 
 @Component({

@@ -1,15 +1,16 @@
 import { Component, inject, input, viewChild } from '@angular/core';
-import { DoctorsService } from './doctors.service';
-import { DoctorsDTO } from './models/doctors';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { SelectionModel } from '@angular/cdk/collections';
 import * as XLSX from 'xlsx';
-import { environment } from '../../environments/environment';
-import { BaseComponent } from '../../shared/components/base/base.component';
+import { PermissionService } from '../../../core/services/permission.service';
+import { environment } from '../../../environments/environment';
+import { BaseComponent } from '../../../shared/components/base/base.component';
+import { DoctorsDTO } from '../models/doctors';
+import { DoctorsService } from '../services/doctors.service';
 import { EditDoctorComponent } from './edit-doctor/edit-doctor.component';
-import { PermissionService } from '../../core/services/permission.service';
+
 
 @Component({
     selector: 'app-doctors',
