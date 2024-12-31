@@ -6,17 +6,19 @@ import { GoogleMapComponent } from '../../shared/components/google-map/google-ma
 import { AgePipe } from '../../shared/pipes/age.pipe';
 import { SharedModule } from '../../shared/shared.module';
 import { PatientsModule } from '../patients/patients.module';
-import { AddDoctorComponent } from './add-doctor/add-doctor.component';
-import { DoctorDetailComponent } from './doctor-detail/doctor-detail.component';
-import { DoctorListComponent } from './doctor-list/doctor-list.component';
-import { DoctorsComponent } from './doctors.component';
-import { EditDoctorComponent } from './edit-doctor/edit-doctor.component';
+import { AddDoctorComponent } from './components/add-doctor/add-doctor.component';
+import { DoctorDetailComponent } from './components/doctor-detail/doctor-detail.component';
+import { DoctorListComponent } from './components/doctor-list/doctor-list.component';
+import { EditDoctorComponent } from './components/edit-doctor/edit-doctor.component';
+import { DoctorsComponent } from './components/doctors.component';
+
 const routes: Routes = [
   {
     path: 'all-doctors',
     component: DoctorsComponent,
     data: { breadcrumb: 'all-doctors' },
   },
+
   {
     path: 'add-doctors',
     component: AddDoctorComponent,

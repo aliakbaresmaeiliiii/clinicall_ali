@@ -9,12 +9,11 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Subject, takeUntil } from 'rxjs';
 import { UserService } from '../../core/services/user.service';
 import { environment } from '../../environments/environment';
-import { DoctorsService } from '../../modules/doctors/doctors.service';
 import { DoctorsDTO } from '../../modules/doctors/models/doctors';
 import { CopyLinkDialogComponent } from '../../shared/components/copy-link-dialog/copy-link-dialog.component';
 import { UserInfo } from '../../shared/models/userInfo';
@@ -24,6 +23,7 @@ import { DialogLocationDrComponent } from './dialog-location-dr/dialog-location-
 import { DilogDotorAppointmentComponent } from './dilog-dotor-appointment/dilog-dotor-appointment.component';
 import { ISpecialization } from './models/specializtion.model';
 import { FeedbackComponent } from '../shared-ui/components/feedback/feedback.component';
+import { DoctorsService } from '../../modules/doctors/services/doctors.service';
 
 @Component({
   selector: 'app-get-doctor-apointment',
@@ -35,6 +35,7 @@ import { FeedbackComponent } from '../shared-ui/components/feedback/feedback.com
 export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   dialog = inject(MatDialog);
   route = inject(ActivatedRoute);
+  router = inject(Router);
   likeService = inject(LikesService);
   doctorService = inject(DoctorsService);
   userService = inject(UserService);
@@ -144,9 +145,14 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   }
 
   feedback(doctor_id: number): void {
-    this.dialog.open(FeedbackComponent, {
-      width: '50rem',
-    });
+    debugger;
+    if (this.userData !== undefined) {
+      this.dialog.open(FeedbackComponent, {
+        width: '50rem',
+      });
+    } else {
+      this.router.navigate(['login']);
+    }
     // if (this.commentForm.invalid) {
     //   this.toast.error('Please enter a valid comment.');
     //   return;

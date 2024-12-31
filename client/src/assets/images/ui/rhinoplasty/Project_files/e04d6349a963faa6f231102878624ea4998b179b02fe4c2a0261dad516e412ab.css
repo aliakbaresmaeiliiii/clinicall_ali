@@ -1,0 +1,28 @@
+
+
+#progress[_ngcontent-ng-c2162436317] {
+  height: 70px;
+  width: 70px;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  display: grid;
+  place-items: center;
+  z-index: 99999;
+  cursor: pointer;
+}
+#progress-value[_ngcontent-ng-c2162436317] {
+  display: block;
+  height: calc(100% - 15px);
+  width: calc(100% - 15px);
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+  font-size: 20px;
+  color: blue;
+}
+/*# sourceMappingURL=e04d6349a963faa6f231102878624ea4998b179b02fe4c2a0261dad516e412ab.css.map */

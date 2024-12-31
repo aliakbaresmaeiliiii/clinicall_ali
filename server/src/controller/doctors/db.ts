@@ -1,5 +1,10 @@
 import { coreSchema, query, RowDataPacket } from "../../bin/mysql";
-import { CommentsDTO, DoctorsDTO, likeDTO } from "../../models/doctors";
+import {
+  CommentsDTO,
+  DoctorsDTO,
+  likeDTO,
+  ReviewsDTO,
+} from "../../models/doctors";
 
 export async function getDoctors(): Promise<any> {
   const result = await query<RowDataPacket>(
@@ -52,7 +57,6 @@ export async function getMostPopularDoctors(): Promise<any> {
   return result;
 }
 
-
 export async function checkDoctorPhoneNumberExists(
   mobile: string
 ): Promise<any> {
@@ -71,14 +75,14 @@ export async function checkDoctorPhoneNumberExists(
 export async function addDoctor(doctorInfo: DoctorsDTO): Promise<any> {
   const result = await query<RowDataPacket[]>(
     `INSERT INTO ${coreSchema}.doctors
-        (name,gender,mobile,degree,dateOfBirth,department,
+        (name,gender,contact_info,degree,dateOfBirth,department,
          age,email,address,profileImage,specialization,joingin_date)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     {
       values: [
         doctorInfo.name,
         doctorInfo.gender,
-        doctorInfo.mobile,
+        doctorInfo.contact_info,
         doctorInfo.degree,
         doctorInfo.dateOfBirth,
         doctorInfo.department,
@@ -235,6 +239,48 @@ export async function filterSpeciality(value: any) {
     `,
     {
       values: [value],
+    }
+  );
+  return result;
+}
+
+export async function existingFeedback(reviewData: ReviewsDTO) {
+  const result = await query<RowDataPacket>(
+    `SELECT * FROM ${coreSchema}.reviews WHERE doctor_id = ? AND user_id =?`,
+    {
+      values: [reviewData.doctor_id, reviewData.user_id],
+    }
+  );
+  return result;
+}
+
+export async function insertReviews(reviewData: ReviewsDTO) {
+  const result = await query<RowDataPacket>(
+    `INSERT INTO ${coreSchema}.reviews
+  (doctor_id,
+    user_id,
+    comment,
+    recommendation,
+    rating,
+    professional_demeanor,
+    sufficient_time,
+    skill,
+    staff_behavior,
+    clinic_condition)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)`,
+    {
+      values: [
+        reviewData.doctor_id,
+        reviewData.user_id,
+        reviewData.comment,
+        reviewData.rating,
+        reviewData.recommendation,
+        reviewData.ratings.professional_demeanor,
+        reviewData.ratings.sufficient_time,
+        reviewData.ratings.skill,
+        reviewData.ratings.staff_behavior,
+        reviewData.ratings.clinic_condition,
+      ],
     }
   );
   return result;

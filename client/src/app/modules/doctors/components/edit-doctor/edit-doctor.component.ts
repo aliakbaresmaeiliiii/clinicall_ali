@@ -4,13 +4,13 @@ import {
   Inject,
   inject,
 } from '@angular/core';
-import { DoctorsService } from '../doctors.service';
-import { DoctorsDTO } from '../models/doctors';
+import { DoctorsDTO } from '../../models/doctors';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { BaseComponent } from '../../../shared/components/base/base.component';
+import { BaseComponent } from '../../../../shared/components/base/base.component';
 import { Validators } from '@angular/forms';
-import { banWords } from '../../../shared/validators/ban-words.validators';
+import { banWords } from '../../../../shared/validators/ban-words.validators';
+import { DoctorsService } from '../../services/doctors.service';
 
 @Component({
     selector: 'app-edit-doctor',

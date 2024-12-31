@@ -1,0 +1,73 @@
+
+
+mat-sidenav[_ngcontent-ng-c2005961251] {
+  background-color: #242525;
+}
+  .mdc-text-field--outlined {
+  --mdc-outlined-text-field-container-shape: 28px;
+}
+  .mat-mdc-select-value-text, 
+mat-option[_ngcontent-ng-c2005961251] {
+  font-size: 12px !important;
+}
+.card[_ngcontent-ng-c2005961251] {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px 25px;
+  gap: 20px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.055);
+}
+.socialContainer[_ngcontent-ng-c2005961251] {
+  width: 52px;
+  height: 52px;
+  background-color: rgb(44, 44, 44);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition-duration: 0.3s;
+  border-radius: 40px;
+}
+.containerOne[_ngcontent-ng-c2005961251]:hover {
+  background-color: #d62976;
+  transition-duration: 0.3s;
+}
+.containerTwo[_ngcontent-ng-c2005961251]:hover {
+  background-color: #00acee;
+  transition-duration: 0.3s;
+}
+.containerThree[_ngcontent-ng-c2005961251]:hover {
+  background-color: #0072b1;
+  transition-duration: 0.3s;
+}
+.containerFour[_ngcontent-ng-c2005961251]:hover {
+  background-color: #128C7E;
+  transition-duration: 0.3s;
+}
+.socialContainer[_ngcontent-ng-c2005961251]:active {
+  transform: scale(0.9);
+  transition-duration: 0.3s;
+}
+.socialSvg[_ngcontent-ng-c2005961251] {
+  width: 17px;
+}
+.socialSvg[_ngcontent-ng-c2005961251]   path[_ngcontent-ng-c2005961251] {
+  fill: rgb(255, 255, 255);
+}
+.socialContainer[_ngcontent-ng-c2005961251]:hover   .socialSvg[_ngcontent-ng-c2005961251] {
+  animation: _ngcontent-ng-c2005961251_slide-in-top 0.3s both;
+}
+@keyframes _ngcontent-ng-c2005961251_slide-in-top {
+  0% {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+/*# sourceMappingURL=5d4cb8f8e99853ab033271c6b21ce0d8b84f862a8e4421355cb7d13809547f54.css.map */
