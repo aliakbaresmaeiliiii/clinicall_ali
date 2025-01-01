@@ -7,8 +7,13 @@ import {
 } from '@angular/animations';
 import { Component, inject, output, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
+interface MenuItem {
+  label: string;
+  icon: string; // The SVG content as a string
+}
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -58,6 +63,64 @@ export class HeaderComponent {
   dialog = inject(MatDialog);
   router = inject(Router);
   userData: string = '';
+  sanitizer = inject(DomSanitizer);
+
+  userMenu: MenuItem[] = [
+    {
+      label: 'User Information',
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+               <path d="M12 2a7 7 0 1 1 0 14 7 7 0 0 1 0-14zm0 16c-4.97 0-9 4.03-9 9h18c0-4.97-4.03-9-9-9z"/>
+             </svg>`,
+    },
+    {
+      label: 'My Appointments',
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+               <path d="M7 2h10v2h5v16H2V4h5V2zm0 4V4H4v16h16V4h-3v2H7zm2 2h6v2H9V8zm0 4h6v2H9v-2z"/>
+             </svg>`,
+    },
+    {
+      label: 'My Orders',
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+               <path d="M7 4v2h10V4h5v16H2V4h5zm0 4v2h10V8H7zm0 4v2h6v-2H7z"/>
+             </svg>`,
+    },
+    {
+      label: 'Chat Page',
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+               <path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm-3 9h-4v-2h4v2zm-6 0H7v-2h4v2zm6-4h-6V5h6v2z"/>
+             </svg>`,
+    },
+    {
+      label: 'Wallet',
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+               <path d="M20 6H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zm-2 10H4V8h14v8zm1-6v2h-6V8h5a1 1 0 0 1 1 1v1z"/>
+             </svg>`,
+    },
+    {
+      label: 'My Transactions',
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+               <path d="M12 4a8 8 0 1 1 0 16 8 8 0 0 1 0-16zm1 5h-2v5h5v-2h-3V9z"/>
+             </svg>`,
+    },
+    {
+      label: 'My Experiences',
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77 5.82 21l1.18-6.88-5-4.87 6.91-1.01L12 2z"/>
+             </svg>`,
+    },
+    {
+      label: 'My List',
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+               <path d="M3 4h18v2H3V4zm0 5h18v2H3V9zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"/>
+             </svg>`,
+    },
+    {
+      label: 'Logout',
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+               <path d="M10 9V5H4v14h6v-4h2v6H2V3h10v6h-2zm10 2h-8v2h8v3l4-4-4-4v3z"/>
+             </svg>`,
+    },
+  ];
 
   private lastScrollPosition = 0;
   bgColor: string = 'default';
@@ -260,16 +323,14 @@ export class HeaderComponent {
     this.hoveredCategoryIndex = index;
   }
 
-  setAppointment() {
-    debugger;
-    this.router.navigate(['/doctors']);
-  }
-
   loginUser() {
     this.router.navigate(['login']);
   }
-  
-  loginDoctor(){
+
+  navigateUrl(menuName: string) {
+    this.router.navigate(['profile']);
+  }
+  loginDoctor() {
     this.router.navigate(['doctors/request']);
   }
   ngOnDestroy(): void {

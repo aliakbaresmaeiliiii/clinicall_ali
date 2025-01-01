@@ -1,0 +1,210 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="desktop:grid grid-cols-2 gap-3">
+    <!-- *****name***** -->
+    <mat-form-field data-testing="name" appearance="outline" class="w-full">
+      <mat-label>name</mat-label>
+      <input
+        type="text"
+        matInput
+        [errorStateMatcher]="matcher"
+        formControlName="name"
+        placeholder="name" />
+      <!-- Error handling -->
+      <mat-error *ngIf="name?.hasError('name') && !name?.hasError('required')"
+        >Please enter a valid name</mat-error
+      >
+      <mat-error *ngIf="name?.hasError('required')"
+        >name is <strong>required</strong></mat-error
+      >
+      <mat-error *ngIf="name?.hasError('minlength')"
+        >name is too short
+        <strong>{{
+          name?.getError('minlength')?.requiredLength
+        }}</strong></mat-error
+      >
+      <mat-error *ngIf="name?.hasError('banWords')"
+        >The value
+        <strong>{{ name?.getError('banWords').bannedWord }} </strong>is
+        banned</mat-error
+      >
+    </mat-form-field>
+
+    <!-- *****lastName***** -->
+    <mat-form-field data-testing="lastName" appearance="outline" class="w-full">
+      <mat-label>lastName</mat-label>
+      <input
+        type="text"
+        matInput
+        [errorStateMatcher]="matcher"
+        formControlName="lastName"
+        placeholder="lastName" />
+      <!-- Error handling -->
+      <mat-error
+        *ngIf="
+          lastName?.hasError('lastName') && !lastName?.hasError('required')
+        "
+        >Please enter a valid lastName</mat-error
+      >
+      <mat-error *ngIf="lastName?.hasError('required')"
+        >lastName is <strong>required</strong></mat-error
+      >
+      <mat-error *ngIf="lastName?.hasError('minlength')"
+        >lastName is too short
+        <strong>{{
+          lastName?.getError('minlength')?.requiredLength
+        }}</strong></mat-error
+      >
+      <mat-error *ngIf="lastName?.hasError('banWords')"
+        >The value
+        <strong>{{ lastName?.getError('banWords').bannedWord }} </strong>is
+        banned</mat-error
+      >
+    </mat-form-field>
+
+    <!-- *****nationalCode***** -->
+    <mat-form-field
+      data-testing="nationalCode"
+      appearance="outline"
+      class="w-full">
+      <mat-label>nationalCode</mat-label>
+      <input
+        type="text"
+        matInput
+        [errorStateMatcher]="matcher"
+        formControlName="nationalCode"
+        placeholder="nationalCode" />
+      <!-- Error handling -->
+      <mat-error
+        *ngIf="
+          nationalCode?.hasError('nationalCode') &&
+          !nationalCode?.hasError('required')
+        "
+        >Please enter a valid nationalCode</mat-error
+      >
+      <mat-error *ngIf="nationalCode?.hasError('required')"
+        >nationalCode is <strong>required</strong></mat-error
+      >
+      <mat-error *ngIf="nationalCode?.hasError('minlength')"
+        >nationalCode is too short
+        <strong>{{
+          nationalCode?.getError('minlength')?.requiredLength
+        }}</strong></mat-error
+      >
+      <mat-error *ngIf="nationalCode?.hasError('banWords')"
+        >The value
+        <strong>{{ nationalCode?.getError('banWords').bannedWord }} </strong>is
+        banned</mat-error
+      >
+    </mat-form-field>
+
+    <!-- *****Year of birth***** -->
+    <mat-form-field appearance="outline" class="w-full mb-1">
+      <mat-label>Choose a date</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        [max]="maxDate"
+        [min]="minDate"
+        formControlName="dateOfBirth" />
+      <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
+      <mat-datepicker-toggle matIconSuffix [for]="picker">
+        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+      </mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field data-testing="gender" appearance="outline" class="w-full">
+      <mat-label>Gender</mat-label>
+      <mat-select formControlName="gender" name="gender">
+        <mat-option *ngFor="let g of genders; trackBy: trackByFn" [value]="g">
+          {{ g }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- *****Town/City***** -->
+    <mat-form-field
+      data-testing="Town/City"
+      appearance="outline"
+      class="w-full">
+      <mat-label>{{ 'Town/City' | titlecase }}</mat-label>
+      <input
+        type="text"
+        matInput
+        [errorStateMatcher]="matcher"
+        formControlName="city"
+        placeholder="City name" />
+      <!-- Error handling -->
+      <mat-error *ngIf="city?.hasError('city') && !city?.hasError('required')"
+        >Please enter a valid city</mat-error
+      >
+      <mat-error *ngIf="city?.hasError('required')"
+        >city is <strong>required</strong></mat-error
+      >
+      <mat-error *ngIf="form.controls.city.hasError('minlength')"
+        >city is too short
+        <strong>{{
+          form.controls.city.getError('minlength')?.requiredLength
+        }}</strong></mat-error
+      >
+      <mat-error *ngIf="city?.hasError('banWords')"
+        >The value
+        <strong>{{ city?.getError('banWords').bannedWord }} </strong>is
+        banned</mat-error
+      >
+    </mat-form-field>
+
+    <!-- *****Contact Number***** -->
+    <mat-form-field data-testing="phone" appearance="outline" class="w-full">
+      <mat-label>Contact Number</mat-label>
+      <div class="custom-phone-input">
+        <ngx-intl-tel-input
+          [cssClass]="'custom'"
+          [preferredCountries]="preferredCountries"
+          [enableAutoCountrySelect]="true"
+          [enablePlaceholder]="true"
+          [searchCountryFlag]="true"
+          [searchCountryField]="[
+            SearchCountryField.Iso2,
+            SearchCountryField.Name
+          ]"
+          [selectFirstCountry]="false"
+          [selectedCountryISO]="CountryISO.India"
+          [maxLength]="15"
+          [phoneValidation]="true"
+          [separateDialCode]="separateDialCode"
+          [numberFormat]="PhoneNumberFormat.National"
+          name="phone"
+          formControlName="phone"
+        >
+        </ngx-intl-tel-input>
+      </div>
+      <mat-error
+        *ngIf="
+          phone?.hasError('phone') &&
+          !phone?.hasError('required')
+        "
+      >
+        Please enter a valid phone number
+      </mat-error>
+      <mat-error *ngIf="phone?.hasError('required')">
+        Phone number is <strong>required</strong>.
+      </mat-error>
+    </mat-form-field>
+    
+  </div>
+
+  <div class="desktop:flex desktop:justify-end w-full gap-3 mt-4">
+    <!-- *****CancelBTN***** -->
+    <button mat-stroked-button type="button" class="w-full">Cancel</button>
+    <!-- *****SaveBTN***** -->
+    <button
+      class="w-full desktop:m-0 tablet:mt-2 mobile:mt-2"
+      mat-flat-button
+      data-testid="login-button"
+      color="primary"
+      type="submit">
+      Update Profile
+    </button>
+  </div>
+</form>

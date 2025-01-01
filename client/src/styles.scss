@@ -20,6 +20,23 @@
 }
 
 
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('/assets/fonts/roboto/CustomFont-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'CustomFont';
+  src: url('/assets/fonts/roboto/CustomFont-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+body {
+  font-family: 'CustomFont', sans-serif;
+}
 $palettes: (
   "red": mat.$red-palette,
   "green": mat.$green-palette,
