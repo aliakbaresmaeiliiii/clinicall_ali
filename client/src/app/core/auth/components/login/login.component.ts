@@ -162,6 +162,7 @@ export class LoginComponent implements OnInit{
         const stroeDataUser = res.data;
         const dataJson = JSON.stringify(stroeDataUser);
         localStorage.setItem('userData', dataJson);
+        debugger;
         if(res.data.roles[0] === 'user'){
           this.router.navigate(['/']);
         }else{

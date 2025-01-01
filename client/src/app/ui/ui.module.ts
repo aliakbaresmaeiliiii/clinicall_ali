@@ -69,8 +69,7 @@ import { SuggustionsServiceComponent } from './suggustions-service/suggustions-s
 import { UserReviewsOfClinicAliComponent } from './user-reviews-of-clinic-ali/user-reviews-of-clinic-ali.component';
 import { YoursDoctorComponent } from './yours-doctor/yours-doctor.component';
 
-
-const routes: Routes = [  
+const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
@@ -87,7 +86,14 @@ const routes: Routes = [
         path: 'doctors/request',
         component: DoctorRequestComponent,
       },
-     
+
+      {
+        path: 'profile',
+        loadChildren: () =>
+          import('./user-profile/user-profile.module').then(
+            m => m.UserProfileModule
+          ),
+      },
 
       { path: 'services', component: ServicesDoctorComponent },
       { path: 'contact-us', component: ContactUsComponent },
@@ -147,7 +153,7 @@ const routes: Routes = [
     DialogLocationDrComponent,
     SuggestionReplacedDoctorComponent,
     DoctorsComponent,
-    DoctorRequestComponent
+    DoctorRequestComponent,
   ],
   imports: [
     CommonModule,
@@ -181,11 +187,7 @@ const routes: Routes = [
     NgxStarsModule,
     MatToolbarModule,
   ],
-  exports: [
-    BlogComponent,
-    MatToolbarModule,
-   
-  ],
+  exports: [BlogComponent, MatToolbarModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class UiModule {}

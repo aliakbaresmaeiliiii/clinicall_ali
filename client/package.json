@@ -55,6 +55,7 @@
     "ngx-countdown": "^18.0.0",
     "ngx-editor": "^18.0.0",
     "ngx-image-compress": "^18.1.5",
+    "ngx-intl-tel-input": "^3.2.0",
     "ngx-mapbox-gl": "^10.0.0",
     "ngx-material-date-fns-adapter": "^19.0.0",
     "ngx-progressbar": "^13.0.0",

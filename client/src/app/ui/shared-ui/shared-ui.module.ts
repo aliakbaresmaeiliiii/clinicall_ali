@@ -12,6 +12,12 @@ import { CustomTitleComponent } from './components/custom-title/custom-title.com
 import { FeedbackComponent } from './components/feedback/feedback.component';
 import { SharedModule } from '../../shared/shared.module';
 import { NgxStarsModule } from 'ngx-stars';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormField } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -23,7 +29,20 @@ import { NgxStarsModule } from 'ngx-stars';
     CustomTitleComponent,
     FeedbackComponent,
   ],
-  imports: [CommonModule, NgxStarsModule,MatCardModule, ButtonComponent, SharedModule],
+  imports: [
+    CommonModule,
+    NgxStarsModule,
+    MatCardModule,
+    ButtonComponent,
+    SharedModule,
+    MatTabsModule,
+    MatDividerModule,
+    MatFormField,
+    MatInputModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatAutocompleteModule,
+  ],
   exports: [
     ServiceSectionComponent,
     CardComponent,
@@ -33,6 +52,13 @@ import { NgxStarsModule } from 'ngx-stars';
     SwiperSliderCardComponent,
     CustomTitleComponent,
     FeedbackComponent,
+    MatTabsModule,
+    MatDividerModule,
+    MatFormField,
+    MatInputModule,
+    ReactiveFormsModule,
+    FormsModule,
+    MatAutocompleteModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
