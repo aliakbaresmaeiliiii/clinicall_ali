@@ -14,7 +14,7 @@ import { PrescriptionMedicine } from "../models/prescription_medicine";
 
 // ****** Auth ******
 
-export async function createUser(data: any) {
+export async function createUser(data: CreateUser) {
   const { password } = data;
   const { confirmPassword } = data;
   const fdPassword = { password, confirmPassword };
@@ -28,11 +28,12 @@ export async function createUser(data: any) {
 
   const result = await query<RowDataPacket>(
     `INSERT INTO ${coreSchema}.users
-    (user_id,userName,email,password,signupStatus,verify_code,createdAt,updatedAt,tokenVerify)
-    VALUES(?,?,?,?,?,?,?,?,?)`,
+    (firstName,lastName,userName,email,password,signupStatus,verify_code,createdAt,updatedAt,tokenVerify)
+    VALUES(?,?,?,?,?,?,?,?,?,?)`,
     {
       values: [
-        newId,
+        data.firstName,
+        data.lastName,
         data.userName,
         data.email,
         hash,

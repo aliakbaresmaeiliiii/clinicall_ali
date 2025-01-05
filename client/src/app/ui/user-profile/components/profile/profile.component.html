@@ -1,30 +1,30 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="desktop:grid grid-cols-2 gap-3">
-    <!-- *****name***** -->
-    <mat-form-field data-testing="name" appearance="outline" class="w-full">
-      <mat-label>name</mat-label>
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-4">
+  <div class="desktop:grid grid-cols-2 gap-4 w-[70rem]">
+    <!-- *****firstName***** -->
+    <mat-form-field data-testing="firstName" appearance="outline" class="w-full">
+      <mat-label>firstName</mat-label>
       <input
         type="text"
         matInput
         [errorStateMatcher]="matcher"
-        formControlName="name"
-        placeholder="name" />
+        formControlName="firstName"
+        placeholder="firstName" />
       <!-- Error handling -->
-      <mat-error *ngIf="name?.hasError('name') && !name?.hasError('required')"
-        >Please enter a valid name</mat-error
+      <mat-error *ngIf="firstName?.hasError('firstName') && !firstName?.hasError('required')"
+        >Please enter a valid firstName</mat-error
       >
-      <mat-error *ngIf="name?.hasError('required')"
-        >name is <strong>required</strong></mat-error
+      <mat-error *ngIf="firstName?.hasError('required')"
+        >firstName is <strong>required</strong></mat-error
       >
-      <mat-error *ngIf="name?.hasError('minlength')"
-        >name is too short
+      <mat-error *ngIf="firstName?.hasError('minlength')"
+        >firstName is too short
         <strong>{{
-          name?.getError('minlength')?.requiredLength
+          firstName?.getError('minlength')?.requiredLength
         }}</strong></mat-error
       >
-      <mat-error *ngIf="name?.hasError('banWords')"
+      <mat-error *ngIf="firstName?.hasError('banWords')"
         >The value
-        <strong>{{ name?.getError('banWords').bannedWord }} </strong>is
+        <strong>{{ firstName?.getError('banWords').bannedWord }} </strong>is
         banned</mat-error
       >
     </mat-form-field>
@@ -61,38 +61,38 @@
       >
     </mat-form-field>
 
-    <!-- *****nationalCode***** -->
+    <!-- *****national_code***** -->
     <mat-form-field
-      data-testing="nationalCode"
+      data-testing="national_code"
       appearance="outline"
       class="w-full">
-      <mat-label>nationalCode</mat-label>
+      <mat-label>national_code</mat-label>
       <input
         type="text"
         matInput
         [errorStateMatcher]="matcher"
-        formControlName="nationalCode"
-        placeholder="nationalCode" />
+        formControlName="national_code"
+        placeholder="national_code" />
       <!-- Error handling -->
       <mat-error
         *ngIf="
-          nationalCode?.hasError('nationalCode') &&
-          !nationalCode?.hasError('required')
+          national_code?.hasError('national_code') &&
+          !national_code?.hasError('required')
         "
-        >Please enter a valid nationalCode</mat-error
+        >Please enter a valid national_code</mat-error
       >
-      <mat-error *ngIf="nationalCode?.hasError('required')"
-        >nationalCode is <strong>required</strong></mat-error
+      <mat-error *ngIf="national_code?.hasError('required')"
+        >national_code is <strong>required</strong></mat-error
       >
-      <mat-error *ngIf="nationalCode?.hasError('minlength')"
-        >nationalCode is too short
+      <mat-error *ngIf="national_code?.hasError('minlength')"
+        >national_code is too short
         <strong>{{
-          nationalCode?.getError('minlength')?.requiredLength
+          national_code?.getError('minlength')?.requiredLength
         }}</strong></mat-error
       >
-      <mat-error *ngIf="nationalCode?.hasError('banWords')"
+      <mat-error *ngIf="national_code?.hasError('banWords')"
         >The value
-        <strong>{{ nationalCode?.getError('banWords').bannedWord }} </strong>is
+        <strong>{{ national_code?.getError('banWords').bannedWord }} </strong>is
         banned</mat-error
       >
     </mat-form-field>
@@ -115,7 +115,7 @@
 
     <mat-form-field data-testing="gender" appearance="outline" class="w-full">
       <mat-label>Gender</mat-label>
-      <mat-select formControlName="gender" name="gender">
+      <mat-select formControlName="gender" name="gender" (selectionChange)="onSelectedChange($event)">
         <mat-option *ngFor="let g of genders; trackBy: trackByFn" [value]="g">
           {{ g }}
         </mat-option>
@@ -155,43 +155,13 @@
     </mat-form-field>
 
     <!-- *****Contact Number***** -->
-    <mat-form-field data-testing="phone" appearance="outline" class="w-full">
-      <mat-label>Contact Number</mat-label>
-      <div class="custom-phone-input">
-        <ngx-intl-tel-input
-          [cssClass]="'custom'"
-          [preferredCountries]="preferredCountries"
-          [enableAutoCountrySelect]="true"
-          [enablePlaceholder]="true"
-          [searchCountryFlag]="true"
-          [searchCountryField]="[
-            SearchCountryField.Iso2,
-            SearchCountryField.Name
-          ]"
-          [selectFirstCountry]="false"
-          [selectedCountryISO]="CountryISO.India"
-          [maxLength]="15"
-          [phoneValidation]="true"
-          [separateDialCode]="separateDialCode"
-          [numberFormat]="PhoneNumberFormat.National"
-          name="phone"
-          formControlName="phone"
-        >
-        </ngx-intl-tel-input>
-      </div>
-      <mat-error
-        *ngIf="
-          phone?.hasError('phone') &&
-          !phone?.hasError('required')
-        "
-      >
-        Please enter a valid phone number
-      </mat-error>
-      <mat-error *ngIf="phone?.hasError('required')">
-        Phone number is <strong>required</strong>.
-      </mat-error>
+    <mat-form-field appearance="outline">
+      <mat-label>Telephone</mat-label>
+      <span matTextPrefix>+60 &nbsp;</span>
+      <input type="tel" formControlName="phoneNumber" matInput placeholder="555-555-1234">
+      <mat-icon matSuffix>mode_edit</mat-icon>
     </mat-form-field>
-    
+
   </div>
 
   <div class="desktop:flex desktop:justify-end w-full gap-3 mt-4">
@@ -200,6 +170,7 @@
     <!-- *****SaveBTN***** -->
     <button
       class="w-full desktop:m-0 tablet:mt-2 mobile:mt-2"
+      [disabled]="!form.valid"
       mat-flat-button
       data-testid="login-button"
       color="primary"

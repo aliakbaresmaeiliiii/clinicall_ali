@@ -145,7 +145,6 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   }
 
   feedback(doctor_id: number): void {
-    debugger;
     if (this.userData !== undefined) {
       this.dialog.open(FeedbackComponent, {
         width: '50rem',

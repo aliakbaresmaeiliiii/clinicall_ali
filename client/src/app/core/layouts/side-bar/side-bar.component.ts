@@ -170,6 +170,7 @@ export class SideBarComponent
   }
 
   logout() {
+    debugger;
     this.router.navigate(['login']);
     localStorage.removeItem('userData');
     localStorage.clear();

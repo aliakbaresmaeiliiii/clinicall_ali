@@ -25,7 +25,6 @@ export class FeedbackComponent implements OnInit {
 
   ngOnInit(): void {
     this.doctorInfo = this.doctorService.doctorInfo();
-    debugger;
     const getUserData = localStorage.getItem('userData');
     if (getUserData) {
       this.userData = JSON.parse(getUserData);
@@ -85,7 +84,6 @@ export class FeedbackComponent implements OnInit {
   }
 
   submitFeedback(): void {
-    debugger;
     if (this.feedbackForm.value) {
       const valueForm = this.feedbackForm.value;
       valueForm.map;

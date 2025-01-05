@@ -73,7 +73,7 @@ export class ConfirmEmailComponent implements OnInit {
       .subscribe(res => {
         if (res) {
           this.#toastrService.success('Login is successful!');
-          this.#router.navigate(['aliakbar/settings']);
+          this.#router.navigate(['/']);
         }
       });
   }

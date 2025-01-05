@@ -73,7 +73,6 @@ export class FilterLayoutComponent implements OnInit {
   }[] = [];
 
   ngOnInit(): void {
-    debugger;
     this.fetchDefaultData();
 
     const getUserData = localStorage.getItem('userData');

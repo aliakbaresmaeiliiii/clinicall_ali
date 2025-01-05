@@ -1,9 +1,9 @@
-import path from 'path'
 import handlebars from 'handlebars'
-import { CreateUser, User } from '../types/user'
+import path from 'path'
 import { EmailProvider } from '../config/email'
-import { readHTMLFile } from './file'
 import { ResponseError } from '../modules/error/response_error'
+import { User } from '../types/user'
+import { readHTMLFile } from './file'
 
 
 const { APP_NAME } = process.env
@@ -18,7 +18,7 @@ class SendMail {
       `../../public/template/email/emailverify.html`
     )
 
-    const subject = 'MindUp Registeration'
+    const subject = 'Yours Doctor Registration'
     // const urlToken = `${BASE_URL_CLIENT}/email/verify?token=${token}`
     const dataTemplate = { APP_NAME, TOKEN }
     const Email = new EmailProvider()
@@ -43,7 +43,7 @@ class SendMail {
       `../../public/templates/emails/register.html`
     )
 
-    const subject = 'MindUp Registeration'
+    const subject = 'Yours Doctor Registeration'
     // const urlToken = `${BASE_URL_CLIENT}/email/verify?token=${token}`
     const dataTemplate = { APP_NAME, TOKEN }
     const Email = new EmailProvider()

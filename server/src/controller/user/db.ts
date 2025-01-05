@@ -109,42 +109,50 @@ export async function comparePassword(data: any): Promise<any> {
 }
 
 export async function updateProfileUser(data: User): Promise<any> {
-  const result = await query<RowDataPacket>(
+  // Perform the update query
+  await query<RowDataPacket>(
     `
       UPDATE ${coreSchema}.users
       SET 
-      userName = ?,
-      gender = ?,
-      phoneNumber = ?,
-      dateOfBirth = ?,
-      address = ?,
-      verify_code = ?,
-      tokenVerify = ?,
-      country = ?,
-      city = ?,
-      state = ?,
-      zipcode = ?
-    WHERE email = ?`,
-
+        firstName = ?,
+        lastName = ?,
+        national_code = ?,
+        dateOfBirth = ?,
+        gender = ?,
+        city = ?,
+        phoneNumber = ?,
+        verify_code = ?,
+        tokenVerify = ?
+      WHERE user_id = ?;
+    `,
     {
       values: [
-        data.userName,
-        data.gender,
-        data.phoneNumber,
+        data.firstName,
+        data.lastName,
+        data.national_code,
         data.dateOfBirth,
-        data.address,
+        data.gender,
+        data.city,
+        data.phoneNumber,
         data.verify_code,
         data.tokenVerify,
-        data.country,
-        data.city,
-        data.state,
-        data.zipcode,
-        data.email,
+        data.user_id,
       ],
     }
   );
-  return result;
+
+  // Fetch the updated user profile
+  const result = await query<RowDataPacket>(
+    `SELECT * FROM ${coreSchema}.users WHERE user_id = ?`,
+    {
+      values: [data.user_id],
+    }
+  );
+
+  return result[0]; // Assuming result is an array of rows
 }
+
+
 
 export async function checkNickName(): Promise<any> {
   const getData = await query<RowDataPacket>(`SELECT * FROM Ali_DB.users`);
