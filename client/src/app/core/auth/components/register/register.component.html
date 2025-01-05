@@ -1,81 +1,142 @@
 <div class="flex content h-full">
-  <section class="w-1/2"> 
-      <div class="left-img"></div>
+  <section class="w-1/2">
+    <div class="left-img"></div>
   </section>
 
   <section class="w-1/2 text-center h-screen">
     <div class="w-2/3 m-auto desktop:mt-20">
       <h3 class="text-left font-extrabold">Sign Up</h3>
-      <h2 class="cursor-pointer flex justify-start text-xs sign-up">
+      <h2 class="cursor-pointer flex justify-start text-xs sign-up py-6">
         Enter details to create your account
       </h2>
-      <div>
-        <form
-          class="grid md:grid-cols-2"
-          [formGroup]="form"
-          (ngSubmit)="onSubmit()">
-          <div>
-            <!-- *****userName***** -->
-            <mat-form-field
-              data-testing="userName"
-              appearance="outline"
-              class="w-full">
-              <mat-label>userName</mat-label>
-              <input
-                type="text"
-                matInput
-                [errorStateMatcher]="matcher"
-                formControlName="userName"
-                placeholder="userName" />
-              <!-- Error handling -->
-              <mat-error
-                *ngIf="
-                  userName?.hasError('userName') &&
-                  !userName?.hasError('required')
-                "
-                >Please enter a valid userName</mat-error
-              >
-              <mat-error *ngIf="userName?.hasError('required')"
-                >userName is <strong>required</strong></mat-error
-              >
-              <mat-error *ngIf="form.controls.userName.hasError('minlength')"
-                >userName is too short
-                <strong>{{
-                  form.controls.userName.getError('minlength')?.requiredLength
-                }}</strong></mat-error
-              >
-              <mat-error *ngIf="userName?.hasError('banWords')"
-                >The value
-                <strong>{{ userName?.getError('banWords').bannedWord }} </strong
-                >is banned</mat-error
-              >
-            </mat-form-field>
-          </div>
+        <form class="flex flex-col gap-2" [formGroup]="form" (ngSubmit)="onSubmit()">
+          <!-- *****firstName***** -->
+          <mat-form-field
+            data-testing="firstName"
+            appearance="outline"
+            class="w-full">
+            <mat-label>firstName</mat-label>
+            <input
+              type="text"
+              matInput
+              [errorStateMatcher]="matcher"
+              formControlName="firstName"
+              placeholder="Name" />
+            <!-- Error handling -->
+            <mat-error
+              *ngIf="firstName?.hasError('firstName') && !firstName?.hasError('required')"
+              >Please enter a valid firstName</mat-error
+            >
+            <mat-error *ngIf="firstName?.hasError('required')"
+              >firstName is <strong>required</strong></mat-error
+            >
+            <mat-error *ngIf="form.controls.firstName.hasError('minlength')"
+              >firstName is too short
+              <strong>{{
+                form.controls.firstName.getError('minlength')?.requiredLength
+              }}</strong></mat-error
+            >
+            <mat-error *ngIf="firstName?.hasError('banWords')"
+              >The value
+              <strong>{{ firstName?.getError('banWords').bannedWord }} </strong>is
+              banned</mat-error
+            >
+          </mat-form-field>
 
-          <div>
-            <!-- *****email***** -->
-            <mat-form-field
-              data-testing="email"
-              appearance="outline"
-              class="w-full">
-              <mat-label>Email</mat-label>
-              <input
-                type="email"
-                matInput
-                [errorStateMatcher]="matcher"
-                formControlName="email"
-                placeholder="email"
-                class="w-full" />
-              <!-- Error handling -->
-              <mat-error
-                *ngIf="email?.hasError('email') && !email?.hasError('required')"
-                >Please enter a valid email address</mat-error
-              >
-              <mat-error *ngIf="email?.hasError('required')"
-                >email is <strong>required</strong></mat-error
-              >
-            </mat-form-field>
-          </div>
+          <!-- *****LastName***** -->
+          <mat-form-field
+            data-testing="lastName"
+            appearance="outline"
+            class="w-full">
+            <mat-label>lastName</mat-label>
+            <input
+              type="text"
+              matInput
+              [errorStateMatcher]="matcher"
+              formControlName="lastName"
+              placeholder="lastName" />
+            <!-- Error handling -->
+            <mat-error
+              *ngIf="
+                lastName?.hasError('lastName') &&
+                !lastName?.hasError('required')
+              "
+              >Please enter a valid lastName</mat-error
+            >
+            <mat-error *ngIf="lastName?.hasError('required')"
+              >lastName is <strong>required</strong></mat-error
+            >
+            <mat-error *ngIf="form.controls.lastName.hasError('minlength')"
+              >lastName is too short
+              <strong>{{
+                form.controls.lastName.getError('minlength')?.requiredLength
+              }}</strong></mat-error
+            >
+            <mat-error *ngIf="lastName?.hasError('banWords')"
+              >The value
+              <strong>{{ lastName?.getError('banWords').bannedWord }} </strong
+              >is banned</mat-error
+            >
+          </mat-form-field>
+
+          <!-- *****userName***** -->
+          <mat-form-field
+            data-testing="userName"
+            appearance="outline"
+            class="w-full">
+            <mat-label>userName</mat-label>
+            <input
+              type="text"
+              matInput
+              [errorStateMatcher]="matcher"
+              formControlName="userName"
+              placeholder="userName" />
+            <!-- Error handling -->
+            <mat-error
+              *ngIf="
+                userName?.hasError('userName') &&
+                !userName?.hasError('required')
+              "
+              >Please enter a valid userName</mat-error
+            >
+            <mat-error *ngIf="userName?.hasError('required')"
+              >userName is <strong>required</strong></mat-error
+            >
+            <mat-error *ngIf="form.controls.userName.hasError('minlength')"
+              >userName is too short
+              <strong>{{
+                form.controls.userName.getError('minlength')?.requiredLength
+              }}</strong></mat-error
+            >
+            <mat-error *ngIf="userName?.hasError('banWords')"
+              >The value
+              <strong>{{ userName?.getError('banWords').bannedWord }} </strong
+              >is banned</mat-error
+            >
+          </mat-form-field>
+
+          <!-- *****email***** -->
+          <mat-form-field
+            data-testing="email"
+            appearance="outline"
+            class="w-full">
+            <mat-label>Email</mat-label>
+            <input
+              type="email"
+              matInput
+              [errorStateMatcher]="matcher"
+              formControlName="email"
+              placeholder="email"
+              class="w-full" />
+            <!-- Error handling -->
+            <mat-error
+              *ngIf="email?.hasError('email') && !email?.hasError('required')"
+              >Please enter a valid email address</mat-error
+            >
+            <mat-error *ngIf="email?.hasError('required')"
+              >email is <strong>required</strong></mat-error
+            >
+          </mat-form-field>
           <div formGroupName="password">
             <!-- *****password***** -->
             <mat-form-field
@@ -143,7 +204,6 @@
             Sign up
           </button>
         </form>
-      </div>
     </div>
   </section>
 </div>

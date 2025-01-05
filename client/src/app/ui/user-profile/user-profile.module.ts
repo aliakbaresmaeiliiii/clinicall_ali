@@ -19,14 +19,23 @@ import { ProfileLayoutComponent } from './components/profile-layout/profile-layo
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { SharedModule } from '../../shared/shared.module';
+import { MatIconModule } from '@angular/material/icon';
 
 export const routes: Routes = [
   {
     path: '',
     component: ProfileLayoutComponent,
+
     children: [
       {
-        path: 'edit-information',
+        path: '',
+        redirectTo: 'user-information',
+        pathMatch: 'full',
+      },
+      {
+        path: 'user-information',
         component: ProfileComponent,
         title: 'user-information',
         data: { icon: 'info' },
@@ -37,6 +46,7 @@ export const routes: Routes = [
         title: 'user-appointments',
         data: { icon: 'fact_check' },
       },
+
       {
         path: 'user-chat-page',
         component: UserChatPageComponent,
@@ -44,17 +54,19 @@ export const routes: Routes = [
         data: { icon: 'chat' },
       },
       {
-        path: 'user-list',
+        path: 'user-lsit',
         component: UserListComponent,
         title: 'user-list',
-        data: { icon: 'format_list_bulleted' },
+        data: { icon: 'chat' },
       },
+
       {
         path: 'user-orders',
         component: UserOrdersComponent,
         title: 'user-orders',
         data: { icon: 'order_approve' },
       },
+
       {
         path: 'user-transactions',
         component: UserTransactionsComponent,
@@ -82,6 +94,7 @@ export const routes: Routes = [
     UserTransactionsComponent,
     UserWalletComponent,
   ],
+
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
@@ -95,8 +108,11 @@ export const routes: Routes = [
     MatCardModule,
     MatDatepickerModule,
     NgxIntlTelInputModule,
-    MatSelectModule
+    MatSelectModule,
+    MatButtonModule,
+    SharedModule,
+    MatIconModule,
   ],
-  schemas:[CUSTOM_ELEMENTS_SCHEMA]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class UserProfileModule {}

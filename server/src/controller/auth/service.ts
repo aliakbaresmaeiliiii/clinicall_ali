@@ -1,15 +1,15 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import ms from "ms";
-import { getUniqueCodev2, getUniqueCodev3 } from "../../helper/common";
-import {useValidation} from "../../helper/use_validation";
-import {ResponseError} from "../../modules/error/response_error";
-import { CreateUser, User } from "../../types/user";
-import {loginSchema, registerSchema} from "./schema";
-import { AppResponse } from "../../types/response.interface";
-import {UserService} from "../user/sercvice";
 import { createUser, getUserByPassword } from "../../bin/db";
+import { getUniqueCodev2, getUniqueCodev3 } from "../../helper/common";
 import SendMail from "../../helper/send_email";
+import { useValidation } from "../../helper/use_validation";
+import { ResponseError } from "../../modules/error/response_error";
+import { AppResponse } from "../../types/response.interface";
+import { CreateUser, User } from "../../types/user";
+import { UserService } from "../user/sercvice";
+import { loginSchema, registerSchema } from "./schema";
 
 const { JWT_SECRET_ACCESS_TOKEN, JWT_SECRET_REFRESH_TOKEN }: any = process.env;
 
@@ -26,14 +26,6 @@ export class AuthService {
       return { message: "the user already exist !", code: 400, currentUser };
     }
 
-    // const getNickName = await UserService.checkNickName(formData.email);
-    // if (getNickName === formData.email) {
-    //   return {
-    //     message: "the nickname is already exist!",
-    //     code: 400,
-    //     getNickName,
-    //   };
-    // }
     const generateToken = {
       code: getUniqueCodev2(),
     };
@@ -92,17 +84,22 @@ export class AuthService {
     const comparePassword = true;
 
     if (comparePassword) {
-      const user = {
-        user_id: userData[0].user_id, 
-        userName: userData[0].userName, 
+      const user: User = {
+        user_id: userData[0].user_id,
+        firstName: userData[0].firstName,
+        lastName: userData[0].lastName,
+        userName: userData[0].userName,
+        gender: userData[0].gender,
+        national_code: userData[0].national_code,
+        city: userData[0].city,
         email: userData[0].email,
         imgUser: userData[0].imgUser,
-        mobile: userData[0].mobile,
+        phoneNumber: userData[0].phoneNumber,
         address: userData[0].address,
         dateOfBirth: userData[0].dateOfBirth,
         tokenVerify: userData[0].tokenVerify,
-        roles: [] as string[],
-        permissions: [] as string[],
+        roles: [],
+        permissions: [],
       };
       userData.forEach((element: any) => {
         if (element.role_name && !user.roles.includes(element.role_name)) {
@@ -128,4 +125,3 @@ export class AuthService {
     }
   }
 }
-

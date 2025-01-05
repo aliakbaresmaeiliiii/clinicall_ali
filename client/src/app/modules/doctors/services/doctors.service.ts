@@ -80,7 +80,6 @@ export class DoctorsService {
   }
 
   insertReviews(dataReviews: ReviewsDTO): Observable<ReviewsDTO> {
-    debugger;
     return this.#http.post<ReviewsDTO>(
       `${this.config}admin/insertReviews`,
       dataReviews

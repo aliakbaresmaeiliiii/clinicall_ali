@@ -3,42 +3,56 @@
     <mat-card appearance="outlined" class="min-h-fit">
       <mat-card-content>
         <div class="flex flex-col items-center">
-          <img
+          <div class="w-24 h-24 mb-3 rounded-full shadow-lg relative">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              class="absolute left-6 top-6 rounded-2xl"
+              width="50"
+              height="50">
+              <circle
+                cx="12"
+                cy="8"
+                r="4"
+                fill="none"
+                stroke="black"
+                stroke-width="2" />
+              <path
+                d="M4 20c0-4 4-6 8-6s8 2 8 6"
+                fill="none"
+                stroke="black"
+                stroke-width="2" />
+            </svg>
+          </div>
+
+          <!-- <img
             class="w-24 h-24 mb-3 rounded-full shadow-lg"
             [src]="userImg"
             alt="Bonnie image"
             width="100%"
-            height="100%" />
+            height="100%" /> -->
           <!-- <h5 class="mb-1 text-xl font-medium">{{ username }}</h5> -->
           <span class="text-sm text-gray-500 dark:text-gray-400 pb-2">{{
             username
           }}</span>
           <mat-divider class="w-64"></mat-divider>
           <div class="p-5">
-            <ng-container
-              *ngFor="
-                let route of settingsRoutes;
-                let i = index;
-                trackBy: trackByFn
-              ">
+            @for (route of settingsRoutes; track $index;let i = $index) {
+
+            <ng-container>
               <a
                 [routerLink]="route?.path"
                 class="hover:bg-blue-300 bg-cover w-64 cursor-pointer hover:shadow-inner flex gap-8 items-center rounded-3xl transition-all ease-linear duration-500 p-2"
-                [ngClass]="{
-                  'selected-menu-item': isRouteActive(route?.path),
-                  'focused-item': focusedRoute === route?.path
-                }"
+                routerLinkActive="bg-blue-500 text-white"
+                [routerLinkActiveOptions]="{ exact: true }"
                 (click)="setFocus(route?.path)">
                 <span class="material-symbols-outlined">
                   {{route?.data?.['icon']}}
                 </span>
                 {{ route?.title }}
-                <!-- <span class="material-symbols-outlined">
-                          {{route?.data?.['icon']}}
-                        </span>
-                        {{ route?.title }} -->
               </a>
             </ng-container>
+            }
           </div>
         </div>
       </mat-card-content>
@@ -63,8 +77,10 @@
             stroke-width="2"
             stroke-linecap="round" />
         </svg>
-        Sort by:</span
-      >
+        <strong>
+          {{ toCamelCase(titleRoute()) }}
+        </strong>
+      </span>
     </div>
     <div
       class="flex flex-wrap justify-center mt-6 overflow-auto border-2 rounded-xl p-2 border-gray-300 max-h-[35rem]">

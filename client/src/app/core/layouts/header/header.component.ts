@@ -81,10 +81,10 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    this.router.navigate(['login']);
+    this.router.navigate(['/login']);
     localStorage.removeItem('userData');
     localStorage.clear();
     sessionStorage.clear();
-    console.log(localStorage.removeItem('userData'));
+    console.log('logout',localStorage.removeItem('userData'));
   }
 }

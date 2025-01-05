@@ -9,6 +9,7 @@ import { Component, inject, output, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import { PermissionService } from '../../core/services/permission.service';
 
 interface MenuItem {
   label: string;
@@ -64,6 +65,7 @@ export class HeaderComponent {
   router = inject(Router);
   userData: string = '';
   sanitizer = inject(DomSanitizer);
+  permissionService = inject(PermissionService);
 
   userMenu: MenuItem[] = [
     {
@@ -79,33 +81,9 @@ export class HeaderComponent {
              </svg>`,
     },
     {
-      label: 'My Orders',
-      icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-               <path d="M7 4v2h10V4h5v16H2V4h5zm0 4v2h10V8H7zm0 4v2h6v-2H7z"/>
-             </svg>`,
-    },
-    {
       label: 'Chat Page',
       icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                <path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm-3 9h-4v-2h4v2zm-6 0H7v-2h4v2zm6-4h-6V5h6v2z"/>
-             </svg>`,
-    },
-    {
-      label: 'Wallet',
-      icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-               <path d="M20 6H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zm-2 10H4V8h14v8zm1-6v2h-6V8h5a1 1 0 0 1 1 1v1z"/>
-             </svg>`,
-    },
-    {
-      label: 'My Transactions',
-      icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-               <path d="M12 4a8 8 0 1 1 0 16 8 8 0 0 1 0-16zm1 5h-2v5h5v-2h-3V9z"/>
-             </svg>`,
-    },
-    {
-      label: 'My Experiences',
-      icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77 5.82 21l1.18-6.88-5-4.87 6.91-1.01L12 2z"/>
              </svg>`,
     },
     {
@@ -115,7 +93,26 @@ export class HeaderComponent {
              </svg>`,
     },
     {
-      label: 'Logout',
+      label: 'My Orders',
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+               <path d="M7 4v2h10V4h5v16H2V4h5zm0 4v2h10V8H7zm0 4v2h6v-2H7z"/>
+             </svg>`,
+    },
+    {
+      label: 'My Transactions',
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+               <path d="M12 4a8 8 0 1 1 0 16 8 8 0 0 1 0-16zm1 5h-2v5h5v-2h-3V9z"/>
+             </svg>`,
+    },
+    {
+      label: 'Wallet',
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+               <path d="M20 6H4a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2zm-2 10H4V8h14v8zm1-6v2h-6V8h5a1 1 0 0 1 1 1v1z"/>
+             </svg>`,
+    },
+
+    {
+      label: 'Log out',
       icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                <path d="M10 9V5H4v14h6v-4h2v6H2V3h10v6h-2zm10 2h-8v2h8v3l4-4-4-4v3z"/>
              </svg>`,
@@ -328,7 +325,47 @@ export class HeaderComponent {
   }
 
   navigateUrl(menuName: string) {
-    this.router.navigate(['profile']);
+    debugger;
+    if (menuName === 'Log out') {
+      debugger;
+      this.router.navigate(['login']);
+      localStorage.removeItem('userData');
+      localStorage.clear();
+      sessionStorage.clear();
+      this.permissionService.clearPermissions();
+    } else {
+      debugger;
+      switch (menuName) {
+        case 'User Information':
+          this.router.navigate(['profile']);
+          break;
+        case 'My Appointments':
+          this.router.navigate(['profile/user-appointments']);
+          break;
+
+        case 'Chat Page':
+          this.router.navigate(['profile/user-chat-page']);
+          break;
+        case 'My List':
+          this.router.navigate(['profile/user-lsit']);
+          break;
+
+        case 'My Orders':
+          this.router.navigate(['profile/user-orders']);
+          break;
+
+        case 'My Transactions':
+          this.router.navigate(['profile/user-transactions']);
+          break;
+
+        case 'Wallet':
+          this.router.navigate(['profile/user-wallet']);
+          break;
+
+        default:
+          break;
+      }
+    }
   }
   loginDoctor() {
     this.router.navigate(['doctors/request']);

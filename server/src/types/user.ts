@@ -3,12 +3,14 @@ import { CommentsDTO } from "../models/doctors";
 export interface User {
   user_id: string;
   userName?: string;
+  firstName?: string;
   lastName?: string;
+  national_code?: string;
   gender?: string;
   email: string;
   phoneNumber?: string;
-  newPassword: string;
-  confirmPassword: string;
+  newPassword?: string;
+  confirmPassword?: string;
   dateOfBirth?: string;
   password?: string | any;
   emailConfirmed?: number;
@@ -22,15 +24,20 @@ export interface User {
   zipcode?: string;
   tokenVerify?: string | null;
   imgUser?: string;
-  role_name: string;
-  permission_name: string;
-  oldPassword: string;
-  comment: CommentsDTO;
+  oldPassword?: string | any;
+  comment?: CommentsDTO;
+  roles: Role[];
+  permissions: Permissions[];
 }
 
 export interface CreateUser {
   user_id: string;
   email: string;
+  firstName?: string;
+  lastName?: string;
+  userName?: string;
+  password: string;
+  confirmPassword: string;
   newPassword: string;
   confirmNewPassword: string;
   language_Id?: number;
@@ -57,4 +64,14 @@ export interface ConfirmEmail {
   email: string;
   user_id?: string;
   verify_code: string;
+}
+
+export interface Role {
+  id: number;
+  role_name?: string;
+}
+
+interface Permissions {
+  id: number;
+  permission_name?: string;
 }
