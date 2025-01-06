@@ -5,11 +5,18 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { Component, inject, output, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  output,
+  signal
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { PermissionService } from '../../core/services/permission.service';
+import { SignalService } from '../shared-ui/services/signal.service';
 
 interface MenuItem {
   label: string;
@@ -66,7 +73,8 @@ export class HeaderComponent {
   userData: string = '';
   sanitizer = inject(DomSanitizer);
   permissionService = inject(PermissionService);
-
+  signalService = inject(SignalService);
+  signalData = computed(() => this.signalService.getData());
   userMenu: MenuItem[] = [
     {
       label: 'User Information',
@@ -291,13 +299,19 @@ export class HeaderComponent {
 
   ngOnInit(): void {
     window.addEventListener('scroll', this.onWindowScroll.bind(this));
+
     if (typeof localStorage !== 'undefined') {
       const getStoreItem = localStorage.getItem('userData');
       if (getStoreItem) {
         const getItem = JSON.parse(getStoreItem);
-        this.userData = getItem.userName;
+        this.userData = getItem.firstName;
       }
     }
+    // effect(() => {
+    //   const value = this.signalService.getUserData();
+    //   debugger;
+    //   console.log('signal', value);
+    // });
   }
 
   onWindowScroll(): void {

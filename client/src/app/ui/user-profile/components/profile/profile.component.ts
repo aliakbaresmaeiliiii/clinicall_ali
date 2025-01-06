@@ -68,17 +68,18 @@ export class ProfileComponent extends BaseComponent implements OnInit {
 
   onSubmit() {
     const user_id = this.userData?.user_id;
-
     const paylod = {
       ...this.form.value,
       user_id,
     };
     if (this.form.value) {
-      debugger;
       this.userService.updateProfile(paylod).subscribe((res: any) => {
         if (res) {
-          console.log('res', res);
+          this.signalService.setData(res);
           this.userData = res;
+          localStorage.clear();
+          const dataJson = JSON.stringify(res);
+          localStorage.setItem('userData', dataJson);
           this.toastrService.success('Profile updated successfully');
         }
       });
