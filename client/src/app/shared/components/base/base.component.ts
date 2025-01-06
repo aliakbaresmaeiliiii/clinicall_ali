@@ -1,9 +1,7 @@
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  OnInit,
-  inject,
+  inject
 } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -12,11 +10,12 @@ import { ToastrService } from 'ngx-toastr';
 import { TokenPermission } from '../../../core/auth/models/user';
 import { AuthService } from '../../../core/services/auth.service';
 import { UserService } from '../../../core/services/user.service';
+import { SignalService } from '../../../ui/shared-ui/services/signal.service';
 
 @Component({
-    template: '',
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    standalone: false
+  template: '',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export abstract class BaseComponent {
   router = inject(Router);
@@ -26,6 +25,7 @@ export abstract class BaseComponent {
   authService = inject(AuthService);
   userService = inject(UserService);
   activatedRoute = inject(ActivatedRoute);
+  signalService = inject(SignalService);
 
   roles!: TokenPermission[];
   years = this.getYears();

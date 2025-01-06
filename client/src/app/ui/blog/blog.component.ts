@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 })
 export class BlogComponent {
   array = 3;
-
+  isLoading: boolean = true;
   posts = [
     {
       title: 'what do you want to know about UI',
@@ -35,4 +35,11 @@ export class BlogComponent {
       img: '../../../assets/images/ui/blog/blog.jpg',
     },
   ];
+
+
+  ngOnInit() {
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000); // Example loading delay
+  }
 }
