@@ -13,5 +13,6 @@ require("../controller/doctors/controller");
 require("../controller/medications/controller");
 require("../controller/diseases/controller");
 require("../controller/prescription-medicine/controller");
-
-
+require("../controller/clinic_services/controller");
+require("../controller/cities/controller");
+require("../controller/insurance/controller");

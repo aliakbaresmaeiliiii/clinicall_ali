@@ -35,4 +35,6 @@ export class ShareService {
     formData.append('file', fileToUpload, fileToUpload.name);
     return this.#http.post(`${this.config}admin/uploadImage`, formData);
   }
+
+
 }
