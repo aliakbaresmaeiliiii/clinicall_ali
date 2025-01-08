@@ -15,4 +15,11 @@
   transition: ease-in-out 0.3s;
 }
 
+.mat-mdc-input-element.mat-mdc-autocomplete-trigger.mat-mdc-form-field-input-control
+{
+  font-size: 12px !important;
+}
+.mdc-floating-label.mat-mdc-floating-label {
+  font-size: 12px !important;
 
+}

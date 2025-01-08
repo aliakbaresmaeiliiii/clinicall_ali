@@ -4,6 +4,7 @@ import { UserInfo } from 'os';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { DoctorsDTO, ReviewsDTO } from '../models/doctors';
+import { InsurancesDTO } from '../models/insureances';
 
 @Injectable({
   providedIn: 'root',
@@ -84,5 +85,20 @@ export class DoctorsService {
       `${this.config}admin/insertReviews`,
       dataReviews
     );
+  }
+
+  getClinicServices(): Observable<any> {
+    return this.#http.get<any>(`${this.config}getClinicServices`);
+  }
+
+  getAllCities(): Observable<any> {
+    return this.#http.get<any>(`${this.config}getAllCities`);
+  }
+
+  filteredNeighbor(city_id: number): Observable<any> {
+    return this.#http.get<any>(`${this.config}filtered_neighbor/${city_id}`);
+  }
+  getAllInsurances(): Observable<InsurancesDTO> {
+    return this.#http.get<InsurancesDTO>(`${this.config}getAllInsurances`);
   }
 }

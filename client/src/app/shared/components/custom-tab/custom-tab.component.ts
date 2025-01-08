@@ -3,10 +3,11 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  CUSTOM_ELEMENTS_SCHEMA,
   inject,
   input,
   output,
-  TemplateRef
+  TemplateRef,
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -33,6 +34,7 @@ import { DoctorsService } from '../../../modules/doctors/services/doctors.servic
     MatDividerModule,
   ],
   providers: [AsyncPipe],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   templateUrl: './custom-tab.component.html',
   styleUrl: './custom-tab.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -80,8 +82,20 @@ export class CustomTabComponent implements AfterViewInit {
   ];
 
   myControl = new FormControl('');
+  clinicServicesForm = new FormControl('');
+  neighborhoodForm = new FormControl('');
+  cityForm = new FormControl('');
+  insuranceForm = new FormControl('');
   specialties: string[] = [];
-  filteredOptions!: Observable<string[]>;
+  clinicServices: string[] = [];
+  cities: string[] = [];
+  insurances: string[] = [];
+  neighborhood: string[] = [];
+  filteredSpeciality!: Observable<string[]>;
+  filteredServices!: Observable<string[]>;
+  filteredCity!: Observable<string[]>;
+  filteredNeighborhood!: Observable<string[]>;
+  filteredInsurance!: Observable<string[]>;
   doctorService = inject(DoctorsService);
   activeFilter = 0;
   tabTitle = output<string>();
@@ -105,18 +119,20 @@ export class CustomTabComponent implements AfterViewInit {
 
   ngOnInit() {
     this.getSpecialties();
+    this.getClinicServices();
+    this.getAllCities();
+    this.getAllInsurances();
   }
 
   getSpecialties() {
     this.doctorService.getSpecialties().subscribe((data: any) => {
       this.specialties = data.data;
-      this.filteredOptions = this.myControl.valueChanges.pipe(
+      this.filteredSpeciality = this.myControl.valueChanges.pipe(
         startWith(''),
         map(value => this._filter(value || ''))
       );
     });
   }
-
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
     const specialtyNames = this.specialties.map(
@@ -127,6 +143,88 @@ export class CustomTabComponent implements AfterViewInit {
     );
   }
 
+  getClinicServices() {
+    this.doctorService.getClinicServices().subscribe(res => {
+      this.clinicServices = res.data;
+      this.filteredServices = this.clinicServicesForm.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterServices(value || ''))
+      );
+    });
+  }
+
+  private _filterServices(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    const serviceName = this.clinicServices.map(
+      (services: any) => services.service_name
+    );
+    return serviceName.filter(option =>
+      option.toLowerCase().includes(filterValue)
+    );
+  }
+
+  getAllCities() {
+    this.doctorService.getAllCities().subscribe(res => {
+      this.cities = res.data;
+      this.filteredCity = this.cityForm.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterCities(value || ''))
+      );
+    });
+  }
+
+  private _filterCities(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    const serviceName = this.cities.map((city: any) => city.name);
+    return serviceName.filter(option =>
+      option.toLowerCase().includes(filterValue)
+    );
+  }
+
+  getValueCity(city_id: number) {
+    this.doctorService.filteredNeighbor(city_id).subscribe(res => {
+      this.neighborhood = res.data;
+      this.filteredNeighborhood = this.neighborhoodForm.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filteredNeighbor(value || ''))
+      );
+    });
+  }
+
+  _filteredNeighbor(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    const neighborName = this.neighborhood.map(
+      (neighbor: any) => neighbor.name
+    );
+    return neighborName.filter(option =>
+      option.toLowerCase().includes(filterValue)
+    );
+  }
+
+  getAllInsurances() {
+    this.doctorService.getAllInsurances().subscribe((res: any) => {
+      console.log(res.data); // Check the structure of the response
+      this.insurances = res.data;
+      this.filteredInsurance = this.insuranceForm.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filterInsurance(value || ''))
+      );
+    });
+  }
+
+  _filterInsurance(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    const insuranceName = this.insurances.map((name: any) => name.name);
+    return insuranceName.filter((option: any) =>
+      option.toLowerCase().includes(filterValue)
+    );
+  }
+
+  restForm(): void {
+    this.neighborhoodForm.reset();
+    this.cityForm.reset();
+  }
+
   getValueSpecialty(option: string) {
     this.valueOfSpeciality = option;
     this.onChangeValueInput.emit(option);
@@ -134,7 +232,7 @@ export class CustomTabComponent implements AfterViewInit {
 
   deleteFilter(value: string) {
     this.valueOfSpeciality = '';
-    this.myControl.reset()
+    this.myControl.reset();
     this.onDeleteValue.emit(value);
   }
   ngAfterViewInit() {

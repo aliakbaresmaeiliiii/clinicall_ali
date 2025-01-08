@@ -37,7 +37,7 @@
           </div>
 
           <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-            @for (option of filteredOptions | async; track option) {
+            @for (option of filteredSpeciality | async; track option) {
             <mat-option
               [value]="option"
               (onSelectionChange)="getValueSpecialty(option)"
@@ -46,6 +46,113 @@
             }
           </mat-autocomplete>
         </mat-form-field>
+
+        <mat-divider></mat-divider>
+        <mat-form-field appearance="outline" class="w-full mt-6">
+          <mat-label>Services</mat-label>
+          <div class="flex">
+            <input
+              type="text"
+              placeholder="Please choose the service you need."
+              aria-label="Number"
+              matInput
+              [formControl]="clinicServicesForm"
+              [matAutocomplete]="services" />
+            <i
+              class="fa-solid fa-xmark"
+              (click)="clinicServicesForm.reset()"></i>
+          </div>
+
+          <mat-autocomplete autoActiveFirstOption #services="matAutocomplete">
+            @for (option of filteredServices | async; track option) {
+            <mat-option
+              [value]="option"
+              (onSelectionChange)="getValueSpecialty(option)"
+              >{{ option }}</mat-option
+            >
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-divider></mat-divider>
+        <div class="flex gap-2">
+          <mat-form-field appearance="outline" class="w-full mt-6">
+            <mat-label>City</mat-label>
+            <div class="flex">
+              <input
+                type="text"
+                placeholder="City"
+                aria-label="City"
+                matInput
+                [formControl]="cityForm"
+                [matAutocomplete]="city" />
+              <i class="fa-solid fa-xmark" (click)="cityForm.reset()"></i>
+            </div>
+
+            <mat-autocomplete autoActiveFirstOption #city="matAutocomplete">
+              @for (option of filteredCity | async; track $index;let i = $index
+              ) {
+              <mat-option
+                [value]="option"
+                (onSelectionChange)="getValueCity(i)"
+                >{{ option }}</mat-option
+              >
+              }
+            </mat-autocomplete>
+          </mat-form-field>
+
+          <mat-form-field
+            appearance="outline"
+            class="w-full mt-6"
+            [attr.aria-disabled]="!cityForm.valid"
+            [disabled]="cityForm.dirty">
+            <mat-label>Neighborhood</mat-label>
+            <div class="flex">
+              <input
+                type="text"
+                placeholder="Neighborhood"
+                aria-label="Number"
+                matInput
+                [formControl]="neighborhoodForm"
+                [matAutocomplete]="neighborhood" />
+              <i class="fa-solid fa-xmark" (click)="restForm()"></i>
+            </div>
+
+            <mat-autocomplete
+              autoActiveFirstOption
+              #neighborhood="matAutocomplete">
+              @for (option of filteredNeighborhood | async; track option) {
+              <mat-option
+                [value]="option"
+                (onSelectionChange)="getValueSpecialty(option)"
+                >{{ option }}</mat-option
+              >
+              }
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <mat-form-field appearance="outline" class="w-full mt-6">
+          <mat-label>Insurance</mat-label>
+          <div class="flex">
+            <input
+              type="text"
+              placeholder="Insurance"
+              aria-label="Number"
+              matInput
+              [formControl]="insuranceForm"
+              [matAutocomplete]="insurance" />
+            <i class="fa-solid fa-xmark" (click)="insuranceForm.reset()"></i>
+          </div>
+          <mat-autocomplete autoActiveFirstOption #insurance="matAutocomplete">
+            <mat-option *ngFor="let option of filteredInsurance | async" [value]="option">
+              {{ option }}  <!-- Use the appropriate property of the object -->
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        
       </mat-tab>
 
       <mat-tab>
@@ -167,7 +274,7 @@
     </div>
     <div
       class="flex flex-wrap justify-center mt-6 overflow-auto border-2 rounded-xl p-2 border-gray-300 max-h-[35rem]">
-      <ng-content ></ng-content>
+      <ng-content></ng-content>
     </div>
   </div>
 </div>
