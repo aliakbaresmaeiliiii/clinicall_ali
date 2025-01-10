@@ -1,27 +1,15 @@
-import { AsyncPipe, CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  CUSTOM_ELEMENTS_SCHEMA,
   inject,
   input,
   output,
-  signal,
-  Signal,
   TemplateRef,
 } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
-import { MatButtonModule } from '@angular/material/button';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatTabsModule } from '@angular/material/tabs';
+import { FormControl } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
 import { DoctorsService } from '../../../../modules/doctors/services/doctors.service';
-import { SharedModule } from '../../../../shared/shared.module';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
 
 @Component({
@@ -83,11 +71,11 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
   cities: string[] = [];
   insurances: string[] = [];
   neighborhood: string[] = [];
-  filteredSpeciality!: Observable<string[]>;
-  filteredServices!: Observable<string[]>;
-  filteredCity!: Observable<{ name: string; city_id: number }[]>;
-  filteredNeighborhood!: Observable<{ name: string; city_id: number }[]>;
-  filteredInsurance!: Observable<string[]>;
+  filteredSpeciality!: Observable<{ name: string; id: number }[]>;
+  filteredServices!: Observable<{ name: string; id: number }[]>;
+  filteredCity!: Observable<{ name: string; id: number }[]>;
+  filteredNeighborhood!: Observable<{ name: string; id: number }[]>;
+  filteredInsurance!: Observable<{ name: string; id: number }[]>;
   doctorService = inject(DoctorsService);
   activeFilter = 0;
   tabTitle = output<string>();
@@ -125,40 +113,44 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
   getSpecialties() {
     this.doctorService.getSpecialties().subscribe((data: any) => {
       this.specialties = data.data;
-      this.filteredSpeciality = this.myControl.valueChanges.pipe(
+      this.filteredSpeciality = this.form.controls.speciality.valueChanges.pipe(
         startWith(''),
-        map(value => this._filter(value || ''))
+        map(value => this._filterSpeciality(value || ''))
       );
     });
   }
-  private _filter(value: string): string[] {
+  private _filterSpeciality(value: string): any[] {
     const filterValue = value.toLowerCase();
-    const specialtyNames = this.specialties.map(
-      (specialty: any) => specialty.name
-    );
-    return specialtyNames.filter(option =>
-      option.toLowerCase().includes(filterValue)
-    );
+    return this.specialties
+      .filter((specialtie: any) =>
+        specialtie.name.toLowerCase().includes(filterValue)
+      )
+      .map((specialtie: any) => ({
+        name: specialtie.name,
+        id: specialtie.id,
+      }));
   }
 
   getClinicServices() {
     this.doctorService.getClinicServices().subscribe(res => {
       this.clinicServices = res.data;
-      this.filteredServices = this.clinicServicesForm.valueChanges.pipe(
+      this.filteredServices = this.form.controls.services.valueChanges.pipe(
         startWith(''),
         map(value => this._filterServices(value || ''))
       );
     });
   }
 
-  private _filterServices(value: string): string[] {
+  private _filterServices(value: string): any[] {
     const filterValue = value.toLowerCase();
-    const serviceName = this.clinicServices.map(
-      (services: any) => services.service_name
-    );
-    return serviceName.filter(option =>
-      option.toLowerCase().includes(filterValue)
-    );
+    return this.clinicServices
+      .filter((service: any) =>
+        service.service_name.toLowerCase().includes(filterValue)
+      )
+      .map((service: any) => ({
+        name: service.service_name,
+        id: service.id,
+      }));
   }
 
   getAllCities() {
@@ -186,17 +178,20 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
     this.doctorService.filteredNeighbor(option.city_id).subscribe(res => {
       this.neighborhood = res.data;
       debugger;
-      this.filteredNeighborhood = this.form.controls.neighborhoodForm.valueChanges.pipe(
-        startWith(''),
-        map(value => this._filterNeighbore(value || ''))
-      );
+      this.filteredNeighborhood =
+        this.form.controls.neighborhoodForm.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filterNeighbore(value || ''))
+        );
     });
   }
 
   private _filterNeighbore(value: string): any[] {
     const filterValue = value.toLowerCase();
     return this.neighborhood
-      .filter((neighborhood: any) => neighborhood.name.toLowerCase().includes(filterValue))
+      .filter((neighborhood: any) =>
+        neighborhood.name.toLowerCase().includes(filterValue)
+      )
       .map((neighborhood: any) => ({
         name: neighborhood.name,
         city_id: neighborhood.id,
@@ -214,12 +209,14 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
     });
   }
 
-  _filterInsurance(value: string): string[] {
+  _filterInsurance(value: string): any[] {
     const filterValue = value.toLowerCase();
-    const insuranceName = this.insurances.map((name: any) => name.name);
-    return insuranceName.filter((option: any) =>
-      option.toLowerCase().includes(filterValue)
-    );
+    return this.insurances
+      .filter((insure: any) => insure.name.toLowerCase().includes(filterValue))
+      .map((i: any) => ({
+        name: i.name,
+        id: i.id,
+      }));
   }
 
   restForm(): void {

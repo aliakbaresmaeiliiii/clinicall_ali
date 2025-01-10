@@ -27,23 +27,22 @@
 
         <!-- tettgeneric -->
         <form action="" [formGroup]="form">
-          <!-- <app-generic-auto-compelete
+          <app-generic-auto-compelete
             [label]="'Specialty and Super-specialty'"
             [placeHolder]="'Test Placeholder'"
             [parentForm]="form"
             [formCrName]="'speciality'"
             [filterOption]="filteredSpeciality"
-            (valueInput)="getValueSpecialty($event)" /> -->
+            (valueInput)="getValueSpecialty($event)" />
           <mat-divider></mat-divider>
 
-          <!-- <app-generic-auto-compelete
+          <app-generic-auto-compelete
             [label]="'Services'"
             [placeHolder]="'Please choose the service you need.'"
             [parentForm]="form"
             [formCrName]="'services'"
             [filterOption]="filteredServices"
-            (valueInput)="getValueService($event)" /> -->
-
+            (valueInput)="getValueService($event)" />
           <mat-divider></mat-divider>
           <app-generic-auto-compelete
             [label]="'City'"
@@ -61,145 +60,14 @@
             [filterOption]="filteredNeighborhood"
             (valueInput)="getValueNeighborhood($event)" />
 
-          <!-- <app-generic-auto-compelete
+          <app-generic-auto-compelete
             [label]="'Insurance'"
             [placeHolder]="'Insurance'"
             [parentForm]="form"
             [formCrName]="'insurance'"
-            [filterOption]="filteredInsurance" /> -->
+            [filterOption]="filteredInsurance" />
         </form>
-
-        <!-- <mat-form-field appearance="outline" class="w-full mt-6">
-          <mat-label>Specialty and Super-specialty</mat-label>
-          <div class="flex">
-            <input
-              type="text"
-              placeholder="Select your desired specialty"
-              aria-label="Number"
-              matInput
-              [formControl]="myControl"
-              [matAutocomplete]="auto" />
-            <i class="fa-solid fa-xmark" (click)="myControl.reset()"></i>
-          </div>
-
-          <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-            @for (option of filteredSpeciality | async; track option) {
-            <mat-option
-              [value]="option"
-              (onSelectionChange)="getValueSpecialty(option)"
-              >{{ option }}</mat-option
-            >
-            }
-          </mat-autocomplete>
-        </mat-form-field> -->
-
-        <!-- <mat-divider></mat-divider>
-        <mat-form-field appearance="outline" class="w-full mt-6">
-          <mat-label>Services</mat-label>
-          <div class="flex">
-            <input
-              type="text"
-              placeholder="Please choose the service you need."
-              aria-label="Number"
-              matInput
-              [formControl]="clinicServicesForm"
-              [matAutocomplete]="services" />
-            <i
-              class="fa-solid fa-xmark"
-              (click)="clinicServicesForm.reset()"></i>
-          </div>
-
-          <mat-autocomplete autoActiveFirstOption #services="matAutocomplete">
-            @for (option of filteredServices | async; track option) {
-            <mat-option
-              [value]="option"
-              (onSelectionChange)="getValueService(option)"
-              >{{ option }}</mat-option
-            >
-            }
-          </mat-autocomplete>
-        </mat-form-field> -->
-
-        <!-- <mat-divider></mat-divider> -->
-        <!-- <div class="flex gap-2">
-          <mat-form-field appearance="outline" class="w-full mt-6">
-            <mat-label>City</mat-label>
-            <div class="flex">
-              <input
-                type="text"
-                placeholder="City"
-                aria-label="City"
-                matInput
-                [formControl]="cityForm"
-                [matAutocomplete]="city" />
-              <i class="fa-solid fa-xmark" (click)="cityForm.reset()"></i>
-            </div>
-
-            <mat-autocomplete autoActiveFirstOption #city="matAutocomplete">
-              @for (option of filteredCity | async; track $index;let i = $index
-              ) {
-              <mat-option
-                [value]="option"
-                (onSelectionChange)="getValueCity(option)"
-                >{{ option }}</mat-option
-              >
-              }
-            </mat-autocomplete>
-          </mat-form-field>
-
-          <mat-form-field
-            appearance="outline"
-            class="w-full mt-6"
-            [attr.aria-disabled]="!cityForm.valid"
-            [disabled]="cityForm.dirty">
-            <mat-label>Neighborhood</mat-label>
-            <div class="flex">
-              <input
-                type="text"
-                placeholder="Neighborhood"
-                aria-label="Number"
-                matInput
-                [formControl]="neighborhoodForm"
-                [matAutocomplete]="neighborhood" />
-              <i class="fa-solid fa-xmark" (click)="restForm()"></i>
-            </div>
-
-            <mat-autocomplete
-              autoActiveFirstOption
-              #neighborhood="matAutocomplete">
-              @for (option of filteredNeighborhood | async; track option) {
-              <mat-option
-                [value]="option"
-                (onSelectionChange)="getValueNeighborhood(option)"
-                >{{ option }}</mat-option
-              >
-              }
-            </mat-autocomplete>
-          </mat-form-field>
-        </div> -->
-
-        <!-- <mat-divider></mat-divider> -->
-
-        <!-- <mat-form-field appearance="outline" class="w-full mt-6">
-          <mat-label>Insurance</mat-label>
-          <div class="flex">
-            <input
-              type="text"
-              placeholder="Insurance"
-              aria-label="Number"
-              matInput
-              [formControl]="insuranceForm"
-              [matAutocomplete]="insurance" />
-            <i class="fa-solid fa-xmark" (click)="insuranceForm.reset()"></i>
-          </div>
-          <mat-autocomplete autoActiveFirstOption #insurance="matAutocomplete">
-            <mat-option
-              *ngFor="let option of filteredInsurance | async"
-              [value]="option">
-              {{ option }}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field> -->
+    
       </mat-tab>
 
       <mat-tab>
@@ -228,65 +96,6 @@
       </mat-tab>
     </mat-tab-group>
 
-    <!-- <hr />
-    <h2 class="pb-2">Services</h2>
-    <hr />
-    <mat-form-field appearance="outline" class="pt-2">
-      <mat-label>Services:</mat-label>
-      <mat-select>
-        @for (dental of dentalServices ; track dental) {
-        <mat-option [value]="dental.id">{{ dental.name }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-    <h2 class="pb-2">Service Type</h2>
-    <hr />
-    <mat-form-field appearance="outline" class="pt-2">
-      <mat-label>Services:</mat-label>
-      <mat-select>
-        @for (dental of dentalServices ; track dental) {
-        <mat-option [value]="dental.id">{{ dental.name }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-    <h2 class="pb-2">Providing physician</h2>
-    <hr />
-    <mat-form-field appearance="outline" class="pt-2">
-      <mat-label>Services:</mat-label>
-      <mat-select>
-        @for (dental of dentalServices ; track dental) {
-        <mat-option [value]="dental.id">{{ dental.name }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-    <h2 class="pb-2">Provider Center</h2>
-    <hr />
-    <mat-form-field appearance="outline" class="pt-2">
-      <mat-label>Services:</mat-label>
-      <mat-select>
-        @for (dental of dentalServices ; track dental) {
-        <mat-option [value]="dental.id">{{ dental.name }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-    <h2 class="pb-2">Price ($)</h2>
-    <hr />
-    <mat-form-field appearance="outline" class="pt-2">
-      <mat-label>Maximum:</mat-label>
-      <mat-select>
-        @for (dental of maximumPrice ; track dental) {
-        <mat-option [value]="dental.id">{{ dental.price }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-    <mat-form-field appearance="outline" class="pt-2">
-      <mat-label>Minimum:</mat-label>
-      <mat-select>
-        @for (dental of minimumPrice ; track dental) {
-        <mat-option [value]="dental.id">{{ dental.price }}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field> -->
   </div>
 
   <div class="bg-slate-100 col-span-7 font-bold p-4 rounded-2xl">
