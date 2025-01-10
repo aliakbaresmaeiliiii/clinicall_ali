@@ -18,7 +18,7 @@ export class GenericAutoCompeleteComponent {
   @Input() placeHolder!: string;
   @Input() parentForm!: FormGroup;
   @Input() formCrName!: string;
-  @Input() filterOption!: Observable<{ name: string, city_id: number }[]>;
+  @Input() filterOption!: Observable<{ name: string, id: number }[]>;
   @Output() valueInput = new EventEmitter<any>();
 
 
