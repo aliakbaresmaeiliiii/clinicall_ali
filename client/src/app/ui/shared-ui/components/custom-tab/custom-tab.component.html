@@ -5,10 +5,11 @@
     <mat-tab-group>
       <mat-tab>
         <div class="mx-4">
-          @if (valueFiltering) { @for (item of valueFiltering; track $index) {
+          @if (valueFiltering) { @for (item of valueFiltering; track $index;let
+          i = $index) {
           <span
             class="bg-gray-300 rounded-2xl w-fit max-w-56 flex items-center gap-4 my-3 px-3"
-            (click)="deleteFilter('Default')"
+            (click)="deleteFilter(i)"
             >{{ item }}
             <i class="fa-solid fa-xmark"></i>
           </span>
@@ -51,6 +52,7 @@
             [fieldCtrl]="'city'"
             [filterOption]="filteredCity"
             (valueInput)="getValueCity($event)" />
+          <mat-divider></mat-divider>
 
           <app-generic-auto-compelete
             [label]="'Neighborhood'"
@@ -59,15 +61,16 @@
             [formCrName]="'neighborhoodForm'"
             [filterOption]="filteredNeighborhood"
             (valueInput)="getValueNeighborhood($event)" />
+          <mat-divider></mat-divider>
 
           <app-generic-auto-compelete
             [label]="'Insurance'"
             [placeHolder]="'Insurance'"
             [parentForm]="form"
             [formCrName]="'insurance'"
-            [filterOption]="filteredInsurance" />
+            [filterOption]="filteredInsurance"
+            (valueInput)="getValueInsurance($event)" />
         </form>
-    
       </mat-tab>
 
       <mat-tab>
@@ -95,7 +98,6 @@
         Content 3
       </mat-tab>
     </mat-tab-group>
-
   </div>
 
   <div class="bg-slate-100 col-span-7 font-bold p-4 rounded-2xl">
