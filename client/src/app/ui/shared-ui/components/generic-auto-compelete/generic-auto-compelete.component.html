@@ -1,0 +1,25 @@
+<form action="" [formGroup]="parentForm">
+  <mat-form-field appearance="outline" class="w-full mt-6">
+    <mat-label>{{label}}</mat-label>
+    <div class="flex">
+      <input
+        type="text"
+        [placeholder]="placeHolder"
+        aria-label="Number"
+        matInput
+        [formControlName]="formCrName"
+        [matAutocomplete]="autoComplete" />
+      <i class="fa-solid fa-xmark" (click)="parentForm.get(formCrName)?.reset()"></i>
+    </div>
+
+    <mat-autocomplete autoActiveFirstOption #autoComplete="matAutocomplete">
+      @for (option of filterOption | async; track option) {
+      <mat-option
+        [value]="option.name"
+        (onSelectionChange)="onValueChange(option)"
+        >{{ option.name }}</mat-option
+      >
+      }
+    </mat-autocomplete>
+  </mat-form-field>
+</form>

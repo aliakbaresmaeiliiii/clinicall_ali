@@ -4,7 +4,7 @@ import {
   CdkDropListGroup,
   DragDropModule,
 } from '@angular/cdk/drag-drop';
-import { CommonModule, DatePipe } from '@angular/common';
+import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -84,21 +84,27 @@ const ANGULR_MATERIAL_MODULES = [
   MatNativeDateModule,
   CopyLinkDialogComponent,
 ];
-const COMMON_MODULES = [CommonModule, ReactiveFormsModule, FormsModule];
-// const SHARED_COMPONENT = [];
+const COMMON_MODULES = [
+  CommonModule,
+  ReactiveFormsModule,
+  FormsModule,
+  AsyncPipe,
+];
+const SHARED_COMPONENT = [
+  SearchBarComponent,
+  RangePickerComponent,
+  LocationAppDialogComponent,
+];
+
+const SHARED_PIPES = [ChunkPipe];
 @NgModule({
-  declarations: [
-    SearchBarComponent,
-    ChunkPipe,
-    RangePickerComponent,
-    LocationAppDialogComponent,
-  ],
+  declarations: [SHARED_COMPONENT, SHARED_PIPES],
   imports: [...COMMON_MODULES, ...ANGULR_MATERIAL_MODULES],
   exports: [
     ...ANGULR_MATERIAL_MODULES,
     ...COMMON_MODULES,
-    ChunkPipe,
-    RangePickerComponent,
+    ...SHARED_COMPONENT,
+    ...SHARED_PIPES,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

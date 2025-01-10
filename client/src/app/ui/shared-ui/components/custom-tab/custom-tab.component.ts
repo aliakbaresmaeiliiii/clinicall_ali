@@ -7,9 +7,11 @@ import {
   inject,
   input,
   output,
+  signal,
+  Signal,
   TemplateRef,
 } from '@angular/core';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -18,28 +20,19 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { map, Observable, startWith } from 'rxjs';
-import { DoctorsService } from '../../../modules/doctors/services/doctors.service';
+import { DoctorsService } from '../../../../modules/doctors/services/doctors.service';
+import { SharedModule } from '../../../../shared/shared.module';
+import { BaseComponent } from '../../../../shared/components/base/base.component';
+
 @Component({
   selector: 'generic-tab',
-  imports: [
-    MatTabsModule,
-    CommonModule,
-    MatButtonModule,
-    MatSelectModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatAutocompleteModule,
-    ReactiveFormsModule,
-    AsyncPipe,
-    MatDividerModule,
-  ],
-  providers: [AsyncPipe],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  standalone: false,
+
   templateUrl: './custom-tab.component.html',
   styleUrl: './custom-tab.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CustomTabComponent implements AfterViewInit {
+export class CustomTabComponent extends BaseComponent implements AfterViewInit {
   filterOptions = [
     { key: 0, label: 'Default' },
     { key: 1, label: 'Most Popular' },
@@ -83,7 +76,6 @@ export class CustomTabComponent implements AfterViewInit {
 
   myControl = new FormControl('');
   clinicServicesForm = new FormControl('');
-  neighborhoodForm = new FormControl('');
   cityForm = new FormControl('');
   insuranceForm = new FormControl('');
   specialties: string[] = [];
@@ -93,15 +85,23 @@ export class CustomTabComponent implements AfterViewInit {
   neighborhood: string[] = [];
   filteredSpeciality!: Observable<string[]>;
   filteredServices!: Observable<string[]>;
-  filteredCity!: Observable<string[]>;
-  filteredNeighborhood!: Observable<string[]>;
+  filteredCity!: Observable<{ name: string; city_id: number }[]>;
+  filteredNeighborhood!: Observable<{ name: string; city_id: number }[]>;
   filteredInsurance!: Observable<string[]>;
   doctorService = inject(DoctorsService);
   activeFilter = 0;
   tabTitle = output<string>();
   onChangeValueInput = output<string>();
   onDeleteValue = output<string>();
-  valueOfSpeciality: string = '';
+  valueFiltering: string[] = [];
+
+  form = this.fb.group({
+    city: [''],
+    neighborhoodForm: [''],
+    speciality: [''],
+    services: [''],
+    insurance: [''],
+  });
 
   tabs = input.required<
     {
@@ -114,8 +114,6 @@ export class CustomTabComponent implements AfterViewInit {
   selectedTemplate!: TemplateRef<any>;
   context: any;
   readonly selectedIndex = input(0);
-
-  constructor() {}
 
   ngOnInit() {
     this.getSpecialties();
@@ -166,39 +164,43 @@ export class CustomTabComponent implements AfterViewInit {
   getAllCities() {
     this.doctorService.getAllCities().subscribe(res => {
       this.cities = res.data;
-      this.filteredCity = this.cityForm.valueChanges.pipe(
+      this.filteredCity = this.form.controls.city.valueChanges.pipe(
         startWith(''),
         map(value => this._filterCities(value || ''))
       );
     });
   }
 
-  private _filterCities(value: string): string[] {
+  private _filterCities(value: string): any[] {
     const filterValue = value.toLowerCase();
-    const serviceName = this.cities.map((city: any) => city.name);
-    return serviceName.filter(option =>
-      option.toLowerCase().includes(filterValue)
-    );
+    return this.cities
+      .filter((city: any) => city.name.toLowerCase().includes(filterValue))
+      .map((city: any) => ({
+        name: city.name,
+        city_id: city.city_id,
+      }));
   }
 
-  getValueCity(city_id: number) {
-    this.doctorService.filteredNeighbor(city_id).subscribe(res => {
+  getValueCity(option: any) {
+    this.valueFiltering.push(option.value);
+    this.doctorService.filteredNeighbor(option.city_id).subscribe(res => {
       this.neighborhood = res.data;
-      this.filteredNeighborhood = this.neighborhoodForm.valueChanges.pipe(
+      debugger;
+      this.filteredNeighborhood = this.form.controls.neighborhoodForm.valueChanges.pipe(
         startWith(''),
-        map(value => this._filteredNeighbor(value || ''))
+        map(value => this._filterNeighbore(value || ''))
       );
     });
   }
 
-  _filteredNeighbor(value: string): string[] {
+  private _filterNeighbore(value: string): any[] {
     const filterValue = value.toLowerCase();
-    const neighborName = this.neighborhood.map(
-      (neighbor: any) => neighbor.name
-    );
-    return neighborName.filter(option =>
-      option.toLowerCase().includes(filterValue)
-    );
+    return this.neighborhood
+      .filter((neighborhood: any) => neighborhood.name.toLowerCase().includes(filterValue))
+      .map((neighborhood: any) => ({
+        name: neighborhood.name,
+        city_id: neighborhood.id,
+      }));
   }
 
   getAllInsurances() {
@@ -221,17 +223,26 @@ export class CustomTabComponent implements AfterViewInit {
   }
 
   restForm(): void {
-    this.neighborhoodForm.reset();
+    this.form.controls.neighborhoodForm.reset();
     this.cityForm.reset();
   }
 
-  getValueSpecialty(option: string) {
-    this.valueOfSpeciality = option;
+  getValueSpecialty(option: any) {
+    this.valueFiltering.push(option);
+    this.onChangeValueInput.emit(option);
+  }
+  getValueService(option: any) {
+    this.valueFiltering.push(option);
     this.onChangeValueInput.emit(option);
   }
 
+  getValueNeighborhood(option: any) {
+    const getValueFilter = option.value;
+    this.valueFiltering.push(getValueFilter);
+  }
+
   deleteFilter(value: string) {
-    this.valueOfSpeciality = '';
+    this.valueFiltering.push('');
     this.myControl.reset();
     this.onDeleteValue.emit(value);
   }
@@ -257,5 +268,9 @@ export class CustomTabComponent implements AfterViewInit {
   setActiveFilter(tab: any) {
     this.activeFilter = tab.key;
     this.tabTitle.emit(tab);
+  }
+
+  get neighborhoodForm() {
+    return this.form.get('neighborhoodForm');
   }
 }

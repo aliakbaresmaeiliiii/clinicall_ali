@@ -309,7 +309,6 @@ export class HeaderComponent {
     }
     // effect(() => {
     //   const value = this.signalService.getUserData();
-    //   debugger;
     //   console.log('signal', value);
     // });
   }
@@ -339,16 +338,13 @@ export class HeaderComponent {
   }
 
   navigateUrl(menuName: string) {
-    debugger;
     if (menuName === 'Log out') {
-      debugger;
       this.router.navigate(['login']);
       localStorage.removeItem('userData');
       localStorage.clear();
       sessionStorage.clear();
       this.permissionService.clearPermissions();
     } else {
-      debugger;
       switch (menuName) {
         case 'User Information':
           this.router.navigate(['profile']);

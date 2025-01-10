@@ -20,7 +20,7 @@ import { RouterModule, RouterOutlet, Routes } from '@angular/router';
 import { NgxStarsModule } from 'ngx-stars';
 import { environment } from '../environments/environment';
 import { ButtonComponent } from '../shared/components/button/button.component';
-import { CustomTabComponent } from '../shared/components/custom-tab/custom-tab.component';
+import { CustomTabComponent } from './shared-ui/components/custom-tab/custom-tab.component';
 import { GoogleMapComponent } from '../shared/components/google-map/google-map.component';
 import { LoaderComponent } from '../shared/components/loader/loader.component';
 import { SocialMediaIconComponent } from '../shared/components/social-media-icon/social-media-icon.component';
@@ -180,7 +180,6 @@ const routes: Routes = [
     MatExpansionModule,
     MatDialogModule,
     SharedUiModule,
-    CustomTabComponent,
     LoaderComponent,
     FloorPipe,
     MatTabsModule,
