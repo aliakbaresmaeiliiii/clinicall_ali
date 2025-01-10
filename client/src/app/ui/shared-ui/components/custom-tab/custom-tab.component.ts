@@ -12,6 +12,10 @@ import { map, Observable, startWith } from 'rxjs';
 import { DoctorsService } from '../../../../modules/doctors/services/doctors.service';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
 
+export interface FilerValue {
+  id: number;
+  name: string;
+}
 @Component({
   selector: 'generic-tab',
   standalone: false,
@@ -71,16 +75,16 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
   cities: string[] = [];
   insurances: string[] = [];
   neighborhood: string[] = [];
-  filteredSpeciality!: Observable<{ name: string; id: number }[]>;
-  filteredServices!: Observable<{ name: string; id: number }[]>;
-  filteredCity!: Observable<{ name: string; id: number }[]>;
-  filteredNeighborhood!: Observable<{ name: string; id: number }[]>;
-  filteredInsurance!: Observable<{ name: string; id: number }[]>;
+  filteredSpeciality!: Observable<FilerValue[]>;
+  filteredServices!: Observable<FilerValue[]>;
+  filteredCity!: Observable<FilerValue[]>;
+  filteredNeighborhood!: Observable<FilerValue[]>;
+  filteredInsurance!: Observable<FilerValue[]>;
   doctorService = inject(DoctorsService);
   activeFilter = 0;
   tabTitle = output<string>();
   onChangeValueInput = output<string>();
-  onDeleteValue = output<string>();
+  onDeleteValue = output<number>();
   valueFiltering: string[] = [];
 
   form = this.fb.group({
@@ -119,7 +123,7 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
       );
     });
   }
-  private _filterSpeciality(value: string): any[] {
+  _filterSpeciality(value: string): FilerValue[] {
     const filterValue = value.toLowerCase();
     return this.specialties
       .filter((specialtie: any) =>
@@ -129,6 +133,11 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
         name: specialtie.name,
         id: specialtie.id,
       }));
+  }
+
+  getValueSpecialty(option: FilerValue) {
+    this.valueFiltering.push(option.name);
+    this.onChangeValueInput.emit(option.name);
   }
 
   getClinicServices() {
@@ -141,7 +150,7 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
     });
   }
 
-  private _filterServices(value: string): any[] {
+  _filterServices(value: string): FilerValue[] {
     const filterValue = value.toLowerCase();
     return this.clinicServices
       .filter((service: any) =>
@@ -151,6 +160,11 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
         name: service.service_name,
         id: service.id,
       }));
+  }
+
+  getValueService(option: FilerValue) {
+    this.valueFiltering.push(option.name);
+    this.onChangeValueInput.emit(option.name);
   }
 
   getAllCities() {
@@ -163,7 +177,7 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
     });
   }
 
-  private _filterCities(value: string): any[] {
+  _filterCities(value: string): any[] {
     const filterValue = value.toLowerCase();
     return this.cities
       .filter((city: any) => city.name.toLowerCase().includes(filterValue))
@@ -173,8 +187,8 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
       }));
   }
 
-  getValueCity(option: any) {
-    this.valueFiltering.push(option.value);
+  getValueCity(option: { name: string; city_id: number }) {
+    this.valueFiltering.push(option.name);
     this.doctorService.filteredNeighbor(option.city_id).subscribe(res => {
       this.neighborhood = res.data;
       debugger;
@@ -186,7 +200,7 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
     });
   }
 
-  private _filterNeighbore(value: string): any[] {
+  _filterNeighbore(value: string): FilerValue[] {
     const filterValue = value.toLowerCase();
     return this.neighborhood
       .filter((neighborhood: any) =>
@@ -194,10 +208,13 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
       )
       .map((neighborhood: any) => ({
         name: neighborhood.name,
-        city_id: neighborhood.id,
+        id: neighborhood.id,
       }));
   }
-
+  getValueNeighborhood(option: FilerValue) {
+    const getValueFilter = option.name;
+    this.valueFiltering.push(getValueFilter);
+  }
   getAllInsurances() {
     this.doctorService.getAllInsurances().subscribe((res: any) => {
       console.log(res.data); // Check the structure of the response
@@ -209,7 +226,12 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
     });
   }
 
-  _filterInsurance(value: string): any[] {
+  getValueInsurance(option: FilerValue) {
+    const getValueFilter = option.name;
+    this.valueFiltering.push(getValueFilter);
+  }
+
+  _filterInsurance(value: string): FilerValue[] {
     const filterValue = value.toLowerCase();
     return this.insurances
       .filter((insure: any) => insure.name.toLowerCase().includes(filterValue))
@@ -224,24 +246,10 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
     this.cityForm.reset();
   }
 
-  getValueSpecialty(option: any) {
-    this.valueFiltering.push(option);
-    this.onChangeValueInput.emit(option);
-  }
-  getValueService(option: any) {
-    this.valueFiltering.push(option);
-    this.onChangeValueInput.emit(option);
-  }
-
-  getValueNeighborhood(option: any) {
-    const getValueFilter = option.value;
-    this.valueFiltering.push(getValueFilter);
-  }
-
-  deleteFilter(value: string) {
-    this.valueFiltering.push('');
-    this.myControl.reset();
-    this.onDeleteValue.emit(value);
+  deleteFilter(index: number) {
+    this.valueFiltering = [];
+    this.form.reset();
+    this.onDeleteValue.emit(index);
   }
   ngAfterViewInit() {
     const data = this.tabs();
@@ -256,7 +264,7 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
     }
   }
 
-  private setSelectedTab(index: number) {
+  setSelectedTab(index: number) {
     const selectedTab = this.tabs()[index];
     this.selectedTemplate = selectedTab.template;
     this.context = { $implicit: selectedTab.context };
