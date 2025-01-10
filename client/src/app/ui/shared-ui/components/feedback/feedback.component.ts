@@ -79,7 +79,6 @@ export class FeedbackComponent implements OnInit {
   }
 
   comment(comment: string): void {
-    debugger
     this.feedbackForm.get('comment')?.setValue(comment);
   }
 

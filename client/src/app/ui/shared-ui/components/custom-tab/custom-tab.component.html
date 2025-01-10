@@ -5,13 +5,14 @@
     <mat-tab-group>
       <mat-tab>
         <div class="mx-4">
-          @if (valueOfSpeciality) {
+          @if (valueFiltering) { @for (item of valueFiltering; track $index) {
           <span
             class="bg-gray-300 rounded-2xl w-fit max-w-56 flex items-center gap-4 my-3 px-3"
             (click)="deleteFilter('Default')"
-            >{{ valueOfSpeciality }}
+            >{{ item }}
             <i class="fa-solid fa-xmark"></i>
           </span>
+          }
           <mat-divider></mat-divider>
           }
         </div>
@@ -23,7 +24,52 @@
             <span class="text-xs"> Clinic Appointment </span>
           </div>
         </ng-template>
-        <mat-form-field appearance="outline" class="w-full mt-6">
+
+        <!-- tettgeneric -->
+        <form action="" [formGroup]="form">
+          <!-- <app-generic-auto-compelete
+            [label]="'Specialty and Super-specialty'"
+            [placeHolder]="'Test Placeholder'"
+            [parentForm]="form"
+            [formCrName]="'speciality'"
+            [filterOption]="filteredSpeciality"
+            (valueInput)="getValueSpecialty($event)" /> -->
+          <mat-divider></mat-divider>
+
+          <!-- <app-generic-auto-compelete
+            [label]="'Services'"
+            [placeHolder]="'Please choose the service you need.'"
+            [parentForm]="form"
+            [formCrName]="'services'"
+            [filterOption]="filteredServices"
+            (valueInput)="getValueService($event)" /> -->
+
+          <mat-divider></mat-divider>
+          <app-generic-auto-compelete
+            [label]="'City'"
+            [placeHolder]="'City'"
+            [parentForm]="form"
+            [fieldCtrl]="'city'"
+            [filterOption]="filteredCity"
+            (valueInput)="getValueCity($event)" />
+
+          <app-generic-auto-compelete
+            [label]="'Neighborhood'"
+            [placeHolder]="'Neighborhood'"
+            [parentForm]="form"
+            [formCrName]="'neighborhoodForm'"
+            [filterOption]="filteredNeighborhood"
+            (valueInput)="getValueNeighborhood($event)" />
+
+          <!-- <app-generic-auto-compelete
+            [label]="'Insurance'"
+            [placeHolder]="'Insurance'"
+            [parentForm]="form"
+            [formCrName]="'insurance'"
+            [filterOption]="filteredInsurance" /> -->
+        </form>
+
+        <!-- <mat-form-field appearance="outline" class="w-full mt-6">
           <mat-label>Specialty and Super-specialty</mat-label>
           <div class="flex">
             <input
@@ -45,9 +91,9 @@
             >
             }
           </mat-autocomplete>
-        </mat-form-field>
+        </mat-form-field> -->
 
-        <mat-divider></mat-divider>
+        <!-- <mat-divider></mat-divider>
         <mat-form-field appearance="outline" class="w-full mt-6">
           <mat-label>Services</mat-label>
           <div class="flex">
@@ -67,15 +113,15 @@
             @for (option of filteredServices | async; track option) {
             <mat-option
               [value]="option"
-              (onSelectionChange)="getValueSpecialty(option)"
+              (onSelectionChange)="getValueService(option)"
               >{{ option }}</mat-option
             >
             }
           </mat-autocomplete>
-        </mat-form-field>
+        </mat-form-field> -->
 
-        <mat-divider></mat-divider>
-        <div class="flex gap-2">
+        <!-- <mat-divider></mat-divider> -->
+        <!-- <div class="flex gap-2">
           <mat-form-field appearance="outline" class="w-full mt-6">
             <mat-label>City</mat-label>
             <div class="flex">
@@ -94,7 +140,7 @@
               ) {
               <mat-option
                 [value]="option"
-                (onSelectionChange)="getValueCity(i)"
+                (onSelectionChange)="getValueCity(option)"
                 >{{ option }}</mat-option
               >
               }
@@ -124,17 +170,17 @@
               @for (option of filteredNeighborhood | async; track option) {
               <mat-option
                 [value]="option"
-                (onSelectionChange)="getValueSpecialty(option)"
+                (onSelectionChange)="getValueNeighborhood(option)"
                 >{{ option }}</mat-option
               >
               }
             </mat-autocomplete>
           </mat-form-field>
-        </div>
+        </div> -->
 
-        <mat-divider></mat-divider>
+        <!-- <mat-divider></mat-divider> -->
 
-        <mat-form-field appearance="outline" class="w-full mt-6">
+        <!-- <mat-form-field appearance="outline" class="w-full mt-6">
           <mat-label>Insurance</mat-label>
           <div class="flex">
             <input
@@ -147,12 +193,13 @@
             <i class="fa-solid fa-xmark" (click)="insuranceForm.reset()"></i>
           </div>
           <mat-autocomplete autoActiveFirstOption #insurance="matAutocomplete">
-            <mat-option *ngFor="let option of filteredInsurance | async" [value]="option">
-              {{ option }}  <!-- Use the appropriate property of the object -->
+            <mat-option
+              *ngFor="let option of filteredInsurance | async"
+              [value]="option">
+              {{ option }}
             </mat-option>
           </mat-autocomplete>
-        </mat-form-field>
-        
+        </mat-form-field> -->
       </mat-tab>
 
       <mat-tab>

@@ -9,14 +9,13 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule, Routes } from '@angular/router';
 import { ChipComponent } from '../../shared/components/chip/chip.component';
-import { CustomTabComponent } from '../../shared/components/custom-tab/custom-tab.component';
 import { AliSelectComponent } from '../../shared/components/select/ali-select/ali-select.component';
 import { OptionComponent } from '../../shared/components/select/option/option.component';
 import { AgePipe } from '../../shared/pipes/age.pipe';
-import { MatTabsModule } from '@angular/material/tabs';
 import { PrescribeMedicationComponent } from './components/prescribe-medication.component';
 
 export const routes: Routes = [
@@ -47,7 +46,6 @@ export const routes: Routes = [
     MatTooltipModule,
     MatDatepickerModule,
     MatIconModule,
-    CustomTabComponent,
     MatTabsModule
   ],
   providers: [AsyncPipe, AgePipe],
