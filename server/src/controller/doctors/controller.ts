@@ -2,8 +2,7 @@ import { asyncHandler } from "../../helper/async-handler";
 import { BuildResponse } from "../../modules/response/app_response";
 import { router } from "../../routes/public";
 import { DoctorsService } from "./service";
-import { Request, Response } from 'express'
-
+import { Request, Response } from "express";
 
 router.get(
   "/admin/doctors",
@@ -114,11 +113,20 @@ router.get(
     res.status(200).json(buildResponse);
   })
 );
-router.post(
-  `/admin/filterSpeciality`,
+router.get(
+  `/admin/filterSpeciality/:value`,
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
-    const queryParams = req.body.value;
+    const queryParams = req.params.value;
     const data = await DoctorsService.filterSpeciality(queryParams);
+    const buildResponse = BuildResponse.get(data);
+    res.status(200).json(buildResponse);
+  })
+);
+router.get(
+  `/admin/filterServicesById/:id`,
+  asyncHandler(async (req: Request, res: Response): Promise<any> => {
+    const queryParams = +req.params.id;
+    const data = await DoctorsService.filterServicesById(queryParams);
     const buildResponse = BuildResponse.get(data);
     res.status(200).json(buildResponse);
   })
@@ -126,7 +134,7 @@ router.post(
 router.post(
   `/admin/insertReviews`,
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
-    const dataReviews  = req.body;
+    const dataReviews = req.body;
     const data = await DoctorsService.insertReviews(dataReviews);
     const buildResponse = BuildResponse.get(data);
     res.status(200).json(buildResponse);

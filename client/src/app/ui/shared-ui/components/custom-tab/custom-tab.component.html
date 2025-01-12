@@ -5,15 +5,13 @@
     <mat-tab-group>
       <mat-tab>
         <div class="mx-4">
-          @if (valueFiltering) { @for (item of valueFiltering; track $index;let
-          i = $index) {
+          @if (valueFiltering) {
           <span
             class="bg-gray-300 rounded-2xl w-fit max-w-56 flex items-center gap-4 my-3 px-3"
-            (click)="deleteFilter(i)"
-            >{{ item }}
+            (click)="deleteFilter(valueFiltering)"
+            >{{ valueFiltering }}
             <i class="fa-solid fa-xmark"></i>
           </span>
-          }
           <mat-divider></mat-divider>
           }
         </div>
@@ -34,7 +32,7 @@
             [parentForm]="form"
             [formCrName]="'speciality'"
             [filterOption]="filteredSpeciality"
-            (valueInput)="getValueSpecialty($event)" />
+            (valueInput)="handleInputChange('speciality', $event)" />
           <mat-divider></mat-divider>
 
           <app-generic-auto-compelete
@@ -43,7 +41,7 @@
             [parentForm]="form"
             [formCrName]="'services'"
             [filterOption]="filteredServices"
-            (valueInput)="getValueService($event)" />
+            (valueInput)="handleInputChange('services', $event)" />
           <mat-divider></mat-divider>
           <app-generic-auto-compelete
             [label]="'City'"
@@ -60,7 +58,7 @@
             [parentForm]="form"
             [formCrName]="'neighborhoodForm'"
             [filterOption]="filteredNeighborhood"
-            (valueInput)="getValueNeighborhood($event)" />
+            (valueInput)="handleInputChange('Neighborhood', $event)" />
           <mat-divider></mat-divider>
 
           <app-generic-auto-compelete
@@ -69,7 +67,7 @@
             [parentForm]="form"
             [formCrName]="'insurance'"
             [filterOption]="filteredInsurance"
-            (valueInput)="getValueInsurance($event)" />
+            (valueInput)="handleInputChange('insurance', $event)" />
         </form>
       </mat-tab>
 
@@ -131,7 +129,7 @@
       }
     </div>
     <div
-      class="flex flex-wrap justify-center mt-6 overflow-auto border-2 rounded-xl p-2 border-gray-300 max-h-[35rem]">
+      class="flex flex-wrap justify-center mt-6 overflow-auto border-2 rounded-xl p-2 border-gray-300 max-h-[35rem] min-h-[35rem]">
       <ng-content></ng-content>
     </div>
   </div>

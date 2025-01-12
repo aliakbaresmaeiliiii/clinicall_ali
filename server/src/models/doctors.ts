@@ -8,15 +8,15 @@ export interface DoctorsDTO {
   specialty_name?: string | undefined | any;
   degree?: string | undefined | any;
   address?: string | undefined | any;
-  joingin_date: Date;
-  gender: string;
-  dateOfBirth: string;
-  age: string;
-  lat: number;
-  lng: number;
-  medical_code: string;
-  description: string;
-  click_count: number;
+  joingin_date?: Date;
+  gender?: string;
+  dateOfBirth?: string;
+  age?: string;
+  lat?: number;
+  lng?: number;
+  medical_code?: string;
+  description?: string;
+  click_count?: number;
 }
 
 export interface likeDTO {

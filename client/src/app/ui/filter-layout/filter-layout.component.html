@@ -6,7 +6,7 @@
   <div class="grid grid-cols-2 gap-4">
     @for (data of tabData(); track $index ; let i = $index) {
     <div
-      class="w-full min-w-[36rem] bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden mx-auto">
+      class="w-full min-w-[36rem] bg-white max-h-72 dark:bg-gray-800 rounded-xl shadow-md overflow-hidden mx-auto">
       <div class="flex justify-between items-center px-6 py-4">
         <div class="flex space-x-4">
           <div>
@@ -44,8 +44,7 @@
               [initialStars]="data.average_rating"
               [wholeStars]="true"
               [color]="'#FFD700'"
-              [customStarIcons]="urlIcon"
-            ></ngx-stars>
+              [customStarIcons]="urlIcon"></ngx-stars>
             <!-- <span style="font-weight: bold; font-size: 20px"
               >Rating is {{ ratingDisplay }} out of 5</span
             > -->
@@ -58,7 +57,7 @@
           <span> 96% User suggestion </span>
           <span>
             <svg
-              class="text-green-700 "
+              class="text-green-700"
               fill="none"
               height="20"
               stroke="currentColor"

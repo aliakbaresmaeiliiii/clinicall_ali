@@ -6,10 +6,10 @@ import { environment } from '../../../../environments/environment';
 import { DoctorsService } from '../../services/doctors.service';
 
 @Component({
-    selector: 'app-doctor-detail',
-    templateUrl: './doctor-detail.component.html',
-    styleUrl: './doctor-detail.component.scss',
-    standalone: false
+  selector: 'app-doctor-detail',
+  templateUrl: './doctor-detail.component.html',
+  styleUrl: './doctor-detail.component.scss',
+  standalone: false,
 })
 export class DoctorDetailComponent extends BaseComponent {
   isMobile = false;
@@ -35,8 +35,7 @@ export class DoctorDetailComponent extends BaseComponent {
     });
   }
   fetchData(doctorId: number) {
-
-    this.transferState.remove(this.DATA_KEY)
+    this.transferState.remove(this.DATA_KEY);
     const storedData = this.transferState.get(this.DATA_KEY, null);
 
     if (!storedData) {
@@ -77,7 +76,6 @@ export class DoctorDetailComponent extends BaseComponent {
       this.coordinates = this.doctorInfo
         .filter(item => item.location)
         .map((loc: any) => {
-          console.log('📌', loc.location);
           return {
             lng: loc.location.x,
             lat: loc.location.y,
