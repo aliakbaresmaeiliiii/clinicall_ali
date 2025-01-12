@@ -1,11 +1,13 @@
 import {
   Component,
   inject,
+  makeStateKey,
   OnInit,
   signal,
   TemplateRef,
+  TransferState,
   ViewChild,
-  viewChild
+  viewChild,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -16,6 +18,8 @@ import { CopyLinkDialogComponent } from '../../shared/components/copy-link-dialo
 import { likeDTO } from '../shared-ui/models/like';
 import { LikesService } from '../shared-ui/services/likes.service';
 import { DoctorsService } from '../../modules/doctors/services/doctors.service';
+import { ToastrService } from 'ngx-toastr';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-filter-layout',
@@ -27,6 +31,7 @@ export class FilterLayoutComponent implements OnInit {
   tabData = signal<DoctorsDTO[]>([]);
   mostPopular: DoctorsDTO[] = [];
   doctorService = inject(DoctorsService);
+  toast = inject(ToastrService);
   router = inject(Router);
   isLiked = false;
   userData: any;
@@ -34,6 +39,8 @@ export class FilterLayoutComponent implements OnInit {
   dialog = inject(MatDialog);
   @ViewChild(NgxStarsComponent)
   starsComponent!: NgxStarsComponent;
+  transferState = inject(TransferState);
+  DATA_KEY = makeStateKey<any>('tabData');
 
   urlIcon = {
     empty: '../../../assets/images/ui/svg/star-empty.svg',
@@ -111,6 +118,7 @@ export class FilterLayoutComponent implements OnInit {
   }
 
   handleTabChange(data: any) {
+    this.fetchDefaultData();
     if (data === 'Default') {
       this.fetchDefaultData();
     }
@@ -123,20 +131,47 @@ export class FilterLayoutComponent implements OnInit {
     }
   }
 
-  handleChangeValueInput(data: any) {
-    this.featchSpecialty(data);
+  handleChangeValueInput(data: { field: string; id: any }) {
+    debugger;
+    switch (data.field) {
+      case 'speciality':
+        this.featchSpecialty(data.id);
+        break;
+      case 'services':
+        this.filterServicesById(data.id);
+        break;
+      default:
+        break;
+    }
   }
-  getAvrage= 4.2;
+
   fetchDefaultData() {
-    this.doctorService.getDoctors().subscribe((response: any) => {
-      const newData = response.data.map((doctor: any) => {
-        doctor.profileImage = doctor.profileImage
-          ? `${environment.urlProfileImg}${doctor.profileImage}`
-          : '../../../assets/images/bg-01.png';
-        return doctor;
+    this.transferState.remove(this.DATA_KEY);
+    const storedData = this.transferState.get(this.DATA_KEY, null);
+    if (!storedData) {
+      this.doctorService.getDoctors().subscribe({
+        next: (response: any) => {
+          const newData = response.data.map((doctor: any) => {
+            doctor.profileImage = doctor.profileImage
+              ? `${environment.urlProfileImg}${doctor.profileImage}`
+              : '../../../assets/images/bg-01.png';
+            return doctor;
+          });
+          this.tabData.set(newData);
+          this.transferState.set(this.DATA_KEY, newData);
+        },
+        error: e => {
+          this.toast.error(e);
+          return of([]);
+        },
+        complete: () => {
+          console.log('the operation was successfully');
+        },
       });
-      this.tabData.set(newData);
-    });
+    } else {
+      this.tabData.set(storedData);
+    }
+    return;
   }
 
   fetchMostPopularData() {
@@ -151,8 +186,21 @@ export class FilterLayoutComponent implements OnInit {
     });
   }
 
-  featchSpecialty(option: string) {
-    this.doctorService.filterSpeciality(option).subscribe((res: any) => {
+  featchSpecialty(data: string) {
+    this.doctorService.filterSpeciality(data).subscribe((res: any) => {
+      const newData = res.data.map((doctor: any) => {
+        doctor.profileImage = doctor.profileImage
+          ? `${environment.urlProfileImg}${doctor.profileImage}`
+          : '../../../assets/images/bg-01.png';
+        return doctor;
+      });
+      this.tabData.set(newData);
+    });
+  }
+
+  filterServicesById(data: string) {
+    debugger;
+    this.doctorService.filterServicesById(data).subscribe((res: any) => {
       const newData = res.data.map((doctor: any) => {
         doctor.profileImage = doctor.profileImage
           ? `${environment.urlProfileImg}${doctor.profileImage}`
@@ -164,10 +212,15 @@ export class FilterLayoutComponent implements OnInit {
   }
 
   getAppointment(data: any) {
-    let doctorName = data.name.replace(/\s+/g, '-');
-    const doctorId = data.doctor_id;
-    this.countDoctorClick(doctorId);
-    this.router.navigate([`/doctor/${doctorName}/${doctorId}`]);
+    if (!this.userData) {
+      this.toast.error('Please login before make appointment...');
+      this.router.navigate(['/login']);
+    } else {
+      let doctorName = data.name.replace(/\s+/g, '-');
+      const doctorId = data.doctor_id;
+      this.countDoctorClick(doctorId);
+      this.router.navigate([`/doctor/${doctorName}/${doctorId}`]);
+    }
   }
 
   countDoctorClick(doctor_id: number) {

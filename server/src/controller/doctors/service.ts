@@ -11,6 +11,7 @@ import {
   checkDoctorPhoneNumberExists,
   doctorDetail,
   existingFeedback,
+  filterServicesById,
   filterSpeciality,
   getDoctors,
   getMostPopularDoctors,
@@ -107,6 +108,14 @@ export class DoctorsService {
   }
   public static async filterSpeciality(value: string) {
     const data = await filterSpeciality(value);
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
+  }
+  public static async filterServicesById(serviceId: number) {
+    const data = await filterServicesById(serviceId);
     if (data) {
       return { message: "ok", data };
     } else {

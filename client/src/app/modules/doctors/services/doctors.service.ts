@@ -73,11 +73,14 @@ export class DoctorsService {
       comment,
     });
   }
-
   filterSpeciality(value: string): Observable<string> {
-    return this.#http.post<string>(`${this.config}admin/filterSpeciality`, {
-      value,
-    });
+    return this.#http.get<string>(
+      `${this.config}admin/filterSpeciality/${value}`
+    );
+  }
+  filterServicesById(id: string): Observable<string> {
+    debugger;
+    return this.#http.get<string>(`${this.config}admin/filterServicesById/${id}`);
   }
 
   insertReviews(dataReviews: ReviewsDTO): Observable<ReviewsDTO> {

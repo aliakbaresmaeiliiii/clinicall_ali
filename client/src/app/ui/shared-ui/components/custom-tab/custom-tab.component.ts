@@ -1,17 +1,23 @@
 import {
+  AfterContentInit,
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  computed,
   inject,
   input,
   output,
   TemplateRef,
+  viewChild,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
 import { DoctorsService } from '../../../../modules/doctors/services/doctors.service';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
-
+import { FilterLayoutComponent } from '../../../filter-layout/filter-layout.component';
+import { ContentChildren, Directive, QueryList } from '@angular/core';
+import { EventEmitter } from 'stream';
 export interface FilerValue {
   id: number;
   name: string;
@@ -24,7 +30,10 @@ export interface FilerValue {
   styleUrl: './custom-tab.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CustomTabComponent extends BaseComponent implements AfterViewInit {
+export class CustomTabComponent
+  extends BaseComponent
+  implements AfterViewInit, AfterContentInit
+{
   filterOptions = [
     { key: 0, label: 'Default' },
     { key: 1, label: 'Most Popular' },
@@ -83,9 +92,10 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
   doctorService = inject(DoctorsService);
   activeFilter = 0;
   tabTitle = output<string>();
-  onChangeValueInput = output<string>();
-  onDeleteValue = output<number>();
-  valueFiltering: string[] = [];
+  onChangeValueInput = output<{ field: string; value: any } | any>();
+
+  onDeleteValue = output<string>();
+  valueFiltering: string = '';
 
   form = this.fb.group({
     city: [''],
@@ -135,9 +145,14 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
       }));
   }
 
-  getValueSpecialty(option: FilerValue) {
-    this.valueFiltering.push(option.name);
-    this.onChangeValueInput.emit(option.name);
+  handleInputChange(field: string, selected: any) {
+    this.valueFiltering = selected.name;
+   const  id = selected.id
+    this.onChangeValueInput.emit({ field, id });
+  }
+
+  getValueChange(option: FilerValue) {
+    this.valueFiltering = option.name;
   }
 
   getClinicServices() {
@@ -163,8 +178,7 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
   }
 
   getValueService(option: FilerValue) {
-    this.valueFiltering.push(option.name);
-    this.onChangeValueInput.emit(option.name);
+    this.valueFiltering = option.name;
   }
 
   getAllCities() {
@@ -188,10 +202,9 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
   }
 
   getValueCity(option: { name: string; city_id: number }) {
-    this.valueFiltering.push(option.name);
+    this.valueFiltering = option.name;
     this.doctorService.filteredNeighbor(option.city_id).subscribe(res => {
       this.neighborhood = res.data;
-      debugger;
       this.filteredNeighborhood =
         this.form.controls.neighborhoodForm.valueChanges.pipe(
           startWith(''),
@@ -213,7 +226,7 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
   }
   getValueNeighborhood(option: FilerValue) {
     const getValueFilter = option.name;
-    this.valueFiltering.push(getValueFilter);
+    this.valueFiltering = getValueFilter;
   }
   getAllInsurances() {
     this.doctorService.getAllInsurances().subscribe((res: any) => {
@@ -228,7 +241,7 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
 
   getValueInsurance(option: FilerValue) {
     const getValueFilter = option.name;
-    this.valueFiltering.push(getValueFilter);
+    this.valueFiltering = getValueFilter;
   }
 
   _filterInsurance(value: string): FilerValue[] {
@@ -246,11 +259,13 @@ export class CustomTabComponent extends BaseComponent implements AfterViewInit {
     this.cityForm.reset();
   }
 
-  deleteFilter(index: number) {
-    this.valueFiltering = [];
+  ngAfterContentInit(): void {}
+  deleteFilter(index: string) {
+    this.valueFiltering = '';
     this.form.reset();
     this.onDeleteValue.emit(index);
   }
+
   ngAfterViewInit() {
     const data = this.tabs();
     if (data.length > 0) {

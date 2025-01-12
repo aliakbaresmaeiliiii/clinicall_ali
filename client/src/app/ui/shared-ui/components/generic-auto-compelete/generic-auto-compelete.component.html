@@ -1,6 +1,6 @@
 <form action="" [formGroup]="parentForm">
   <mat-form-field appearance="outline" class="w-full mt-6">
-    <mat-label>{{label}}</mat-label>
+    <mat-label>{{ label }}</mat-label>
     <div class="flex">
       <input
         type="text"
@@ -9,7 +9,9 @@
         matInput
         [formControlName]="formCrName"
         [matAutocomplete]="autoComplete" />
-      <i class="fa-solid fa-xmark" (click)="parentForm.get(formCrName)?.reset()"></i>
+      <i
+        class="fa-solid fa-xmark"
+        (click)="parentForm.get(formCrName)?.reset()"></i>
     </div>
 
     <mat-autocomplete autoActiveFirstOption #autoComplete="matAutocomplete">

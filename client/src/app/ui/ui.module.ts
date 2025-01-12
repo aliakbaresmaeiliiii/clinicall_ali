@@ -105,6 +105,7 @@ const routes: Routes = [
       {
         path: 'doctor/:name/:id',
         component: GetDoctorApointmentComponent,
+        
       },
       // {
       //   path: 'speciality',
