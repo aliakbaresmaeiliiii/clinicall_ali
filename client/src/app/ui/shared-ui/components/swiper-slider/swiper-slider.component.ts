@@ -3,11 +3,10 @@ import {
   ElementRef,
   input,
   output,
-  viewChild,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
-import { SwiperData } from '../../models/swiper-slider';
 import KeenSlider, { KeenSliderInstance } from 'keen-slider';
+import { SwiperData } from '../../models/swiper-slider';
 
 @Component({
   selector: 'app-swiper-slider',

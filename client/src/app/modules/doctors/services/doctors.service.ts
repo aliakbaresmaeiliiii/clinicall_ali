@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal, TransferState } from '@angular/core';
 import { UserInfo } from 'os';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { DoctorsDTO, ReviewsDTO } from '../models/doctors';
+import { DoctorAvailability, DoctorsDTO, ReviewsDTO } from '../models/doctors';
 import { InsurancesDTO } from '../models/insureances';
 
 @Injectable({
@@ -73,14 +73,15 @@ export class DoctorsService {
       comment,
     });
   }
-  filterSpeciality(value: string): Observable<string> {
+  filterSpecialtyById(id: string): Observable<string> {
     return this.#http.get<string>(
-      `${this.config}admin/filterSpeciality/${value}`
+      `${this.config}admin/filterSpecialtyById/${id}`
     );
   }
   filterServicesById(id: string): Observable<string> {
-    debugger;
-    return this.#http.get<string>(`${this.config}admin/filterServicesById/${id}`);
+    return this.#http.get<string>(
+      `${this.config}admin/filterServicesById/${id}`
+    );
   }
 
   insertReviews(dataReviews: ReviewsDTO): Observable<ReviewsDTO> {
@@ -103,5 +104,16 @@ export class DoctorsService {
   }
   getAllInsurances(): Observable<InsurancesDTO> {
     return this.#http.get<InsurancesDTO>(`${this.config}getAllInsurances`);
+  }
+
+  getDoctorAvailability(
+    doctor_id: number,
+    consultationType: string
+  ): Observable<DoctorAvailability[]> {
+    const params = new HttpParams().set('consultationType', consultationType);
+    return this.#http.get<DoctorAvailability[]>(
+      `${this.config}doctor-availability/${doctor_id}`,
+      { params: params }
+    );
   }
 }

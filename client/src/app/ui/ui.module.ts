@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireFunctionsModule } from '@angular/fire/compat/functions';
@@ -68,6 +68,9 @@ import { SuggestionsComponent } from './suggestions/suggestions.component';
 import { SuggustionsServiceComponent } from './suggustions-service/suggustions-service.component';
 import { UserReviewsOfClinicAliComponent } from './user-reviews-of-clinic-ali/user-reviews-of-clinic-ali.component';
 import { YoursDoctorComponent } from './yours-doctor/yours-doctor.component';
+import { MatIconModule } from '@angular/material/icon';
+import { OnlineConsultaionDialogComponent } from './filter-layout/online-consultaion-dialog/online-consultaion-dialog.component';
+import { ChoosingAppointmentComponent } from './filter-layout/choosing-appointment/choosing-appointment.component';
 
 const routes: Routes = [
   {
@@ -155,6 +158,8 @@ const routes: Routes = [
     SuggestionReplacedDoctorComponent,
     DoctorsComponent,
     DoctorRequestComponent,
+    OnlineConsultaionDialogComponent,
+    ChoosingAppointmentComponent
   ],
   imports: [
     CommonModule,
@@ -186,8 +191,10 @@ const routes: Routes = [
     MatTabsModule,
     NgxStarsModule,
     MatToolbarModule,
+    MatIconModule
   ],
   exports: [BlogComponent, MatToolbarModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  providers: [DatePipe]
 })
 export class UiModule {}

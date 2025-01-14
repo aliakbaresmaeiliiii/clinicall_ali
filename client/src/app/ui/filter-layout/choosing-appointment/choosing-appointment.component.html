@@ -1,0 +1,152 @@
+<div *ngIf="doctorInfo.length > 0; else noData">
+  <div class="flex flex-col justify-center text-center pt-2">
+    <h2 class="text-black !text-xl font-bold">
+      Choosing an office appointment
+    </h2>
+  </div>
+  <mat-dialog-content class="mat-typography">
+    @for (data of doctorInfo; track $index) {
+
+    <div class="w-full rounded-xl shadow-md overflow-hidden mx-auto">
+      <div class="flex justify-between items-center px-6 py-4">
+        <div class="flex space-x-4">
+          <div>
+            <img
+              [src]="data.profileImage"
+              crossorigin="anonymous"
+              class="rounded-3xl"
+              height="48"
+              width="48"
+              alt="Doctor's Profile Image" />
+          </div>
+
+          <div>
+            <div class="flex justify-between w-[28rem]">
+              <div class="flex flex-col text-lg font-bold">
+                <span>
+                  {{ data.name }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-6 py-4">
+        <div
+          class="text-sm text-gray-800 bg-gray-100 border border-gray-300 dark:border-gray-700 rounded-lg p-2 flex items-center opacity-90">
+          <span class="flex gap-1">
+            <img src="../../../../assets/images/ui/svg/phone.svg" />
+            During the appointment, the phone call will be made automatically by
+            your doctor.
+          </span>
+        </div>
+      </div>
+      <div class="px-6 py-4">
+        <div
+          class="flex flex-col text-sm text-gray-800 bg-blue-50 rounded-lg p-2">
+          <p class="flex items-center gap-1">
+            <i class="fa-solid fa-circle-info"></i>
+            Telephone consultation considerations
+          </p>
+          <blockquote
+            class="pl-5 border-l-4 border-blue-400 italic text-gray-600 mt-2">
+            Due to the limitation of the number of phone consultation
+            appointments, if the patient does not answer the phone call during
+            the appointment time, it is not possible to call again or return the
+            payment. If you send a photo of the baby's diaper, no consultation
+            will be done.
+          </blockquote>
+        </div>
+      </div>
+      <div class="navigation-wrapper">
+        <div class="keen-slider" #sliderRef>
+          <div
+            *ngFor="let availability of doctorAvailable"
+            class="keen-slider__slide flex">
+            <div
+              class="flex flex-col justify-center shadow-md whitespace-nowrap h-28 w-28 border-2 text-center cursor-pointer hover:bg-blue-100 duration-200 border-gray-200 text-xs rounded-2xl gap-3">
+              <!-- <span>{{ day.label }}:</span> -->
+              <!-- <span>{{ day.AvailableDate | date : 'MMMM d' }}</span> -->
+              <div class="text-base font-semibold">
+                {{ availability.weekday }}
+              </div>
+              <div class="date text-xs text-gray-500">
+                {{ availability.formattedDate }}
+              </div>
+              <span class="text-green-500">{{ availability.scheduleID }}</span>
+            </div>
+          </div>
+        </div>
+        <!-- <svg
+          [ngClass]="
+            'arrow arrow--left ' + (currentSlide === 0 ? 'arrow--disabled' : '')
+          "
+          (click)="slider.prev()"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24">
+          <path
+            d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z" />
+        </svg>
+        @if (slider.track.details.slides.length - 1 === currentSlide) {
+
+        <svg
+          *ngIf="slider"
+          [ngClass]="
+            'arrow arrow--right ' +
+            (slider.track.details.slides.length - 1 === currentSlide
+              ? 'arrow--disabled'
+              : '')
+          "
+          (click)="slider.next()"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24">
+          <path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z" />
+        </svg>
+        } -->
+      </div>
+
+      <div class="flex justify-center align-center gap-4">
+        @for (item of doctorAvailable; track $index) {
+        <div
+          class="flex justify-center mt-4 whitespace-nowrap h-8 w-14 border-2 text-center cursor-pointer hover:bg-green-100 duration-200 border-green-500 text-xs rounded-md gap-3">
+          <span class="flex justify-center items-center">{{
+            item.availableTime
+          }}</span>
+        </div>
+        }@empty {
+        <div class="flex flex-col gap-4 my-6">
+          <h2 class="text-center">
+            Currently, the appointments for this day are full
+          </h2>
+          <div class="flex mx-auto">
+            <button
+              type="button"
+              class="flex justify-start text-sm gap-2 shadow-xl bg-gray-50 backdrop-blur-md lg:font-semibold isolation-auto border-gray-200 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-blue-800 hover:text-gray-50 before:-z-10 before:aspect-square before:hover:scale-150 before:hover:duration-700 relative z-10 px-3 py-1 overflow-hidden border-2 rounded-full group">
+              <span class="pt-1"> Go to first free appointment </span>
+              <svg
+                class="w-8 h-8 justify-end group-hover:rotate-90 group-hover:bg-gray-50 text-gray-50 ease-linear duration-300 rounded-full border border-gray-700 group-hover:border-none p-2 rotate-45"
+                viewBox="0 0 16 19"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M7 18C7 18.5523 7.44772 19 8 19C8.55228 19 9 18.5523 9 18H7ZM8.70711 0.292893C8.31658 -0.0976311 7.68342 -0.0976311 7.29289 0.292893L0.928932 6.65685C0.538408 7.04738 0.538408 7.68054 0.928932 8.07107C1.31946 8.46159 1.95262 8.46159 2.34315 8.07107L8 2.41421L13.6569 8.07107C14.0474 8.46159 14.6805 8.46159 15.0711 8.07107C15.4616 7.68054 15.4616 7.04738 15.0711 6.65685L8.70711 0.292893ZM9 18L9 1H7L7 18H9Z"
+                  class="fill-gray-800 group-hover:fill-gray-800"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    }
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">No Thanks</button>
+    <button mat-button type="button">choose and continue</button>
+  </mat-dialog-actions>
+</div>
+
+<ng-template #noData>
+  <app-loader />
+</ng-template>

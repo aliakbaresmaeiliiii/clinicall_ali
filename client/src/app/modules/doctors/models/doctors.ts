@@ -21,14 +21,13 @@ export interface DoctorsDTO {
   description: string;
   click_count: number;
   likeInfo: likeDTO;
-  is_liked:boolean
+  is_liked: boolean;
 }
 
 export interface LocaitonDTO {
   x: number;
   y: number;
 }
-
 
 export interface ReviewsDTO {
   doctor_id: number;
@@ -40,4 +39,14 @@ export interface ReviewsDTO {
   skill: number;
   staff_behavior: number;
   clinic_condition: number;
+}
+
+export interface DoctorAvailability {
+  availableDate: string;
+  availableTime: string[];
+  consultationType: string;
+  doctor_id: number;
+  scheduleID: number;
+  weekday: string;
+  formattedDate: string;
 }

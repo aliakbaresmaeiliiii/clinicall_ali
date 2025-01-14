@@ -229,16 +229,28 @@ export async function getSpecialties() {
   return result;
 }
 
-export async function filterSpeciality(value: any) {
+export async function filterSpecialtyById(specialty: any) {
   const result = await query<RowDataPacket>(
     `
-    SELECT ${coreSchema}.doctors.*
-    FROM ${coreSchema}.doctors
-    INNER JOIN ${coreSchema}.specialities s ON doctors.speciality_id = s.id
-    WHERE s.name = ?
+     SELECT 
+      d.*, 
+      COALESCE(ld.location, 'No Location') AS location,
+      s.name AS specialty_name,
+      (SELECT AVG(rating) 
+       FROM ${coreSchema}.ratings r 
+       WHERE r.doctor_id = d.doctor_id) AS average_rating
+    FROM 
+      ${coreSchema}.doctors d
+    LEFT JOIN 
+      ${coreSchema}.locations_doctors ld ON d.doctor_id = ld.doctor_id
+    LEFT JOIN 
+      ${coreSchema}.specialities s ON d.speciality_id = s.id
+
+    WHERE 
+    s.id = ?;
     `,
     {
-      values: [value],
+      values: [specialty],
     }
   );
   return result;
@@ -308,6 +320,38 @@ export async function insertReviews(reviewData: ReviewsDTO) {
         reviewData.ratings.staff_behavior,
         reviewData.ratings.clinic_condition,
       ],
+    }
+  );
+  return result;
+}
+
+export async function DoctorAvailability(
+  doctor_id: number,
+  ConsultationTypesAvailable: string
+) {
+  const result = await query<RowDataPacket>(
+    `
+SELECT 
+    ds.scheduleID,
+    ds.availableDate,
+    ds.ConsultationTypesAvailable,
+    dt.timeID,
+    dt.availableTime,
+    dt.isBooked
+FROM 
+    Ali_DB.doctor_schedules ds
+JOIN 
+    Ali_DB.doctor_available_times dt
+ON 
+    ds.scheduleID = dt.scheduleID
+WHERE 
+    ds.doctor_id = ?
+    AND FIND_IN_SET(?, ds.ConsultationTypesAvailable) > 0
+ORDER BY 
+    ds.availableDate, dt.availableTime;
+    `,
+    {
+      values: [doctor_id,ConsultationTypesAvailable],
     }
   );
   return result;
