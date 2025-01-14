@@ -114,10 +114,10 @@ router.get(
   })
 );
 router.get(
-  `/admin/filterSpeciality/:value`,
+  `/admin/filterSpecialtyById/:id`,
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
-    const queryParams = req.params.value;
-    const data = await DoctorsService.filterSpeciality(queryParams);
+    const queryParams = +req.params.id;
+    const data = await DoctorsService.filterSpecialtyById(queryParams);
     const buildResponse = BuildResponse.get(data);
     res.status(200).json(buildResponse);
   })
@@ -136,6 +136,20 @@ router.post(
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const dataReviews = req.body;
     const data = await DoctorsService.insertReviews(dataReviews);
+    const buildResponse = BuildResponse.get(data);
+    res.status(200).json(buildResponse);
+  })
+);
+
+router.get(
+  "/doctor-availability/:doctor_id",
+  asyncHandler(async (req: Request, res: Response): Promise<any> => {
+    const doctor_id = +req.params.doctor_id;
+    const consultationType = req.query.consultationType;
+    const data = await DoctorsService.DoctorAvailability(
+      doctor_id,
+      consultationType
+    );
     const buildResponse = BuildResponse.get(data);
     res.status(200).json(buildResponse);
   })

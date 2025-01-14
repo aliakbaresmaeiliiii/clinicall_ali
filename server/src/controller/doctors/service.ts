@@ -9,10 +9,11 @@ import {
   addComment,
   addDoctor,
   checkDoctorPhoneNumberExists,
+  DoctorAvailability,
   doctorDetail,
   existingFeedback,
   filterServicesById,
-  filterSpeciality,
+  filterSpecialtyById,
   getDoctors,
   getMostPopularDoctors,
   getSpecialties,
@@ -106,8 +107,8 @@ export class DoctorsService {
       return null;
     }
   }
-  public static async filterSpeciality(value: string) {
-    const data = await filterSpeciality(value);
+  public static async filterSpecialtyById(specialtyId: number) {
+    const data = await filterSpecialtyById(specialtyId);
     if (data) {
       return { message: "ok", data };
     } else {
@@ -132,6 +133,18 @@ export class DoctorsService {
     } else {
       const data = await insertReviews(reviewData);
       return { message: "ok", data };
+    }
+  }
+
+  public static async DoctorAvailability(
+    doctor_id: number,
+    consultationType: any
+  ) {
+    const data = await DoctorAvailability(doctor_id, consultationType);
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
     }
   }
 }

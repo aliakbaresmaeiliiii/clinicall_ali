@@ -20,6 +20,7 @@ import { LikesService } from '../shared-ui/services/likes.service';
 import { DoctorsService } from '../../modules/doctors/services/doctors.service';
 import { ToastrService } from 'ngx-toastr';
 import { of } from 'rxjs';
+import { OnlineConsultaionDialogComponent } from './online-consultaion-dialog/online-consultaion-dialog.component';
 
 @Component({
   selector: 'app-filter-layout',
@@ -132,10 +133,9 @@ export class FilterLayoutComponent implements OnInit {
   }
 
   handleChangeValueInput(data: { field: string; id: any }) {
-    debugger;
     switch (data.field) {
       case 'speciality':
-        this.featchSpecialty(data.id);
+        this.filterSpecialtyById(data.id);
         break;
       case 'services':
         this.filterServicesById(data.id);
@@ -186,8 +186,8 @@ export class FilterLayoutComponent implements OnInit {
     });
   }
 
-  featchSpecialty(data: string) {
-    this.doctorService.filterSpeciality(data).subscribe((res: any) => {
+  filterSpecialtyById(data: string) {
+    this.doctorService.filterSpecialtyById(data).subscribe((res: any) => {
       const newData = res.data.map((doctor: any) => {
         doctor.profileImage = doctor.profileImage
           ? `${environment.urlProfileImg}${doctor.profileImage}`
@@ -199,7 +199,6 @@ export class FilterLayoutComponent implements OnInit {
   }
 
   filterServicesById(data: string) {
-    debugger;
     this.doctorService.filterServicesById(data).subscribe((res: any) => {
       const newData = res.data.map((doctor: any) => {
         doctor.profileImage = doctor.profileImage
@@ -211,7 +210,7 @@ export class FilterLayoutComponent implements OnInit {
     });
   }
 
-  getAppointment(data: any) {
+  visitProfile(data: any) {
     if (!this.userData) {
       this.toast.error('Please login before make appointment...');
       this.router.navigate(['/login']);
@@ -221,6 +220,12 @@ export class FilterLayoutComponent implements OnInit {
       this.countDoctorClick(doctorId);
       this.router.navigate([`/doctor/${doctorName}/${doctorId}`]);
     }
+  }
+  onlineConsultationDialog(data: DoctorsDTO) {
+    this.dialog.open(OnlineConsultaionDialogComponent, {
+      width: '500px',
+      data: data.doctor_id,
+    });
   }
 
   countDoctorClick(doctor_id: number) {

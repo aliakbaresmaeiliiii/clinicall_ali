@@ -1,0 +1,58 @@
+<div class="flex flex-col justify-center text-center pt-2">
+  <h2 class="text-black !text-xl font-bold">Online Appointment</h2>
+  <h2>Choose your turn type</h2>
+</div>
+
+<mat-dialog-content>
+  <form [formGroup]="form" (ngSubmit)="submitForm()">
+    <mat-radio-group formControlName="consultationType" class="w-full">
+      <!-- Phone Consultation -->
+      <mat-radio-button [value]="'Phone'" >
+        <div
+          class="mb-2 !w-full cursor-pointer flex items-center group border border-transparent hover:border-blue-400 rounded-lg p-2 transition-all duration-300 ease-in-out">
+          <div class="flex flex-col gap-2">
+            <span class="flex gap-1">
+              <img src="../../../assets/images/ui/svg/phone.svg" alt="Phone Icon" />
+              Phone consultation
+            </span>
+            <span>10 minutes conversation</span>
+            <span class="border-b-2 border-dashed border-blue-100 pb-2">
+              First appointment empty:
+              <strong>{{ 'Today | 11:00' }}</strong>
+            </span>
+            <span>12.000 RM</span>
+          </div>
+        </div>
+      </mat-radio-button>
+      <mat-divider></mat-divider>
+
+      <!-- Text Consultation -->
+      <mat-radio-button [value]="'Text'" class="w-full">
+        <div
+          class="my-2 w-full cursor-pointer flex items-center group border border-transparent hover:border-blue-400 rounded-lg p-2 transition-all duration-300 ease-in-out">
+          <div class="flex flex-col gap-2">
+            <span class="flex gap-1">
+              <img
+                src="../../../assets/images/ui/svg/message-square-lines-svgrepo-com.svg"
+                alt="Message Icon" />
+              Text consultation
+            </span>
+            <span>10 minutes conversation</span>
+            <span class="border-b-2 border-dashed border-blue-100 pb-2">
+              First appointment empty:
+              <strong>{{ 'Today | 11:00' }}</strong>
+            </span>
+            <span>12.000 RM</span>
+          </div>
+        </div>
+      </mat-radio-button>
+    </mat-radio-group>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">No Thanks</button>
+  <button mat-button color="primary" type="submit" [disabled]="form.invalid" (click)="submitForm()">
+    Choose and Continue
+  </button>
+</mat-dialog-actions>

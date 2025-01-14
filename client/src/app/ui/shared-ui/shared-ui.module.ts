@@ -19,6 +19,7 @@ import { ServiceSectionComponent } from './components/service-section/service-se
 import { SwiperSliderCardComponent } from './components/swiper-slider-card/swiper-slider-card.component';
 import { SwiperSliderComponent } from './components/swiper-slider/swiper-slider.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
 
 
 
@@ -50,6 +51,7 @@ const MATERIAL_MODULE = [
   MatInputModule,
   MatAutocompleteModule,
   MatCardModule,
+  MatButtonModule 
 ];
 @NgModule({
   declarations: [COMPOENTN],
