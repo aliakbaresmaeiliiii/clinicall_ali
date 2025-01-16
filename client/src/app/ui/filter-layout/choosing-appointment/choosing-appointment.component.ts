@@ -1,3 +1,4 @@
+import { DatePipe, formatDate } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -10,11 +11,13 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import KeenSlider, { KeenSliderInstance } from 'keen-slider';
 import { environment } from '../../../environments/environment';
 import {
-  DoctorAvailability,
+  DoctorScheduleAvailability,
+  DoctorScheduleTimeAvailability,
   DoctorsDTO,
 } from '../../../modules/doctors/models/doctors';
 import { DoctorsService } from '../../../modules/doctors/services/doctors.service';
-import { DatePipe } from '@angular/common';
+import { ScheduleService } from '../../../modules/doctors/services/schedule.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-choosing-appointment',
@@ -27,10 +30,12 @@ import { DatePipe } from '@angular/common';
 })
 export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
   readonly dialogRef = inject(MatDialogRef<ChoosingAppointmentComponent>);
-  readonly data = inject<DoctorAvailability>(MAT_DIALOG_DATA);
+  readonly data = inject<DoctorScheduleAvailability>(MAT_DIALOG_DATA);
   service = inject(DoctorsService);
+  schedulesService = inject(ScheduleService);
   doctorInfo: DoctorsDTO[] = [];
-  doctorAvailable: DoctorAvailability[] = [];
+  doctorScheduleAvailability: DoctorScheduleAvailability[] = [];
+  availableTimes: DoctorScheduleTimeAvailability[] = [];
   days: { label: string; date: Date }[] = [];
   @ViewChild('sliderRef', { static: false })
   sliderRef!: ElementRef<HTMLElement>;
@@ -38,6 +43,11 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
   slider!: KeenSliderInstance;
   currentSlide: number = 1;
   dotHelper: Array<Number> = [];
+  selectedIndex: number | null = null;
+  // test
+  schedules: DoctorScheduleAvailability[] = [];
+  closestSchedule: DoctorScheduleAvailability | null = null;
+  today: string = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -48,20 +58,12 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
   }
 
   private initializeComponent(): void {
-    this.generateWeek();
-
     const { doctor_id, consultationType } = this.data;
-
-    if (!doctor_id) {
-      console.error('doctorId is missing.');
-      return;
-    }
-
     this.loadDoctorData(doctor_id, consultationType);
   }
   private loadDoctorData(doctor_id: number, consultationType: string): void {
     this.fetchData(doctor_id);
-    this.fetchDoctorAvailability(doctor_id, consultationType);
+    this.fetchDoctorScheduleAvailability(doctor_id, consultationType);
   }
 
   fetchData(doctorId: number) {
@@ -85,38 +87,149 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
     });
   }
 
-  fetchDoctorAvailability(doctor_id: number, text: string) {
-    this.service
-      .getDoctorAvailability(doctor_id, text)
+  fetchDoctorScheduleAvailability(doctor_id: number, text: string) {
+    this.schedulesService
+      .fetchDoctorScheduleAvailability(doctor_id, text)
       .subscribe((res: any) => {
-        this.doctorAvailable = res.data.map((item: any) => ({
+        this.doctorScheduleAvailability = res.data.map((item: any) => ({
           ...item,
           weekday: this.datePipe.transform(item.availableDate, 'EEEE'), // Extract weekday
-          formattedDate: this.datePipe.transform(
-            item.availableDate,
-            'MMMM d'
-          ),
+          formattedDate: this.datePipe.transform(item.availableDate, 'MMMM d'),
         }));
+        this.selectToday();
       });
   }
 
-  generateWeek(): void {
-    const today = new Date();
-    for (let i = 0; i < 7; i++) {
-      const currentDate = new Date(today);
-      currentDate.setDate(today.getDate() + i);
+  // selectToday() {
+  //   this.doctorScheduleAvailability.forEach((item, index) => {
+  //     const receivedStartDate = new Date(item.availableDate);
+  //     const todayDate = moment().local().startOf('day').format('YYYY-MM-DD');
+  //     const availableDate = moment(receivedStartDate)
+  //       .local()
+  //       .startOf('day')
+  //       .format('YYYY-MM-DD');
+  //     if (availableDate === todayDate) {
+  //       this.selectedIndex = index--;
+  //       const scheduleID =
+  //         this.doctorScheduleAvailability[this.selectedIndex]?.scheduleID;
+  //       if (scheduleID) {
+  //         this.fetchDoctorScheduleTimeAvailability(scheduleID);
+  //       }
+  //     }
+  //   });
+  // }
 
-      this.days.push({
-        label:
-          i === 0
-            ? 'Today'
-            : i === 1
-            ? 'Tomorrow'
-            : this.getDayName(currentDate),
-        date: currentDate,
-      });
+
+  selectToday() {
+    this.doctorScheduleAvailability.forEach((item, index) => {
+      const receivedStartDate = new Date(item.availableDate);
+      const todayDate = moment().local().startOf('day').format('YYYY-MM-DD');
+      const availableDate = moment(receivedStartDate)
+        .local()
+        .startOf('day')
+        .format('YYYY-MM-DD');
+      if (availableDate === todayDate) {
+        this.selectedIndex = index;
+        const scheduleID = this.doctorScheduleAvailability[this.selectedIndex]?.scheduleID;
+        if (scheduleID) {
+          this.fetchDoctorScheduleTimeAvailability(scheduleID);
+        }
+      }
+    });
+  }
+  
+
+  isInitialLoad = true;
+
+  fetchDoctorScheduleTimeAvailability(index: any) {
+    debugger;
+    if (index.scheduleID) {
+      const getIndex = index.scheduleID;
+      this.selectedIndex = getIndex;
+
+      // Check if it's the initial load
+      if (this.isInitialLoad) {
+        // Fetch data only once during the initial load
+        this.schedulesService
+          .doctorScheduleTimeAvailability(getIndex)
+          .subscribe({
+            next: (result: any) => {
+              this.availableTimes = result.data.map((item: any) => ({
+                ...item,
+                formattedTime: item.availableTime
+                  .split(':')
+                  .slice(0, 2)
+                  .join(':'),
+              }));
+            },
+            error: err => {
+              console.log(err);
+            },
+            complete: () => {
+              console.log('complete');
+            },
+          });
+
+        // Set flag to false after initial load
+        this.isInitialLoad = false;
+      } else {
+        // Update the schedule with new data passed from the DOM
+        this.schedulesService.doctorScheduleTimeAvailability(index).subscribe({
+          next: (result: any) => {
+            this.availableTimes = result.data.map((item: any) => ({
+              ...item,
+              formattedTime: item.availableTime
+                .split(':')
+                .slice(0, 2)
+                .join(':'),
+            }));
+          },
+          error: err => {
+            console.log(err);
+          },
+          complete: () => {
+            console.log('complete');
+          },
+        });
+      }
     }
   }
+
+  // fetchDoctorScheduleTimeAvailability(index: any) {
+  //   debugger;
+  //   if (index.scheduleID) {
+  //     const getIndex = index.scheduleID;
+  //     this.selectedIndex = getIndex;
+  //     this.schedulesService.doctorScheduleTimeAvailability(getIndex).subscribe({
+  //       next: (result: any) => {
+  //         this.availableTimes = result.data.map((item: any) => ({
+  //           ...item,
+  //           formattedTime: item.availableTime.split(':').slice(0, 2).join(':'),
+  //         }));
+  //       },
+  //       error: err => {
+  //         console.log(err);
+  //       },
+  //       complete: () => {
+  //         console.log('complete');
+  //       },
+  //     });
+  //   }
+  //   this.schedulesService.doctorScheduleTimeAvailability(index).subscribe({
+  //     next: (result: any) => {
+  //       this.availableTimes = result.data.map((item: any) => ({
+  //         ...item,
+  //         formattedTime: item.availableTime.split(':').slice(0, 2).join(':'),
+  //       }));
+  //     },
+  //     error: err => {
+  //       console.log(err);
+  //     },
+  //     complete: () => {
+  //       console.log('complete');
+  //     },
+  //   });
+  // }
 
   getDayName(date: Date): string {
     const daysOfWeek = [

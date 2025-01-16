@@ -9,8 +9,9 @@ import {
   addComment,
   addDoctor,
   checkDoctorPhoneNumberExists,
-  DoctorAvailability,
   doctorDetail,
+  doctorScheduleAvailability,
+  doctorScheduleTimeAvailability,
   existingFeedback,
   filterServicesById,
   filterSpecialtyById,
@@ -136,11 +137,19 @@ export class DoctorsService {
     }
   }
 
-  public static async DoctorAvailability(
+  public static async doctorScheduleAvailability(
     doctor_id: number,
     consultationType: any
   ) {
-    const data = await DoctorAvailability(doctor_id, consultationType);
+    const data = await doctorScheduleAvailability(doctor_id, consultationType);
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
+  }
+  public static async doctorScheduleTimeAvailability(scheduleID: number) {
+    const data = await doctorScheduleTimeAvailability(scheduleID);
     if (data) {
       return { message: "ok", data };
     } else {
