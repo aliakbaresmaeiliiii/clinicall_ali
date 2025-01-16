@@ -41,7 +41,7 @@ export interface ReviewsDTO {
   clinic_condition: number;
 }
 
-export interface DoctorAvailability {
+export interface DoctorScheduleAvailability {
   availableDate: string;
   availableTime: string[];
   consultationType: string;
@@ -49,4 +49,11 @@ export interface DoctorAvailability {
   scheduleID: number;
   weekday: string;
   formattedDate: string;
+}
+
+export interface DoctorScheduleTimeAvailability {
+  availableTime: string[];
+  scheduleID: number;
+  formattedDate: string;
+  formattedTime: string;
 }

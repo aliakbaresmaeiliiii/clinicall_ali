@@ -140,15 +140,25 @@ router.post(
     res.status(200).json(buildResponse);
   })
 );
-
 router.get(
-  "/doctor-availability/:doctor_id",
+  "/doctors/:doctor_id/schedule-availability",
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const doctor_id = +req.params.doctor_id;
     const consultationType = req.query.consultationType;
-    const data = await DoctorsService.DoctorAvailability(
+    const data = await DoctorsService.doctorScheduleAvailability(
       doctor_id,
       consultationType
+    );
+    const buildResponse = BuildResponse.get(data);
+    res.status(200).json(buildResponse);
+  })
+);
+router.get(
+  "/doctors/:scheduleID/schedule-time-availability",
+  asyncHandler(async (req: Request, res: Response): Promise<any> => {
+    const scheduleID = +req.params.scheduleID;
+    const data = await DoctorsService.doctorScheduleTimeAvailability(
+      scheduleID,
     );
     const buildResponse = BuildResponse.get(data);
     res.status(200).json(buildResponse);

@@ -62,16 +62,23 @@
       <div class="navigation-wrapper">
         <div class="keen-slider" #sliderRef>
           <div
-            *ngFor="let availability of doctorAvailable"
+            *ngFor="
+              let availability of doctorScheduleAvailability;
+              let i = index
+            "
             class="keen-slider__slide flex">
             <div
-              class="flex flex-col justify-center shadow-md whitespace-nowrap h-28 w-28 border-2 text-center cursor-pointer hover:bg-blue-100 duration-200 border-gray-200 text-xs rounded-2xl gap-3">
-              <!-- <span>{{ day.label }}:</span> -->
-              <!-- <span>{{ day.AvailableDate | date : 'MMMM d' }}</span> -->
+              (click)="fetchDoctorScheduleTimeAvailability(availability)"
+              [ngClass]="{
+                'bg-blue-400 text-white': selectedIndex === i,
+                'hover:bg-blue-100': selectedIndex !== i,
+                'border-blue-400': selectedIndex === i
+              }"
+              class="flex flex-col justify-center shadow-md whitespace-nowrap h-28 w-28 border-2 text-center cursor-pointer duration-200 border-gray-200 text-xs rounded-2xl gap-3">
               <div class="text-base font-semibold">
                 {{ availability.weekday }}
               </div>
-              <div class="date text-xs text-gray-500">
+              <div class="date text-xs">
                 {{ availability.formattedDate }}
               </div>
               <span class="text-green-500">{{ availability.scheduleID }}</span>
@@ -107,14 +114,14 @@
       </div>
 
       <div class="flex justify-center align-center gap-4">
-        @for (item of doctorAvailable; track $index) {
+        @for (time of availableTimes; track $index) { @if (time) {
         <div
           class="flex justify-center mt-4 whitespace-nowrap h-8 w-14 border-2 text-center cursor-pointer hover:bg-green-100 duration-200 border-green-500 text-xs rounded-md gap-3">
-          <span class="flex justify-center items-center">{{
-            item.availableTime
-          }}</span>
+          <span class="flex justify-center items-center">
+            {{ time.formattedTime }}</span
+          >
         </div>
-        }@empty {
+        } }@empty {
         <div class="flex flex-col gap-4 my-6">
           <h2 class="text-center">
             Currently, the appointments for this day are full

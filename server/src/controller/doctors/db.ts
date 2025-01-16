@@ -325,33 +325,46 @@ export async function insertReviews(reviewData: ReviewsDTO) {
   return result;
 }
 
-export async function DoctorAvailability(
+export async function doctorScheduleAvailability(
   doctor_id: number,
   ConsultationTypesAvailable: string
 ) {
   const result = await query<RowDataPacket>(
     `
-SELECT 
-    ds.scheduleID,
-    ds.availableDate,
-    ds.ConsultationTypesAvailable,
-    dt.timeID,
-    dt.availableTime,
-    dt.isBooked
-FROM 
-    Ali_DB.doctor_schedules ds
-JOIN 
-    Ali_DB.doctor_available_times dt
-ON 
-    ds.scheduleID = dt.scheduleID
-WHERE 
-    ds.doctor_id = ?
-    AND FIND_IN_SET(?, ds.ConsultationTypesAvailable) > 0
-ORDER BY 
-    ds.availableDate, dt.availableTime;
+    SELECT
+        ds.scheduleID,
+        ds.availableDate,
+        ds.ConsultationTypesAvailable
+    FROM
+      ${coreSchema}.doctor_schedules ds
+        WHERE
+        ds.doctor_id = ?
+        AND FIND_IN_SET(?, ds.ConsultationTypesAvailable) > 0
     `,
     {
-      values: [doctor_id,ConsultationTypesAvailable],
+      values: [doctor_id, ConsultationTypesAvailable],
+    }
+  );
+  return result;
+}
+
+export async function doctorScheduleTimeAvailability(scheduleID: number) {
+  const result = await query<RowDataPacket[]>(
+    `
+    SELECT 
+       dat.availableTime,
+       dat.isBooked
+       FROM 
+        ${coreSchema}.doctor_schedules ds
+      JOIN 
+        ${coreSchema}.doctor_available_times dat
+      ON
+        ds.scheduleID = dat.scheduleID
+      WHERE 
+        ds.scheduleID = ?;
+    `,
+    {
+      values: [scheduleID],
     }
   );
   return result;
