@@ -68,7 +68,9 @@
             "
             class="keen-slider__slide flex">
             <div
-              (click)="fetchDoctorScheduleTimeAvailability(availability)"
+              (click)="
+                fetchDoctorScheduleTimeAvailability(availability.scheduleID, i)
+              "
               [ngClass]="{
                 'bg-blue-400 text-white': selectedIndex === i,
                 'hover:bg-blue-100': selectedIndex !== i,
@@ -81,7 +83,7 @@
               <div class="date text-xs">
                 {{ availability.formattedDate }}
               </div>
-              <span class="text-green-500">{{ availability.scheduleID }}</span>
+              <span class="text-green-500"> {{ availability.scheduleID }}</span>
             </div>
           </div>
         </div>
@@ -114,12 +116,31 @@
       </div>
 
       <div class="flex justify-center align-center gap-4">
-        @for (time of availableTimes; track $index) { @if (time) {
+        @for (time of availableTimes; track $index;let i = $index) { @if (time)
+        {
         <div
-          class="flex justify-center mt-4 whitespace-nowrap h-8 w-14 border-2 text-center cursor-pointer hover:bg-green-100 duration-200 border-green-500 text-xs rounded-md gap-3">
+          (click)="bookedTime(time)"
+          [ngClass]="{
+          
+            'hover:bg-green-100': time.isBooked === bookingStatus.Available,
+            'border-gray-500': time.isBooked === bookingStatus.Available,
+          }"
+          [matTooltip]="
+            time.isBooked === bookingStatus.Booked ? 'This time is booked' : ''
+          "
+          matTooltipPosition="above"
+          class="relative flex justify-center mt-4 whitespace-nowrap cursor-pointer h-8 w-14 border-2 text-center duration-200 border-green-500 text-xs rounded-md gap-3">
           <span class="flex justify-center items-center">
-            {{ time.formattedTime }}</span
-          >
+            {{ time.formattedTime }}
+          </span>
+          <span
+            *ngIf="time.isBooked === bookingStatus.Booked"
+            class="ml-2 text-red-500 absolute opacity-55">
+            <mat-icon>block</mat-icon>
+            <!-- For Angular Material -->
+            <!-- Or use FontAwesome or other icon libraries -->
+            <!-- <i class="fas fa-ban"></i> -->
+          </span>
         </div>
         } }@empty {
         <div class="flex flex-col gap-4 my-6">

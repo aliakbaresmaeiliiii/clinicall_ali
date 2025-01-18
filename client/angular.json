@@ -28,6 +28,11 @@
             "assets": [
               "src/assets",
               "src/robots.txt",
+              {
+                "glob": "keen-slider.min.css",
+                "input": "node_modules/keen-slider",
+                "output": "/keen-slider/"
+              },
 
               {
                 "glob": "**/*",
@@ -40,7 +45,8 @@
               "node_modules/aos/dist/aos.css",
               "node_modules/ngx-toastr/toastr.css",
               "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
-               "node_modules/swiper/swiper-bundle.min.css"
+               "node_modules/swiper/swiper-bundle.min.css",
+               "node_modules/keen-slider/keen-slider.min.css"
             ],
             "scripts": [
               "node_modules/aos/dist/aos.js", 

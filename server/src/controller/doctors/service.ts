@@ -8,6 +8,7 @@ import { ResponseError } from "../../modules/error/response_error";
 import {
   addComment,
   addDoctor,
+  booked,
   checkDoctorPhoneNumberExists,
   doctorDetail,
   doctorScheduleAvailability,
@@ -150,6 +151,15 @@ export class DoctorsService {
   }
   public static async doctorScheduleTimeAvailability(scheduleID: number) {
     const data = await doctorScheduleTimeAvailability(scheduleID);
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
+  }
+
+  public static async booked(timeID: number) {
+    const data = await booked(timeID);
     if (data) {
       return { message: "ok", data };
     } else {

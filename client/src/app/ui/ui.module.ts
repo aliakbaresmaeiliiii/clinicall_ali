@@ -71,6 +71,8 @@ import { YoursDoctorComponent } from './yours-doctor/yours-doctor.component';
 import { MatIconModule } from '@angular/material/icon';
 import { OnlineConsultaionDialogComponent } from './filter-layout/online-consultaion-dialog/online-consultaion-dialog.component';
 import { ChoosingAppointmentComponent } from './filter-layout/choosing-appointment/choosing-appointment.component';
+import { ToBooleanPipe } from '../shared/pipes/to-boolean.pipe';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 const routes: Routes = [
   {
@@ -108,7 +110,6 @@ const routes: Routes = [
       {
         path: 'doctor/:name/:id',
         component: GetDoctorApointmentComponent,
-        
       },
       // {
       //   path: 'speciality',
@@ -159,7 +160,7 @@ const routes: Routes = [
     DoctorsComponent,
     DoctorRequestComponent,
     OnlineConsultaionDialogComponent,
-    ChoosingAppointmentComponent
+    ChoosingAppointmentComponent,
   ],
   imports: [
     CommonModule,
@@ -191,10 +192,12 @@ const routes: Routes = [
     MatTabsModule,
     NgxStarsModule,
     MatToolbarModule,
-    MatIconModule
+    MatIconModule,
+    ToBooleanPipe,
+    MatTooltipModule
   ],
   exports: [BlogComponent, MatToolbarModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [DatePipe]
+  providers: [DatePipe, ToBooleanPipe],
 })
 export class UiModule {}

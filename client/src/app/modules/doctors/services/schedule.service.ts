@@ -24,8 +24,11 @@ export class ScheduleService {
   doctorScheduleTimeAvailability(
     scheduleID: number
   ): Observable<DoctorScheduleAvailability[]> {
-    debugger;
     const url = `${this.config}/doctors/${scheduleID}/schedule-time-availability`;
     return this.#http.get<DoctorScheduleAvailability[]>(url);
+  }
+
+  markAsBooked(timeID: number): Observable<boolean> {
+    return this.#http.put<boolean>(`${this.config}doctors/${timeID}/booked`, {});
   }
 }

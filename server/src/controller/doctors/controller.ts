@@ -158,9 +158,19 @@ router.get(
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const scheduleID = +req.params.scheduleID;
     const data = await DoctorsService.doctorScheduleTimeAvailability(
-      scheduleID,
+      scheduleID
     );
     const buildResponse = BuildResponse.get(data);
+    res.status(200).json(buildResponse);
+  })
+);
+
+router.put(
+  "/doctors/:timeID/booked",
+  asyncHandler(async (req: Request, res: Response): Promise<void> => {
+    const timeID = +req.params.timeID;
+    const result = await DoctorsService.booked(timeID);
+    const buildResponse = BuildResponse.updated(result);
     res.status(200).json(buildResponse);
   })
 );

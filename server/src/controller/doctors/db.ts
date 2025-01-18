@@ -353,7 +353,8 @@ export async function doctorScheduleTimeAvailability(scheduleID: number) {
     `
     SELECT 
        dat.availableTime,
-       dat.isBooked
+       dat.isBooked,
+       dat.timeID
        FROM 
         ${coreSchema}.doctor_schedules ds
       JOIN 
@@ -365,6 +366,20 @@ export async function doctorScheduleTimeAvailability(scheduleID: number) {
     `,
     {
       values: [scheduleID],
+    }
+  );
+  return result;
+}
+
+export async function booked(timeID: number) {
+  const result = query<RowDataPacket>(
+    `
+    UPDATE ${coreSchema}.doctor_available_times
+      SET isBooked = 1
+      WHERE timeID = ?;
+    `,
+    {
+      values: [timeID],
     }
   );
   return result;

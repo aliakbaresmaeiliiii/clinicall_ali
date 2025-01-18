@@ -52,8 +52,14 @@ export interface DoctorScheduleAvailability {
 }
 
 export interface DoctorScheduleTimeAvailability {
-  availableTime: string[];
+  timeID: number;
   scheduleID: number;
-  formattedDate: string;
+  availableTime: string;
+  isBooked: any;
   formattedTime: string;
+}
+
+export enum BookingStatus {
+  Booked = 1,
+  Available = 0,
 }
