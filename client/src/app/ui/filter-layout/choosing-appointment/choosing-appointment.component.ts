@@ -1,6 +1,7 @@
 import { DatePipe, formatDate } from '@angular/common';
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   inject,
@@ -11,6 +12,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import KeenSlider, { KeenSliderInstance } from 'keen-slider';
 import { environment } from '../../../environments/environment';
 import {
+  BookingStatus,
   DoctorScheduleAvailability,
   DoctorScheduleTimeAvailability,
   DoctorsDTO,
@@ -18,6 +20,8 @@ import {
 import { DoctorsService } from '../../../modules/doctors/services/doctors.service';
 import { ScheduleService } from '../../../modules/doctors/services/schedule.service';
 import moment from 'moment';
+import { take } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-choosing-appointment',
@@ -32,7 +36,9 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
   readonly dialogRef = inject(MatDialogRef<ChoosingAppointmentComponent>);
   readonly data = inject<DoctorScheduleAvailability>(MAT_DIALOG_DATA);
   service = inject(DoctorsService);
+  toast = inject(ToastrService);
   schedulesService = inject(ScheduleService);
+  cdr = inject(ChangeDetectorRef);
   doctorInfo: DoctorsDTO[] = [];
   doctorScheduleAvailability: DoctorScheduleAvailability[] = [];
   availableTimes: DoctorScheduleTimeAvailability[] = [];
@@ -48,6 +54,7 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
   schedules: DoctorScheduleAvailability[] = [];
   closestSchedule: DoctorScheduleAvailability | null = null;
   today: string = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
+  bookingStatus = BookingStatus;
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -95,30 +102,14 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
           ...item,
           weekday: this.datePipe.transform(item.availableDate, 'EEEE'), // Extract weekday
           formattedDate: this.datePipe.transform(item.availableDate, 'MMMM d'),
+          isBooked:
+            item.isBooked === 1
+              ? BookingStatus.Booked
+              : BookingStatus.Available,
         }));
         this.selectToday();
       });
   }
-
-  // selectToday() {
-  //   this.doctorScheduleAvailability.forEach((item, index) => {
-  //     const receivedStartDate = new Date(item.availableDate);
-  //     const todayDate = moment().local().startOf('day').format('YYYY-MM-DD');
-  //     const availableDate = moment(receivedStartDate)
-  //       .local()
-  //       .startOf('day')
-  //       .format('YYYY-MM-DD');
-  //     if (availableDate === todayDate) {
-  //       this.selectedIndex = index--;
-  //       const scheduleID =
-  //         this.doctorScheduleAvailability[this.selectedIndex]?.scheduleID;
-  //       if (scheduleID) {
-  //         this.fetchDoctorScheduleTimeAvailability(scheduleID);
-  //       }
-  //     }
-  //   });
-  // }
-
 
   selectToday() {
     this.doctorScheduleAvailability.forEach((item, index) => {
@@ -129,107 +120,71 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
         .startOf('day')
         .format('YYYY-MM-DD');
       if (availableDate === todayDate) {
-        this.selectedIndex = index;
-        const scheduleID = this.doctorScheduleAvailability[this.selectedIndex]?.scheduleID;
+        const scheduleID = this.doctorScheduleAvailability[index]?.scheduleID;
         if (scheduleID) {
-          this.fetchDoctorScheduleTimeAvailability(scheduleID);
+          this.fetchDoctorScheduleTimeAvailability(scheduleID, index);
         }
       }
     });
   }
-  
 
-  isInitialLoad = true;
-
-  fetchDoctorScheduleTimeAvailability(index: any) {
-    debugger;
-    if (index.scheduleID) {
-      const getIndex = index.scheduleID;
-      this.selectedIndex = getIndex;
-
-      // Check if it's the initial load
-      if (this.isInitialLoad) {
-        // Fetch data only once during the initial load
-        this.schedulesService
-          .doctorScheduleTimeAvailability(getIndex)
-          .subscribe({
-            next: (result: any) => {
-              this.availableTimes = result.data.map((item: any) => ({
-                ...item,
-                formattedTime: item.availableTime
-                  .split(':')
-                  .slice(0, 2)
-                  .join(':'),
-              }));
-            },
-            error: err => {
-              console.log(err);
-            },
-            complete: () => {
-              console.log('complete');
-            },
-          });
-
-        // Set flag to false after initial load
-        this.isInitialLoad = false;
-      } else {
-        // Update the schedule with new data passed from the DOM
-        this.schedulesService.doctorScheduleTimeAvailability(index).subscribe({
-          next: (result: any) => {
-            this.availableTimes = result.data.map((item: any) => ({
-              ...item,
-              formattedTime: item.availableTime
-                .split(':')
-                .slice(0, 2)
-                .join(':'),
-            }));
-          },
-          error: err => {
-            console.log(err);
-          },
-          complete: () => {
-            console.log('complete');
-          },
-        });
-      }
-    }
+  fetchDoctorScheduleTimeAvailability(scheduleID: any, index: number) {
+    this.selectedIndex = index;
+    this.schedulesService
+      .doctorScheduleTimeAvailability(scheduleID)
+      .pipe(take(1))
+      .subscribe({
+        next: (result: any) => {
+          this.availableTimes = result.data.map((item: any) => ({
+            ...item,
+            formattedTime: item.availableTime.split(':').slice(0, 2).join(':'),
+            timeID: item.timeID,
+          }));
+        },
+        error: err => {
+          console.log(err);
+        },
+        complete: () => {
+          console.log('complete');
+        },
+      });
   }
 
-  // fetchDoctorScheduleTimeAvailability(index: any) {
-  //   debugger;
-  //   if (index.scheduleID) {
-  //     const getIndex = index.scheduleID;
-  //     this.selectedIndex = getIndex;
-  //     this.schedulesService.doctorScheduleTimeAvailability(getIndex).subscribe({
-  //       next: (result: any) => {
-  //         this.availableTimes = result.data.map((item: any) => ({
-  //           ...item,
-  //           formattedTime: item.availableTime.split(':').slice(0, 2).join(':'),
-  //         }));
-  //       },
-  //       error: err => {
-  //         console.log(err);
-  //       },
-  //       complete: () => {
-  //         console.log('complete');
-  //       },
-  //     });
-  //   }
-  //   this.schedulesService.doctorScheduleTimeAvailability(index).subscribe({
-  //     next: (result: any) => {
-  //       this.availableTimes = result.data.map((item: any) => ({
-  //         ...item,
-  //         formattedTime: item.availableTime.split(':').slice(0, 2).join(':'),
-  //       }));
-  //     },
-  //     error: err => {
-  //       console.log(err);
-  //     },
-  //     complete: () => {
-  //       console.log('complete');
-  //     },
-  //   });
-  // }
+  bookedTime(bookeData: DoctorScheduleTimeAvailability) {
+    const timeID = bookeData.timeID;
+    this.schedulesService.markAsBooked(timeID).subscribe({
+      next: (res: any) => {
+        if (res.code === 200) {
+          this.toast.success('Your booking has been successfully confirmed.');
+
+          // Check if selectedIndex is a valid number
+          if (
+            typeof this.selectedIndex === 'number' &&
+            this.availableTimes.length
+          ) {
+            const scheduleID =
+              this.doctorScheduleAvailability[this.selectedIndex]?.scheduleID;
+            if (scheduleID) {
+              this.fetchDoctorScheduleTimeAvailability(
+                scheduleID,
+                this.selectedIndex
+              );
+            }
+          }
+
+          // Refresh the entire schedule availability
+          const { doctor_id, consultationType } = this.data;
+          this.fetchDoctorScheduleAvailability(doctor_id, consultationType);
+        }
+      },
+      error: e => {
+        this.toast.error(e);
+      },
+      complete: () => {
+        console.log('Booking process complete');
+      },
+    });
+  }
 
   getDayName(date: Date): string {
     const daysOfWeek = [
@@ -261,7 +216,7 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
       },
       mode: 'free-snap',
       slides: {
-        perView: 5,
+        perView: 4,
         spacing: 5,
       },
     });
