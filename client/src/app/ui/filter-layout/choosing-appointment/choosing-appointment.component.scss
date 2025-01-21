@@ -7,9 +7,11 @@
   font-size: 50px;
   color: #fff;
   font-weight: 500;
-  height: 100px;
-  max-height: 10vh;
+  height: 300px;
+  max-height: 100vh;
 }
+
+
 .navigation-wrapper {
   position: relative;
 }
@@ -63,3 +65,4 @@
 .arrow--disabled {
   fill: rgba(255, 255, 255, 0.5);
 }
+

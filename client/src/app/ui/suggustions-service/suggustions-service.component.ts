@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
   templateUrl: './suggustions-service.component.html',
   // styleUrl: './suggustions-service.component.scss',
   styleUrls: [
-    '../../../../node_modules/keen-slider/keen-slider.min.css',
     './suggustions-service.component.scss',
   ],
   standalone: false,
