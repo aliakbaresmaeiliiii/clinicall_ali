@@ -96,7 +96,8 @@
           [ngClass]="{
             'hover:bg-green-100': time.isBooked === bookingStatus.Available,
             'border-gray-500': time.isBooked === bookingStatus.Available,
-            'cursor-not-allowed': time.isBooked === bookingStatus.Booked
+            'cursor-not-allowed': time.isBooked === bookingStatus.Booked,
+            'cursor-wait': time.isBooked === bookingStatus.Booked
           }"
           [matTooltip]="
             time.isBooked === bookingStatus.Booked ? 'This time is booked' : ''
@@ -108,7 +109,7 @@
           </span>
           <span
             *ngIf="time.isBooked === bookingStatus.Booked"
-            class="ml-2 text-red-500 absolute opacity-55">
+            class="ml-2 text-red-500 absolute opacity-55 ">
             <mat-icon>block</mat-icon>
           </span>
         </div>
