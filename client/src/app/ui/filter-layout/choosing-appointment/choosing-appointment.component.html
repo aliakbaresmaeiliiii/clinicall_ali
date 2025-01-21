@@ -59,14 +59,12 @@
           </blockquote>
         </div>
       </div>
+
       <div class="navigation-wrapper">
-        <div class="keen-slider" #sliderRef>
-          <div
-            *ngFor="
-              let availability of doctorScheduleAvailability;
-              let i = index
-            "
-            class="keen-slider__slide flex">
+        <div class="keen-slider flex" #sliderRef>
+          @for (availability of doctorScheduleAvailability; track $index;let i =
+          $index) {
+          <div class="keen-slider__slide flex w-full">
             <div
               (click)="
                 fetchDoctorScheduleTimeAvailability(availability.scheduleID, i)
@@ -76,7 +74,7 @@
                 'hover:bg-blue-100': selectedIndex !== i,
                 'border-blue-400': selectedIndex === i
               }"
-              class="flex flex-col justify-center shadow-md whitespace-nowrap h-28 w-28 border-2 text-center cursor-pointer duration-200 border-gray-200 text-xs rounded-2xl gap-3">
+              class="flex flex-col justify-center shadow-md whitespace-nowrap h-32 w-32 border-2 text-center cursor-pointer duration-200 border-gray-200 text-xs rounded-2xl gap-3">
               <div class="text-base font-semibold">
                 {{ availability.weekday }}
               </div>
@@ -86,44 +84,19 @@
               <span class="text-green-500"> {{ availability.scheduleID }}</span>
             </div>
           </div>
+          }
         </div>
-        <!-- <svg
-          [ngClass]="
-            'arrow arrow--left ' + (currentSlide === 0 ? 'arrow--disabled' : '')
-          "
-          (click)="slider.prev()"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24">
-          <path
-            d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z" />
-        </svg>
-        @if (slider.track.details.slides.length - 1 === currentSlide) {
-
-        <svg
-          *ngIf="slider"
-          [ngClass]="
-            'arrow arrow--right ' +
-            (slider.track.details.slides.length - 1 === currentSlide
-              ? 'arrow--disabled'
-              : '')
-          "
-          (click)="slider.next()"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24">
-          <path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z" />
-        </svg>
-        } -->
       </div>
 
       <div class="flex justify-center align-center gap-4">
         @for (time of availableTimes; track $index;let i = $index) { @if (time)
         {
         <div
-          (click)="bookedTime(time)"
+          (click)="time.isBooked !== bookingStatus.Booked && bookedTime(time)"
           [ngClass]="{
-          
             'hover:bg-green-100': time.isBooked === bookingStatus.Available,
             'border-gray-500': time.isBooked === bookingStatus.Available,
+            'cursor-not-allowed': time.isBooked === bookingStatus.Booked
           }"
           [matTooltip]="
             time.isBooked === bookingStatus.Booked ? 'This time is booked' : ''
@@ -137,9 +110,6 @@
             *ngIf="time.isBooked === bookingStatus.Booked"
             class="ml-2 text-red-500 absolute opacity-55">
             <mat-icon>block</mat-icon>
-            <!-- For Angular Material -->
-            <!-- Or use FontAwesome or other icon libraries -->
-            <!-- <i class="fas fa-ban"></i> -->
           </span>
         </div>
         } }@empty {

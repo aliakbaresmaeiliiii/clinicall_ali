@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, ElementRef, input, ViewChild } from '@angular/core';
 import KeenSlider, { KeenSliderInstance } from "keen-slider";
-import { SwiperData } from '../../models/swiper-slider';
 import { CardInfo } from '../../models/card-info';
 
 @Component({

@@ -164,12 +164,9 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
           ) {
             const scheduleID =
               this.doctorScheduleAvailability[this.selectedIndex]?.scheduleID;
-            if (scheduleID) {
-              this.fetchDoctorScheduleTimeAvailability(
-                scheduleID,
-                this.selectedIndex
-              );
-            }
+            // if (scheduleID) {
+            //   this.selectToday();
+            // }
           }
 
           // Refresh the entire schedule availability
@@ -199,12 +196,9 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
     return daysOfWeek[date.getDay()];
   }
 
-  ngAfterViewInit() {
-    const checkSliderInterval = setInterval(() => {
-      if (this.sliderRef?.nativeElement && this.days.length > 0) {
-        clearInterval(checkSliderInterval);
-        this.initializeSlider();
-      }
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.initializeSlider();
     }, 100);
   }
 
@@ -216,7 +210,7 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
       },
       mode: 'free-snap',
       slides: {
-        perView: 4,
+        perView: 5,
         spacing: 5,
       },
     });
