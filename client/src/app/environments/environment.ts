@@ -23,7 +23,7 @@ export interface Config {
 //   production: true,
 //   // SERVER_API: 'https://api.example.com',
 //   apiEndPoint: 'http://localhost:8080/v1/',
-//   urlProfileImg: 'http://localhost:8080/imgProfile/',
+//   urlProfileImg: 'http://localhost:8080/images/',
 //   neshanBaseUrl: 'https://api.neshan.org',
 //   neshanApiKey: 'service.KVVe90o9etGdBaZMu1jT2tlhVuc2yXdMDcYkYded',
 //   mapboxToken:
@@ -47,7 +47,7 @@ export const environment: Config = {
   production: true,
   // SERVER_API: 'https://api.example.com',
   apiEndPoint: 'http://localhost:8080/v1/',
-  urlProfileImg: 'http://localhost:8080/imgProfile/',
+  urlProfileImg: 'http://localhost:8080/images/',
   neshanBaseUrl: 'https://api.neshan.org',
   neshanApiKey: 'service.KVVe90o9etGdBaZMu1jT2tlhVuc2yXdMDcYkYded',
   mapboxToken:
@@ -72,7 +72,7 @@ export const environment: Config = {
 //   production: true,
 //   // SERVER_API: 'https://api.example.com',
 //   apiEndPoint: 'http://172.22.64.1:8080/v1/',
-//   urlProfileImg: 'http://172.22.64.1:8080/imgProfile/',
+//   urlProfileImg: 'http://172.22.64.1:8080/images/',
 //   neshanBaseUrl: 'https://api.neshan.org',
 //   neshanApiKey: 'service.KVVe90o9etGdBaZMu1jT2tlhVuc2yXdMDcYkYded',
 //   mapboxToken:

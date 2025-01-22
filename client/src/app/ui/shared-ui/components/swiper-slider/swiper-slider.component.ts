@@ -1,10 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  input,
-  output,
-  ViewChild
-} from '@angular/core';
+import { Component, ElementRef, input, output, ViewChild } from '@angular/core';
 import KeenSlider, { KeenSliderInstance } from 'keen-slider';
 import { SwiperData } from '../../models/swiper-slider';
 
@@ -18,7 +12,7 @@ import { SwiperData } from '../../models/swiper-slider';
   standalone: false,
 })
 export class SwiperSliderComponent {
-  swiperData = input<SwiperData[]>([]);
+  swiperData = input<any[]>([]);
   isShowBtn = input<boolean>(false);
   title = input<string>('');
   currentSlide: number = 1;
@@ -30,37 +24,41 @@ export class SwiperSliderComponent {
   slider!: KeenSliderInstance;
 
   ngAfterViewInit() {
-    this.slider = new KeenSlider(this.sliderRef.nativeElement, {
-      initial: this.currentSlide,
-      slideChanged: s => {
-        this.currentSlide = s.track.details.rel;
-      },
-      slides: {
-        perView: 4,
-        spacing: 5,
-      },
-      breakpoints: {
-        '(max-width: 1024px)': {
-          slides: {
-            perView: 3,
+    setTimeout(() => {
+      this.slider = new KeenSlider(this.sliderRef.nativeElement, {
+        initial: this.currentSlide,
+        slideChanged: s => {
+          this.currentSlide = s.track.details.rel;
+        },
+        slides: {
+          perView: 4,
+          spacing: 5,
+        },
+        breakpoints: {
+          '(max-width: 1024px)': {
+            slides: {
+              perView: 3,
+            },
+          },
+          '(max-width: 768px)': {
+            slides: {
+              perView: 2,
+              spacing: 8,
+            },
+          },
+          '(max-width: 480px)': {
+            slides: {
+              perView: 1,
+              spacing: 5,
+            },
           },
         },
-        '(max-width: 768px)': {
-          slides: {
-            perView: 2,
-            spacing: 8,
-          },
-        },
-        '(max-width: 480px)': {
-          slides: {
-            perView: 1,
-            spacing: 5,
-          },
-        },
-      },
-    });
+      });
 
-    this.dotHelper = [...Array(this.slider.track.details.slides.length).keys()];
+      this.dotHelper = [
+        ...Array(this.slider.track.details.slides.length).keys(),
+      ];
+    }, 100);
   }
 
   ngOnDestroy() {

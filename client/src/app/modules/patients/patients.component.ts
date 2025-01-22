@@ -58,8 +58,6 @@ export class PatientsComponent extends BaseComponent {
   }
   getData() {
     this.service.getPatients().subscribe((response: any) => {
-      console.log('asdf',response);
-      
       const newData = response.data.map((patient: any) => {
         patient.profileImage = patient.profileImage
           ? `${environment.urlProfileImg}${patient.profileImage}`
