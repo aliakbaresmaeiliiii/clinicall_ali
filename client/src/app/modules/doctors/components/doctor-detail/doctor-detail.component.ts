@@ -50,10 +50,6 @@ export class DoctorDetailComponent extends BaseComponent {
             });
             this.doctorInfo = newData;
             this.transferState.set(this.DATA_KEY, this.doctorInfo);
-            console.log(
-              'this.DATA_KEY',
-              this.transferState.get(this.DATA_KEY, null)
-            );
 
             this.coordinates = this.doctorInfo
               .filter(item => item.location)
@@ -65,7 +61,6 @@ export class DoctorDetailComponent extends BaseComponent {
                 };
               });
           }
-          console.log('response', response);
         },
 
         error: e => console.error(e),

@@ -3,14 +3,11 @@ import { v4 as uuidv4 } from "uuid";
 import { createSchema } from "../controller/user/schema";
 import { AdminDTO } from "../models/admin";
 import { PatientDTO } from "../models/patients";
+import { PrescriptionMedicine } from "../models/prescription_medicine";
 import { IAppointment } from "../types/appointment.interface";
 import { Menu, Submenu } from "../types/navItem";
-import { AppResponse } from "../types/response.interface";
-import { ConfirmEmail, CreateUser, User } from "../types/user";
+import { CreateUser, User } from "../types/user";
 import { RowDataPacket, coreSchema, query } from "./mysql";
-import { DoctorsDTO } from "../models/doctors";
-import { createPasswordSchema } from "../controller/user/schema";
-import { PrescriptionMedicine } from "../models/prescription_medicine";
 
 // ****** Auth ******
 

@@ -1,75 +1,61 @@
-import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  inject,
+  makeStateKey,
+  OnInit,
+  signal,
+  TransferState,
+  ViewChild,
+} from '@angular/core';
 import { Router } from '@angular/router';
+import { DoctorsService } from '../../modules/doctors/services/doctors.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-suggustions-service',
   templateUrl: './suggustions-service.component.html',
-  // styleUrl: './suggustions-service.component.scss',
-  styleUrls: [
-    './suggustions-service.component.scss',
-  ],
+  styleUrls: ['./suggustions-service.component.scss'],
   standalone: false,
 })
-export class SuggustionsServiceComponent {
+export class SuggustionsServiceComponent implements OnInit {
   router = inject(Router);
-  swiperData = [
-    {
-      id: 1,
-      name: 'Dentistry',
-      description: 'Comprehensive dental care and treatments.',
-      src: '../../../assets/images/ui/services/Dentistry.jpeg',
-      count: 400,
-    },
-    {
-      id: 2,
-      name: 'Skin, Hair, and Beauty',
-      description:
-        'Advanced treatments for skin, hair, and beauty enhancement.',
-      src: '../../../assets/images/ui/services/Skin, Hair, and Beauty.jpeg',
-      count: 400,
-    },
-    {
-      id: 3,
-      name: 'Psychology',
-      description: 'Mental health support and therapy services.',
-      src: '../../../assets/images/ui/services/Psychology.jpeg',
-      count: 500,
-    },
-    {
-      id: 4,
-      name: 'Gynecology & Obstetrics',
-      description: "Specialized care for women's health and pregnancy.",
-      src: '../../../assets/images/ui/services/Gynecology & Obstetrics.jpeg',
-      count: 600,
-    },
-    {
-      id: 5,
-      name: 'Urology',
-      description: 'Expertise in urinary tract and reproductive health.',
-      src: '../../../assets/images/ui/services/Urology.jpeg',
-      count: 700,
-    },
-    {
-      id: 6,
-      name: 'Ophthalmology',
-      description: 'Eye care and vision correction services.',
-      src: '../../../assets/images/ui/services/Ophthalmology.jpeg',
-      count: 700,
-    },
-    {
-      id: 7,
-      name: 'Nose Surgery',
-      description: 'Cosmetic and reconstructive nasal surgeries.',
-      src: '../../../assets/images/ui/services/Nose Surgery.jpeg',
-      count: 1200,
-    },
-  ];
+  doctorService = inject(DoctorsService);
+  clinicServices: any;
+  transferState = inject(TransferState);
+  DATA_KEY = makeStateKey<any>('clinicData');
+
+
+
+  ngOnInit(): void {
+    this.getClinicServices();
+  }
+
+  getClinicServices() {
+    this.transferState.remove(this.DATA_KEY);
+    const storedData = this.transferState.get(this.DATA_KEY, null);
+
+    if (!storedData) {
+      this.doctorService.getSpecialties().subscribe((res: any) => {
+        this.clinicServices = res.data.map((doctor: any) => {
+          doctor.img = doctor.img
+            ? `${environment.urlProfileImg}${doctor.img}`
+            : '../../../assets/images/bg-01.png';
+          return doctor;
+        });
+      });
+    } else {
+      this.clinicServices = storedData;
+    }
+    return;
+  }
 
   navigateURL(data: any) {
+    debugger;
     const getData = data.name;
 
     switch (getData) {
-      case 'Dentistry':
+      case 'Dentist':
         this.router.navigate(['speciality']);
         break;
 
