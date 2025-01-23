@@ -1,2 +1,4 @@
-<app-swiper-slider [swiperData]="clinicServices" (onClick)="navigateURL($event)" [title]="'What service do you need?'" />
- 
+<app-swiper-slider
+  [swiperData]="clinicServices()"
+  (onClick)="navigateURL($event)"
+  [title]="'What service do you need?'" />
