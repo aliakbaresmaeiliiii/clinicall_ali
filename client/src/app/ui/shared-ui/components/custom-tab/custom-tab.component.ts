@@ -2,22 +2,16 @@ import {
   AfterContentInit,
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  computed,
   inject,
   input,
   output,
-  TemplateRef,
-  viewChild,
+  TemplateRef
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
 import { DoctorsService } from '../../../../modules/doctors/services/doctors.service';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
-import { FilterLayoutComponent } from '../../../filter-layout/filter-layout.component';
-import { ContentChildren, Directive, QueryList } from '@angular/core';
-import { EventEmitter } from 'stream';
 export interface FilerValue {
   id: number;
   name: string;
