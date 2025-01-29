@@ -65,9 +65,9 @@ export class DoctorsService {
     return this.#http.get<string[]>(`${this.config}admin/getSpecialties`);
   }
 
-  countDoctorClick(doctor_id: number): Observable<number> {
+  countDoctorClick(id: number): Observable<number> {
     return this.#http.post<number>(`${this.config}admin/countDoctorClick`, {
-      doctor_id,
+      id,
     });
   }
 
@@ -95,6 +95,9 @@ export class DoctorsService {
       dataReviews
     );
   }
+  getReviews(): Observable<ReviewsDTO> {
+    return this.#http.get<ReviewsDTO>(`${this.config}getReviews`);
+  }
 
   getClinicServices(): Observable<any> {
     return this.#http.get<any>(`${this.config}getClinicServices`);
@@ -111,6 +114,4 @@ export class DoctorsService {
   getAllInsurances(): Observable<InsurancesDTO> {
     return this.#http.get<InsurancesDTO>(`${this.config}getAllInsurances`);
   }
-
-
 }

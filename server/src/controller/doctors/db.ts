@@ -14,11 +14,11 @@ export async function getDoctors(): Promise<DoctorsDTO[] | null> {
       s.name AS specialty_name,
       (SELECT AVG(rating) 
        FROM ${coreSchema}.ratings r 
-       WHERE r.doctor_id = d.doctor_id) AS average_rating
+       WHERE r.id = d.id) AS average_rating
     FROM 
       ${coreSchema}.doctors d
     LEFT JOIN 
-      ${coreSchema}.locations_doctors ld ON d.doctor_id = ld.doctor_id
+      ${coreSchema}.locations_doctors ld ON d.id = ld.id
     LEFT JOIN 
       ${coreSchema}.specialities s ON d.speciality_id = s.id
   `;
@@ -36,14 +36,14 @@ export async function getMostPopularDoctors(): Promise<any> {
       s.name AS specialty_name,
       (SELECT AVG(r.rating) 
        FROM ${coreSchema}.ratings r 
-       WHERE r.doctor_id = d.doctor_id) AS average_rating,
+       WHERE r.id = d.id) AS average_rating,
       (SELECT COUNT(r.rating) 
        FROM ${coreSchema}.ratings r 
-       WHERE r.doctor_id = d.doctor_id) AS total_ratings
+       WHERE r.id = d.id) AS total_ratings
     FROM 
       ${coreSchema}.doctors d
     LEFT JOIN 
-      ${coreSchema}.locations_doctors ld ON d.doctor_id = ld.doctor_id
+      ${coreSchema}.locations_doctors ld ON d.id = ld.id
     LEFT JOIN 
       ${coreSchema}.specialities s ON d.speciality_id = s.id
     HAVING 
@@ -106,19 +106,19 @@ export async function doctorDetail(doctorId: number): Promise<any> {
       COALESCE(ld.location, 'No Location') AS location,
       (SELECT AVG(r.rating) 
        FROM ${coreSchema}.ratings r 
-       WHERE r.doctor_id = d.doctor_id) AS average_rating,
+       WHERE r.id = d.id) AS average_rating,
       s.name AS specialty_name,
       c.comment AS comment
     FROM 
       ${coreSchema}.doctors d
     LEFT JOIN 
-      ${coreSchema}.locations_doctors ld ON d.doctor_id = ld.doctor_id
+      ${coreSchema}.locations_doctors ld ON d.id = ld.id
     LEFT JOIN 
       ${coreSchema}.specialities s ON d.speciality_id = s.id
     LEFT JOIN 
-      ${coreSchema}.comments c ON d.doctor_id = c.rating_id
+      ${coreSchema}.comments c ON d.id = c.id
     WHERE 
-      d.doctor_id = ?;
+      d.id = ?;
     `,
     { values: [doctorId] }
   );
@@ -130,23 +130,23 @@ export async function updateDoctor(doctorData: DoctorsDTO): Promise<any> {
     `
         UPDATE ${coreSchema}.doctors
         SET name = ?
-        WHERE doctor_id = ?
+        WHERE id = ?
       `,
     {
-      values: [doctorData.name, doctorData.doctor_id],
+      values: [doctorData.name, doctorData.id],
     }
   );
   return result;
 }
 
-export async function logDoctorClick(doctor_id: number): Promise<any> {
+export async function logDoctorClick(id: number): Promise<any> {
   const insertResult = await query<RowDataPacket>(
     `
-    INSERT INTO ${coreSchema}.doctor_clicks (doctor_id)
+    INSERT INTO ${coreSchema}.doctor_clicks (id)
     VALUES (?)
     `,
     {
-      values: [doctor_id],
+      values: [id],
     }
   );
 
@@ -154,10 +154,10 @@ export async function logDoctorClick(doctor_id: number): Promise<any> {
     `
     UPDATE ${coreSchema}.doctors
     SET click_count = click_count + 1
-    WHERE doctor_id = ?
+    WHERE id = ?
     `,
     {
-      values: [doctor_id],
+      values: [id],
     }
   );
 
@@ -167,9 +167,9 @@ export async function logDoctorClick(doctor_id: number): Promise<any> {
 export async function like(data: likeDTO) {
   const existingLike = await query<RowDataPacket>(
     `SELECT * FROM ${coreSchema}.likes 
-     WHERE user_id = ? AND doctor_id = ? AND entity_type = ?`,
+     WHERE id = ? AND id = ? AND entity_type = ?`,
     {
-      values: [data.user_id, data.doctor_id, data.entity_type],
+      values: [data.id, data.id, data.entity_type],
     }
   );
 
@@ -177,14 +177,14 @@ export async function like(data: likeDTO) {
     const changeStatusLike = await query<RowDataPacket>(
       ` UPDATE ${coreSchema}.doctors
         SET is_liked = 0
-        WHERE doctor_id = ? `,
-      { values: [data.doctor_id] }
+        WHERE id = ? `,
+      { values: [data.id] }
     );
     const deleteLike = await query<RowDataPacket>(
       `DELETE FROM ${coreSchema}.likes 
-      WHERE user_id = ? AND doctor_id = ? AND entity_type = ?`,
+      WHERE id = ? AND id = ? AND entity_type = ?`,
       {
-        values: [data.user_id, data.doctor_id, data.entity_type],
+        values: [data.id, data.id, data.entity_type],
       }
     );
     return { deleteLike, changeStatusLike }; // return the result of deletion
@@ -192,14 +192,14 @@ export async function like(data: likeDTO) {
     const changeStatusLike = await query<RowDataPacket>(
       ` UPDATE ${coreSchema}.doctors
       SET is_liked = 1
-      WHERE doctor_id = ? `,
-      { values: [data.doctor_id] }
+      WHERE id = ? `,
+      { values: [data.id] }
     );
     // If the like doesn't exist, add it
     const insertLike = await query<RowDataPacket>(
-      `INSERT INTO ${coreSchema}.likes (user_id, doctor_id, entity_type) 
+      `INSERT INTO ${coreSchema}.likes (id, id, entity_type) 
        VALUES (?, ?, ?)`,
-      { values: [data.user_id, data.doctor_id, data.entity_type] }
+      { values: [data.id, data.id, data.entity_type] }
     );
     return { insertLike, changeStatusLike }; // return the result of insertion
   }
@@ -208,12 +208,12 @@ export async function like(data: likeDTO) {
 export async function addComment(comment: CommentsDTO) {
   const result = await query<RowDataPacket>(
     `INSERT INTO ${coreSchema}.comments
-     (user_id, doctor_id, comment_text, rating)
+     (id, id, comment_text, rating)
          VALUES (?, ?, ?, ?)`,
     {
       values: [
-        comment.user_id,
-        comment.doctor_id,
+        comment.id,
+        comment.id,
         comment.comment_text,
         comment.rating,
       ],
@@ -239,11 +239,11 @@ export async function filterSpecialtyById(specialty: any) {
       s.name AS specialty_name,
       (SELECT AVG(rating) 
        FROM ${coreSchema}.ratings r 
-       WHERE r.doctor_id = d.doctor_id) AS average_rating
+       WHERE r.id = d.id) AS average_rating
     FROM 
       ${coreSchema}.doctors d
     LEFT JOIN 
-      ${coreSchema}.locations_doctors ld ON d.doctor_id = ld.doctor_id
+      ${coreSchema}.locations_doctors ld ON d.id = ld.id
     LEFT JOIN 
       ${coreSchema}.specialities s ON d.speciality_id = s.id
 
@@ -265,11 +265,11 @@ export async function filterServicesById(serviceId: number) {
       s.name AS specialty_name,
       (SELECT AVG(rating) 
        FROM ${coreSchema}.ratings r 
-       WHERE r.doctor_id = d.doctor_id) AS average_rating
+       WHERE r.id = d.id) AS average_rating
     FROM 
       ${coreSchema}.doctors d
     LEFT JOIN 
-      ${coreSchema}.locations_doctors ld ON d.doctor_id = ld.doctor_id
+      ${coreSchema}.locations_doctors ld ON d.id = ld.id
     LEFT JOIN 
       ${coreSchema}.specialities s ON d.speciality_id = s.id
     JOIN 
@@ -286,9 +286,9 @@ export async function filterServicesById(serviceId: number) {
 
 export async function existingFeedback(reviewData: ReviewsDTO) {
   const result = await query<RowDataPacket>(
-    `SELECT * FROM ${coreSchema}.reviews WHERE doctor_id = ? AND user_id =?`,
+    `SELECT * FROM ${coreSchema}.reviews WHERE id = ? AND id =?`,
     {
-      values: [reviewData.doctor_id, reviewData.user_id],
+      values: [reviewData.id, reviewData.id],
     }
   );
   return result;
@@ -297,8 +297,8 @@ export async function existingFeedback(reviewData: ReviewsDTO) {
 export async function insertReviews(reviewData: ReviewsDTO) {
   const result = await query<RowDataPacket>(
     `INSERT INTO ${coreSchema}.reviews
-  (doctor_id,
-    user_id,
+  (id,
+    id,
     comment,
     recommendation,
     rating,
@@ -310,8 +310,8 @@ export async function insertReviews(reviewData: ReviewsDTO) {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)`,
     {
       values: [
-        reviewData.doctor_id,
-        reviewData.user_id,
+        reviewData.id,
+        reviewData.id,
         reviewData.comment,
         reviewData.rating,
         reviewData.recommendation,
@@ -326,8 +326,17 @@ export async function insertReviews(reviewData: ReviewsDTO) {
   return result;
 }
 
+export async function getReviews() {
+  const result = await query<RowDataPacket[]>(
+    `
+    SELECT * FROM ${coreSchema}.reviews
+    `
+  );
+  return result;
+}
+
 export async function doctorScheduleAvailability(
-  doctor_id: number,
+  id: number,
   ConsultationTypesAvailable: string
 ) {
   const result = await query<RowDataPacket>(
@@ -339,11 +348,11 @@ export async function doctorScheduleAvailability(
     FROM
       ${coreSchema}.doctor_schedules ds
         WHERE
-        ds.doctor_id = ?
+        ds.id = ?
         AND FIND_IN_SET(?, ds.ConsultationTypesAvailable) > 0
     `,
     {
-      values: [doctor_id, ConsultationTypesAvailable],
+      values: [id, ConsultationTypesAvailable],
     }
   );
   return result;

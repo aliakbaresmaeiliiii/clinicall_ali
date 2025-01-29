@@ -88,8 +88,8 @@ export class FeedbackComponent implements OnInit {
       valueForm.map;
       const payload: ReviewsDTO = {
         ...valueForm,
-        doctor_id: this.doctorInfo[0].doctor_id,
-        user_id: this.userData.user_id,
+        id: this.doctorInfo[0].id,
+        // id: this.userData.id,
       };
       this.doctorService.insertReviews(payload).subscribe(
         res => {

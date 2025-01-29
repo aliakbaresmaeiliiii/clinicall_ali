@@ -1,10 +1,9 @@
 export interface UserInfo {
-  user_id: number;
+  id: number;
   patientName: string;
   age: number;
   sex: string;
   phoneNumber: any;
-  id: number;
   external_id?: number;
   firstName?: any;
   lastName?: any;
@@ -33,8 +32,7 @@ export interface UserRole {
 }
 
 export interface CommentsDTO {
-  user_id: number;
-  doctor_id: number;
+  id: number;
   text: string;
   rating: any;
 }

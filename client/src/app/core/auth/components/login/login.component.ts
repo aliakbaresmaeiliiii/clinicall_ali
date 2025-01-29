@@ -1,35 +1,23 @@
 declare var google: any;
-import { CommonModule } from '@angular/common';
 import {
   Component,
-  CUSTOM_ELEMENTS_SCHEMA,
   inject,
   OnInit,
-  Renderer2,
+  Renderer2
 } from '@angular/core';
 import {
   FormControl,
   FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
+  Validators
 } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ErrorStateMatcher } from '@angular/material/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { Router, RouterLink, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { ThemeManagerService } from '../../../../shared/client-services/theme-manager.service';
 import { AuthService } from '../../../services/auth.service';
 
-import {
-  SocialLoginModule,
-  SocialUser
-} from '@abacritt/angularx-social-login';
+import { SocialUser } from '@abacritt/angularx-social-login';
 import { AnimationEvent } from '@angular/animations';
+import { ToastrService } from 'ngx-toastr';
 import { PermissionService } from '../../../services/permission.service';
 
 // Client ID
@@ -38,50 +26,37 @@ import { PermissionService } from '../../../services/permission.service';
 // Client secret
 // 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
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    imports: [
-        FormsModule,
-        ReactiveFormsModule,
-        MatCardModule,
-        MatInputModule,
-        MatButtonModule,
-        MatFormFieldModule,
-        RouterLink,
-        CommonModule,
-        MatIconModule,
-        RouterModule,
-        MatCheckboxModule,
-        SocialLoginModule,
-    ],
-    // providers: [
-    //   SocialAuthService,
-    //   {
-    //     provide: 'SocialAuthServiceConfig',
-    //     useValue: {
-    //       autoLogin: false,
-    //       lang: 'en',
-    //       providers: [
-    //         {
-    //           id: GoogleLoginProvider.PROVIDER_ID,
-    //           provider: new GoogleLoginProvider(
-    //             '302618903274-6bfd6agmkoanb474m3e1ii3oc1phjl40.apps.googleusercontent.com'
-    //           ),
-    //         },
-    //       ],
-    //       onError: err => {
-    //         console.error('❌❌❌', err);
-    //       },
-    //     } as SocialAuthServiceConfig,
-    //   },
-    // ],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    styleUrl: './login.component.scss'
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  standalone: false,
+  // providers: [
+  //   SocialAuthService,
+  //   {
+  //     provide: 'SocialAuthServiceConfig',
+  //     useValue: {
+  //       autoLogin: false,
+  //       lang: 'en',
+  //       providers: [
+  //         {
+  //           id: GoogleLoginProvider.PROVIDER_ID,
+  //           provider: new GoogleLoginProvider(
+  //             '302618903274-6bfd6agmkoanb474m3e1ii3oc1phjl40.apps.googleusercontent.com'
+  //           ),
+  //         },
+  //       ],
+  //       onError: err => {
+  //         console.error('❌❌❌', err);
+  //       },
+  //     } as SocialAuthServiceConfig,
+  //   },
+  // ],
+  styleUrl: './login.component.scss',
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit {
   router = inject(Router);
   #authService = inject(AuthService);
   permissionService = inject(PermissionService);
+  toast = inject(ToastrService);
   renderer = inject(Renderer2);
   matcher = new ErrorStateMatcher();
   private themeManager = inject(ThemeManagerService);
@@ -129,12 +104,10 @@ export class LoginComponent implements OnInit{
     //   size: 'large',
     //   shape: 'rectangle',
     // });
-
   }
 
-
   private decodeToken(token: any) {
-    return JSON.parse(atob(token.split(".")[1]));
+    return JSON.parse(atob(token.split('.')[1]));
   }
 
   handleLogin(response: any) {
@@ -142,31 +115,35 @@ export class LoginComponent implements OnInit{
       // Decode the token
       const payload = this.decodeToken(response.credential);
       console.log('payload', payload);
-      
+
       // Store in session
       sessionStorage.setItem('loggedInUser', JSON.stringify(payload));
-      
+
       // Navigate to home
       this.router.navigate(['aliakbar/dashboard']);
     } else {
       console.error('Invalid response or missing credential');
     }
   }
-  
 
   // ****login Google
-  login(event: AnimationEvent) {
+  login() {
     if (this.form.value) {
-      this.#authService.signIn(this.form.value).subscribe((res: any) => {
-        this.permissionService.setPermissions(res.data.permissions);
-        const stroeDataUser = res.data;
-        const dataJson = JSON.stringify(stroeDataUser);
-        localStorage.setItem('userData', dataJson);
-        if(res.data.roles[0] === 'user'){
-          this.router.navigate(['/']);
-        }else{
-          this.router.navigate(['/']);
-        }
+      this.#authService.signIn(this.form.value).subscribe({
+        next: (res: any) => {
+          // this.permissionService.setPermissions(res.data.permissions);
+          const stroeDataUser = res;
+          const dataJson = JSON.stringify(stroeDataUser);
+          localStorage.setItem('userData', dataJson);
+          debugger;
+          if (res.code === 200) {
+            this.toast.success('login is successfully');
+            this.router.navigate(['aliakbar']);
+          }
+        },
+        error: e => {
+          this.toast.error(`${e}`);
+        },
       });
     }
   }

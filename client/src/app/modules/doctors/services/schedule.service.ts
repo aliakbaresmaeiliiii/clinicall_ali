@@ -12,11 +12,11 @@ export class ScheduleService {
   config = environment.apiEndPoint;
 
   fetchDoctorScheduleAvailability(
-    doctor_id: number,
+    id: number,
     consultationType: string
   ): Observable<DoctorScheduleAvailability[]> {
     const params = new HttpParams().set('consultationType', consultationType);
-    const url = `${this.config}doctors/${doctor_id}/schedule-availability`;
+    const url = `${this.config}doctors/${id}/schedule-availability`;
     return this.#http.get<DoctorScheduleAvailability[]>(url, {
       params: params,
     });

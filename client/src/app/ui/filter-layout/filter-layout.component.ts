@@ -85,7 +85,7 @@ export class FilterLayoutComponent implements OnInit {
 
     const getUserData = localStorage.getItem('userData');
     if (getUserData) {
-      this.userData = JSON.parse(getUserData).user_id;
+      this.userData = JSON.parse(getUserData).id;
     }
   }
 
@@ -217,7 +217,7 @@ export class FilterLayoutComponent implements OnInit {
       this.router.navigate(['/login']);
     } else {
       let doctorName = data.name.replace(/\s+/g, '-');
-      const doctorId = data.doctor_id;
+      const doctorId = data.id;
       this.countDoctorClick(doctorId);
       this.router.navigate([`/doctor/${doctorName}/${doctorId}`]);
     }
@@ -230,28 +230,28 @@ export class FilterLayoutComponent implements OnInit {
     } else {
       this.dialog.open(OnlineConsultaionDialogComponent, {
         width: '500px',
-        data: data.doctor_id,
+        data: data.id,
       });
     }
   }
 
-  countDoctorClick(doctor_id: number) {
-    this.doctorService.countDoctorClick(doctor_id).subscribe(res => {});
+  countDoctorClick(id: number) {
+    this.doctorService.countDoctorClick(id).subscribe(res => {});
   }
 
-  toggleLike(data: DoctorsDTO, doctor_id: any) {
-    this.tabData()[doctor_id].is_liked = !this.tabData()[doctor_id].is_liked;
+  toggleLike(data: DoctorsDTO, id: any) {
+    this.tabData()[id].is_liked = !this.tabData()[id].is_liked;
     const user_id = this.userData;
     const payload: likeDTO = {
-      doctor_id: data.doctor_id,
+      id: data.id,
       entity_type: data.name,
-      user_id: user_id,
+      // id: id,
     };
     this.likeService.addLike(payload).subscribe(res => {});
   }
 
   shareInfo(docotoInfo: DoctorsDTO) {
-    const doctorLink = `localhost:4200/doctor/${docotoInfo.name}/${docotoInfo.doctor_id}`; // Generate the doctor's link
+    const doctorLink = `localhost:4200/doctor/${docotoInfo.name}/${docotoInfo.id}`; // Generate the doctor's link
     this.dialog.open(CopyLinkDialogComponent, {
       data: { link: doctorLink },
     });

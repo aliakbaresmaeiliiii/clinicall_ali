@@ -18,6 +18,7 @@ import {
   filterSpecialtyById,
   getDoctors,
   getMostPopularDoctors,
+  getReviews,
   getSpecialties,
   insertReviews,
   like,
@@ -77,8 +78,8 @@ export class DoctorsService {
     }
   }
 
-  public static async logDoctorClick(doctor_id: number) {
-    const data = await logDoctorClick(doctor_id);
+  public static async logDoctorClick(id: number) {
+    const data = await logDoctorClick(id);
     if (data) {
       return { message: "ok", data };
     } else {
@@ -138,11 +139,20 @@ export class DoctorsService {
     }
   }
 
+  public static async getReviews() {
+    const data = await getReviews();
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
+  }
+
   public static async doctorScheduleAvailability(
-    doctor_id: number,
+    id: number,
     consultationType: any
   ) {
-    const data = await doctorScheduleAvailability(doctor_id, consultationType);
+    const data = await doctorScheduleAvailability(id, consultationType);
     if (data) {
       return { message: "ok", data };
     } else {

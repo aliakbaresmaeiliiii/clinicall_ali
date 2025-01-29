@@ -12,7 +12,7 @@ export interface NavItem {
   subMenu?: Submneu[] | null;
 }
 export interface Role {
-  user_id: number;
+  id: number;
   role: string;
 }
 

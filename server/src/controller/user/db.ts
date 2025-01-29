@@ -1,12 +1,13 @@
 import { coreSchema, query, RowDataPacket } from "../../bin/mysql";
+import { ConfirmEmail } from "../../models/auth";
 import { AppResponse } from "../../types/response.interface";
-import { ConfirmEmail, CreateUser, User } from "../../types/user";
+import {  CreateUser, User } from "../../types/user";
 import { createPasswordSchema } from "./schema";
 import bcrypt from "bcrypt";
 
 export async function checkUserExist(email: string): Promise<RowDataPacket[]> {
   const user = await query<RowDataPacket[]>(
-    `SELECT user_id,email FROM  ${coreSchema}.users
+    `SELECT id,email FROM  ${coreSchema}.users
         WHERE email=?`,
     {
       values: [email],
@@ -123,7 +124,7 @@ export async function updateProfileUser(data: User): Promise<any> {
         phoneNumber = ?,
         verify_code = ?,
         tokenVerify = ?
-      WHERE user_id = ?;
+      WHERE id = ?;
     `,
     {
       values: [
@@ -136,26 +137,24 @@ export async function updateProfileUser(data: User): Promise<any> {
         data.phoneNumber,
         data.verify_code,
         data.tokenVerify,
-        data.user_id,
+        data.id,
       ],
     }
   );
 
   // Fetch the updated user profile
   const result = await query<RowDataPacket>(
-    `SELECT * FROM ${coreSchema}.users WHERE user_id = ?`,
+    `SELECT * FROM ${coreSchema}.users WHERE id = ?`,
     {
-      values: [data.user_id],
+      values: [data.id],
     }
   );
 
   return result[0]; // Assuming result is an array of rows
 }
 
-
-
 export async function checkNickName(): Promise<any> {
-  const getData = await query<RowDataPacket>(`SELECT * FROM Ali_DB.users`);
+  const getData = await query<RowDataPacket>(`SELECT * FROM ${coreSchema}.users`);
   return getData;
 }
 
@@ -164,7 +163,7 @@ export async function updateUserVerifyCode(userId: string, newCode: string) {
     `
       UPDATE ${coreSchema}.users
       SET verify_code=?,updatedAt=?
-      WHERE user_id=?
+      WHERE id=?
       `,
     {
       values: [newCode, new Date(), userId],
@@ -172,9 +171,9 @@ export async function updateUserVerifyCode(userId: string, newCode: string) {
   );
   const user = await query<RowDataPacket[]>(
     `
-        SELECT user_id,email,verify_code
+        SELECT id,email,verify_code
         FROM ${coreSchema}.users
-        WHERE user_id=?
+        WHERE id=?
         `,
     {
       values: [userId],
@@ -228,7 +227,7 @@ export async function getUserInfo(email: string) {
      LEFT JOIN 
      ${coreSchema}.comments c
      ON 
-     u.user_id = c.user_id
+     u.id = c.id
      WHERE 
      u.email =?
      LIMIT 1;
@@ -246,15 +245,15 @@ export async function getUserInfo(email: string) {
   const userMap = new Map<number, any>();
 
   data.forEach((row) => {
-    if (!userMap.has(row.user_id)) {
-      userMap.set(row.user_id, {
+    if (!userMap.has(row.id)) {
+      userMap.set(row.id, {
         ...data,
         comments: [],
       });
     }
 
     if (row.comment_text) {
-      userMap.get(row.user_id).comments.push({
+      userMap.get(row.id).comments.push({
         text: row.comment_text,
         createdAt: row.comment_created_at,
       });

@@ -79,8 +79,8 @@ router.put(
 router.post(
   `/admin/countDoctorClick`,
   asyncHandler((req: Request, res: Response) => {
-    const doctor_id = req.body.doctor_id;
-    const data = DoctorsService.logDoctorClick(doctor_id);
+    const id = req.body.id;
+    const data = DoctorsService.logDoctorClick(id);
     const buildResponse = BuildResponse.get(data);
     res.status(200).json(buildResponse);
   })
@@ -141,12 +141,23 @@ router.post(
   })
 );
 router.get(
-  "/doctors/:doctor_id/schedule-availability",
+  `/getReviews`,
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
-    const doctor_id = +req.params.doctor_id;
+    const data = await DoctorsService.getReviews();
+    const buildResponse = BuildResponse.get(data);
+    res.status(200).json(buildResponse);
+  })
+);
+
+
+
+router.get(
+  "/doctors/:id/schedule-availability",
+  asyncHandler(async (req: Request, res: Response): Promise<any> => {
+    const id = +req.params.id;
     const consultationType = req.query.consultationType;
     const data = await DoctorsService.doctorScheduleAvailability(
-      doctor_id,
+      id,
       consultationType
     );
     const buildResponse = BuildResponse.get(data);
