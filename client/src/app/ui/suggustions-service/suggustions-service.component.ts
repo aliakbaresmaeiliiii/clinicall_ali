@@ -1,19 +1,15 @@
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
-  ElementRef,
   inject,
   makeStateKey,
   OnInit,
   signal,
-  TransferState,
-  ViewChild,
+  TransferState
 } from '@angular/core';
 import { Router } from '@angular/router';
-import { DoctorsService } from '../../modules/doctors/services/doctors.service';
 import { environment } from '../../environments/environment';
+import { DoctorsService } from '../../modules/doctors/services/doctors.service';
 
 @Component({
   selector: 'app-suggustions-service',
