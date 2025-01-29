@@ -223,9 +223,9 @@ export async function addComment(comment: CommentsDTO) {
 }
 
 export async function getSpecialties() {
-  const result = query<RowDataPacket[]>(
+  const result =await query<RowDataPacket[]>(
     `SELECT *
-       FROM ${coreSchema}.specialities`
+       FROM ${coreSchema}.specialties`
   );
   return result;
 }
