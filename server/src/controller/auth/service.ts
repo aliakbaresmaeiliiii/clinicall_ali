@@ -1,15 +1,17 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import ms from "ms";
-import { createUser, getUserByPassword } from "../../bin/db";
+import { getUserByPassword } from "../../bin/db";
 import { getUniqueCodev2, getUniqueCodev3 } from "../../helper/common";
 import SendMail from "../../helper/send_email";
 import { useValidation } from "../../helper/use_validation";
+import { ConfirmEmail } from "../../models/auth";
 import { ResponseError } from "../../modules/error/response_error";
-import { AppResponse } from "../../types/response.interface";
-import { CreateUser, User } from "../../types/user";
-import { UserService } from "../user/sercvice";
-import { loginSchema, registerSchema } from "./schema";
+import { BuildResponse } from "../../modules/response/app_response";
+import { confirmEmailSchema } from "../clinic/schema";
+import { ClinicService } from "../clinic/service";
+import { checkIfEmailExists, confirmEmail } from "./db";
+import { loginSchema } from "./schema";
 
 const { JWT_SECRET_ACCESS_TOKEN, JWT_SECRET_REFRESH_TOKEN }: any = process.env;
 
@@ -20,108 +22,110 @@ const JWT_REFRESH_TOKEN_EXPIRED =
 const expiresIn = ms(JWT_ACCESS_TOKEN_EXPIRED) / 1000;
 
 export class AuthService {
-  public static async signUp(formData: CreateUser) {
-    const currentUser = await UserService.validateUserEmail(formData.email);
-    if (currentUser) {
-      return { message: "the user already exist !", code: 400, currentUser };
-    }
-
-    const generateToken = {
-      code: getUniqueCodev2(),
-    };
-    const tokenVerify = jwt.sign(
-      JSON.parse(JSON.stringify(generateToken)),
-      JWT_SECRET_ACCESS_TOKEN,
-      {
-        expiresIn,
-      }
-    );
-
-    formData.verify_code = getUniqueCodev3();
-    formData.tokenVerify = tokenVerify;
-    useValidation(registerSchema, formData);
-    const newUserId = await createUser(formData);
-    if (!newUserId)
-      throw new ResponseError.BadRequest("Cannot add user in the database !");
-    SendMail.AccountRegister(formData);
-    return {
-      message: null,
-      newUser: {
-        user_id: newUserId,
-        email: formData.email,
-      },
-    };
-  }
-
-  public static async signIn(formData: User) {
-    const checkValidation = useValidation(loginSchema, formData);
-
-    const userData = await getUserByPassword(
-      checkValidation.email,
-      checkValidation.password
-    );
-
-    const match = await new Promise<boolean>((resolve, reject) => {
-      bcrypt.compare(
-        formData.password,
-        userData[0]?.password,
-        (err, isMatch) => {
-          if (err) reject(err);
-          resolve(isMatch);
+  public static async signUp(formData: any) {
+    const emailExists = await checkIfEmailExists(formData.email);
+    console.log("Email Exists Check Result:", emailExists);
+    if (emailExists) {
+      console.error(`${formData.email}Email already exists, throwing error...`);
+      throw new ResponseError.BadRequest(`${formData.email} is already exist.`);
+    } else {
+      const generateToken = {
+        code: getUniqueCodev2(),
+      };
+      const token_verify = jwt.sign(
+        JSON.parse(JSON.stringify(generateToken)),
+        JWT_SECRET_ACCESS_TOKEN,
+        {
+          expiresIn,
         }
       );
-    });
-    if (!match) {
-      throw new ResponseError.NotFound("account not found or has been deleted");
-    }
 
-    if (!userData) {
-      throw new ResponseError.NotFound("account not found or has been deleted");
-    } else if (userData.emailConfirmed === 0) {
-      throw new ResponseError.BadRequest("email is not confirmed");
-    }
+      formData.verify_code = getUniqueCodev3();
+      formData.token_verify = token_verify;
 
-    const comparePassword = true;
-
-    if (comparePassword) {
-      const user: User = {
-        user_id: userData[0].user_id,
-        firstName: userData[0].firstName,
-        lastName: userData[0].lastName,
-        userName: userData[0].userName,
-        gender: userData[0].gender,
-        national_code: userData[0].national_code,
-        city: userData[0].city,
-        email: userData[0].email,
-        imgUser: userData[0].imgUser,
-        phoneNumber: userData[0].phoneNumber,
-        address: userData[0].address,
-        dateOfBirth: userData[0].dateOfBirth,
-        tokenVerify: userData[0].tokenVerify,
-        roles: [],
-        permissions: [],
+      const roleServiceMap: { [key: string]: Function } = {
+        clinic: ClinicService.insertClinic,
+        // doctor: DoctorService.insertDoctor, // Placeholder for future use
+        // patient: PatientService.insertPatient, // Placeholder for future use
       };
-      userData.forEach((element: any) => {
-        if (element.role_name && !user.roles.includes(element.role_name)) {
-          user.roles.push(element.role_name);
-        }
-        if (
-          element.permission_name &&
-          !user.permissions.includes(element.permission_name)
-        ) {
-          user.permissions.push(element.permission_name);
-        }
-      });
+      const roleHandler = roleServiceMap[formData.role];
+      if (!roleHandler) {
+        throw new ResponseError.BadRequest("Invalid role specified.");
+      }
+      const newUserId = await roleHandler(formData);
+
+      if (!newUserId) {
+        throw new ResponseError.BadRequest("Cannot add user to the database!");
+      }
+
+      SendMail.AccountRegister(formData);
       return {
-        isSuccessfull: true,
-        showToUser: true,
-        messageCode: "200",
-        messageKind: 1,
-        message: "login is successfully",
-        data: user,
-      } as AppResponse;
-    } else {
-      throw new ResponseError.Unauthorized("Invalid password");
+        message: null,
+        newUser: {
+          id: newUserId,
+          email: formData.email,
+        },
+      };
+    }
+  }
+
+  public static async confirmEmail(formData: ConfirmEmail) {
+    const userData = useValidation(confirmEmailSchema, formData);
+    const confirmEmailResult = await confirmEmail(userData);
+    return confirmEmailResult || null;
+  }
+
+  public static async signIn(formData: any) {
+    try {
+      const validateData = useValidation(loginSchema, formData);
+      const userData = await getUserByPassword(
+        validateData.email,
+        validateData.password
+      );
+      const plainPassword = validateData.password;
+      const hashedPassword = userData[0].password;
+
+      // '$2b$10$c3.soKkfuHX3qswlx/.Wg.vfi1saaBAsrRl4hBwkvIq6NVoAmLBeC'
+      const isMatch = await bcrypt.compare(plainPassword, hashedPassword);
+
+      if (!userData || userData.length === 0) {
+        throw new ResponseError.NotFound(
+          "Account not found or has been deleted."
+        );
+      }
+
+      if (!isMatch) {
+        throw new ResponseError.Unauthorized("Invalid password.");
+      }
+
+      // Step 4: Check Email Confirmation
+      if (userData[0]?.emailConfirmed === 0) {
+        throw new ResponseError.BadRequest("Email is not confirmed.");
+      }
+      const clinicData = {
+        id: userData[0].id,
+        name: userData[0].name,
+        owner_name: userData[0].owner_name,
+        email: userData[0].email,
+        city: userData[0].city,
+        phone: userData[0].phone,
+        state: userData[0].state,
+        zip_code: userData[0].zip_code,
+        country: userData[0].country,
+        // roles: [
+        //   ...new Set(userData.map((el: any) => el.role_name).filter(Boolean)),
+        // ],
+        // permissions: [
+        //   ...new Set(
+        //     userData.map((el: any) => el.permission_name).filter(Boolean)
+        //   ),
+        // ],
+      };
+      return clinicData;
+    } catch (error) {
+      // Log the error and rethrow
+      console.error("Error in signIn function:", error);
+      throw error;
     }
   }
 }

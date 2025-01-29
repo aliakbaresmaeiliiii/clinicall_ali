@@ -3,7 +3,7 @@
 <app-service-section [title]="'user-reviews-of-clinic-ali'">
   <div class="mobile:w-full desktop:w-11/12 mx-auto">
     <div class="keen-slider" #sliderRef>
-      @for (item of userReview; track $index) {
+      @for (item of userReview(); track $index) {
       <div class="keen-slider__slide">
         <div class="swiper-slide">
           <div class="aos-init aos-animate">
@@ -25,7 +25,7 @@
                       </svg>
                     </div>
                     <div class="success-prompt-wrap">
-                      <p class="success-prompt-heading text-green-950 font-bold">{{ item.name }}</p>
+                      <p class="success-prompt-heading text-green-950 font-bold">{{ item.comment }}</p>
                       <div class="text-yellow-500 flex pt-3 gap-2">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -69,10 +69,10 @@
                         </svg>
                       </div>
                       <div class="success-prompt-prompt">
-                        <p>{{ item.description }}</p>
+                        <!-- <p>{{ item.description }}</p> -->
                       </div>
                       <div class="success-button-container text-green-950 font-bold absolute bottom-4 right-7">
-                        {{ item.date }}
+                        <!-- {{ item.date }} -->
                         
                       </div>
                     </div>

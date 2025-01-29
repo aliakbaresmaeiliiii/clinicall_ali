@@ -2,7 +2,7 @@ import { likeDTO } from '../../../ui/shared-ui/models/like';
 
 export interface DoctorsDTO {
   position?: number | any;
-  doctor_id?: any;
+  id?: any;
   name: string;
   contact_info?: string | undefined | null;
   specialty_name?: string | null | undefined;
@@ -30,8 +30,7 @@ export interface LocaitonDTO {
 }
 
 export interface ReviewsDTO {
-  doctor_id: number;
-  user_id: number;
+  id: number;
   rating: number;
   recommendation?: string;
   professional_demeanor: number;
@@ -39,13 +38,14 @@ export interface ReviewsDTO {
   skill: number;
   staff_behavior: number;
   clinic_condition: number;
+  comment:string
 }
 
 export interface DoctorScheduleAvailability {
   availableDate: string;
   availableTime: string[];
   consultationType: string;
-  doctor_id: number;
+  id: number;
   scheduleID: number;
   weekday: string;
   formattedDate: string;

@@ -73,10 +73,10 @@
           <th mat-header-cell *matHeaderCellDef>Posidtion.</th>
           <td mat-cell *matCellDef="let element">{{ element.posidtion }}</td>
         </ng-container>
-        <!-- doctor_id Column -->
-        <ng-container matColumnDef="doctor_id">
+        <!-- id Column -->
+        <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef>Id.</th>
-          <td mat-cell *matCellDef="let element">{{ element.doctor_id }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.id }}</td>
         </ng-container>
         <!-- profileImage Column -->
         <ng-container matColumnDef="profileImage">
@@ -141,7 +141,7 @@
                 class="pointer"
                 mat-icon-button
                 [matTooltip]="tooltipVisibility"
-                (click)="doctorDetial(element.doctor_id)">
+                (click)="doctorDetial(element.id)">
            
                 <i class="fa-regular fa-eye text-blue-900 text-xl"></i>
 

@@ -48,7 +48,7 @@ export class SuggestionReplacedDoctorComponent
   ngOnInit(): void {
     const getUserData = localStorage.getItem('userData');
     if (getUserData) {
-      this.userData = JSON.parse(getUserData).user_id;
+      this.userData = JSON.parse(getUserData).id;
     }
   }
 
@@ -131,31 +131,30 @@ export class SuggestionReplacedDoctorComponent
   takeTurn() {}
 
   shareInfo(docotoInfo: DoctorsDTO) {
-    const doctorLink = `localhost:4200/doctor/${docotoInfo.name}/${docotoInfo.doctor_id}`; // Generate the doctor's link
+    const doctorLink = `localhost:4200/doctor/${docotoInfo.name}/${docotoInfo.id}`; // Generate the doctor's link
     this.dialog.open(CopyLinkDialogComponent, {
       data: { link: doctorLink },
     });
   }
 
-  toggleLike(info: DoctorsDTO, doctor_id: number) {
-    this.doctors[doctor_id].is_liked = !this.doctors[doctor_id].is_liked;
+  toggleLike(info: DoctorsDTO, id: number) {
+    this.doctors[id].is_liked = !this.doctors[id].is_liked;
     const user_id = this.userData;
     const payload: likeDTO = {
-      doctor_id: info.doctor_id,
+      id: info.id,
       entity_type: info.name,
-      user_id: user_id,
     };
     this.likeService.addLike(payload).subscribe(res => {});
   }
 
   getAppointment(data: any) {
     let doctorName = data.name.replace(/\s+/g, '-');
-    const doctorId = data.doctor_id;
+    const doctorId = data.id;
     this.countDoctorClick(doctorId);
     this.router.navigate([`/doctor/${doctorName}/${doctorId}`]);
   }
 
-  countDoctorClick(doctor_id: number) {
-    this.doctorService.countDoctorClick(doctor_id).subscribe(res => {});
+  countDoctorClick(id: number) {
+    this.doctorService.countDoctorClick(id).subscribe(res => {});
   }
 }

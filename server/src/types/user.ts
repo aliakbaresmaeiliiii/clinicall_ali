@@ -1,7 +1,7 @@
 import { CommentsDTO } from "../models/doctors";
 
 export interface User {
-  user_id: string;
+  id: string;
   userName?: string;
   firstName?: string;
   lastName?: string;
@@ -31,7 +31,8 @@ export interface User {
 }
 
 export interface CreateUser {
-  user_id: string;
+  id: string;
+  role: string;
   email: string;
   firstName?: string;
   lastName?: string;
@@ -60,11 +61,7 @@ export interface LoginAttributes {
   password: string;
 }
 
-export interface ConfirmEmail {
-  email: string;
-  user_id?: string;
-  verify_code: string;
-}
+
 
 export interface Role {
   id: number;

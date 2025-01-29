@@ -144,7 +144,7 @@ export class DialogCalendarComponent {
 
     const payload = {
       patient_id: this.selectedPatient,
-      doctor_id: 2,
+      id: 2,
       priority: priority,
       event_description: this.form.get('event_description')?.value,
       event_title: this.form.get('event_title')?.value,

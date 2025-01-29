@@ -1,5 +1,5 @@
 export interface DoctorsDTO {
-  doctor_id: number;
+  id: number;
   name?: string | null | undefined;
   contact_info?: string | undefined | null;
   email?: string | null | undefined;
@@ -20,22 +20,18 @@ export interface DoctorsDTO {
 }
 
 export interface likeDTO {
-  user_id: number;
-  doctor_id: number;
+  id: number;
   entity_type: string;
 }
 
 export interface CommentsDTO {
   id: number;
-  user_id: number;
-  doctor_id: number;
   comment_text: string;
   rating: any;
 }
 
 export interface ReviewsDTO {
-  doctor_id: number;
-  user_id: number;
+  id: number;
   rating: number;
   comment: string;
   recommendation?: string;

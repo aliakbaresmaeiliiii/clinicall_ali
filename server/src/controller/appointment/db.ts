@@ -5,12 +5,12 @@ import { coreSchema, query } from "../../bin/mysql";
 export async function saveAppointment(eventData: IAppointment) {
   const insertEvent = await query<RowDataPacket[]>(
     `INSERT INTO ${coreSchema}.appointments 
-        (patient_id, doctor_id,appointment_date, priority,event_title,created_at,updated_at,event_description,start_date,end_date,start_time,end_time)
+        (patient_id, id,appointment_date, priority,event_title,created_at,updated_at,event_description,start_date,end_date,start_time,end_time)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     {
       values: [
         eventData.patient_id,
-        eventData.doctor_id,
+        eventData.id,
         eventData.appointmentDate,
         eventData.priority,
         eventData.event_title,

@@ -65,12 +65,12 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
   }
 
   private initializeComponent(): void {
-    const { doctor_id, consultationType } = this.data;
-    this.loadDoctorData(doctor_id, consultationType);
+    const { id, consultationType } = this.data;
+    this.loadDoctorData(id, consultationType);
   }
-  private loadDoctorData(doctor_id: number, consultationType: string): void {
-    this.fetchData(doctor_id);
-    this.fetchDoctorScheduleAvailability(doctor_id, consultationType);
+  private loadDoctorData(id: number, consultationType: string): void {
+    this.fetchData(id);
+    this.fetchDoctorScheduleAvailability(id, consultationType);
   }
 
   fetchData(doctorId: number) {
@@ -94,9 +94,9 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
     });
   }
 
-  fetchDoctorScheduleAvailability(doctor_id: number, text: string) {
+  fetchDoctorScheduleAvailability(id: number, text: string) {
     this.schedulesService
-      .fetchDoctorScheduleAvailability(doctor_id, text)
+      .fetchDoctorScheduleAvailability(id, text)
       .subscribe((res: any) => {
         this.doctorScheduleAvailability = res.data.map((item: any) => ({
           ...item,
@@ -170,8 +170,8 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
           }
 
           // Refresh the entire schedule availability
-          const { doctor_id, consultationType } = this.data;
-          this.fetchDoctorScheduleAvailability(doctor_id, consultationType);
+          const { id, consultationType } = this.data;
+          this.fetchDoctorScheduleAvailability(id, consultationType);
         }
       },
       error: e => {

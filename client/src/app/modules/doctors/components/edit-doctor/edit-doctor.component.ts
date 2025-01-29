@@ -36,7 +36,7 @@ export class EditDoctorComponent extends BaseComponent {
   }
 
   form = this.fb.group({
-    doctor_id: [''],
+    id: [''],
     name: [
       '',
       [
@@ -63,7 +63,7 @@ export class EditDoctorComponent extends BaseComponent {
 
   updateDoctor() {
     this.form.patchValue({
-      doctor_id: this.doctorInfo.doctor_id,
+      id: this.doctorInfo.id,
       name: this.doctorInfo.name,
       gender: this.doctorInfo.gender,
       email: this.doctorInfo.email,

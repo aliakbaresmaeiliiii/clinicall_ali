@@ -37,6 +37,7 @@ export interface SignupResponse {
   message: string;
   user?: User;
   tokenVerify?: string;
+  newUser:User
 }
 export interface CurrentUser extends SignupResponse {
   id: number;

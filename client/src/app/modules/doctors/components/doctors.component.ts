@@ -23,7 +23,7 @@ export class DoctorsComponent extends BaseComponent {
   doctors: DoctorsDTO[] = [];
   displayedColumns: string[] = [
     'select',
-    'doctor_id',
+    'id',
     'profileImage',
     'name',
     'gender',
@@ -168,8 +168,8 @@ export class DoctorsComponent extends BaseComponent {
     // XLSX.writeFile(wb, this.fileName);
   }
 
-  doctorDetial(doctor_id: number) {
-    this.router.navigate(['aliakbar/doctors/doctor-detail', doctor_id]);
+  doctorDetial(id: number) {
+    this.router.navigate(['aliakbar/doctors/doctor-detail', id]);
   }
 
   editDoctor(

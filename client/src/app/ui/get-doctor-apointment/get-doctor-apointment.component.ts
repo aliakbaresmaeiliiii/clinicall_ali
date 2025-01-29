@@ -144,7 +144,7 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
     this.isExpanded = !this.isExpanded;
   }
 
-  feedback(doctor_id: number): void {
+  feedback(id: number): void {
     if (this.userData !== undefined) {
       this.dialog.open(FeedbackComponent, {
         width: '50rem',
@@ -159,8 +159,8 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
     // this.isShowComment = !this.isShowComment;
     // const comment = this.commentForm.value.comment;
     // const payload: any = {
-    //   user_id: this.userData.user_id,
-    //   doctor_id: doctor_id,
+    //   id: this.userData.id,
+    //   id: id,
     //   comment_text: comment,
     //   rating: 5,
     // };
@@ -216,20 +216,20 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   }
 
   shareInfo(docotoInfo: DoctorsDTO) {
-    const doctorLink = `localhost:4200/doctor/${docotoInfo.name}/${docotoInfo.doctor_id}`; // Generate the doctor's link
+    const doctorLink = `localhost:4200/doctor/${docotoInfo.name}/${docotoInfo.id}`; // Generate the doctor's link
     this.dialog.open(CopyLinkDialogComponent, {
       data: { link: doctorLink },
     });
   }
 
-  toggleLike(info: DoctorsDTO, doctor_id: number) {
-    this.doctorInfo[doctor_id].is_liked = !this.doctorInfo[doctor_id].is_liked;
-    const user_id = this.userData.user_id;
-    const payload: likeDTO = {
-      doctor_id: info.doctor_id,
-      entity_type: info.name,
-      user_id: user_id,
-    };
-    this.likeService.addLike(payload).subscribe(res => {});
+  toggleLike(info: DoctorsDTO, id: number) {
+    this.doctorInfo[id].is_liked = !this.doctorInfo[id].is_liked;
+    const getId = this.userData.id;
+    // const payload: likeDTO = {
+    //   id: info.id,
+    //   entity_type: info.name,
+    //   id: getId,
+    // };
+    // this.likeService.addLike(payload).subscribe(res => {});
   }
 }

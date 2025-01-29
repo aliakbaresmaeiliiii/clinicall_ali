@@ -34,6 +34,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return handler.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {
+        debugger;
         switch (err.error.code) {
           case 404:
             this.errorService.handle404Error(err);

@@ -37,14 +37,7 @@ router.get(
   }
 );
 // ***** confirm
-router.post(
-  "/user/confirm",
-  asyncHandler(async function confirmEmail(req: Request, res: Response) {
-    const formData = req.body;
-    const result = await UserService.confrimEmail(formData);
-    res.status(result.code).json(result);
-  })
-);
+
 // ***** getOTP
 router.get(
   "/user/getOTP/:email",

@@ -28,7 +28,7 @@
 //   describe('#signIn', () => {
 //     it('should return expected user data on sign in', () => {
 //       const mockUserData: any = {
-//         user_id: 5,
+//         id: 5,
 //         email: 'sfsdf@gmail.com',
 //         password: 'john@example.com',
 //       }; // Adjust mock data as needed

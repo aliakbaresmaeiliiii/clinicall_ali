@@ -16,3 +16,4 @@ require("../controller/prescription-medicine/controller");
 require("../controller/clinic_services/controller");
 require("../controller/cities/controller");
 require("../controller/insurance/controller");
+require("../controller/clinic/controller");

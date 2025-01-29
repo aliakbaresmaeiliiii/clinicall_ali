@@ -27,7 +27,7 @@ export class CalendarService {
       end_date: endLocalDate,
       campaignTime: eventData.campaignTime,
       date: eventData.date,
-      doctor_id: eventData.doctor_id,
+      id: eventData.id,
       event_description: eventData.event_description,
       event_title: eventData.event_title,
       patient_id: eventData.patient_id,

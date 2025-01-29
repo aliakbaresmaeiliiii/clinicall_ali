@@ -62,7 +62,7 @@ export class OnlineConsultaionDialogComponent implements OnInit {
     this.dialog.open(ChoosingAppointmentComponent, {
       width: '700px',
       data: {
-        doctor_id: this.data,
+        id: this.data,
         consultationType: this.form.value.consultationType,
       },
     });

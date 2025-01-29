@@ -5,20 +5,18 @@ import { getUniqueCodev2, getUniqueCodev3 } from "../../helper/common";
 import SendMail from "../../helper/send_email";
 import { useValidation } from "../../helper/use_validation";
 import { ResponseError } from "../../modules/error/response_error";
-import { BuildResponse } from "../../modules/response/app_response";
-import { ConfirmEmail, User } from "../../types/user";
+import { User } from "../../types/user";
 import {
   changePassword,
   checkNickName,
   checkUserExist,
   comparePassword,
-  confirmEmail,
   getOTP,
   getUserInfo,
   updateProfileUser,
-  updateUserVerifyCode,
+  updateUserVerifyCode
 } from "./db";
-import { checkEmailSchema, confirmEmailSchema } from "./schema";
+import { checkEmailSchema } from "./schema";
 
 const { JWT_SECRET_ACCESS_TOKEN, JWT_SECRET_REFRESH_TOKEN }: any = process.env;
 const JWT_ACCESS_TOKEN_EXPIRED = process.env.JWT_ACCESS_TOKEN_EXPIRED || "1d"; // 1 Days
@@ -50,11 +48,7 @@ export class UserService {
   /**
    * @param formData
    */
-  public static async confrimEmail(formData: ConfirmEmail) {
-    const userData = useValidation(confirmEmailSchema, formData);
-    const confirmEmailResult = await confirmEmail(userData);
-    return BuildResponse.appResponse(confirmEmailResult);
-  }
+
   /**
    * @param formData
    */
@@ -136,7 +130,7 @@ export class UserService {
     if (currentUser.isActive === 0)
       return { status: 4, message: "this account is not active !" };
     const newCode = getUniqueCodev3();
-    await updateUserVerifyCode(currentUser.user_id, newCode);
+    await updateUserVerifyCode(currentUser.id, newCode);
     // send forgot pass token code
     // SendMail.sendResetPasswordEmail(currentUser, newCode);
     return { status: 5, message: "code has been send successfully !" };

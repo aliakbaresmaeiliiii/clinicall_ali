@@ -1,6 +1,6 @@
 export interface IAppointment {
   patient_id: number;
-  doctor_id: number;
+  id: number;
   event_id?: number;
   event_start?: string;
   event_end?: string;
