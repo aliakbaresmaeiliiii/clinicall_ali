@@ -1,6 +1,9 @@
-import _ from 'lodash';
+import _ from "lodash";
 import nodemailer from "nodemailer";
 import mg from "nodemailer-mailgun-transport";
+import dotenv from "dotenv";
+
+dotenv.config(); // Load environment variables
 
 const {
   APP_NAME,
@@ -18,86 +21,60 @@ const {
   OAUTH_REDIRECT_URL,
 } = process.env;
 
-const isMailgunAPI = !_.isEmpty(MAILGUN_API_KEY) || !_.isEmpty(MAILGUN_DOMAIN);
+const isMailgunAPI = Boolean(MAILGUN_API_KEY && MAILGUN_DOMAIN);
 
 export class EmailProvider {
-  private mailConfig: nodemailer.SentMessageInfo;
-  private mailOptions: nodemailer.SendMailOptions | undefined;
+  private transporter: nodemailer.Transporter;
 
-  public send = (
-    to: string | string[],
-    subject: string,
-    template: string
-  ): void | string[] => {
-    const dest: string = Array.isArray(to) ? to.join(",") : to;
-    const text: string = template;
+  constructor() {
+    this.transporter = this.createTransporter();
+  }
 
-    // send an e-mail
-    this.sendMail(dest, subject, text);
-  };
-
-  private setMailConfig = (): nodemailer.SentMessageInfo => {
-    // const gmailEmail = "aliakbaresmaeili98@gmail.com";
-    // const gmailAppPassword = "nffx hrgb xolq vsfa";
-
-    const gmailEmail = "aliakbaresmaeili98@gmail.com";
-    const gmailAppPassword = "cgop ttip zuqz hqlr";
-    const configTransport: nodemailer.SentMessageInfo = {
-      service: MAIL_DRIVER,
-      auth: {
-        user: gmailEmail,
-        pass: gmailAppPassword,
-      },
-    };
+  /**
+   * Create and configure the mail transporter
+   */
+  private createTransporter(): nodemailer.Transporter {
     if (isMailgunAPI) {
-      configTransport.auth.api_key = MAILGUN_API_KEY;
-      configTransport.auth.domain = MAILGUN_DOMAIN;
-    } else {
-      // SMTP Default
-      configTransport.host = MAIL_HOST;
-      configTransport.port = MAIL_PORT;
-      configTransport.auth.user = MAIL_USERNAME;
-      configTransport.auth.pass = MAIL_PASSWORD;
+      return nodemailer.createTransport(
+        mg({
+          auth: {
+            api_key: MAILGUN_API_KEY!,
+            domain: MAILGUN_DOMAIN!,
+          },
+        })
+      );
     }
-    return configTransport;
-  };
 
-  private setMailOptions = (
-    dest: string,
-    subject: string,
-    text: string
-  ): nodemailer.SendMailOptions => {
-    return {
-      from: `${APP_NAME} <${MAIL_USERNAME}>`,
-      to: dest,
-      subject,
-      html: text,
-    };
-  };
+    return nodemailer.createTransport({
+      host: MAIL_HOST,
+      port: Number(MAIL_PORT),
+      secure: false, // Set `true` for port 465 (SSL)
+      auth: {
+        user: MAIL_USERNAME,
+        pass: MAIL_PASSWORD,
+      },
+    });
+  }
 
-  private sendMail = (
-    dest: string,
-    subject: string,
-    text: string
-  ): void | string[] => {
-    this.mailConfig = isMailgunAPI
-      ? mg(this.setMailConfig())
-      : this.setMailConfig();
-    this.mailOptions = this.setMailOptions(dest, subject, text);
-    // Nodemailer Transport
-    const transporter: nodemailer.Transporter = nodemailer.createTransport(
-      this.mailConfig
-    );
-    transporter.sendMail(
-      this.mailOptions,
-      // @ts-ignore
-      (error: Error, info: nodemailer.SentMessageInfo) => {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log("successfully", info);
-        }
-      }
-    );
-  };
+  /**
+   * Sends an email
+   */
+  public async send(to: string | string[], subject: string, template: string) {
+    try {
+      const recipient = Array.isArray(to) ? to.join(", ") : to;
+      const mailOptions: nodemailer.SendMailOptions = {
+        from: `${APP_NAME} <${MAIL_USERNAME}>`,
+        to: recipient,
+        subject,
+        html: template,
+      };
+
+      const info = await this.transporter.sendMail(mailOptions);
+      console.log("✅ Email sent successfully:", info.messageId);
+      return info;
+    } catch (error) {
+      console.error("❌ Error sending email:", error);
+      throw new Error("Failed to send email");
+    }
+  }
 }

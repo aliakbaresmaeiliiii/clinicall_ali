@@ -5,6 +5,56 @@ import {
   likeDTO,
   ReviewsDTO,
 } from "../../models/doctors";
+import { ResponseError } from "../../modules/error/response_error";
+import { doctorSchema } from "./schema";
+import bcrypt from "bcrypt";
+import { v4 as uuidv4 } from "uuid";
+
+
+export async function addDoctor(data: DoctorsDTO) {
+  const { password } = data.password;
+  const { confirmPassword } = data.password;
+
+  const fdPassword = { password ,confirmPassword};
+  const validPassword = doctorSchema.validateSyncAt(
+    "confirmPassword",
+    fdPassword
+  );
+  const saltRounds = 10;
+  const hashedPassword =await bcrypt.hash(validPassword, saltRounds);
+  
+  if (validPassword.error) {
+    throw new Error("Password is invalid");
+  }
+  const newId = uuidv4();
+
+  try {
+    const result = await query<RowDataPacket[]>(
+      `INSERT INTO ${coreSchema}.doctors
+        (id,first_name,last_name,email,password,token_verify,verify_code,phone,created_at,updated_at)
+        VALUES(?,?,?,?,?,?,?,?,?,?)`,
+      {
+        values: [
+          newId,
+          data.first_name,
+          data.last_name,
+          data.email,
+          hashedPassword,
+          data.token_verify,
+          data.verify_code,
+          data.phone,
+          new Date(),
+          new Date(),
+        ],
+      }
+    );
+    return result;
+  } catch (error: any) {
+    console.error("Database Error:", error.message);
+    throw new ResponseError.InternalServer("Failed to insert clinic.");
+  }
+}
+
 
 export async function getDoctors(): Promise<DoctorsDTO[] | null> {
   const sql = `
@@ -72,31 +122,31 @@ export async function checkDoctorPhoneNumberExists(
   return result;
 }
 
-export async function addDoctor(doctorInfo: DoctorsDTO): Promise<any> {
-  const result = await query<RowDataPacket[]>(
-    `INSERT INTO ${coreSchema}.doctors
-        (name,gender,contact_info,degree,dateOfBirth,department,
-         age,email,address,profileImage,specialization,joingin_date)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-    {
-      values: [
-        doctorInfo.name,
-        doctorInfo.gender,
-        doctorInfo.contact_info,
-        doctorInfo.degree,
-        doctorInfo.dateOfBirth,
-        doctorInfo.department,
-        doctorInfo.age,
-        doctorInfo.email,
-        doctorInfo.address,
-        doctorInfo.profileImage,
-        doctorInfo.specialty_name,
-        new Date(),
-      ],
-    }
-  );
-  return result;
-}
+// export async function addDoctor(doctorInfo: DoctorsDTO): Promise<any> {
+//   const result = await query<RowDataPacket[]>(
+//     `INSERT INTO ${coreSchema}.doctors
+//         (name,gender,contact_info,degree,dateOfBirth,department,
+//          age,email,address,profileImage,specialization,joingin_date)
+//          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+//     {
+//       values: [
+//         doctorInfo.name,
+//         doctorInfo.gender,
+//         doctorInfo.contact_info,
+//         doctorInfo.degree,
+//         doctorInfo.dateOfBirth,
+//         doctorInfo.department,
+//         doctorInfo.age,
+//         doctorInfo.email,
+//         doctorInfo.address,
+//         doctorInfo.profileImage,
+//         doctorInfo.specialty_name,
+//         new Date(),
+//       ],
+//     }
+//   );
+//   return result;
+// }
 
 export async function doctorDetail(doctorId: number): Promise<any> {
   const result = await query<RowDataPacket>(
@@ -133,7 +183,7 @@ export async function updateDoctor(doctorData: DoctorsDTO): Promise<any> {
         WHERE id = ?
       `,
     {
-      values: [doctorData.name, doctorData.id],
+      values: [doctorData.first_name, doctorData.id],
     }
   );
   return result;

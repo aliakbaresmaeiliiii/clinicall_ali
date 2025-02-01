@@ -13,9 +13,9 @@ export interface User {
   state: string;
   zipcode: string;
   skills: Skills;
+  role:string
 
 }
-``;
 export interface Skills {
   skill_id: number;
   skill_name: string;

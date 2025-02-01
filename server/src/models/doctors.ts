@@ -1,22 +1,29 @@
 export interface DoctorsDTO {
   id: number;
-  name?: string | null | undefined;
-  contact_info?: string | undefined | null;
-  email?: string | null | undefined;
-  profileImage?: string | undefined | any;
-  department?: string | undefined | any;
-  specialty_name?: string | undefined | any;
-  degree?: string | undefined | any;
-  address?: string | undefined | any;
-  joingin_date?: Date;
-  gender?: string;
-  dateOfBirth?: string;
-  age?: string;
-  lat?: number;
-  lng?: number;
-  medical_code?: string;
-  description?: string;
-  click_count?: number;
+  first_name: string;
+  last_name: string;
+  gender: string;
+  age: number;
+  reviews_id: number;
+  email: string;
+  password: Password;
+  token_verify: string;
+  verify_code: string;
+  phone: string;
+  service_id: number;
+  visit_history_id: number;
+  profile_img: string;
+  medical_code: string;
+  click_count: number;
+  is_liked: boolean;
+  average_rating: string;
+  total_ratings: string;
+  speciality_id: number;
+}
+
+interface Password {
+  confirmPassword: string;
+  password: string;
 }
 
 export interface likeDTO {

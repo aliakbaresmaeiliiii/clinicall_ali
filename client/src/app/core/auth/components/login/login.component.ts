@@ -1,21 +1,17 @@
 declare var google: any;
-import {
-  Component,
-  inject,
-  OnInit,
-  Renderer2
-} from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  Validators
-} from '@angular/forms';
+import { Component, inject, OnInit, Renderer2, signal } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { ThemeManagerService } from '../../../../shared/client-services/theme-manager.service';
 import { AuthService } from '../../../services/auth.service';
 
-import { SocialUser } from '@abacritt/angularx-social-login';
+import {
+  GoogleLoginProvider,
+  SocialAuthService,
+  SocialAuthServiceConfig,
+  SocialUser,
+} from '@abacritt/angularx-social-login';
 import { AnimationEvent } from '@angular/animations';
 import { ToastrService } from 'ngx-toastr';
 import { PermissionService } from '../../../services/permission.service';
@@ -29,27 +25,27 @@ import { PermissionService } from '../../../services/permission.service';
   selector: 'app-login',
   templateUrl: './login.component.html',
   standalone: false,
-  // providers: [
-  //   SocialAuthService,
-  //   {
-  //     provide: 'SocialAuthServiceConfig',
-  //     useValue: {
-  //       autoLogin: false,
-  //       lang: 'en',
-  //       providers: [
-  //         {
-  //           id: GoogleLoginProvider.PROVIDER_ID,
-  //           provider: new GoogleLoginProvider(
-  //             '302618903274-6bfd6agmkoanb474m3e1ii3oc1phjl40.apps.googleusercontent.com'
-  //           ),
-  //         },
-  //       ],
-  //       onError: err => {
-  //         console.error('❌❌❌', err);
-  //       },
-  //     } as SocialAuthServiceConfig,
-  //   },
-  // ],
+  providers: [
+    SocialAuthService,
+    {
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        lang: 'en',
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              '302618903274-6bfd6agmkoanb474m3e1ii3oc1phjl40.apps.googleusercontent.com'
+            ),
+          },
+        ],
+        onError: (err: any) => {
+          console.error('❌❌❌', err);
+        },
+      } as SocialAuthServiceConfig,
+    },
+  ],
   styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
@@ -60,8 +56,8 @@ export class LoginComponent implements OnInit {
   renderer = inject(Renderer2);
   matcher = new ErrorStateMatcher();
   private themeManager = inject(ThemeManagerService);
+  selectedRole: string = 'patient';
 
-  title: string = 'Angular';
   labelUserName: string = 'UserName';
   labelPassword: string = 'password';
   form!: FormGroup;
@@ -70,6 +66,7 @@ export class LoginComponent implements OnInit {
   loggedIn!: boolean;
   protected wobbleField = false;
   theme = this.themeManager.theme;
+  title = signal<string>('');
 
   toggleTheme() {
     this.themeManager.toggleTheme();
@@ -82,6 +79,10 @@ export class LoginComponent implements OnInit {
       remmeber: new FormControl(false),
     });
   }
+  setRole(role: string) {
+    this.selectedRole = role;
+    this.title.set(role);
+  }
 
   refreshToken(): void {
     // this.authService.refreshAuthToken(GoogleLoginProvider.PROVIDER_ID);
@@ -90,20 +91,20 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.createForm();
 
-    // google.accounts.id.initialize({
-    //   client_id:
-    //     '940657570058-gpm7buu1t25nlls0pcbs95c6t2bf4rg4.apps.googleusercontent.com',
-    //   callback: (resp: any) => {
-    //   console.log('resposend',resp);
+    google.accounts.id.initialize({
+      client_id:
+        '940657570058-gpm7buu1t25nlls0pcbs95c6t2bf4rg4.apps.googleusercontent.com',
+      callback: (resp: any) => {
+        console.log('resposend', resp);
 
-    //    this.handleLogin(resp)
-    //   },
-    // });
-    // google.accounts.id.renderButton(document.getElementById('google-btn'), {
-    //   theme: 'filled_blue',
-    //   size: 'large',
-    //   shape: 'rectangle',
-    // });
+        this.handleLogin(resp);
+      },
+    });
+    google.accounts.id.renderButton(document.getElementById('google-btn'), {
+      theme: 'filled_blue',
+      size: 'large',
+      shape: 'rectangle',
+    });
   }
 
   private decodeToken(token: any) {
@@ -126,25 +127,51 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  // ****login Google
   login() {
     if (this.form.value) {
-      this.#authService.signIn(this.form.value).subscribe({
-        next: (res: any) => {
-          // this.permissionService.setPermissions(res.data.permissions);
-          const stroeDataUser = res;
-          const dataJson = JSON.stringify(stroeDataUser);
-          localStorage.setItem('userData', dataJson);
-          debugger;
-          if (res.code === 200) {
-            this.toast.success('login is successfully');
-            this.router.navigate(['aliakbar']);
-          }
-        },
-        error: e => {
-          this.toast.error(`${e}`);
-        },
-      });
+      let formValue = this.form.value;
+
+      switch (this.selectedRole) {
+        case 'clinic':
+          this.#authService.clinicSignIn(formValue).subscribe({
+            next: (res: any) => {
+              // this.permissionService.setPermissions(res.data.permissions);
+              const stroeDataUser = res;
+              const dataJson = JSON.stringify(stroeDataUser);
+              localStorage.setItem('userData', dataJson);
+              if (res.code === 200) {
+                this.toast.success('login is successfully');
+                this.router.navigate(['aliakbar']);
+              }
+            },
+            error: e => {
+              this.toast.error(`${e}`);
+            },
+          });
+          break;
+        case 'doctor':
+          this.#authService.doctorSignIn(formValue).subscribe({
+            next: (res: any) => {
+              // this.permissionService.setPermissions(res.data.permissions);
+              const stroeDataUser = res;
+              const dataJson = JSON.stringify(stroeDataUser);
+              localStorage.setItem('userData', dataJson);
+              if (res.code === 200) {
+                this.toast.success('login is successfully');
+                this.router.navigate(['aliakbar']);
+              }
+            },
+            error: e => {
+              this.toast.error(`${e}`);
+            },
+          });
+          break;
+        case 'patient':
+          break;
+        default:
+          this.toast.error('Invalid role selected.');
+          return;
+      }
     }
   }
 

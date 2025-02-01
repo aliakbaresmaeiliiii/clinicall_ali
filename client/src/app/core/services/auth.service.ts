@@ -1,9 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import {
-  BehaviorSubject,
-  Observable  
-} from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { SignupResponse, TokenPermission, User } from '../auth/models/user';
 
@@ -22,15 +19,21 @@ export class AuthService {
     }
   }
 
-  signIn(userData: User): Observable<User> {
-    return this.#http.post<User>(`${this.config}sign-in`, userData);
-  }
-
   signUp(userData: any): Observable<SignupResponse> {
     return this.#http.post<SignupResponse>(
       `${this.config}auth/sign-up`,
       userData
     );
+  }
+
+  clinicSignIn(userData: any): Observable<any> {
+    return this.#http.post<any>(`${this.config}auth/clinic-sign-in`, userData);
+  }
+  doctorSignIn(userData: any): Observable<any> {
+    return this.#http.post<any>(`${this.config}auth/doctor-sign-in`, userData);
+  }
+  patientSignIn(userData: User): Observable<User> {
+    return this.#http.post<User>(`${this.config}auth/patient-sign-in`, userData);
   }
 
   logout() {}

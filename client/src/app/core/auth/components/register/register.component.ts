@@ -53,12 +53,21 @@ export class RegisterComponent extends BaseComponent {
   });
 
   doctorForm = this.fb.group({
-    name: ['', Validators.required],
+    first_name: ['', Validators.required],
+    last_name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
     phone: ['', Validators.required],
     specialization: ['', Validators.required],
     licenseNumber: ['', Validators.required],
+    password: this.fb.group(
+      {
+        password: ['', [Validators.required, Validators.minLength(8)]],
+        confirmPassword: '',
+      },
+      {
+        validators: passswordShouldMatch,
+      }
+    ),
   });
 
   clinicForm = this.fb.group({
@@ -88,38 +97,47 @@ export class RegisterComponent extends BaseComponent {
   }
 
   onSubmit() {
-    let formValue;
-    if (this.selectedRole === 'patient') {
-      formValue = this.patientForm.value;
-    } else if (this.selectedRole === 'doctor') {
-      formValue = this.doctorForm.value;
-    } else if (this.selectedRole === 'clinic') {
-      const cliniForm = this.clinicForm.value;
-      const payload = {
-        ...cliniForm,
-        role: this.selectedRole,
-      };
-      if (cliniForm) {
-        this.authService.signUp(payload).subscribe({
-          next: (res: any) => {
-            if (res.code === 200) {
-              this.toastrService.success(
-                `${res.newUser.email} registered successfully`
-              );
-              localStorage.setItem('emailClinic', res.newUser.email);
-              this.router.navigate(['auth/confirm-email']);
-            }
-          },
-          error: res => {
-            this.toastrService.error('Registration failed. Please try again.');
-          },
-          complete: () => {
-            console.log('complete');
-          },
-        });
-      }
+    let formData: any;
+
+    switch (this.selectedRole) {
+      case 'patient':
+        formData = this.patientForm.value;
+        break;
+      case 'doctor':
+        formData = this.doctorForm.value;
+        break;
+      case 'clinic':
+        formData = this.clinicForm.value;
+        break;
+      default:
+        this.toastrService.error('Invalid role selected.');
+        return;
     }
-    console.log('Submitted:', { role: this.selectedRole, data: formValue });
+
+    if (formData) {
+      const payload = { ...formData, role: this.selectedRole };
+      this.signUpUser(payload);
+    }
+
+    console.log('Submitted:', { role: this.selectedRole, data: formData });
+  }
+
+  signUpUser(payload: any) {
+    this.authService.signUp(payload).subscribe({
+      next: (res: any) => {
+        if (res.code === 200) {
+          this.toastrService.success(
+            `${res.newUser.email} registered successfully`
+          );
+          localStorage.setItem('emailClinic', res.newUser.email);
+          this.router.navigate(['auth/confirm-email']);
+        }
+      },
+      error: () => {
+        this.toastrService.error('Registration failed. Please try again.');
+      },
+      complete: () => console.log('complete'),
+    });
   }
   trackByFn() {}
 

@@ -1,8 +1,7 @@
-import {BaseResponse} from "./base_response"
+import { BaseResponse } from "./base_response";
 
 export class Unauthorized extends BaseResponse {
-    constructor(message: string) {
-        super(message, 401);
-        Object.setPrototypeOf(this, Unauthorized.prototype);
-    }
+  constructor(message = "Unauthorized access") {
+    super(message, 401);
+  }
 }

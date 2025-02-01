@@ -1,8 +1,7 @@
-import {BaseResponse} from "./base_response";
+import { BaseResponse } from "./base_response";
 
 export class InternalServer extends BaseResponse {
-    constructor(message: string) {
-        super(message, 500);
-        Object.setPrototypeOf(this, InternalServer.prototype);
+    constructor(message = "Internal server error") {
+      super(message, 500);
     }
-}
+  }
