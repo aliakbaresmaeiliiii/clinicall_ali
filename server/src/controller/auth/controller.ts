@@ -1,39 +1,22 @@
 import { NextFunction, Request, Response } from "express";
 import { BuildResponse } from "../../modules/response/app_response";
 
-import { AuthService } from "./service";
 import { asyncHandler } from "../../helper/async-handler";
 import { router } from "../../routes/public";
-import { ConfirmEmail } from "../../models/auth";
+import { AuthService } from "./service";
 
+// ***** sign-up *****
 router.post(
   `/auth/sign-up`,
-  asyncHandler(async function signUp(req: Request, res: Response) {
+  asyncHandler(async function signUp(req: any, res: any) {
     const formData = req.body;
     const data = await AuthService.signUp(formData);
     const buildResponse = BuildResponse.get(data);
-    res.json(buildResponse);
+    return res.status(buildResponse.code).json(buildResponse);
   })
 );
 
-router.post(
-  "/sign-in",
-  asyncHandler(async function getNavItems(req: any, res: any) {
-    const formData = req.body;
-    const data = await AuthService.signIn(formData);
-    const buildResponse = await BuildResponse.get(data);
-    res.status(buildResponse.code).json(buildResponse);
-  })
-);
-
-// router.post(
-//   `/auth/refresh-token`,
-//   Authorization,
-//   asyncHandler(async function authRefreshToken(req: Request, res: Response) {
-//     const { email, refreshToken } = req.body();
-//   })
-// );
-
+// ***** confirm *****
 router.post(
   "/user/confirm",
   asyncHandler(async function confirmEmail(
@@ -46,7 +29,8 @@ router.post(
       const data = await AuthService.confirmEmail(formData);
 
       if (!data) {
-        return res.status(400)
+        return res
+          .status(400)
           .json({ code: 400, message: "Invalid email or verification code" });
       }
 
@@ -57,3 +41,22 @@ router.post(
     }
   })
 );
+
+// ***** clinic-sign-in *****
+router.post("/auth/clinic-sign-in", async (req, res) => {
+  const formData = req.body;
+  const data = await AuthService.clinicSignIn(formData);
+  const buildResponse = await BuildResponse.get(data);
+  return res.json(buildResponse);
+
+  // res.status(buildResponse.code).json(buildResponse);
+});
+
+// ***** doctor-sign-in *****
+router.post("/auth/doctor-sign-in", async (req, res) => {
+  const formData = req.body;
+  const data = await AuthService.doctorSignIn(formData);
+  const buildResponse = BuildResponse.get(data);
+  return res.status(buildResponse.code).json(buildResponse);
+
+});

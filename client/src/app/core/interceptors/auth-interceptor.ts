@@ -35,15 +35,25 @@ export class AuthInterceptor implements HttpInterceptor {
     return handler.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {
         debugger;
+        let errorMessage = "An unexpected error occurred.";
         switch (err.error.code) {
-          case 404:
-            this.errorService.handle404Error(err);
-            break;
           case 400:
             this.errorService.handle400Error(err);
             break;
           case 401:
             this.errorService.handle401Error(err);
+            break;
+          case 403:
+            this.errorService.handle403Error(err);
+            break;
+          case 404:
+            this.errorService.handle404Error(err);
+            break;
+          case 422:
+            this.errorService.handle422Error(err);
+            break;
+          case 500:
+            this.errorService.handle500Error(err);
             break;
           default:
             break;

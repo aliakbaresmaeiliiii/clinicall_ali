@@ -1,8 +1,7 @@
-import {BaseResponse} from "./base_response";
+import { BaseResponse } from "./base_response";
 
 export class NotFound extends BaseResponse {
-    constructor(message: string) {
-        super(message, 404);
-        Object.setPrototypeOf(this, NotFound.prototype)
+    constructor(message = "Not found") {
+      super(message, 404);
     }
-}
+  }

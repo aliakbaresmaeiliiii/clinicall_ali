@@ -2,13 +2,13 @@
   <div
     class="p-4 desktop:w-1/3 border-2 rounded-2xl shadow-xl overflow-auto mobile:w-full max-h-[500px] bg-slate-50 absolute top-1/2 left-1/2 -translate-x-2/4 -translate-y-2/4">
     <h3 class="font-extrabold text-center">Registration {{ title() }}</h3>
-    <h2 class="cursor-pointer flex justify-start text-xs sign-up py-6">
+    <h2 class="cursor-pointer flex justify-center text-xs sign-up py-6">
       Enter details to create your account
     </h2>
     <h2 class="cursor-pointer flex justify-start text-xs pb-6">
       Already Registered?
       <a class="ml-2" routerLink="/login"
-        ><strong class="text-blue">Login</strong>
+        ><strong class="text-blue-600">Login</strong>
       </a>
     </h2>
     <div class="flex items-center gap-4 pb-4">
@@ -70,17 +70,54 @@
       *ngIf="selectedRole === 'doctor'"
       (ngSubmit)="onSubmit()">
       <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Name</mat-label>
-        <input matInput formControlName="name" />
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="first_name" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>lastName</mat-label>
+        <input matInput formControlName="last_name" />
       </mat-form-field>
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Email</mat-label>
         <input matInput type="email" formControlName="email" />
       </mat-form-field>
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Password</mat-label>
-        <input matInput type="password" formControlName="password" />
-      </mat-form-field>
+      <div formGroupName="password">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            type="password"
+            formControlName="password"
+            [errorStateMatcher]="matcher" />
+
+          <mat-error *ngIf="clininPassword?.hasError('required')"
+            >password is <strong>required</strong></mat-error
+          >
+          <mat-error *ngIf="clininPassword?.hasError('minlength')"
+            >password is too short
+            <strong>{{
+              clininPassword?.getError('minlength')?.requiredLength
+            }}</strong></mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field
+          data-testing="confirmPassword"
+          appearance="outline"
+          class="w-full">
+          <mat-label>Confirm Password</mat-label>
+          <input
+            type="password"
+            matInput
+            [errorStateMatcher]="matcher"
+            formControlName="confirmPassword"
+            placeholder="confirmPassword" />
+          <mat-error
+            *ngIf="!clinicConfirmPassword?.hasError('passwordShouldMatch')"
+            >Password doesn't match</mat-error
+          >
+        </mat-form-field>
+      </div>
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Phone</mat-label>
         <input matInput type="tel" formControlName="phone" />
@@ -177,192 +214,5 @@
       </mat-form-field>
       <button mat-raised-button color="primary" type="submit">Register</button>
     </form>
-    <!-- <form
-          class="flex flex-col gap-2"
-          [formGroup]="form"
-          (ngSubmit)="onSubmit()">
-      
-          <mat-form-field
-            data-testing="firstName"
-            appearance="outline"
-            class="w-full">
-            <mat-label>firstName</mat-label>
-            <input
-              type="text"
-              matInput
-              [errorStateMatcher]="matcher"
-              formControlName="firstName"
-              placeholder="Name" />
-            <mat-error
-              *ngIf="
-                firstName?.hasError('firstName') &&
-                !firstName?.hasError('required')
-              "
-              >Please enter a valid firstName</mat-error
-            >
-            <mat-error *ngIf="firstName?.hasError('required')"
-              >firstName is <strong>required</strong></mat-error
-            >
-            <mat-error *ngIf="form.controls.firstName.hasError('minlength')"
-              >firstName is too short
-              <strong>{{
-                form.controls.firstName.getError('minlength')?.requiredLength
-              }}</strong></mat-error
-            >
-            <mat-error *ngIf="firstName?.hasError('banWords')"
-              >The value
-              <strong>{{ firstName?.getError('banWords').bannedWord }} </strong>is
-              banned</mat-error
-            >
-          </mat-form-field>
-  
-          <mat-form-field
-            data-testing="lastName"
-            appearance="outline"
-            class="w-full">
-            <mat-label>lastName</mat-label>
-            <input
-              type="text"
-              matInput
-              [errorStateMatcher]="matcher"
-              formControlName="lastName"
-              placeholder="lastName" />
-            <mat-error
-              *ngIf="
-                lastName?.hasError('lastName') && !lastName?.hasError('required')
-              "
-              >Please enter a valid lastName</mat-error
-            >
-            <mat-error *ngIf="lastName?.hasError('required')"
-              >lastName is <strong>required</strong></mat-error
-            >
-            <mat-error *ngIf="form.controls.lastName.hasError('minlength')"
-              >lastName is too short
-              <strong>{{
-                form.controls.lastName.getError('minlength')?.requiredLength
-              }}</strong></mat-error
-            >
-            <mat-error *ngIf="lastName?.hasError('banWords')"
-              >The value
-              <strong>{{ lastName?.getError('banWords').bannedWord }} </strong>is
-              banned</mat-error
-            >
-          </mat-form-field>
-  
-          <mat-form-field
-            data-testing="userName"
-            appearance="outline"
-            class="w-full">
-            <mat-label>userName</mat-label>
-            <input
-              type="text"
-              matInput
-              [errorStateMatcher]="matcher"
-              formControlName="userName"
-              placeholder="userName" />
-            <mat-error
-              *ngIf="
-                userName?.hasError('userName') && !userName?.hasError('required')
-              "
-              >Please enter a valid userName</mat-error
-            >
-            <mat-error *ngIf="userName?.hasError('required')"
-              >userName is <strong>required</strong></mat-error
-            >
-            <mat-error *ngIf="form.controls.userName.hasError('minlength')"
-              >userName is too short
-              <strong>{{
-                form.controls.userName.getError('minlength')?.requiredLength
-              }}</strong></mat-error
-            >
-            <mat-error *ngIf="userName?.hasError('banWords')"
-              >The value
-              <strong>{{ userName?.getError('banWords').bannedWord }} </strong>is
-              banned</mat-error
-            >
-          </mat-form-field>
-  
-          <mat-form-field
-            data-testing="email"
-            appearance="outline"
-            class="w-full">
-            <mat-label>Email</mat-label>
-            <input
-              type="email"
-              matInput
-              [errorStateMatcher]="matcher"
-              formControlName="email"
-              placeholder="email"
-              class="w-full" />
-            <mat-error
-              *ngIf="email?.hasError('email') && !email?.hasError('required')"
-              >Please enter a valid email address</mat-error
-            >
-            <mat-error *ngIf="email?.hasError('required')"
-              >email is <strong>required</strong></mat-error
-            >
-          </mat-form-field>
-          <div formGroupName="password">
-            <mat-form-field
-              data-testing="password"
-              appearance="outline"
-              class="w-full">
-              <mat-label>Password</mat-label>
-              <input
-                type="password"
-                matInput
-                [errorStateMatcher]="matcher"
-                formControlName="password"
-                placeholder="password" />
-              <mat-error
-                *ngIf="
-                  form.controls.password.controls.password.hasError('required')
-                "
-                >password is <strong>required</strong></mat-error
-              >
-              <mat-error
-                *ngIf="
-                  form.controls.password.controls.password.hasError('minlength')
-                "
-                >password is too short
-                <strong>{{
-                  form.controls.password.controls.password.getError('minlength')
-                    ?.requiredLength
-                }}</strong></mat-error
-              >
-            </mat-form-field>
-            <mat-form-field
-              data-testing="confirmPassword"
-              appearance="outline"
-              class="w-full">
-              <mat-label>Confirm Password</mat-label>
-              <input
-                type="password"
-                matInput
-                [errorStateMatcher]="matcher"
-                formControlName="confirmPassword"
-                placeholder="confirmPassword" />
-              <mat-error *ngIf="!confirmPassword?.hasError('passwordShouldMatch')"
-                >Password doesn't match</mat-error
-              >
-            </mat-form-field>
-          </div>
-          <h2 class="cursor-pointer flex justify-start text-xs sign-up">
-            Already Registered?
-            <a class="ml-2" routerLink="/login"
-              ><strong class="text-blue">Login</strong>
-            </a>
-          </h2>
-  
-          <button
-            class="rounded-full w-full mt-2"
-            data-testid="login-button"
-            mat-raised-button
-            color="primary"
-            type="submit"
-            [disabled]="!form.valid">
-            Sign up
-          </button>
-        </form> -->
   </div>
 </app-auth-layout>

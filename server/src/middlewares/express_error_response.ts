@@ -20,8 +20,8 @@ export async function ExpressErrorResponse(
 
   if (err instanceof ResponseError.BaseResponse) {
     return res
-      .status(err.statusCode)
-      .json(generateErrorResponseError(err, err.statusCode))
+      .status(err.code)
+      .json(generateErrorResponseError(err, err.code))
   }
   next(err)
 }

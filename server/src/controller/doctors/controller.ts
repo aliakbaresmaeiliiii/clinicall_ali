@@ -4,16 +4,16 @@ import { router } from "../../routes/public";
 import { DoctorsService } from "./service";
 import { Request, Response } from "express";
 
-router.get(
-  "/admin/doctors",
-  asyncHandler(async (req: any, res: any) => {
-    const data = await DoctorsService.getDoctors();
-    const buildResponse = BuildResponse.get(data);
-    if (buildResponse) {
-      return res.status(200).json(buildResponse);
-    }
-  })
-);
+// router.get(
+//   "/admin/doctors",
+//   asyncHandler(async (req: any, res: any) => {
+//     const data = await DoctorsService.getDoctors();
+//     const buildResponse = BuildResponse.get(data);
+//     if (buildResponse) {
+//       return res.status(200).json(buildResponse);
+//     }
+//   })
+// );
 
 router.get(
   "/getMostPopularDoctor",
