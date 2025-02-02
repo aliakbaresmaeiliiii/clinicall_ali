@@ -8,6 +8,8 @@ import { IAppointment } from "../types/appointment.interface";
 import { Menu, Submenu } from "../types/navItem";
 import { CreateUser, User } from "../types/user";
 import { RowDataPacket, coreSchema, query } from "./mysql";
+import { patientSchema } from "../controller/patients/schema";
+import { ResponseError } from "../modules/error/response_error";
 
 // ****** Auth ******
 
@@ -44,8 +46,6 @@ export async function createUser(data: CreateUser) {
   );
   return result;
 }
-
-
 
 export async function getUserByGoogleId(googleId: string) {
   const user = await query<RowDataPacket[]>(
@@ -147,11 +147,11 @@ export async function getPatients() {
   `);
   return patients;
 }
-export async function patientDetail(patient_id: number): Promise<any> {
+export async function patientDetail(id: number): Promise<any> {
   const result = await query<RowDataPacket>(
     `SELECT * FROM ${coreSchema}.patients
-    WHERE patient_id=?`,
-    { values: [patient_id] }
+    WHERE id=?`,
+    { values: [id] }
   );
   return result;
 }
@@ -167,45 +167,41 @@ export async function checkPhoneNumberExists(mobile: string) {
   );
   return result;
 }
-export async function addPatient(patientData: PatientDTO) {
-  try {
-    const result = await query<RowDataPacket[]>(
-      `INSERT INTO ${coreSchema}.patients
-      (patientName, gender, mobile, dateOfBirth, age, email, maritalStatus, address,
-        bloodGroup, bloodPressure, sugarLevel, injury, profileImage,heartBeat,
-        haemoglobin,doctor,treatment,charges,description,date)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      {
-        values: [
-          patientData.patientName,
-          patientData.gender,
-          patientData.mobile,
-          patientData.dateOfBirth,
-          patientData.age,
-          patientData.email,
-          patientData.maritalStatus,
-          patientData.address,
-          patientData.bloodGroup,
-          patientData.bloodPressure,
-          patientData.sugarLevel,
-          patientData.injury,
-          patientData.profileImage,
-          patientData.heartBeat,
-          patientData.haemoglobin,
-          patientData.doctor,
-          patientData.treatment,
-          patientData.charges,
-          patientData.description,
-          new Date(),
-        ],
-      }
-    );
-    return result;
-  } catch (error) {
-    console.log();
-    console.error("Error inserting patient data:", error);
-    throw error;
-  }
+export async function addPatient(data: PatientDTO) {
+  const { password } = data.password;
+  const { confirmPassword } = data.password;
+  const fdPassword = { password ,confirmPassword};
+  const validPassword = patientSchema.validateSyncAt(
+    "confirmPassword",
+    fdPassword
+  );
+  const saltRounds = 10;
+  const hashedPassword =await bcrypt.hash(validPassword, saltRounds);
+   if (validPassword.error) {
+     throw new ResponseError.Unauthorized("Password is invalid");
+   }
+   const newId = uuidv4();
+
+  const result = await query<RowDataPacket[]>(
+    `INSERT INTO ${coreSchema}.patient
+      (id,first_name,last_name,phone,email,password,token_verify,verify_code,created_at,updated_at)
+        VALUES(?,?,?,?,?,?,?,?,?,?)`,
+    {
+      values: [
+        newId,
+        data.first_name,
+        data.last_name,
+        data.phone,
+        data.email,
+        hashedPassword,
+        data.token_verify,
+        data.verify_code,
+        new Date(),
+        new Date(),
+      ],
+    }
+  );
+  return result;
 }
 export async function deletePatient(id: number) {
   const result = await query<RowDataPacket>(
@@ -231,7 +227,7 @@ export async function updatePatient(patientData: PatientDTO): Promise<any> {
           injury = ?,
           bloodGroup = ?,
           address = ?
-      WHERE patient_id = ?
+      WHERE id = ?
       `,
     {
       values: [
@@ -245,7 +241,7 @@ export async function updatePatient(patientData: PatientDTO): Promise<any> {
         patientData.injury,
         patientData.bloodGroup,
         patientData.address,
-        patientData.patient_id,
+        patientData.id,
       ],
     }
   );
@@ -299,13 +295,13 @@ export async function addPrescriptionMedicine(
     `
     INSERT INTO ${coreSchema}.prescription_medicine
      (
-      patient_id,
+      id,
       medicine_id,
       prescribed_date
     ) VALUES (?, ?, ?)
     `,
     {
-      values: [formData.patient_id, medicine_id, formData.prescribed_date],
+      values: [formData.id, medicine_id, formData.prescribed_date],
     }
   );
   return result;

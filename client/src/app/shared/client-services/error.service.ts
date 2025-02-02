@@ -21,7 +21,6 @@ export class ErrorService {
     this.notificationService.showError(this.getErrorMessage(error));
   }
   handle401Error(error: HttpErrorResponse) {
-    debugger;
     this.notificationService.showError(this.getErrorMessage(error));
     this.dialog.closeAll();
     this.router.navigate(['/login']);

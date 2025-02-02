@@ -1,5 +1,5 @@
 export interface IAppointment {
-  patient_id: number;
+  id: number;
   id: number;
   event_id?: number;
   event_start?: string;

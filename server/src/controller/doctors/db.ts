@@ -10,21 +10,20 @@ import { doctorSchema } from "./schema";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 
-
 export async function addDoctor(data: DoctorsDTO) {
   const { password } = data.password;
   const { confirmPassword } = data.password;
 
-  const fdPassword = { password ,confirmPassword};
+  const fdPassword = { password, confirmPassword };
   const validPassword = doctorSchema.validateSyncAt(
     "confirmPassword",
     fdPassword
   );
   const saltRounds = 10;
-  const hashedPassword =await bcrypt.hash(validPassword, saltRounds);
-  
+  const hashedPassword = await bcrypt.hash(validPassword, saltRounds);
+
   if (validPassword.error) {
-    throw new Error("Password is invalid");
+    throw new ResponseError.Unauthorized("Password is invalid");
   }
   const newId = uuidv4();
 
@@ -54,7 +53,6 @@ export async function addDoctor(data: DoctorsDTO) {
     throw new ResponseError.InternalServer("Failed to insert clinic.");
   }
 }
-
 
 export async function getDoctors(): Promise<DoctorsDTO[] | null> {
   const sql = `
@@ -261,19 +259,14 @@ export async function addComment(comment: CommentsDTO) {
      (id, id, comment_text, rating)
          VALUES (?, ?, ?, ?)`,
     {
-      values: [
-        comment.id,
-        comment.id,
-        comment.comment_text,
-        comment.rating,
-      ],
+      values: [comment.id, comment.id, comment.comment_text, comment.rating],
     }
   );
   return result;
 }
 
 export async function getSpecialties() {
-  const result =await query<RowDataPacket[]>(
+  const result = await query<RowDataPacket[]>(
     `SELECT *
        FROM ${coreSchema}.specialties`
   );

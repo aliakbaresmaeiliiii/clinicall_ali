@@ -43,20 +43,31 @@ router.post(
 );
 
 // ***** clinic-sign-in *****
-router.post("/auth/clinic-sign-in", async (req, res) => {
-  const formData = req.body;
-  const data = await AuthService.clinicSignIn(formData);
-  const buildResponse = await BuildResponse.get(data);
-  return res.json(buildResponse);
-
-  // res.status(buildResponse.code).json(buildResponse);
-});
-
+router.post(
+  "/auth/clinic-sign-in",
+  asyncHandler(async function clinicSignIn(req: any, res: any) {
+    const formData = req.body;
+    const data = await AuthService.clinicSignIn(formData);
+    const buildResponse = await BuildResponse.get(data);
+    return res.status(buildResponse.code).json(buildResponse);
+  })
+);
 // ***** doctor-sign-in *****
-router.post("/auth/doctor-sign-in", async (req, res) => {
-  const formData = req.body;
-  const data = await AuthService.doctorSignIn(formData);
-  const buildResponse = BuildResponse.get(data);
-  return res.status(buildResponse.code).json(buildResponse);
-
-});
+router.post(
+  "/auth/doctor-sign-in",
+  asyncHandler(async function doctorSignIn(req: any, res: any) {
+    const formData = req.body;
+    const data = await AuthService.doctorSignIn(formData);
+    const buildResponse = BuildResponse.get(data);
+    return res.status(buildResponse.code).json(buildResponse);
+  })
+);
+router.post(
+  "/auth/patient-sign-in",
+  asyncHandler(async function patientSignIn(req: any, res: any) {
+    const formData = req.body;
+    const data = await AuthService.patientSignIn(formData);
+    const buildResponse = BuildResponse.get(data);
+    return res.status(buildResponse.code).json(buildResponse);
+  })
+);

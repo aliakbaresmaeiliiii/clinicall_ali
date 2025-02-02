@@ -16,6 +16,7 @@ import {
 } from "./db";
 import { loginSchema } from "./schema";
 import { DoctorsService } from "../doctors/service";
+import { PatientService } from "../patients/services";
 
 const { JWT_SECRET_ACCESS_TOKEN, JWT_SECRET_REFRESH_TOKEN }: any = process.env;
 
@@ -28,9 +29,9 @@ const expiresIn = ms(JWT_ACCESS_TOKEN_EXPIRED) / 1000;
 export class AuthService {
   public static async signUp(formData: any) {
     const roleServiceMap: { [key: string]: Function } = {
-      clinic: ClinicService.insertClinic,
+      clinic: ClinicService.registerClinic,
       doctor: DoctorsService.registerDoctor,
-      // patient: PatientService.insertPatient, // Placeholder for future use
+      patient: PatientService.registerPatient, // Placeholder for future use
     };
     const roleHandler = roleServiceMap[formData.role];
 
@@ -143,15 +144,18 @@ export class AuthService {
         validateData.email,
         validateData.password
       );
+      if (!userData || userData.length === 0) {
+        throw new ResponseError.Unauthorized("Invalid email or password.");
+      }
       const plainPassword = validateData.password;
       const hashedPassword = userData[0].password;
       const isMatch = await bcrypt.compare(plainPassword, hashedPassword);
 
-      if (!userData || userData.length === 0) {
-        throw new ResponseError.Unauthorized("Invalid email or password.");
-      }
+  
       if (!isMatch) {
-        throw new Error("Email is test");
+        throw new ResponseError.Unauthorized(
+          "email or passwrod is not correct!"
+        );
       }
       if (userData[0]?.signup_status === 0) {
         throw new ResponseError.BadRequest("Email is not confirmed.");
@@ -181,7 +185,11 @@ export class AuthService {
       };
       return clinicData;
     } catch (error) {
+      if (error instanceof ResponseError.BaseResponse) {
+        return error; // Re-throw known errors
+      }
       throw new ResponseError.InternalServer("An unexpected error occurred.");
+
     }
   }
 
@@ -192,15 +200,20 @@ export class AuthService {
         validateData.email,
         validateData.password
       );
+
+      if (!userData || userData.length === 0) {
+        throw new ResponseError.Unauthorized("Invalid email or password.");
+      }
+      // if (!userData || userData.length === 0) {
+      //   throw new ResponseError.NotFound(
+      //     "Account not found or has been deleted."
+      //   );
+      // }
       const plainPassword = validateData.password;
       const hashedPassword = userData[0].password;
       const isMatch = await bcrypt.compare(plainPassword, hashedPassword);
 
-      if (!userData || userData.length === 0) {
-        throw new ResponseError.NotFound(
-          "Account not found or has been deleted."
-        );
-      }
+    
 
       if (!isMatch) {
         throw new ResponseError.Unauthorized(
@@ -226,11 +239,66 @@ export class AuthService {
         // ],
       };
       return clinicData;
-    } catch (error: any) {
+    } catch (error) {
       if (error instanceof ResponseError.BaseResponse) {
         return error; // Re-throw known errors
       }
       throw new ResponseError.InternalServer("An unexpected error occurred.");
+
+    }
+  }
+  public static async patientSignIn(formData: ILogin) {
+    try {
+      const validateData = useValidation(loginSchema, formData);
+      const userData = await getDoctorByPassword(
+        validateData.email,
+        validateData.password
+      );
+
+      if (!userData || userData.length === 0) {
+        throw new ResponseError.Unauthorized("Invalid email or password.");
+      }
+      // if (!userData || userData.length === 0) {
+      //   throw new ResponseError.NotFound(
+      //     "Account not found or has been deleted."
+      //   );
+      // }
+      const plainPassword = validateData.password;
+      const hashedPassword = userData[0].password;
+      const isMatch = await bcrypt.compare(plainPassword, hashedPassword);
+
+    
+
+      if (!isMatch) {
+        throw new ResponseError.Unauthorized(
+          "email or passwrod is not correct!"
+        );
+      }
+      if (userData[0]?.emailConfirmed === 0) {
+        throw new ResponseError.BadRequest("Email is not confirmed.");
+      }
+      const clinicData = {
+        id: userData[0].id,
+        first_name: userData[0].name,
+        last_name: userData[0].owner_name,
+        email: userData[0].owner_name,
+
+        // roles: [
+        //   ...new Set(userData.map((el: any) => el.role_name).filter(Boolean)),
+        // ],
+        // permissions: [
+        //   ...new Set(
+        //     userData.map((el: any) => el.permission_name).filter(Boolean)
+        //   ),
+        // ],
+      };
+      return clinicData;
+    } catch (error) {
+      if (error instanceof ResponseError.BaseResponse) {
+        return error; // Re-throw known errors
+      }
+      throw new ResponseError.InternalServer("An unexpected error occurred.");
+
     }
   }
 }

@@ -13,7 +13,6 @@ export class ClinicService {
   tokenKey!: any;
 
   addNewClinic(formData: any): Observable<Partial<IClinic>> {
-    debugger;
     return this.#http.post<Partial<IClinic>>(`${this.config}clinics/add`, formData);
   }
 }

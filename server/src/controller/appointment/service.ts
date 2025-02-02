@@ -30,7 +30,6 @@ export class CalendarService {
       id: eventData.id,
       event_description: eventData.event_description,
       event_title: eventData.event_title,
-      patient_id: eventData.patient_id,
       priority: eventData.priority,
     };
 

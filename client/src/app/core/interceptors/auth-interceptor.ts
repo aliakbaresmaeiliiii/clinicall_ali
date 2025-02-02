@@ -23,7 +23,6 @@ export class AuthInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     handler: HttpHandler
   ): Observable<HttpEvent<any>> {
-
     // if (getDataFromStorage) {
     //   request = request.clone({
     //     setHeaders: {
@@ -34,9 +33,9 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return handler.handle(request).pipe(
       catchError((err: HttpErrorResponse) => {
-        debugger;
-        let errorMessage = "An unexpected error occurred.";
-        switch (err.error.code) {
+        switch (
+          err.status 
+        ) {
           case 400:
             this.errorService.handle400Error(err);
             break;
@@ -56,9 +55,10 @@ export class AuthInterceptor implements HttpInterceptor {
             this.errorService.handle500Error(err);
             break;
           default:
+            this.toast.error('An unexpected error occurred', 'Error');
             break;
-          }
-          return throwError(() => new Error(err.message));
+        }
+        return throwError(() => 'aliakbar');
       })
     );
   }

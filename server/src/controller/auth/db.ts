@@ -18,14 +18,24 @@ export async function checkIfEmailExists(email: string) {
       values: [email], // ✅ Corrected query format
     }
   );
+  const patientResult = await query<RowDataPacket[]>(
+    `SELECT 1 FROM ${coreSchema}.patient WHERE email = ? LIMIT 1`,
+    {
+      values: [email], // ✅ Corrected query format
+    }
+  );
 
   // ✅ Ensure proper handling of results
   const clinicExists = clinicResult.length > 0;
   const doctorExists = doctorResult.length > 0;
+  const patientExists = patientResult.length > 0;
+
   if (clinicExists) {
     return clinicExists;
   } else if (doctorExists) {
     return doctorExists;
+  } else if (patientExists) {
+    return patientExists;
   }
 }
 
@@ -118,6 +128,26 @@ export async function getClinicByPassword(
   return user;
 }
 export async function getDoctorByPassword(
+  email: string,
+  password: string
+): Promise<any> {
+  const user = await query<RowDataPacket[]>(
+    // ` SELECT u.*, r.*,p.*
+    // LEFT JOIN ${coreSchema}.user_roles ur ON u.id = ur.id
+    // LEFT JOIN ${coreSchema}.roles r ON ur.role_id = r.id
+    // LEFT JOIN ${coreSchema}.role_permissions rp ON r.id = rp.role_id
+    // LEFT JOIN ${coreSchema}.permissions p ON rp.permission_id  = p.id
+    ` SELECT *
+    FROM ${coreSchema}.patient 
+    WHERE email = ?`,
+    {
+      values: [email],
+    }
+  );
+  return user;
+}
+
+export async function getPatientByPassword(
   email: string,
   password: string
 ): Promise<any> {

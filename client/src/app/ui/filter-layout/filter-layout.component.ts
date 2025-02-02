@@ -212,7 +212,6 @@ export class FilterLayoutComponent implements OnInit {
 
   visitProfile(data: any) {
     if (!this.userData) {
-      debugger;
       this.toast.error('Please login before make appointment...');
       this.router.navigate(['/login']);
     } else {
@@ -224,7 +223,6 @@ export class FilterLayoutComponent implements OnInit {
   }
   onlineConsultationDialog(data: DoctorsDTO) {
     if (!this.userData) {
-      debugger;
       this.toast.error('Please login before make appointment...');
       this.router.navigate(['/login']);
     } else {

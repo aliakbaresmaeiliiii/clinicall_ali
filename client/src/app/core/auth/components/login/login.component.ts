@@ -145,7 +145,7 @@ export class LoginComponent implements OnInit {
               }
             },
             error: e => {
-              this.toast.error(`${e}`);
+              // this.toast.error(`${e}`);
             },
           });
           break;
@@ -162,11 +162,26 @@ export class LoginComponent implements OnInit {
               }
             },
             error: e => {
-              this.toast.error(`${e}`);
+              // this.toast.error(`${e}`);
             },
           });
           break;
         case 'patient':
+          this.#authService.patientSignIn(formValue).subscribe({
+            next: (res: any) => {
+              // this.permissionService.setPermissions(res.data.permissions);
+              const stroeDataUser = res;
+              const dataJson = JSON.stringify(stroeDataUser);
+              localStorage.setItem('userData', dataJson);
+              if (res.code === 200) {
+                this.toast.success('login is successfully');
+                this.router.navigate(['aliakbar']);
+              }
+            },
+            error: e => {
+              // this.toast.error(`${e}`);
+            },
+          });
           break;
         default:
           this.toast.error('Invalid role selected.');
