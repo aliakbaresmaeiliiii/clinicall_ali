@@ -46,17 +46,54 @@
       *ngIf="selectedRole === 'patient'"
       (ngSubmit)="onSubmit()">
       <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Name</mat-label>
-        <input matInput formControlName="name" />
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="first_name" />
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="w-full">
+        <mat-label>lastName</mat-label>
+        <input matInput formControlName="last_name" />
       </mat-form-field>
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Email</mat-label>
         <input matInput type="email" formControlName="email" />
       </mat-form-field>
-      <mat-form-field appearance="outline" class="w-full">
-        <mat-label>Password</mat-label>
-        <input matInput type="password" formControlName="password" />
-      </mat-form-field>
+      <div formGroupName="password">
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            type="password"
+            formControlName="password"
+            [errorStateMatcher]="matcher" />
+
+          <mat-error *ngIf="clininPassword?.hasError('required')"
+            >password is <strong>required</strong></mat-error
+          >
+          <mat-error *ngIf="clininPassword?.hasError('minlength')"
+            >password is too short
+            <strong>{{
+              clininPassword?.getError('minlength')?.requiredLength
+            }}</strong></mat-error
+          >
+        </mat-form-field>
+
+        <mat-form-field
+          data-testing="confirmPassword"
+          appearance="outline"
+          class="w-full">
+          <mat-label>Confirm Password</mat-label>
+          <input
+            type="password"
+            matInput
+            [errorStateMatcher]="matcher"
+            formControlName="confirmPassword"
+            placeholder="confirmPassword" />
+          <mat-error
+            *ngIf="!clinicConfirmPassword?.hasError('passwordShouldMatch')"
+            >Password doesn't match</mat-error
+          >
+        </mat-form-field>
+      </div>
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Phone</mat-label>
         <input matInput type="tel" formControlName="phone" />

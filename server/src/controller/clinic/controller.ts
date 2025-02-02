@@ -8,7 +8,7 @@ router.post(
   "/clinics/add",
   asyncHandler(async function addNewClinic(req: Request, res: Response) {
     const formData = req.body;
-    const result = await ClinicService.insertClinic(formData);
+    const result = await ClinicService.registerClinic(formData);
     const buildResponse = await BuildResponse.get(result);
     if (buildResponse) {
       return buildResponse;

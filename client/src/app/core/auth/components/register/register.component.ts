@@ -46,9 +46,18 @@ export class RegisterComponent extends BaseComponent {
   selectedRole: string = 'patient';
 
   patientForm = this.fb.group({
-    name: ['', Validators.required],
+    first_name: ['', Validators.required],
+    last_name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
+    password: this.fb.group(
+      {
+        password: ['', [Validators.required, Validators.minLength(3)]],
+        confirmPassword: '',
+      },
+      {
+        validators: passswordShouldMatch,
+      }
+    ),
     phone: ['', Validators.required],
   });
 
