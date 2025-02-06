@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './core/auth/components/login/login.component';
-import { authGuard } from './core/auth/guards/auth.guard';
 import { NotFoundComponent } from './modules/not-found/not-found.component';
+import { AuthGuard } from './core/auth/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -21,7 +21,7 @@ export const routes: Routes = [
     path: 'aliakbar',
     loadChildren: () =>
       import('./modules/profile.module').then(m => m.ModulesModule),
-    canActivate: [authGuard],
+    canActivate: [AuthGuard],
     data: { breadcrumb: 'aliakbar' },
   },
   {

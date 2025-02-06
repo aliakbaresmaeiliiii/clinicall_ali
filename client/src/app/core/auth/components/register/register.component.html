@@ -13,6 +13,7 @@
     </h2>
     <div class="flex items-center gap-4 pb-4">
       <button
+        [ngClass]="{ '!bg-blue-500 !text-white': selectedRole === 'clinic' }"
         class="rounded-full w-full mt-2"
         data-testid="login-button"
         mat-raised-button
@@ -22,6 +23,7 @@
         Clinic
       </button>
       <button
+        [ngClass]="{ '!bg-blue-500 !text-white': selectedRole === 'doctor' }"
         class="rounded-full w-full mt-2"
         data-testid="login-button"
         mat-raised-button
@@ -31,6 +33,7 @@
         Doctor
       </button>
       <button
+        [ngClass]="{ '!bg-blue-500 !text-white': selectedRole === 'patient' }"
         class="rounded-full w-full mt-2"
         data-testid="login-button"
         mat-raised-button
@@ -98,7 +101,13 @@
         <mat-label>Phone</mat-label>
         <input matInput type="tel" formControlName="phone" />
       </mat-form-field>
-      <button mat-raised-button color="primary" type="submit">Register</button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!patientForm.valid">
+        Register
+      </button>
     </form>
 
     <form
@@ -167,7 +176,13 @@
         <mat-label>License Number</mat-label>
         <input matInput formControlName="licenseNumber" />
       </mat-form-field>
-      <button mat-raised-button color="primary" type="submit">Register</button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!doctorForm.valid">
+        Register
+      </button>
     </form>
 
     <form
@@ -249,7 +264,13 @@
         <mat-label>Country</mat-label>
         <input matInput formControlName="country" />
       </mat-form-field>
-      <button mat-raised-button color="primary" type="submit">Register</button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        [disabled]="!clinicForm.valid">
+        Register
+      </button>
     </form>
   </div>
 </app-auth-layout>

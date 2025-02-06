@@ -4,13 +4,14 @@ import { BuildResponse } from "../../modules/response/app_response";
 import { asyncHandler } from "../../helper/async-handler";
 import { router } from "../../routes/public";
 import { AuthService } from "./service";
+import { ClinicService } from "../clinic/service";
 
 // ***** sign-up *****
 router.post(
-  `/auth/sign-up`,
-  asyncHandler(async function signUp(req: any, res: any) {
+  `/auth/clinic/register`,
+  asyncHandler(async function clinicRegister(req: any, res: any) {
     const formData = req.body;
-    const data = await AuthService.signUp(formData);
+    const data = await ClinicService.registerClinic(formData);
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
   })
@@ -18,29 +19,20 @@ router.post(
 
 // ***** confirm *****
 router.post(
-  "/user/confirm",
-  asyncHandler(async function confirmEmail(
+  "/auth/verify-clinic-email",
+  asyncHandler(async function verifyEmail(
     req: Request,
     res: Response,
     next: NextFunction
   ): Promise<any> {
-    try {
-      const formData = req.body;
-      const data = await AuthService.confirmEmail(formData);
+    const { email, verify_code } = req.body;
 
-      if (!data) {
-        return res
-          .status(400)
-          .json({ code: 400, message: "Invalid email or verification code" });
-      }
-
-      const buildResponse = BuildResponse.get(data);
-      res.status(buildResponse.code).json(buildResponse);
-    } catch (error) {
-      next(error);
-    }
+    const data = await AuthService.confirmClinicEmail({email, verify_code});
+    const buildResponse = BuildResponse.get(data);
+    return res.status(buildResponse.code).json(buildResponse);
   })
 );
+
 
 // ***** clinic-sign-in *****
 router.post(
@@ -71,3 +63,13 @@ router.post(
     return res.status(buildResponse.code).json(buildResponse);
   })
 );
+
+// router.get(
+//   "/auth/verify-email-code",
+//   asyncHandler(async function confirmEmailCode(req: any, res: any) {
+//     const email = req.query.email;
+//     const data = await AuthService.confirmEmailCode(email);
+//     const buildResponse = BuildResponse.get(data);
+//     return res.status(buildResponse.code).json(buildResponse);
+//   })
+// );
