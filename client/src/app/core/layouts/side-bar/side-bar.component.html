@@ -23,14 +23,17 @@
         <p class="text-sm font-medium">{{ username }}</p>
         <p class="text-xs font-medium text-center">Admin</p>
       </div>
+
+      <!-- @for (item of getMenuNames(); track $index) {
+        {{item}}
+      } -->
     </div>
     @if(hasAccess){
     <div class="text-xs uppercase ml-4 mb-4">Main</div>
-    } @for (menuName of getMenuNames(); track $index) { @for (item of
-    groupedData[menuName]; track item ) {
+    } @for (menu of getMenuNames(); track $index) { @for (item of
+    groupedData[menu]; track item ) {
     <div
       class="w-full bg-cover transition-all text-purple-900 hover:bg-purple-900 px-4 hover:text-white hover:shadow-inner focus:bg-purple-900 rounded-2xl ease-linear duration-200">
-      <!-- (click)="toggleSubmenu(item)" -->
       <a
         (click)="toggleMenu(item)"
         class="cursor-pointer mb-4 w-full flex flex-col font-semibold"
@@ -44,47 +47,40 @@
         [activated]="link.isActive">
         <div class="focus:text-black flex items-center justify-between p-1">
           <div class="flex items-center cursor-pointer gap-2">
-            <i [ngClass]="['fa-solid ', item.icon]" class="text-xl"></i>
+            <app-menu-icon [icon]="item.icon"></app-menu-icon>
             <span>
-              {{ item.menu_name }}
+              {{ item.name }}
             </span>
           </div>
 
-          <!-- Chevron icon -->
           <div *ngIf="item.submenus.length">
             <mat-icon
               class="menu-button"
-              [@iconRotate]="
-                expandedMenus[item.menu_id] ? 'expanded' : 'collapsed'
-              ">
+              [@iconRotate]="expandedMenus[item.id] ? 'expanded' : 'collapsed'">
               chevron_right
             </mat-icon>
           </div>
         </div>
       </a>
     </div>
-
-    @for (sub of item.submenus;; track $index) { @if
-    (expandedMenus[item.menu_id]) {
-    <div
-      class="submenu mb-4"
-      [ngClass]="{ expanded: expandedMenus[item.menu_id] }">
+    @for (sub of item.submenus;; track $index) { @if (expandedMenus[item.id]) {
+    <div class="submenu mb-4" [ngClass]="{ expanded: expandedMenus[item.id] }">
       <a
         class="text-purple-900 w-full hover:bg-purple-900 font-semibold hover:text-white px-4 bg-cover cursor-pointer hover:shadow-inner flex items-center rounded-3xl transition-all ease-linear duration-500 gap-2 p-1"
         [ngClass]="{
-          'selected-menu-item': isRouteActive(sub.url),
-          'focused-item': focusedRoute === sub.url
+          'selected-menu-item': isRouteActive(sub.path),
+          'focused-item': focusedRoute === sub.path
         }"
-        (click)="setFocus(sub.url)"
+        (click)="setFocus(sub.path)"
         mat-list-item
-        [routerLink]="sub.url"
-        href="{{ sub.link }}">
+        [routerLink]="sub.path"
+        href="{{ sub.path }}">
         <div class="flex gap-2">
-          @if (isActive(sub.url)) {
+          @if (isActive(sub.path)) {
           <span class="material-symbols-outlined"> chevron_right </span>
           }
           <span class="text-base">
-            {{ sub.submenu_name }}
+            {{ sub.name }}
           </span>
         </div>
       </a>

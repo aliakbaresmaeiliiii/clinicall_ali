@@ -68,43 +68,57 @@ export async function getAdmins() {
 }
 
 export async function getNavItems() {
-  const getManu = await query<RowDataPacket[]>(`
-  SELECT
-    m.menu_id, 
-    m.icon, 
-    m.menu_name, 
-    m.path, 
-    s.submenu_id, 
-    s.icon AS submenu_icon,
-    s.submenu_name, 
-    s.url
-  FROM ${coreSchema}.menu m
-  LEFT JOIN ${coreSchema}.submenu s ON m.menu_id = s.menu_id
-  ORDER BY m.menu_id, s.submenu_id`);
+  try {
+    const getManu = await query<RowDataPacket[]>(
+      `SELECT 
+      m.id AS menu_id, m.name AS menu_name, m.icon AS menu_icon, m.route AS menu_path,
+      s.id AS submenu_id, s.name AS submenu_name, s.route AS submenu_url
+      FROM ${coreSchema}.menu m
+      LEFT JOIN ${coreSchema}.submenu s ON m.id = s.menu_id
+    ORDER BY m.id, s.id`
+    );
 
-  const menuMap = new Map<number, Menu>();
-  getManu.forEach((row) => {
-    const menuId = row.menu_id;
-    if (!menuMap.has(menuId)) {
-      menuMap.set(menuId, {
-        menu_id: row.menu_id,
-        icon: row.icon, // Ensure this line is correct
-        menu_name: row.menu_name,
-        path: row.path,
-        submenus: [],
-      });
-    }
-    if (row.submenu_id) {
-      const submenu: Submenu = {
-        submenu_id: row.submenu_id,
-        submenu_name: row.submenu_name,
-        url: row.url,
-        icon: row.submenu_icon, // Adjusted to submenu_icon to prevent confusion
-      };
-      menuMap.get(menuId)?.submenus.push(submenu);
-    }
-  });
-  return Array.from(menuMap.values());
+    const menuMap = new Map<number, Menu>();
+
+    const iconMap: { [key: string]: string } = {
+      "Appointments": "appointment-icon",
+      "Dashboard": "dashboard-icon",
+      "Doctors": "doctor-icon",
+      "Services": "services-icon",
+      "Patients": "patient-icon",
+      "Prescriptions": "prescriptions-icon",
+      "Billing & Payments": "billing-icon",
+      "Reports & Analytics": "report-icon",
+      "Settings": "settings-icon",
+      "Staff Management": "staff-icon",
+      "Inventory": "inventory-icon",
+    };
+    getManu.forEach((row) => {
+      const menuId = row.menu_id;
+      if (!menuMap.has(menuId)) {
+        menuMap.set(menuId, {
+          id: row.menu_id,
+          icon: iconMap[row.menu_name] || 'default-icon',
+          name: row.menu_name,
+          path: row.menu_path,
+          submenus: [],
+        });
+      }
+      if (row.submenu_id) {
+        const submenu: Submenu = {
+          id: row.submenu_id,
+          name: row.submenu_name,
+          path: row.submenu_url,
+          icon: row.submenu_icon,
+        };
+        menuMap.get(menuId)?.submenus.push(submenu);
+      }
+    });
+    return Array.from(menuMap.values());
+  } catch (e) {
+    console.log(e);
+    throw new ResponseError.InternalServer("An unexpected error occurred.")
+  }
 }
 
 export async function getAppointment() {
@@ -170,17 +184,17 @@ export async function checkPhoneNumberExists(mobile: string) {
 export async function addPatient(data: PatientDTO) {
   const { password } = data.password;
   const { confirmPassword } = data.password;
-  const fdPassword = { password ,confirmPassword};
+  const fdPassword = { password, confirmPassword };
   const validPassword = patientSchema.validateSyncAt(
     "confirmPassword",
     fdPassword
   );
   const saltRounds = 10;
-  const hashedPassword =await bcrypt.hash(validPassword, saltRounds);
-   if (validPassword.error) {
-     throw new ResponseError.Unauthorized("Password is invalid");
-   }
-   const newId = uuidv4();
+  const hashedPassword = await bcrypt.hash(validPassword, saltRounds);
+  if (validPassword.error) {
+    throw new ResponseError.Unauthorized("Password is invalid");
+  }
+  const newId = uuidv4();
 
   const result = await query<RowDataPacket[]>(
     `INSERT INTO ${coreSchema}.patient

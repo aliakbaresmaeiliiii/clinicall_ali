@@ -1,14 +1,14 @@
 export interface Menu {
-    menu_id: number;
+    id: number;
     icon: string;
-    menu_name: string;
+    name: string;
     path: string;
     submenus: Submenu[];
   }
   
   export interface Submenu {
-    submenu_id: number;
-    submenu_name: string;
-    url: string;
+    id: number;
+    name: string;
+    path: string;
     icon:string
   }

@@ -153,8 +153,6 @@ export class LoginComponent implements OnInit {
                 const email = localStorage.getItem('emailClinic');
                 if (email) {
                   this.#authService.fetchConfirmCode(email).subscribe(res => {
-                    debugger;
-
                     if (res) {
                       this.router.navigate(['/aliakbar/dashboard']);
                     }
@@ -183,8 +181,6 @@ export class LoginComponent implements OnInit {
                 const email = localStorage.getItem('emailClinic');
                 if (email) {
                   this.#authService.fetchConfirmCode(email).subscribe(res => {
-                    debugger;
-
                     if (res) {
                       this.router.navigate(['/aliakbar/dashboard']);
                     }

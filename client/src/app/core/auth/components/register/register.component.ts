@@ -141,7 +141,6 @@ export class RegisterComponent extends BaseComponent implements OnInit {
     if (payload.role === 'clinic')
       this.authService.clinicRegister(payload).subscribe({
         next: (res: any) => {
-          debugger;
           if (res.code === 200) {
             this.toastrService.success(
               `Please check your email box to confirm ${res.newUser.email} `
