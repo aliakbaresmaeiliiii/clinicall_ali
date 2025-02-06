@@ -46,7 +46,6 @@ export class AuthService {
     );
   }
   fetchConfirmCode(email: string): Observable<any> {
-    debugger;
     const param = new HttpParams().set('email', email);
     return this.#http.get<User>(
       `${this.config}auth/verify-email-code`,{

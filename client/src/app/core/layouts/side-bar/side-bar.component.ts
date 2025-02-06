@@ -18,7 +18,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { groupBy } from 'lodash-es';
 import { Observable, Subject, map, shareReplay } from 'rxjs';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -27,39 +27,40 @@ import { LoaderComponent } from '../../../shared/components/loader/loader.compon
 import { User } from '../../auth/models/user';
 import { NavItemsService } from '../../services/nav-items.service';
 import { PermissionService } from '../../services/permission.service';
-import { FooterComponent } from '../footer/footer.component';
 import { HeaderComponent } from '../header/header.component';
 import { Menu } from '../types/navItem';
+import { MenuIconComponent } from './menu-icon/menu-icon.component';
 @Component({
-    selector: 'side-bar',
-    imports: [
-        CommonModule,
-        MatMenuModule,
-        RouterLink,
-        MatIconModule,
-        MatToolbarModule,
-        MatFormFieldModule,
-        MatSidenavModule,
-        MatListModule,
-        MatButtonModule,
-        MatCardModule,
-        HeaderComponent,
-        AsyncPipe,
-        RouterLinkActive,
-        MatTooltipModule,
-        MatExpansionModule,
-        LoaderComponent,
-        BreadCrumbComponent,
-    ],
-    templateUrl: './side-bar.component.html',
-    styleUrl: './side-bar.component.scss',
-    animations: [
-        trigger('iconRotate', [
-            state('collapsed', style({ transform: 'rotate(0deg)' })),
-            state('expanded', style({ transform: 'rotate(90deg)' })),
-            transition('collapsed <=> expanded', animate('50ms ease-in-out')),
-        ]),
-    ]
+  selector: 'side-bar',
+  imports: [
+    CommonModule,
+    MatMenuModule,
+    RouterLink,
+    MatIconModule,
+    MatToolbarModule,
+    MatFormFieldModule,
+    MatSidenavModule,
+    MatListModule,
+    MatButtonModule,
+    MatCardModule,
+    HeaderComponent,
+    AsyncPipe,
+    RouterLinkActive,
+    MatTooltipModule,
+    MatExpansionModule,
+    LoaderComponent,
+    BreadCrumbComponent,
+    MenuIconComponent
+  ],
+  templateUrl: './side-bar.component.html',
+  styleUrl: './side-bar.component.scss',
+  animations: [
+    trigger('iconRotate', [
+      state('collapsed', style({ transform: 'rotate(0deg)' })),
+      state('expanded', style({ transform: 'rotate(90deg)' })),
+      transition('collapsed <=> expanded', animate('50ms ease-in-out')),
+    ]),
+  ],
 })
 export class SideBarComponent
   extends BaseComponent
@@ -70,7 +71,7 @@ export class SideBarComponent
   readonly sidenav = viewChild.required(MatSidenav);
   isMobile = true;
   isCollapsed = true;
-  groupedData: any = {};
+  groupedData: { [key: string]: Menu[] } = {};
   expandedMenus: { [key: string]: boolean } = {};
   private ngUnsubscribe: Subject<any> = new Subject();
   username!: User;
@@ -105,8 +106,9 @@ export class SideBarComponent
   }
 
   toggleMenu(data: any) {
+    debugger;
     if (data.path === '') {
-      this.expandedMenus[data.menu_id] = !this.expandedMenus[data.menu_id];
+      this.expandedMenus[data.id] = !this.expandedMenus[data.id];
     } else {
       this.router.navigate([data.path]);
       this.setFocus(data.path);
@@ -116,7 +118,8 @@ export class SideBarComponent
   getNavItems() {
     this.navService.getNavItems().subscribe({
       next: (res: any) => {
-        this.groupedData = this.groupByMenu(res.data, 'menu_name');
+        this.groupedData = this.groupByMenu(res.data, 'name');
+        console.log((this.groupedData = this.groupByMenu(res.data, 'name')));
       },
       error: e => console.error(e),
       complete: () => {},
@@ -132,7 +135,7 @@ export class SideBarComponent
   }
 
   getMenuNames() {
-    return Object.keys(this.groupedData);
+   return this.groupedData ? Object.keys(this.groupedData) : [];
   }
 
   trackByIndex(index: number) {
@@ -140,7 +143,7 @@ export class SideBarComponent
   }
 
   trackByItem(index: number, item: any) {
-    return item.menu_id;
+    return item.id;
   }
 
   isActive(link: string): boolean {

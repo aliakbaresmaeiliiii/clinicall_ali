@@ -1,5 +1,5 @@
 export interface NavItem {
-  menu_name: string;
+  name: string;
   url: string;
   icon?: string;
   menu_id: number;
