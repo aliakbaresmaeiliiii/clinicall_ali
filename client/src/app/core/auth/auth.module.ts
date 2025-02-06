@@ -26,9 +26,9 @@ const routes = [
     component: RegisterComponent,
   },
   {
+    // canActivate: [AuthGuard],
     path: 'confirm-email',
     component: ConfirmEmailComponent,
-    // canActivate: [RegistrationGuard],
   },
   {
     path: 'forgot-password',

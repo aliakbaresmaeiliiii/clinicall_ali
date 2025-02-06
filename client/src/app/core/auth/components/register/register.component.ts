@@ -1,10 +1,11 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { BaseComponent } from '../../../../shared/components/base/base.component';
 import { passswordShouldMatch } from '../../../../shared/validators/password-should-math.validator';
 import { UniqueNicknameValidator } from '../../../../shared/validators/unique-nickname.validators';
 import { ClinicService } from '../../../services/clinic.service';
+import { ShareAuthService } from '../../../services/share.service';
 
 @Component({
   selector: 'app-register',
@@ -12,7 +13,7 @@ import { ClinicService } from '../../../services/clinic.service';
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
-export class RegisterComponent extends BaseComponent {
+export class RegisterComponent extends BaseComponent implements OnInit {
   items = [
     {
       top: '10%',
@@ -42,6 +43,7 @@ export class RegisterComponent extends BaseComponent {
   title = signal<string>('');
   uniqueNickname = inject(UniqueNicknameValidator);
   clinicService = inject(ClinicService);
+  shareSerivce = inject(ShareAuthService);
   matcher = new ErrorStateMatcher();
   selectedRole: string = 'patient';
 
@@ -105,6 +107,10 @@ export class RegisterComponent extends BaseComponent {
     this.title.set(role);
   }
 
+  ngOnInit(): void {
+    this.setRole('clinic');
+  }
+
   onSubmit() {
     let formData: any;
 
@@ -132,21 +138,23 @@ export class RegisterComponent extends BaseComponent {
   }
 
   signUpUser(payload: any) {
-    this.authService.signUp(payload).subscribe({
-      next: (res: any) => {
-        if (res.code === 200) {
-          this.toastrService.success(
-            `${res.newUser.email} registered successfully`
-          );
-          localStorage.setItem('emailClinic', res.newUser.email);
-          this.router.navigate(['auth/confirm-email']);
-        }
-      },
-      error: () => {
-        this.toastrService.error('Registration failed. Please try again.');
-      },
-      complete: () => console.log('complete'),
-    });
+    if (payload.role === 'clinic')
+      this.authService.clinicRegister(payload).subscribe({
+        next: (res: any) => {
+          debugger;
+          if (res.code === 200) {
+            this.toastrService.success(
+              `Please check your email box to confirm ${res.newUser.email} `
+            );
+            this.shareSerivce.setEmail(res.newUser.email);
+            this.router.navigate(['auth/confirm-email']);
+          }
+        },
+        error: () => {
+          console.log('Registration failed. Please try again.');
+        },
+        complete: () => console.log('complete'),
+      });
   }
   trackByFn() {}
 

@@ -1,5 +1,5 @@
 export interface IClinic {
-  id: number;
+  id: string;
   name: string;
   owner_name: string;
   email: string;

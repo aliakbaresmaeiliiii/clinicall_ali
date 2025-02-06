@@ -47,9 +47,7 @@ export class UserService {
       `https://jsonplaceholder.typicode.com/users/${id}`
     );
   }
-  confirmEmail(data: any): Observable<CurrentUser> {
-    return this.#http.post<CurrentUser>(`${this.config}user/confirm`, data);
-  }
+
 
   getOTP(email: string): Observable<CurrentUser> {
     return this.#http.get<CurrentUser>(`${this.config}user/getOTP/${email}`);

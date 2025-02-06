@@ -1,15 +1,12 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  OnInit,
-  inject,
-} from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { delay, of, switchMap } from 'rxjs';
 import { UserService } from '../../../services/user.service';
+import { ShareAuthService } from '../../../services/share.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-confirm-email',
@@ -19,7 +16,9 @@ import { UserService } from '../../../services/user.service';
 })
 export class ConfirmEmailComponent implements OnInit {
   #userService = inject(UserService);
+  authService = inject(AuthService);
   #toastrService = inject(ToastrService);
+  #shareSerivce = inject(ShareAuthService);
   matcher = new ErrorStateMatcher();
   userData: any;
   form!: FormGroup;
@@ -31,7 +30,7 @@ export class ConfirmEmailComponent implements OnInit {
     allowNumbersOnly: false,
     length: 4,
     isPasswordInput: false,
-    disableAutoFocus: false,
+    disableAutoFocus: true,
     inputStyles: {
       width: '50px',
       height: '50px',
@@ -46,8 +45,7 @@ export class ConfirmEmailComponent implements OnInit {
       ]),
     });
 
-    const email = localStorage.getItem('emailClinic');
-    this.userData = email;
+    this.userData = this.#shareSerivce.getEmail();
   }
   onOtpChange(otp: any) {
     this.otp = otp;
@@ -56,21 +54,27 @@ export class ConfirmEmailComponent implements OnInit {
       this.onSubmit();
     }
   }
+
+  loginSuccess() {
+    localStorage.setItem('isAuthenticated', 'true'); // Set login flag
+    this.#router.navigate(['aliakbar']).then(() => {
+      window.history.replaceState({}, '', 'aliakbar'); // Remove previous history
+    });
+  }
   onSubmit() {
     const payload = {
       email: this.userData,
       verify_code: this.otp,
     };
-
     of(payload)
       .pipe(
-        delay(500),
-        switchMap(data => this.#userService.confirmEmail(data))
+        delay(5000),
+        switchMap(data => this.authService.confirmEmail(data))
       )
       .subscribe(res => {
         if (res) {
-          this.#toastrService.success('Login is successful!');
-          this.#router.navigate(['/aliakbar']);
+          this.#toastrService.success('login is successfull');
+          this.#router.navigate(['/aliakbar/dashboard']);
         }
       });
   }

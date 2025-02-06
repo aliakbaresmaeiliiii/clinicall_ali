@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { SignupResponse, TokenPermission, User } from '../auth/models/user';
+import { CurrentUser, SignupResponse, TokenPermission, User } from '../auth/models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -19,9 +19,9 @@ export class AuthService {
     }
   }
 
-  signUp(userData: any): Observable<SignupResponse> {
+  clinicRegister(userData: any): Observable<SignupResponse> {
     return this.#http.post<SignupResponse>(
-      `${this.config}auth/sign-up`,
+      `${this.config}auth/clinic/register`,
       userData
     );
   }
@@ -29,12 +29,30 @@ export class AuthService {
   clinicSignIn(userData: any): Observable<any> {
     return this.#http.post<any>(`${this.config}auth/clinic-sign-in`, userData);
   }
+
+  confirmEmail(data: any): Observable<CurrentUser> {
+    return this.#http.post<CurrentUser>(`${this.config}auth/verify-clinic-email`, data);
+  }
+
+
+
   doctorSignIn(userData: any): Observable<any> {
     return this.#http.post<any>(`${this.config}auth/doctor-sign-in`, userData);
   }
   patientSignIn(userData: User): Observable<User> {
-    debugger
-    return this.#http.post<User>(`${this.config}auth/patient-sign-in`, userData);
+    return this.#http.post<User>(
+      `${this.config}auth/patient-sign-in`,
+      userData
+    );
+  }
+  fetchConfirmCode(email: string): Observable<any> {
+    debugger;
+    const param = new HttpParams().set('email', email);
+    return this.#http.get<User>(
+      `${this.config}auth/verify-email-code`,{
+        params:param
+      }
+    );
   }
 
   logout() {}

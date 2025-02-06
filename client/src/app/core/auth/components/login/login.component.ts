@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
   renderer = inject(Renderer2);
   matcher = new ErrorStateMatcher();
   private themeManager = inject(ThemeManagerService);
-  selectedRole: string = 'patient';
+  selectedRole: string = '';
 
   labelUserName: string = 'UserName';
   labelPassword: string = 'password';
@@ -67,7 +67,7 @@ export class LoginComponent implements OnInit {
   protected wobbleField = false;
   theme = this.themeManager.theme;
   title = signal<string>('');
-
+  stroeDataUser: any;
   toggleTheme() {
     this.themeManager.toggleTheme();
   }
@@ -89,6 +89,8 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.setRole('clinic');
+
     this.createForm();
 
     google.accounts.id.initialize({
@@ -136,8 +138,8 @@ export class LoginComponent implements OnInit {
           this.#authService.clinicSignIn(formValue).subscribe({
             next: (res: any) => {
               // this.permissionService.setPermissions(res.data.permissions);
-              const stroeDataUser = res;
-              const dataJson = JSON.stringify(stroeDataUser);
+              this.stroeDataUser = res;
+              const dataJson = JSON.stringify(this.stroeDataUser);
               localStorage.setItem('userData', dataJson);
               if (res.code === 200) {
                 this.toast.success('login is successfully');
@@ -145,7 +147,20 @@ export class LoginComponent implements OnInit {
               }
             },
             error: e => {
-              // this.toast.error(`${e}`);
+              if (e) {
+                this.router.navigate(['auth/confirm-email']);
+                this.stroeDataUser;
+                const email = localStorage.getItem('emailClinic');
+                if (email) {
+                  this.#authService.fetchConfirmCode(email).subscribe(res => {
+                    debugger;
+
+                    if (res) {
+                      this.router.navigate(['/aliakbar/dashboard']);
+                    }
+                  });
+                }
+              }
             },
           });
           break;
@@ -157,12 +172,25 @@ export class LoginComponent implements OnInit {
               const dataJson = JSON.stringify(stroeDataUser);
               localStorage.setItem('userData', dataJson);
               if (res.code === 200) {
-                this.toast.success('login is successfully');
+                this.toast.success(`You are now sign in as a ${res.email}`);
                 this.router.navigate(['aliakbar']);
               }
             },
             error: e => {
-              // this.toast.error(`${e}`);
+              if (e) {
+                this.router.navigate(['auth/confirm-email']);
+                this.stroeDataUser;
+                const email = localStorage.getItem('emailClinic');
+                if (email) {
+                  this.#authService.fetchConfirmCode(email).subscribe(res => {
+                    debugger;
+
+                    if (res) {
+                      this.router.navigate(['/aliakbar/dashboard']);
+                    }
+                  });
+                }
+              }
             },
           });
           break;

@@ -55,7 +55,7 @@ export class UserService {
   public static async getVerifyCode(userData: any, tokenVerify: any) {
     // const userData = useValidation(schemaUser.confirmEmail,userData)
     const result = await getOTP(userData, tokenVerify);
-    SendMail.AccountRegister(result);
+    // SendMail.AccountRegister(result);
 
     if (result) {
       return result;
