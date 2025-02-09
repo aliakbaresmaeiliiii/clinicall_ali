@@ -1,12 +1,5 @@
-import {
-  CommonModule
-} from '@angular/common';
-import {
-  Component,
-  OnDestroy,
-  OnInit,
-  inject
-} from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -19,37 +12,32 @@ import { DoctorsModule } from '../doctors/doctors.module';
 import { PatientsModule } from '../patients/patients.module';
 
 @Component({
-    selector: 'app-dashboard',
-    imports: [
-        CommonModule,
-        MatMenuModule,
-        MatIconModule,
-        MatButtonModule,
-        MatCardModule,
-        LineChartComponent,
-        StackedChartComponent,
-        PatientsModule,
-        DoctorsModule
-    ],
-    templateUrl: './dashboard.component.html',
-    styleUrl: './dashboard.component.scss'
+  selector: 'app-dashboard',
+  imports: [
+    CommonModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
+    MatCardModule,
+    LineChartComponent,
+    StackedChartComponent,
+    PatientsModule,
+    DoctorsModule,
+  ],
+  templateUrl: './dashboard.component.html',
+  styleUrl: './dashboard.component.scss',
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-chartTitle: string = 'Dynamic Chart Title';
-
+  chartTitle: string = 'Dynamic Chart Title';
 
   #route = inject(ActivatedRoute);
   private destroy$ = new Subject<void>();
 
-  constructor() {
-    
-  }
+  constructor() {}
 
   ngOnInit() {
-    this.#route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {
-    });
+    this.#route.paramMap.pipe(takeUntil(this.destroy$)).subscribe(params => {});
   }
-
 
   handleTabChange(index: number) {}
 

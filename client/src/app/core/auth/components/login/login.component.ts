@@ -123,7 +123,7 @@ export class LoginComponent implements OnInit {
       sessionStorage.setItem('loggedInUser', JSON.stringify(payload));
 
       // Navigate to home
-      this.router.navigate(['aliakbar/dashboard']);
+      this.router.navigate(['dashboard']);
     } else {
       console.error('Invalid response or missing credential');
     }
@@ -143,7 +143,7 @@ export class LoginComponent implements OnInit {
               localStorage.setItem('userData', dataJson);
               if (res.code === 200) {
                 this.toast.success('login is successfully');
-                this.router.navigate(['aliakbar']);
+                this.router.navigate(['/dashboard']);
               }
             },
             error: e => {
@@ -154,7 +154,7 @@ export class LoginComponent implements OnInit {
                 if (email) {
                   this.#authService.fetchConfirmCode(email).subscribe(res => {
                     if (res) {
-                      this.router.navigate(['/aliakbar/dashboard']);
+                      this.router.navigate(['/dashboard']);
                     }
                   });
                 }
@@ -171,7 +171,7 @@ export class LoginComponent implements OnInit {
               localStorage.setItem('userData', dataJson);
               if (res.code === 200) {
                 this.toast.success(`You are now sign in as a ${res.email}`);
-                this.router.navigate(['aliakbar']);
+                this.router.navigate(['/dashboard']);
               }
             },
             error: e => {
@@ -182,7 +182,7 @@ export class LoginComponent implements OnInit {
                 if (email) {
                   this.#authService.fetchConfirmCode(email).subscribe(res => {
                     if (res) {
-                      this.router.navigate(['/aliakbar/dashboard']);
+                      this.router.navigate(['/dashboard']);
                     }
                   });
                 }
@@ -199,7 +199,7 @@ export class LoginComponent implements OnInit {
               localStorage.setItem('userData', dataJson);
               if (res.code === 200) {
                 this.toast.success('login is successfully');
-                this.router.navigate(['aliakbar']);
+                this.router.navigate(['dashboard']);
               }
             },
             error: e => {

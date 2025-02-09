@@ -328,7 +328,6 @@ export class HeaderComponent {
   hoveredCategoryIndex: number | null = null;
 
   toggleCategory(index: number | null): void {
-    console.log(index);
 
     this.hoveredCategoryIndex = index;
   }

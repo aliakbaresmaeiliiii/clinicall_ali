@@ -26,17 +26,15 @@ import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule, Routes } from '@angular/router';
-import { ImgUploaderComponent } from '../../shared/components/img-uploader/img-uploader.component';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
 import { AgePipe } from '../../shared/pipes/age.pipe';
-import { FilterComponent } from '../users/filter/filter.component';
+import { SharedModule } from '../../shared/shared.module';
 import { AddPatientComponent } from './add-patient/add-patient.component';
 import { DeletePatientDialogComponent } from './delete-patient-dialog/delete-patient-dialog.component';
 import { EditPatientDialogComponent } from './edit-patient-dialog/edit-patient-dialog.component';
 import { PatientDetailComponent } from './patient-detail/patient-detail.component';
 import { PatientProfileComponent } from './patient-profile/patient-profile.component';
 import { PatientsComponent } from './patients.component';
-import { SharedModule } from '../../shared/shared.module';
 
 export const routes: Routes = [
   {

@@ -50,7 +50,7 @@ import { MenuIconComponent } from './menu-icon/menu-icon.component';
     MatExpansionModule,
     LoaderComponent,
     BreadCrumbComponent,
-    MenuIconComponent
+    MenuIconComponent,
   ],
   templateUrl: './side-bar.component.html',
   styleUrl: './side-bar.component.scss',
@@ -106,7 +106,6 @@ export class SideBarComponent
   }
 
   toggleMenu(data: any) {
-    debugger;
     if (data.path === '') {
       this.expandedMenus[data.id] = !this.expandedMenus[data.id];
     } else {
@@ -135,7 +134,7 @@ export class SideBarComponent
   }
 
   getMenuNames() {
-   return this.groupedData ? Object.keys(this.groupedData) : [];
+    return this.groupedData ? Object.keys(this.groupedData) : [];
   }
 
   trackByIndex(index: number) {

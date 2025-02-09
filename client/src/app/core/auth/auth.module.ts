@@ -18,7 +18,7 @@ import { AuthLayoutComponent } from './components/auth-layout/auth-layout.compon
 
 const routes = [
   {
-    path: '',
+    path: 'login',
     component: LoginComponent,
   },
   {
@@ -45,7 +45,10 @@ const routes = [
     //   component: ChangePasswordComponent,
     //   canActivate: [ChangePasswordGuard]
     // }
+
+ 
   },
+
 ];
 @NgModule({
   declarations: [

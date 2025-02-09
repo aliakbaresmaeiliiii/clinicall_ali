@@ -11,23 +11,19 @@ import {
 } from "./db";
 import { loginSchema } from "./schema";
 
-const { JWT_SECRET_ACCESS_TOKEN, JWT_SECRET_REFRESH_TOKEN }: any = process.env;
+const { JWT_SECRET_ACCESS_TOKEN, JWT_SECRET_REFRESH_TOKEN,JWT_ACCESS_TOKEN_EXPIRED }: any = process.env;
 
-const JWT_ACCESS_TOKEN_EXPIRED = process.env.JWT_ACCESS_TOKEN_EXPIRED || "1d"; // 1 Days
-const JWT_REFRESH_TOKEN_EXPIRED = process.env.JWT_REFRESH_TOKEN_EXPIRED || "5h"; // 30 Days
-
-const expiresIn = ms(JWT_ACCESS_TOKEN_EXPIRED) / 1000;
 
 export class AuthService {
-  public static generateToken(user: any) {
-    const payload = {
-      id: user.id,
-      email: user.email,
-      is_verified: user.is_verified, // Include verification status
-    };
+  // public static generateToken(user: any) {
+  //   const payload = {
+  //     id: user.id,
+  //     email: user.email,
+  //     is_verified: user.is_verified, // Include verification status
+  //   };
 
-    return jwt.sign(payload, JWT_REFRESH_TOKEN_EXPIRED);
-  }
+  //   return jwt.sign(payload, JWT_REFRESH_TOKEN_EXPIRED);
+  // }
   public static async clinicSignIn(formData: ILogin) {
     try {
       const validateData = useValidation(loginSchema, formData);
@@ -54,6 +50,11 @@ export class AuthService {
       if (userData[0]?.signup_status === 0) {
         throw new ResponseError.BadRequest("Email is not confirmed.");
       }
+      const token = jwt.sign(
+        { id: userData[0].id, email: userData[0].email }, // Payload (user info)
+        JWT_SECRET_ACCESS_TOKEN, // Secret key
+        { expiresIn: 60 } // Expiry time
+      );
       const clinicData = {
         id: userData[0].id,
         name: userData[0].name,
@@ -64,6 +65,7 @@ export class AuthService {
         state: userData[0].state,
         zip_code: userData[0].zip_code,
         country: userData[0].country,
+        token
         // roles: [
         //   ...new Set(userData.map((el: any) => el.role_name).filter(Boolean)),
         // ],

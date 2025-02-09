@@ -2,7 +2,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { CurrentUser, SignupResponse, TokenPermission, User } from '../auth/models/user';
+import {
+  CurrentUser,
+  SignupResponse,
+  TokenPermission,
+  User,
+} from '../auth/models/user';
+import { Router } from '@angular/router';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -10,12 +17,17 @@ import { CurrentUser, SignupResponse, TokenPermission, User } from '../auth/mode
 export class AuthService {
   config = environment.apiEndPoint;
   #http = inject(HttpClient);
+  router = inject(Router);
   tokenKey!: any;
   public permissions = new BehaviorSubject<TokenPermission[]>([]);
 
   constructor() {
     if (typeof localStorage !== 'undefined') {
-      this.tokenKey = localStorage.getItem('tokenKey');
+      const userData = localStorage.getItem('userData');
+      if (userData) {
+        const getItem = JSON.parse(userData);
+        this.tokenKey = getItem.token;
+      }
     }
   }
 
@@ -31,10 +43,11 @@ export class AuthService {
   }
 
   confirmEmail(data: any): Observable<CurrentUser> {
-    return this.#http.post<CurrentUser>(`${this.config}auth/verify-clinic-email`, data);
+    return this.#http.post<CurrentUser>(
+      `${this.config}auth/verify-clinic-email`,
+      data
+    );
   }
-
-
 
   doctorSignIn(userData: any): Observable<any> {
     return this.#http.post<any>(`${this.config}auth/doctor-sign-in`, userData);
@@ -47,20 +60,34 @@ export class AuthService {
   }
   fetchConfirmCode(email: string): Observable<any> {
     const param = new HttpParams().set('email', email);
-    return this.#http.get<User>(
-      `${this.config}auth/verify-email-code`,{
-        params:param
-      }
-    );
+    return this.#http.get<User>(`${this.config}auth/verify-email-code`, {
+      params: param,
+    });
   }
 
-  logout() {}
-
   getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
+    const userData = localStorage.getItem('userData');
+    if (userData) {
+      const getItem = JSON.parse(userData);
+      return getItem.token || null;
+    }
+    return null;
   }
   isAuthDataAvailable(): boolean {
     return !!this.getToken();
+  }
+
+  isTokenExpired(): boolean {
+    const token = this.getToken();
+    if (!token) return true;
+
+    try {
+      const decoded: any = jwtDecode(token);
+      const currentTime = Math.floor(Date.now() / 1000);
+      return decoded.exp < currentTime;
+    } catch (error) {
+      return true;
+    }
   }
 
   // refreshToken(): Observable<string> {
@@ -97,4 +124,14 @@ export class AuthService {
   // getAllUsers(): Observable<Users> {
   //   return this.httpClient.get<Users>(`${this.config}/users`);
   // }
+
+  isLoggedIn(): boolean {
+    const token = localStorage.getItem('token'); // or sessionStorage.getItem('token')
+    return !!token; // Returns true if token exists, otherwise false
+  }
+
+  logout() {
+    localStorage.removeItem('token'); // Remove token
+    this.router.navigate(['/login']); // Redirect to login
+  }
 }

@@ -91,7 +91,34 @@
       <app-loader />
     </div>
     }
-    <span (click)="logout()"> logout </span>
+    <a
+      class="text-purple-900 w-full hover:bg-purple-900 font-semibold hover:text-white px-4 bg-cover cursor-pointer hover:shadow-inner flex items-center rounded-3xl transition-all ease-linear duration-500 gap-2 p-1">
+      <span (click)="logout()" class="flex gap-2">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round">
+          <rect
+            x="3"
+            y="4"
+            width="12"
+            height="16"
+            rx="2"
+            ry="2"
+            stroke="#1E88E5" />
+          <polyline points="14,8 20,12 14,16" stroke="#1976D2" />
+          <line x1="10" y1="12" x2="20" y2="12" stroke="#1976D2" />
+        </svg>
+
+        logout
+      </span>
+    </a>
   </mat-sidenav>
 
   <mat-sidenav-content>
