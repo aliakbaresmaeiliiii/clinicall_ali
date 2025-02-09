@@ -77,20 +77,25 @@ export async function getClinicByPassword(
   email: string,
   password: string
 ): Promise<any> {
-  const user = await query<RowDataPacket[]>(
-    // ` SELECT u.*, r.*,p.*
-    // LEFT JOIN ${coreSchema}.user_roles ur ON u.id = ur.id
-    // LEFT JOIN ${coreSchema}.roles r ON ur.role_id = r.id
-    // LEFT JOIN ${coreSchema}.role_permissions rp ON r.id = rp.role_id
-    // LEFT JOIN ${coreSchema}.permissions p ON rp.permission_id  = p.id
-    ` SELECT *
-    FROM ${coreSchema}.clinic 
-    WHERE email = ?`,
-    {
-      values: [email],
-    }
-  );
-  return user;
+  try {
+    const user = await query<RowDataPacket[]>(
+      // ` SELECT u.*, r.*,p.*
+      // LEFT JOIN ${coreSchema}.user_roles ur ON u.id = ur.id
+      // LEFT JOIN ${coreSchema}.roles r ON ur.role_id = r.id
+      // LEFT JOIN ${coreSchema}.role_permissions rp ON r.id = rp.role_id
+      // LEFT JOIN ${coreSchema}.permissions p ON rp.permission_id  = p.id
+      ` SELECT *
+      FROM ${coreSchema}.clinic 
+      WHERE email = ?`,
+      {
+        values: [email],
+      }
+    );
+    return user;
+  } catch (error) {
+    console.log(error)
+  }
+ 
 }
 export async function getDoctorByPassword(
   email: string,
