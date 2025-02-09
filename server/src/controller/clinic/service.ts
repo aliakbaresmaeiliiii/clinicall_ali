@@ -1,21 +1,26 @@
 import { EmailProvider } from "../../config/email";
-import { getUniqueCodev2, getUniqueCodev3 } from "../../helper/common";
+import { getUniqueCodev3 } from "../../helper/common";
 import { ResponseError } from "../../modules/error/response_error";
 import { checkExistClinic, registerClinic } from "./db";
-import sendAccountRegister from "../../helper/send_email";
 
-import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import ms from "ms";
 import SendMail from "../../helper/send_email";
 
-const { JWT_SECRET_ACCESS_TOKEN, JWT_SECRET_REFRESH_TOKEN }: any = process.env;
 
-const JWT_ACCESS_TOKEN_EXPIRED = process.env.JWT_ACCESS_TOKEN_EXPIRED || "1d"; // 1 Days
-const JWT_REFRESH_TOKEN_EXPIRED =
-  process.env.JWT_REFRESH_TOKEN_EXPIRED || "30d"; // 30 Days
 
-const expiresIn = ms(JWT_ACCESS_TOKEN_EXPIRED) / 1000;
+const JWT_ACCESS_TOKEN_EXPIRED = process.env.JWT_ACCESS_TOKEN_EXPIRED || "1d"; // Default 1 day
+const JWT_SECRET_ACCESS_TOKEN = process.env.JWT_SECRET_ACCESS_TOKEN || "your-secret-key";
+
+// Check if expiration needs conversion
+const expiresIn =
+  typeof JWT_ACCESS_TOKEN_EXPIRED === "string" &&
+  /^[0-9]+[smhdwy]$/i.test(JWT_ACCESS_TOKEN_EXPIRED)
+    ? Math.floor(ms(JWT_ACCESS_TOKEN_EXPIRED) / 1000)
+    : JWT_ACCESS_TOKEN_EXPIRED;
+    
+    
+    
 export class ClinicService {
   public static async registerClinic(formData: any) {
     const emailExists = await checkExistClinic(formData.email);

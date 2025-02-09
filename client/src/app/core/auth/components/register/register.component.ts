@@ -138,7 +138,7 @@ export class RegisterComponent extends BaseComponent implements OnInit {
   }
 
   signUpUser(payload: any) {
-    if (payload.role === 'clinic')
+    if (payload.role === 'clinic') {
       this.authService.clinicRegister(payload).subscribe({
         next: (res: any) => {
           if (res.code === 200) {
@@ -146,6 +146,7 @@ export class RegisterComponent extends BaseComponent implements OnInit {
               `Please check your email box to confirm ${res.newUser.email} `
             );
             this.shareSerivce.setEmail(res.newUser.email);
+            this.shareSerivce.setSelectedRole(payload.role);
             this.router.navigate(['auth/confirm-email']);
           }
         },
@@ -154,6 +155,25 @@ export class RegisterComponent extends BaseComponent implements OnInit {
         },
         complete: () => console.log('complete'),
       });
+    } else if (payload.role === 'patient') {
+      this.authService.patientRegister(payload).subscribe({
+        next: (res: any) => {
+          if (res.code === 200) {
+            this.toastrService.success(
+              `Please check your email box to confirm ${res.newUser.email} `
+            );
+            this.shareSerivce.setEmail(res.newUser.email);
+            this.shareSerivce.setSelectedRole(payload.role);
+
+            this.router.navigate(['auth/confirm-email']);
+          }
+        },
+        error: () => {
+          console.log('Registration failed. Please try again.');
+        },
+        complete: () => console.log('complete'),
+      });
+    }
   }
   trackByFn() {}
 

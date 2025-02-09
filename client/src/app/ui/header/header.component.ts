@@ -304,7 +304,7 @@ export class HeaderComponent {
       const getStoreItem = localStorage.getItem('userData');
       if (getStoreItem) {
         const getItem = JSON.parse(getStoreItem);
-        this.userData = getItem.firstName;
+        this.userData = getItem.first_name;
       }
     }
     // effect(() => {
@@ -333,7 +333,7 @@ export class HeaderComponent {
   }
 
   loginUser() {
-    this.router.navigate(['login']);
+    this.router.navigate(['auth/login']);
   }
 
   navigateUrl(menuName: string) {

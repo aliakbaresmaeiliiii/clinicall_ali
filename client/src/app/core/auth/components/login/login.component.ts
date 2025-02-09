@@ -132,7 +132,6 @@ export class LoginComponent implements OnInit {
   login() {
     if (this.form.value) {
       let formValue = this.form.value;
-
       switch (this.selectedRole) {
         case 'clinic':
           this.#authService.clinicSignIn(formValue).subscribe({
@@ -199,7 +198,7 @@ export class LoginComponent implements OnInit {
               localStorage.setItem('userData', dataJson);
               if (res.code === 200) {
                 this.toast.success('login is successfully');
-                this.router.navigate(['dashboard']);
+                this.router.navigate(['']);
               }
             },
             error: e => {
