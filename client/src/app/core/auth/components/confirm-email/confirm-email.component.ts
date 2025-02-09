@@ -25,7 +25,7 @@ export class ConfirmEmailComponent implements OnInit {
   #router = inject(Router);
   otp!: string;
   showOtpComponent = true;
-
+  selectedRole: string = '';
   config = {
     allowNumbersOnly: false,
     length: 4,
@@ -46,6 +46,7 @@ export class ConfirmEmailComponent implements OnInit {
     });
 
     this.userData = this.#shareSerivce.getEmail();
+    this.selectedRole = this.#shareSerivce.getSelectedRole();
   }
   onOtpChange(otp: any) {
     this.otp = otp;
@@ -66,17 +67,31 @@ export class ConfirmEmailComponent implements OnInit {
       email: this.userData,
       verify_code: this.otp,
     };
-    of(payload)
-      .pipe(
-        delay(5000),
-        switchMap(data => this.authService.confirmEmail(data))
-      )
-      .subscribe(res => {
-        if (res) {
-          this.#toastrService.success('login is successfull');
-          this.#router.navigate(['/aliakbar/dashboard']);
-        }
-      });
+    if (this.selectedRole === 'clinic') {
+      of(payload)
+        .pipe(
+          delay(5000),
+          switchMap(data => this.authService.confirmClinicEmail(data))
+        )
+        .subscribe(res => {
+          if (res) {
+            this.#toastrService.success('login is successfull');
+            this.#router.navigate(['/dashboard']);
+          }
+        });
+    } else if (this.selectedRole === 'patient') {
+      of(payload)
+        .pipe(
+          delay(5000),
+          switchMap(data => this.authService.confirmPatientEmail(data))
+        )
+        .subscribe(res => {
+          if (res) {
+            this.#toastrService.success('login is successfull');
+            this.#router.navigate(['auth/login']);
+          }
+        });
+    }
   }
 
   getOtp() {

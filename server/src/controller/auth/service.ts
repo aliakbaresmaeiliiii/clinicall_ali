@@ -8,11 +8,17 @@ import {
   getClinicByPassword,
   getClinicVerificationCode,
   getDoctorByPassword,
+  getPatientByPassword,
+  getPatientVerificationCode,
 } from "./db";
 import { loginSchema } from "./schema";
+import { IPatient } from "../patients/IPatient";
 
-const { JWT_SECRET_ACCESS_TOKEN, JWT_SECRET_REFRESH_TOKEN,JWT_ACCESS_TOKEN_EXPIRED }: any = process.env;
-
+const {
+  JWT_SECRET_ACCESS_TOKEN,
+  JWT_SECRET_REFRESH_TOKEN,
+  JWT_ACCESS_TOKEN_EXPIRED,
+}: any = process.env;
 
 export class AuthService {
   // public static generateToken(user: any) {
@@ -65,7 +71,7 @@ export class AuthService {
         state: userData[0].state,
         zip_code: userData[0].zip_code,
         country: userData[0].country,
-        token
+        token,
         // roles: [
         //   ...new Set(userData.map((el: any) => el.role_name).filter(Boolean)),
         // ],
@@ -134,22 +140,17 @@ export class AuthService {
       throw new ResponseError.InternalServer("An unexpected error occurred.");
     }
   }
+
   public static async patientSignIn(formData: ILogin) {
     try {
       const validateData = useValidation(loginSchema, formData);
-      const userData = await getDoctorByPassword(
+      const userData = await getPatientByPassword(
         validateData.email,
         validateData.password
       );
-
       if (!userData || userData.length === 0) {
         throw new ResponseError.Unauthorized("Invalid email or password.");
       }
-      // if (!userData || userData.length === 0) {
-      //   throw new ResponseError.NotFound(
-      //     "Account not found or has been deleted."
-      //   );
-      // }
       const plainPassword = validateData.password;
       const hashedPassword = userData[0].password;
       const isMatch = await bcrypt.compare(plainPassword, hashedPassword);
@@ -159,15 +160,24 @@ export class AuthService {
           "email or passwrod is not correct!"
         );
       }
-      if (userData[0]?.emailConfirmed === 0) {
+      if (userData[0]?.signup_status === 0) {
         throw new ResponseError.BadRequest("Email is not confirmed.");
       }
-      const clinicData = {
-        id: userData[0].id,
-        first_name: userData[0].name,
-        last_name: userData[0].owner_name,
-        email: userData[0].owner_name,
 
+      if (userData[0]?.signup_status === 0) {
+        throw new ResponseError.BadRequest("Email is not confirmed.");
+      }
+      const token = jwt.sign(
+        { id: userData[0].id, email: userData[0].email }, // Payload (user info)
+        JWT_SECRET_ACCESS_TOKEN, // Secret key
+        { expiresIn: 60 } // Expiry time
+      );
+      const patientData: any = {
+        id: userData[0].id,
+        first_name: userData[0].first_name,
+        last_name: userData[0].last_name,
+        email: userData[0].email,
+        token,
         // roles: [
         //   ...new Set(userData.map((el: any) => el.role_name).filter(Boolean)),
         // ],
@@ -177,7 +187,7 @@ export class AuthService {
         //   ),
         // ],
       };
-      return clinicData;
+      return patientData;
     } catch (error) {
       if (error instanceof ResponseError.BaseResponse) {
         return error; // Re-throw known errors
@@ -185,12 +195,25 @@ export class AuthService {
       throw new ResponseError.InternalServer("An unexpected error occurred.");
     }
   }
+
   // *****confirmClinicEmail*****
   public static async confirmClinicEmail(clinicData: {
     email: string;
     verify_code: string;
   }) {
     const data = await getClinicVerificationCode(clinicData);
+    if (data) {
+      return data;
+    } else {
+      return null;
+    }
+  }
+  // *****confirmPatientEmail*****
+  public static async confirmPatientEmail(clinicData: {
+    email: string;
+    verify_code: string;
+  }) {
+    const data = await getPatientVerificationCode(clinicData);
     if (data) {
       return data;
     } else {

@@ -1,5 +1,4 @@
 import { coreSchema, query, RowDataPacket } from "../../bin/mysql";
-import { ConfirmEmail } from "../../models/auth";
 import { ResponseError } from "../../modules/error/response_error";
 
 export async function checkIfClinicExists(email: string): Promise<boolean> {
@@ -122,13 +121,8 @@ export async function getPatientByPassword(
   password: string
 ): Promise<any> {
   const user = await query<RowDataPacket[]>(
-    // ` SELECT u.*, r.*,p.*
-    // LEFT JOIN ${coreSchema}.user_roles ur ON u.id = ur.id
-    // LEFT JOIN ${coreSchema}.roles r ON ur.role_id = r.id
-    // LEFT JOIN ${coreSchema}.role_permissions rp ON r.id = rp.role_id
-    // LEFT JOIN ${coreSchema}.permissions p ON rp.permission_id  = p.id
     ` SELECT *
-    FROM ${coreSchema}.doctors 
+    FROM ${coreSchema}.patient 
     WHERE email = ?`,
     {
       values: [email],
@@ -137,16 +131,7 @@ export async function getPatientByPassword(
   return user;
 }
 
-// export async function confirmEmailCode(email: string) {
-//   const result = await query<RowDataPacket>(
-//     `SELECT verify_code FROM ${coreSchema}.clinic WHERE email =?`,
-//     {
-//       values: [email],
-//     }
-//   );
-//   return result;
-// }
-
+// *****getClinicVerificationCode*****
 export async function getClinicVerificationCode(clinicData: {
   email: string;
   verify_code: string;
@@ -178,6 +163,43 @@ export async function getClinicVerificationCode(clinicData: {
   await query(
     `UPDATE ${coreSchema}.clinic SET signup_status = 1 WHERE email = ?`,
     { values: [clinicData.email] }
+  );
+
+  return rows; 
+}
+
+// *****getPatientVerificationCode*****
+export async function getPatientVerificationCode(patientData: {
+  email: string;
+  verify_code: string;
+}): Promise<any> {
+  // Fetch the patient data
+  const [rows] = await query<RowDataPacket[]>(
+    `SELECT email,verify_code FROM ${coreSchema}.patient WHERE email = ? LIMIT 1`,
+    {
+      values: [patientData.email],
+    }
+  );
+
+  if (!rows || rows.length === 0) {
+    console.error("❌ Email not found in database:", patientData.email);
+    throw new ResponseError.BadRequest("The verification code is incorrect!");
+  }
+
+  const storedVerifyCode = rows.verify_code;
+  console.log(
+    `🔍 Stored Code: ${storedVerifyCode}, Provided Code: ${patientData.verify_code}`
+  );
+
+  if (storedVerifyCode !== patientData.verify_code) {
+    console.error("❌ Verification code mismatch!");
+    throw new ResponseError.BadRequest("The verification code is incorrect!");
+  }
+
+  // Update the signup_status
+  await query(
+    `UPDATE ${coreSchema}.patient SET signup_status = 1 WHERE email = ?`,
+    { values: [patientData.email] }
   );
 
   return rows; 

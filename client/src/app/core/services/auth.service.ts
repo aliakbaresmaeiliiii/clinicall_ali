@@ -10,6 +10,7 @@ import {
 } from '../auth/models/user';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
+import { IPatient } from '../auth/models/IPatient';
 
 @Injectable({
   providedIn: 'root',
@@ -38,13 +39,26 @@ export class AuthService {
     );
   }
 
+  patientRegister(userData: any): Observable<SignupResponse> {
+    return this.#http.post<SignupResponse>(
+      `${this.config}auth/patient/register`,
+      userData
+    );
+  }
+
   clinicSignIn(userData: any): Observable<any> {
     return this.#http.post<any>(`${this.config}auth/clinic-sign-in`, userData);
   }
 
-  confirmEmail(data: any): Observable<CurrentUser> {
+  confirmClinicEmail(data: any): Observable<CurrentUser> {
     return this.#http.post<CurrentUser>(
       `${this.config}auth/verify-clinic-email`,
+      data
+    );
+  }
+  confirmPatientEmail(data: any): Observable<CurrentUser> {
+    return this.#http.post<CurrentUser>(
+      `${this.config}auth/verify-patient-email`,
       data
     );
   }
@@ -52,7 +66,7 @@ export class AuthService {
   doctorSignIn(userData: any): Observable<any> {
     return this.#http.post<any>(`${this.config}auth/doctor-sign-in`, userData);
   }
-  patientSignIn(userData: User): Observable<User> {
+  patientSignIn(userData: IPatient): Observable<User> {
     return this.#http.post<User>(
       `${this.config}auth/patient-sign-in`,
       userData

@@ -5,6 +5,7 @@ import { asyncHandler } from "../../helper/async-handler";
 import { router } from "../../routes/public";
 import { AuthService } from "./service";
 import { ClinicService } from "../clinic/service";
+import { PatientService } from "../patients/services";
 
 // ***** sign-up *****
 router.post(
@@ -16,7 +17,15 @@ router.post(
     return res.status(buildResponse.code).json(buildResponse);
   })
 );
-
+router.post(
+  `/auth/patient/register`,
+  asyncHandler(async function patientRegister(req: any, res: any) {
+    const formData = req.body;
+    const data = await PatientService.registerPatient(formData);
+    const buildResponse = BuildResponse.get(data);
+    return res.status(buildResponse.code).json(buildResponse);
+  })
+);
 // ***** confirm *****
 router.post(
   "/auth/verify-clinic-email",
@@ -28,6 +37,20 @@ router.post(
     const { email, verify_code } = req.body;
 
     const data = await AuthService.confirmClinicEmail({email, verify_code});
+    const buildResponse = BuildResponse.get(data);
+    return res.status(buildResponse.code).json(buildResponse);
+  })
+);
+router.post(
+  "/auth/verify-patient-email",
+  asyncHandler(async function verifyEmail(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ): Promise<any> {
+    const { email, verify_code } = req.body;
+
+    const data = await AuthService.confirmPatientEmail({email, verify_code});
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
   })
