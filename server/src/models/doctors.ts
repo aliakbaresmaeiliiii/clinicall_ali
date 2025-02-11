@@ -52,3 +52,13 @@ interface Ratings {
   staff_behavior: number;
   clinic_condition: number;
 }
+
+
+export interface SubSpecialty {
+  specialty_id: number;
+  specialty_name: string;
+  specialty_image: string;
+  sub_specialty_id: number | null; // Nullable in case no sub-specialties exist
+  sub_specialty_name: string | null;
+  sub_specialty_image: string | null;
+}

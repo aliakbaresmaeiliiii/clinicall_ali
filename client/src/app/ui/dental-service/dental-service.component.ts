@@ -1,5 +1,6 @@
-import { AfterViewInit, Component } from '@angular/core';
-import Swiper from 'swiper';
+import { Component, inject, OnInit, signal } from '@angular/core';
+import { DoctorsService } from '../../modules/doctors/services/doctors.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-dental-service',
@@ -7,60 +8,21 @@ import Swiper from 'swiper';
   templateUrl: './dental-service.component.html',
   styleUrl: './dental-service.component.scss',
 })
-export class DentalServiceComponent  {
-  swiperDataDentistry = [
-    {
-      id: 1,
-      name: "Dental Implant",
-      description: "Restore missing teeth with permanent and durable implants.",
-      src: "../../../assets/images/ui/Dental/Dental Implant.webp",
-      count: 500,
-    },
-    {
-      id: 2,
-      name: "Dental Veneers",
-      description: "Enhance your smile with custom-made veneers.",
-      src: "../../../assets/images/ui/Dental/Dental Veneers.webp",
-      count: 300,
-    },
-    {
-      id: 3,
-      name: "Teeth Whitening",
-      description: "Professional teeth whitening for a brighter smile.",
-      src: "../../../assets/images/ui/Dental/Teeth Whitening.jpeg",
-      count: 600,
-    },
-    {
-      id: 4,
-      name: "Orthodontics",
-      description: "Straighten your teeth with braces and aligners.",
-      src: "../../../assets/images/ui/Dental/Orthodontics.jpg",
-      count: 400,
-    },
-    {
-      id: 5,
-      name: "Root Canal Therapy",
-      description: "Save your natural teeth with expert root canal treatments.",
-      src: "../../../assets/images/ui/Dental/Root Canal Therapy.png",
-      count: 700,
-    },
-    {
-      id: 6,
-      name: "Dental Cleaning",
-      description: "Maintain oral hygiene with professional teeth cleaning.",
-      src: "../../../assets/images/ui/Dental/Dental Cleaning.webp",
-      count: 800,
-    },
-    {
-      id: 7,
-      name: "Dental Crowns",
-      description: "Restore tooth function and aesthetics with dental crowns.",
-      src: "../../../assets/images/ui/Dental/Dental Crowns.jpg",
-      count: 350,
-    },
-  ];
-  
+export class DentalServiceComponent implements OnInit {
+  doctorService = inject(DoctorsService);
+  swiperDataDentistry = signal<any[]>([]);
 
 
-
+  ngOnInit(): void {
+    this.doctorService.getSubSpecialtiesById(21).subscribe((res: any) => {
+      const newData = res.data.map((img: any) => {
+        debugger;
+        img.images = img.images
+          ? `${environment.urlProfileImg}${img.images}`
+          : '../../../assets/images/bg-01.png';
+          return img
+      });
+      this.swiperDataDentistry.set(newData);
+    });
+  }
 }

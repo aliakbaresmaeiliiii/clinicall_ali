@@ -4,6 +4,7 @@ import {
   DoctorsDTO,
   likeDTO,
   ReviewsDTO,
+  SubSpecialty,
 } from "../../models/doctors";
 import { ResponseError } from "../../modules/error/response_error";
 import { doctorSchema } from "./schema";
@@ -271,6 +272,35 @@ export async function getSpecialties() {
        FROM ${coreSchema}.specialties`
   );
   return result;
+}
+export async function getSubSpecialtiesById(specialtyId: number)  {
+  try {
+    const limit = 20; // Default limit
+    const offset = 0; // Default offset
+    const result = await query<RowDataPacket[]>(
+      `SELECT 
+      s.id AS specialty_id,
+      s.name AS specialty_name,
+      s.images AS specialty_image,
+      ss.id AS sub_specialty_id,
+      ss.name AS sub_specialty_name,
+      ss.image_url AS sub_specialty_image
+    FROM clinic_db.specialties s
+    LEFT JOIN clinic_db.sub_specialties ss 
+    ON s.id = ss.specialty_id
+    WHERE s.id = ? 
+    ORDER BY ss.id;`,
+      { values: [specialtyId] }
+    );
+    return result.map((row) => ({
+      id: row.sub_specialty_id || null,
+      name: row.sub_specialty_name || "N/A",
+      images: row.sub_specialty_image || "default_image.jpeg",
+    }));
+  } catch (error) {
+    console.log(error);
+    throw new ResponseError.InternalServer("An unexpected error occurred.");
+  }
 }
 
 export async function filterSpecialtyById(specialty: any) {

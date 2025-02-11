@@ -64,6 +64,11 @@ export class DoctorsService {
   getSpecialties(): Observable<{}> {
     return this.#http.get<string[]>(`${this.config}admin/getSpecialties`);
   }
+  getSubSpecialtiesById(specialtyId: number): Observable<{}> {
+    return this.#http.get<string[]>(
+      `${this.config}get-sub-specialties/${specialtyId}`
+    );
+  }
 
   countDoctorClick(id: number): Observable<number> {
     return this.#http.post<number>(`${this.config}admin/countDoctorClick`, {

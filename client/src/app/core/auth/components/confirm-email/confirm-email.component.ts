@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { delay, of, switchMap } from 'rxjs';
+import { catchError, delay, EMPTY, of, switchMap } from 'rxjs';
 import { UserService } from '../../../services/user.service';
 import { ShareAuthService } from '../../../services/share.service';
 import { AuthService } from '../../../services/auth.service';
@@ -67,31 +67,37 @@ export class ConfirmEmailComponent implements OnInit {
       email: this.userData,
       verify_code: this.otp,
     };
+
+    let confimrEmail$;
+    let redirectRoute = '';
+
     if (this.selectedRole === 'clinic') {
-      of(payload)
-        .pipe(
-          delay(5000),
-          switchMap(data => this.authService.confirmClinicEmail(data))
-        )
-        .subscribe(res => {
-          if (res) {
-            this.#toastrService.success('login is successfull');
-            this.#router.navigate(['/dashboard']);
-          }
-        });
+      confimrEmail$ = this.authService.confirmClinicEmail(payload);
+      redirectRoute = '/dashobard';
     } else if (this.selectedRole === 'patient') {
-      of(payload)
-        .pipe(
-          delay(5000),
-          switchMap(data => this.authService.confirmPatientEmail(data))
-        )
-        .subscribe(res => {
-          if (res) {
-            this.#toastrService.success('login is successfull');
-            this.#router.navigate(['auth/login']);
-          }
-        });
+      confimrEmail$ = this.authService.confirmPatientEmail(payload);
+      redirectRoute = 'auth/login';
+    } else {
+      this.#toastrService.error('invalid role selected');
+      return;
     }
+
+    confimrEmail$
+      .pipe(
+        switchMap((res: any) => {
+          if (res) {
+            this.#toastrService.success('login successfull');
+            this.#router.navigate([redirectRoute]);
+            return of(res);
+          }
+          throw new Error('Invalid response');
+        }),
+        catchError(err => {
+          this.#toastrService.error('Login failed. Please try again.');
+          return EMPTY; 
+        })
+      )
+      .subscribe();
   }
 
   getOtp() {

@@ -49,7 +49,6 @@ router.post(
     next: NextFunction
   ): Promise<any> {
     const { email, verify_code } = req.body;
-
     const data = await AuthService.confirmPatientEmail({email, verify_code});
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
