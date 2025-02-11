@@ -20,6 +20,7 @@ import {
   getMostPopularDoctors,
   getReviews,
   getSpecialties,
+  getSubSpecialtiesById,
   insertReviews,
   like,
   logDoctorClick,
@@ -104,6 +105,14 @@ export class DoctorsService {
   }
   public static async getSpecialties() {
     const data = await getSpecialties();
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
+  }
+  public static async getSubSpecialtiesById(specialtyId:number) {
+    const data = await getSubSpecialtiesById(specialtyId);
     if (data) {
       return { message: "ok", data };
     } else {

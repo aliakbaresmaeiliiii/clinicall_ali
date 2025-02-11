@@ -36,11 +36,11 @@ export class SuggustionsServiceComponent implements OnInit,AfterViewInit {
     const storedData = this.transferState.get(this.DATA_KEY, null);
     if (!storedData) {
       this.doctorService.getSpecialties().subscribe((res: any) => {
-        const newData = res.data.map((doctor: any) => {
-          doctor.img = doctor.img
-            ? `${environment.urlProfileImg}${doctor.img}`
+        const newData = res.data.map((img: any) => {
+          img.images = img.images
+            ? `${environment.urlProfileImg}${img.images}`
             : '../../../assets/images/bg-01.png';
-          return doctor;
+          return img;
         });
         this.clinicServices.set(newData);
       });

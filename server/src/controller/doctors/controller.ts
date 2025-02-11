@@ -113,6 +113,23 @@ router.get(
     res.status(200).json(buildResponse);
   })
 );
+
+router.get(
+  `/get-sub-specialties/:specialtyId`,
+  asyncHandler(async (req: Request, res: Response): Promise<any> => {
+    const specialtyId = parseInt(req.params.specialtyId, 10);
+
+    if (isNaN(specialtyId)) {
+      return res.status(400).json({ error: "Invalid specialty ID" });
+    }
+
+    const data = await DoctorsService.getSubSpecialtiesById(specialtyId);
+    const buildResponse = BuildResponse.get(data);
+    res.status(buildResponse.code).json(buildResponse);
+  })
+);
+
+
 router.get(
   `/admin/filterSpecialtyById/:id`,
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
