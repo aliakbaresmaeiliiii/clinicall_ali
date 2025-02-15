@@ -55,25 +55,91 @@ export async function addDoctor(data: DoctorsDTO) {
   }
 }
 
+export async function like(data: likeDTO) {
+  const existingLike = await query<RowDataPacket>(
+    `SELECT * FROM ${coreSchema}.doctor_likes 
+     WHERE doctor_id = ? AND user_id = ?`,
+    {
+      values: [data.doctor_id, data.user_id],
+    }
+  );
+
+  if (existingLike.length > 0) {
+    // Unlike the doctor: Remove the like
+    await query<RowDataPacket>(
+      `DELETE FROM ${coreSchema}.doctor_likes 
+       WHERE doctor_id = ? AND user_id = ?`,
+      {
+        values: [data.doctor_id, data.user_id],
+      }
+    );
+  } else {
+    // Like the doctor: Insert new like record
+    await query<RowDataPacket>(
+      `INSERT INTO ${coreSchema}.doctor_likes (doctor_id, user_id, isLike) 
+       VALUES (?, ?, ?)`,
+      {
+        values: [data.doctor_id, data.user_id, 1],
+      }
+    );
+  }
+
+  // Update the doctor's is_liked status based on the total likes
+  const totalLikes = await query<RowDataPacket>(
+    `SELECT COUNT(*) AS count FROM ${coreSchema}.doctor_likes 
+     WHERE doctor_id = ?`,
+    {
+      values: [data.doctor_id],
+    }
+  );
+
+  const isLiked = totalLikes[0].count > 0 ? 1 : 0;
+
+  await query<RowDataPacket>(
+    `UPDATE ${coreSchema}.doctors 
+     SET is_liked = ? 
+     WHERE id = ?`,
+    {
+      values: [isLiked, data.doctor_id],
+    }
+  );
+
+  return { success: true, isLiked };
+}
+
 export async function getDoctors(): Promise<DoctorsDTO[] | null> {
-  const sql = `
+  try {
+    const sql = `
     SELECT 
       d.*, 
-      COALESCE(ld.location, 'No Location') AS location,
+      COALESCE(ld.city, 'No City') AS city,
+      COALESCE(ld.state, '') AS state,
+      COALESCE(ld.country, '') AS country,
+      COALESCE(ld.latitude, 0) AS latitude,
+      COALESCE(ld.longitude, 0) AS longitude,
       s.name AS specialty_name,
       (SELECT AVG(rating) 
-       FROM ${coreSchema}.ratings r 
-       WHERE r.id = d.id) AS average_rating
+       FROM ${coreSchema}.reviews_doctor r 
+       WHERE r.doctor_id = d.id) AS average_rating,
+      -- Check if the doctor has been liked by any user
+      CASE 
+        WHEN EXISTS (SELECT 1 FROM ${coreSchema}.doctor_likes dl WHERE dl.doctor_id = d.id) 
+        THEN 1 ELSE 0
+      END AS isLiked
     FROM 
       ${coreSchema}.doctors d
     LEFT JOIN 
-      ${coreSchema}.locations_doctors ld ON d.id = ld.id
+      ${coreSchema}.doctor_locations ld ON d.id = ld.doctor_id AND ld.is_primary = 1
     LEFT JOIN 
-      ${coreSchema}.specialities s ON d.speciality_id = s.id
+      ${coreSchema}.specialties s ON d.speciality_id = s.id
   `;
 
-  const result = await query<RowDataPacket[]>(sql);
-  return result as DoctorsDTO[];
+    const result = await query<RowDataPacket[]>(sql);
+    return result as DoctorsDTO[];
+  } catch (error) {
+    console.log(error);
+    throw new ResponseError.InternalServer("An unexpected error occurred.");
+  }
 }
 
 export async function getMostPopularDoctors(): Promise<any> {
@@ -213,47 +279,6 @@ export async function logDoctorClick(id: number): Promise<any> {
   return { insertResult, updateResult };
 }
 
-export async function like(data: likeDTO) {
-  const existingLike = await query<RowDataPacket>(
-    `SELECT * FROM ${coreSchema}.likes 
-     WHERE id = ? AND id = ? AND entity_type = ?`,
-    {
-      values: [data.id, data.id, data.entity_type],
-    }
-  );
-
-  if (existingLike.length > 0) {
-    const changeStatusLike = await query<RowDataPacket>(
-      ` UPDATE ${coreSchema}.doctors
-        SET is_liked = 0
-        WHERE id = ? `,
-      { values: [data.id] }
-    );
-    const deleteLike = await query<RowDataPacket>(
-      `DELETE FROM ${coreSchema}.likes 
-      WHERE id = ? AND id = ? AND entity_type = ?`,
-      {
-        values: [data.id, data.id, data.entity_type],
-      }
-    );
-    return { deleteLike, changeStatusLike }; // return the result of deletion
-  } else {
-    const changeStatusLike = await query<RowDataPacket>(
-      ` UPDATE ${coreSchema}.doctors
-      SET is_liked = 1
-      WHERE id = ? `,
-      { values: [data.id] }
-    );
-    // If the like doesn't exist, add it
-    const insertLike = await query<RowDataPacket>(
-      `INSERT INTO ${coreSchema}.likes (id, id, entity_type) 
-       VALUES (?, ?, ?)`,
-      { values: [data.id, data.id, data.entity_type] }
-    );
-    return { insertLike, changeStatusLike }; // return the result of insertion
-  }
-}
-
 export async function addComment(comment: CommentsDTO) {
   const result = await query<RowDataPacket>(
     `INSERT INTO ${coreSchema}.comments
@@ -273,7 +298,7 @@ export async function getSpecialties() {
   );
   return result;
 }
-export async function getSubSpecialtiesById(specialtyId: number)  {
+export async function getSubSpecialtiesById(specialtyId: number) {
   try {
     const limit = 20; // Default limit
     const offset = 0; // Default offset
@@ -329,6 +354,27 @@ export async function filterSpecialtyById(specialty: any) {
   );
   return result;
 }
+
+export async function getSuggestionsBySpecialty(specialtyId: number) {
+  try {
+    const result = await query<RowDataPacket[]>(
+      `
+      SELECT s.id AS suggestion_id, s.title, s.description, ss.name AS sub_specialty_name
+      FROM clinic_db.suggestions s
+      JOIN clinic_db.sub_specialties ss ON s.sub_specialty_id = ss.id
+      JOIN clinic_db.specialties sp ON ss.specialty_id = sp.id
+      WHERE sp.id = ?;
+    `,
+      [specialtyId]
+    );
+
+    return result;
+  } catch (error) {
+    console.log(error);
+    throw new ResponseError.InternalServer("An unexpected error occurred.");
+  }
+}
+
 export async function filterServicesById(serviceId: number) {
   const result = await query<RowDataPacket>(
     `

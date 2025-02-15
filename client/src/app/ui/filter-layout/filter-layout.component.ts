@@ -82,10 +82,9 @@ export class FilterLayoutComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchDefaultData();
-
     const getUserData = localStorage.getItem('userData');
     if (getUserData) {
-      this.userData = JSON.parse(getUserData).id;
+      this.userData = JSON.parse(getUserData);
     }
   }
 
@@ -216,9 +215,9 @@ export class FilterLayoutComponent implements OnInit {
       this.router.navigate(['/login']);
     } else {
       let doctorName = data.name.replace(/\s+/g, '-');
-      const doctorId = data.id;
-      this.countDoctorClick(doctorId);
-      this.router.navigate([`/doctor/${doctorName}/${doctorId}`]);
+      const doctor_id = data.id;
+      this.countDoctorClick(doctor_id);
+      this.router.navigate([`/doctor/${doctorName}/${doctor_id}`]);
     }
   }
   onlineConsultationDialog(data: DoctorsDTO) {
@@ -237,16 +236,91 @@ export class FilterLayoutComponent implements OnInit {
     this.doctorService.countDoctorClick(id).subscribe(res => {});
   }
 
-  toggleLike(data: DoctorsDTO, id: any) {
+  // toggleLike(data: DoctorsDTO, id: any) {
+  //   if (this.userData) {
+  //     const user_id = this.userData.id;
+  //     this.tabData()[id].is_liked = !this.tabData()[id].is_liked;
+  //     // const payload: likeDTO = {
+  //     //   isLike: this.tabData()[id].is_liked,
+  //     //   user_id: user_id,
+  //     //   doctor_id: id,
+  //     // };
+  //     this.likeService.addLike(id).subscribe(res => {});
+  //     debugger;
+  //   } else {
+  //     this.toast.info('Please login first!');
+  //     this.router.navigate(['auth/login']);
+  //   }
+  // }
+
+  toggleLike(data: DoctorsDTO, id: number) {
+    if (!this.userData) {
+      this.toast.info('Please login first!');
+      this.router.navigate(['auth/login']);
+      return;
+    }
+
+    const user_id = this.userData.id;
+
+    // Ensure tabData exists before modifying
+    if (!this.tabData() || !this.tabData()[id]) {
+      console.error('Invalid tabData reference');
+      return;
+    }
+
+    // Toggle is_liked status
     this.tabData()[id].is_liked = !this.tabData()[id].is_liked;
-    const user_id = this.userData;
+
     const payload: likeDTO = {
-      id: data.id,
-      entity_type: data.name,
-      // id: id,
+      isLike: this.tabData()[id].is_liked,
+      user_id: user_id,
+      doctor_id: data.id, // Ensure correct doctor ID
     };
-    this.likeService.addLike(payload).subscribe(res => {});
+
+    this.likeService.addLike(payload).subscribe({
+      next: res => {
+        console.log('Like status updated successfully', res);
+      },
+      error: err => {
+        console.error('Error updating like status', err);
+      },
+    });
   }
+
+  // toggleLike(data: DoctorsDTO, id: number) {
+  //   debugger
+  //   if (!this.userData) {
+  //     this.toast.info('Please login first!');
+  //     this.router.navigate(['auth/login']);
+  //     return;
+  //   }
+
+  //   const user_id = this.userData.id;
+
+  //   // Ensure tabData exists before modifying
+  //   if (!this.tabData() || !this.tabData()[id]) {
+  //     console.error('Invalid tabData reference');
+  //     return;
+  //   }
+
+  //   // Toggle is_liked status
+  //   this.tabData()[id].is_liked = !this.tabData()[id].is_liked;
+
+  //   const payload: likeDTO = {
+  //     isLike: this.tabData()[id].is_liked,
+  //     user_id: user_id,
+  //     doctor_id: data.id, // Ensure correct doctor ID
+  //   };
+
+  //   this.likeService.addLike(payload).subscribe({
+  //     next: (res) => {
+  //       console.log('Like status updated successfully', res);
+  //     },
+  //     error: (err) => {
+  //       console.error('Error updating like status', err);
+  //     },
+  //   });
+  // }
 
   shareInfo(docotoInfo: DoctorsDTO) {
     const doctorLink = `localhost:4200/doctor/${docotoInfo.name}/${docotoInfo.id}`; // Generate the doctor's link

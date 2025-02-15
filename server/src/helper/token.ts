@@ -34,18 +34,11 @@ function getToken(headers: any) {
  *
  * @param req - Request
  */
-function currentToken(req: Request) {
-  const getCookie = req.cookies
-  const getHeaders = req.headers
+ function extractToken(req: Request): string | null {
+  const tokenFromCookie = req.cookies?.token;
+  const tokenFromHeader = req.headers.authorization?.split(" ")[1]; // Get Bearer token
 
-  let curToken = ''
-  if (!isEmpty(getCookie.token)) {
-    curToken = getCookie.token
-  } else {
-    curToken = getToken(getHeaders)
-  }
-
-  return curToken
+  return tokenFromCookie || tokenFromHeader || null;
 }
 
 /**
@@ -102,4 +95,4 @@ function verifyRefreshToken(token: string) {
   }
 }
 
-export { getToken, currentToken, verifyAccessToken, verifyRefreshToken }
+export { getToken, extractToken, verifyAccessToken, verifyRefreshToken }

@@ -140,12 +140,12 @@ export class AuthService {
   // }
 
   isLoggedIn(): boolean {
-    const token = localStorage.getItem('token'); // or sessionStorage.getItem('token')
+    const token = localStorage.getItem('userData'); // or sessionStorage.getItem('token')
     return !!token; // Returns true if token exists, otherwise false
   }
 
   logout() {
-    localStorage.removeItem('token'); // Remove token
-    this.router.navigate(['/login']); // Redirect to login
+    localStorage.removeItem('userData'); // Remove token
+    this.router.navigate(['auth/login']); // Redirect to login
   }
 }
