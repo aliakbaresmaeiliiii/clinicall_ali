@@ -48,7 +48,7 @@ export class SuggestionReplacedDoctorComponent
   ngOnInit(): void {
     const getUserData = localStorage.getItem('userData');
     if (getUserData) {
-      this.userData = JSON.parse(getUserData).id;
+      this.userData = JSON.parse(getUserData);
     }
   }
 
@@ -140,11 +140,12 @@ export class SuggestionReplacedDoctorComponent
   toggleLike(info: DoctorsDTO, id: number) {
     this.doctors[id].is_liked = !this.doctors[id].is_liked;
     const user_id = this.userData;
-    const payload: likeDTO = {
-      id: info.id,
-      entity_type: info.name,
-    };
-    this.likeService.addLike(payload).subscribe(res => {});
+
+    // const payload: likeDTO = {
+    //   user_id: info.id,
+    //   doctor_id: info.id,
+    // };
+    // this.likeService.addLike(payload).subscribe(res => {});
   }
 
   getAppointment(data: any) {

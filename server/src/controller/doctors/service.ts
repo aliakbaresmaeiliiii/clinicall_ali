@@ -1,9 +1,4 @@
-import {
-  CommentsDTO,
-  DoctorsDTO,
-  likeDTO,
-  ReviewsDTO,
-} from "../../models/doctors";
+import { CommentsDTO, DoctorsDTO, likeDTO, ReviewsDTO } from "../../models/doctors";
 import { ResponseError } from "../../modules/error/response_error";
 import {
   addComment,
@@ -24,10 +19,11 @@ import {
   insertReviews,
   like,
   logDoctorClick,
-  updateDoctor,
+  updateDoctor
 } from "./db";
 
 export class DoctorsService {
+
   public static async getDoctors() {
     const data = await getDoctors();
     if (data) {
@@ -36,6 +32,7 @@ export class DoctorsService {
       return null;
     }
   }
+
   public static async getMostPopularDoctors() {
     const data = await getMostPopularDoctors();
     if (data) {
@@ -87,14 +84,7 @@ export class DoctorsService {
       return null;
     }
   }
-  public static async toggleLike(likeInfo: likeDTO) {
-    const data = await like(likeInfo);
-    if (data) {
-      return { message: "ok", data };
-    } else {
-      return null;
-    }
-  }
+
   public static async addComment(comment: CommentsDTO) {
     const data = await addComment(comment);
     if (data) {
@@ -111,7 +101,7 @@ export class DoctorsService {
       return null;
     }
   }
-  public static async getSubSpecialtiesById(specialtyId:number) {
+  public static async getSubSpecialtiesById(specialtyId: number) {
     const data = await getSubSpecialtiesById(specialtyId);
     if (data) {
       return { message: "ok", data };
@@ -179,6 +169,15 @@ export class DoctorsService {
 
   public static async booked(timeID: number) {
     const data = await booked(timeID);
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
+  }
+
+  public static async toggleLike(likeInfo: likeDTO) {
+    const data = await like(likeInfo);
     if (data) {
       return { message: "ok", data };
     } else {

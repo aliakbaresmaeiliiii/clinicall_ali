@@ -16,7 +16,6 @@ export class DentalServiceComponent implements OnInit {
   ngOnInit(): void {
     this.doctorService.getSubSpecialtiesById(21).subscribe((res: any) => {
       const newData = res.data.map((img: any) => {
-        debugger;
         img.images = img.images
           ? `${environment.urlProfileImg}${img.images}`
           : '../../../assets/images/bg-01.png';

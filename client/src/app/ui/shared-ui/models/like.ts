@@ -1,5 +1,5 @@
 export interface likeDTO {
-    id: any;
-    entity_type: string;
-  }
-  
+  isLike: boolean;
+  doctor_id: number;
+  user_id: number;
+}

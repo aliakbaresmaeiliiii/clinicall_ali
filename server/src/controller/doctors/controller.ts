@@ -1,19 +1,18 @@
+import { Request, Response } from "express";
 import { asyncHandler } from "../../helper/async-handler";
+import { Authorization } from "../../middlewares/authorization";
 import { BuildResponse } from "../../modules/response/app_response";
 import { router } from "../../routes/public";
 import { DoctorsService } from "./service";
-import { Request, Response } from "express";
 
-// router.get(
-//   "/admin/doctors",
-//   asyncHandler(async (req: any, res: any) => {
-//     const data = await DoctorsService.getDoctors();
-//     const buildResponse = BuildResponse.get(data);
-//     if (buildResponse) {
-//       return res.status(200).json(buildResponse);
-//     }
-//   })
-// );
+router.get(
+  "/doctors",
+  asyncHandler(async (req: any, res: any) => {
+    const data = await DoctorsService.getDoctors();
+    const buildResponse = BuildResponse.get(data);
+    return res.status(buildResponse.code).json(buildResponse);
+  })
+);
 
 router.get(
   "/getMostPopularDoctor",
@@ -85,15 +84,8 @@ router.post(
     res.status(200).json(buildResponse);
   })
 );
-router.post(
-  `/admin/toggleLike`,
-  asyncHandler(async (req: Request, res: Response) => {
-    const likes = req.body;
-    const data = await DoctorsService.toggleLike(likes);
-    const buildResponse = BuildResponse.get(data);
-    res.status(200).json(buildResponse);
-  })
-);
+
+
 
 router.post(
   `/admin/addComment`,
@@ -128,7 +120,6 @@ router.get(
     res.status(buildResponse.code).json(buildResponse);
   })
 );
-
 
 router.get(
   `/admin/filterSpecialtyById/:id`,
@@ -166,8 +157,6 @@ router.get(
   })
 );
 
-
-
 router.get(
   "/doctors/:id/schedule-availability",
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
@@ -193,13 +182,12 @@ router.get(
   })
 );
 
-router.put(
-  "/doctors/:timeID/booked",
-  asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const timeID = +req.params.timeID;
-    const result = await DoctorsService.booked(timeID);
-    const buildResponse = BuildResponse.updated(result);
+router.post(
+  `/doctors/:doctor_id/like`,
+  asyncHandler(async (req: Request, res: Response) => {
+    const likes = req.body.formData;
+    const data = await DoctorsService.toggleLike(likes);
+    const buildResponse = BuildResponse.get(data);
     res.status(200).json(buildResponse);
   })
 );
-

@@ -23,7 +23,7 @@ export class DoctorsService {
   doctorInfo = signal<any>(null);
 
   getDoctors(): Observable<DoctorsDTO[]> {
-    return this.#http.get<DoctorsDTO[]>(`${this.config}admin/doctors`);
+    return this.#http.get<DoctorsDTO[]>(`${this.config}doctors`);
   }
 
   getMostPopularDoctor() {

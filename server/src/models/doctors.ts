@@ -27,8 +27,9 @@ interface Password {
 }
 
 export interface likeDTO {
-  id: number;
-  entity_type: string;
+  doctor_id: number;
+  user_id: string;
+  isLike: boolean;
 }
 
 export interface CommentsDTO {
@@ -52,7 +53,6 @@ interface Ratings {
   staff_behavior: number;
   clinic_condition: number;
 }
-
 
 export interface SubSpecialty {
   specialty_id: number;
