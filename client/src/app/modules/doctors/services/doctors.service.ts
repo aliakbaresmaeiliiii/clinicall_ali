@@ -20,7 +20,7 @@ export class DoctorsService {
   config = environment.apiEndPoint;
   doctorImg = new BehaviorSubject<any>([]);
   doctorImg$ = this.doctorImg.asObservable();
-  doctorInfo = signal<any>(null);
+  storeDoctorInfo = signal<any>(null);
 
   getDoctors(): Observable<DoctorsDTO[]> {
     return this.#http.get<DoctorsDTO[]>(`${this.config}doctors`);

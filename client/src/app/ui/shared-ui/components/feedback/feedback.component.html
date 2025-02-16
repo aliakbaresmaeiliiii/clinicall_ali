@@ -3,11 +3,13 @@
   <div class="flex items-center gap-2 top-12 left-8 absolute">
     <img
       crossorigin="anonymous"
-      [src]="item?.profileImage"
+      [src]="item?.profile_img"
       width="48"
       height="48"
       class="w-24 h-24 rounded-full border-2 border-gray-300 shadow-md" />
-    <h2 class="!text-white">{{ item.name }}</h2>
+    <h2 class="!text-white">
+      Dr. {{ item.first_name }} &nbsp;{{ item.last_name }}
+    </h2>
   </div>
 </div>
 <mat-dialog-content [formGroup]="feedbackForm">
@@ -160,7 +162,11 @@
     <div class="py-4">
       <mat-form-field appearance="outline" class="w-full">
         <mat-label>Leave a comment...</mat-label>
-        <textarea formControlName="comment" matInput #message maxlength="256"></textarea>
+        <textarea
+          formControlName="comment"
+          matInput
+          #message
+          maxlength="256"></textarea>
         <mat-hint align="start"
           ><strong>Don't disclose personal info</strong>
         </mat-hint>

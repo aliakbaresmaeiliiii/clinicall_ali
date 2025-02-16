@@ -8,8 +8,7 @@ router.get(
   asyncHandler(async (req: any, res: any) => {
     const data = await InsuranceService.getAllInsurances();
     const buildResponse = BuildResponse.get(data);
-    if (buildResponse) {
-      return res.status(200).json(buildResponse);
-    }
+    return res.status(buildResponse.code).json(buildResponse);
+
   })
 );

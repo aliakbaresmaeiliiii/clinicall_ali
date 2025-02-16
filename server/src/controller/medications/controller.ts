@@ -9,9 +9,8 @@ router.get(
   asyncHandler(async function getMedicine(req: any, res: any) {
     const data = await MedicineService.getMedicine();
     const buildResponse = BuildResponse.get(data);
-    if (buildResponse) {
-      return res.status(200).json(buildResponse);
-    }
+    return res.status(buildResponse.code).json(buildResponse);
+
   })
 );
 
@@ -25,8 +24,7 @@ router.put(
     const medication_id = req.params.id;
     const data = await MedicineService.updateIsFavorite(medication_id, isFavorite);
     const buildResponse = BuildResponse.get(data);
-    if (buildResponse) {
-      return res.status(200).json(buildResponse);
-    }
+    return res.status(buildResponse.code).json(buildResponse);
+
   })
 );

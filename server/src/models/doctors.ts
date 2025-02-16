@@ -39,10 +39,11 @@ export interface CommentsDTO {
 }
 
 export interface ReviewsDTO {
-  id: number;
+  doctor_id: number;
+  user_id: number;
   rating: number;
   comment: string;
-  recommendation?: string;
+  recommendations?: string;
   ratings: Ratings;
 }
 

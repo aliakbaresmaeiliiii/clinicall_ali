@@ -19,9 +19,7 @@ router.get(
   asyncHandler(async (req: any, res: any) => {
     const data = await DoctorsService.getMostPopularDoctors();
     const buildResponse = BuildResponse.get(data);
-    if (buildResponse) {
-      return res.status(200).json(buildResponse);
-    }
+    return res.status(buildResponse.code).json(buildResponse);
   })
 );
 
@@ -31,24 +29,19 @@ router.get(
     const mobile = req.params.mobile;
     const data = await DoctorsService.checkDoctorPhoneNumberExists(mobile);
     const buildResponse = BuildResponse.get(data);
-    if (buildResponse) {
-      return buildResponse;
-    } else {
-      return false;
-    }
+    return res.status(buildResponse.code).json(buildResponse);
+   
   })
 );
 
 router.post(
   `/admin/add-doctor`,
-  asyncHandler(async function addDocror(req: Request, res: Response) {
+  asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const formData = req.body;
     const data = await DoctorsService.registerDoctor(formData);
     const buildResponse = BuildResponse.get(data);
-    if (buildResponse) {
-      return res.status(200).json(buildResponse);
-    }
-    return formData;
+    return res.status(buildResponse.code).json(buildResponse);
+
   })
 );
 
@@ -58,42 +51,38 @@ router.get(
     const doctorId = +req.params.doctorId;
     const data = await DoctorsService.doctorDetial(doctorId);
     const buildResponse = BuildResponse.get(data);
-    res.status(200).json(buildResponse);
+    return res.status(buildResponse.code).json(buildResponse);
   })
 );
 
 router.put(
   "/admin/updateDoctor",
-  asyncHandler(async function updateDocror(req: Request, res: Response) {
+  asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const formData = req.body;
     const data = await DoctorsService.updateDoctor(formData);
     const buildResponse = BuildResponse.updated(data);
-    if (buildResponse) {
-      return res.status(200).json(buildResponse);
-    }
-    return formData;
+    return res.status(buildResponse.code).json(buildResponse);
+
   })
 );
 
 router.post(
   `/admin/countDoctorClick`,
-  asyncHandler((req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const id = req.body.id;
-    const data = DoctorsService.logDoctorClick(id);
+    const data = DoctorsService.recordDoctorProfileView(id);
     const buildResponse = BuildResponse.get(data);
-    res.status(200).json(buildResponse);
+    return res.status(buildResponse.code).json(buildResponse);
   })
 );
 
-
-
 router.post(
   `/admin/addComment`,
-  asyncHandler(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const comment = req.body.comment;
     const data = await DoctorsService.addComment(comment);
     const buildResponse = BuildResponse.get(data);
-    res.status(200).json(buildResponse);
+    return res.status(buildResponse.code).json(buildResponse);
   })
 );
 
@@ -102,7 +91,8 @@ router.get(
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const data = await DoctorsService.getSpecialties();
     const buildResponse = BuildResponse.get(data);
-    res.status(200).json(buildResponse);
+    return res.status(buildResponse.code).json(buildResponse);
+
   })
 );
 
@@ -127,7 +117,8 @@ router.get(
     const queryParams = +req.params.id;
     const data = await DoctorsService.filterSpecialtyById(queryParams);
     const buildResponse = BuildResponse.get(data);
-    res.status(200).json(buildResponse);
+    return res.status(buildResponse.code).json(buildResponse);
+
   })
 );
 router.get(
@@ -136,7 +127,7 @@ router.get(
     const queryParams = +req.params.id;
     const data = await DoctorsService.filterServicesById(queryParams);
     const buildResponse = BuildResponse.get(data);
-    res.status(200).json(buildResponse);
+    return res.status(buildResponse.code).json(buildResponse);
   })
 );
 router.post(
@@ -145,7 +136,7 @@ router.post(
     const dataReviews = req.body;
     const data = await DoctorsService.insertReviews(dataReviews);
     const buildResponse = BuildResponse.get(data);
-    res.status(200).json(buildResponse);
+    return res.status(buildResponse.code).json(buildResponse);
   })
 );
 router.get(
@@ -153,7 +144,7 @@ router.get(
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const data = await DoctorsService.getReviews();
     const buildResponse = BuildResponse.get(data);
-    res.status(200).json(buildResponse);
+    return res.status(buildResponse.code).json(buildResponse);
   })
 );
 
@@ -167,7 +158,7 @@ router.get(
       consultationType
     );
     const buildResponse = BuildResponse.get(data);
-    res.status(200).json(buildResponse);
+    return res.status(buildResponse.code).json(buildResponse);
   })
 );
 router.get(
@@ -178,16 +169,16 @@ router.get(
       scheduleID
     );
     const buildResponse = BuildResponse.get(data);
-    res.status(200).json(buildResponse);
+    return res.status(buildResponse.code).json(buildResponse);
   })
 );
 
 router.post(
   `/doctors/:doctor_id/like`,
-  asyncHandler(async (req: Request, res: Response) => {
+  asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const likes = req.body.formData;
     const data = await DoctorsService.toggleLike(likes);
     const buildResponse = BuildResponse.get(data);
-    res.status(200).json(buildResponse);
+    return res.status(buildResponse.code).json(buildResponse);
   })
 );
