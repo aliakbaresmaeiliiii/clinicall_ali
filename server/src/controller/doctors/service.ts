@@ -18,7 +18,7 @@ import {
   getSubSpecialtiesById,
   insertReviews,
   like,
-  logDoctorClick,
+  recordDoctorProfileView,
   updateDoctor
 } from "./db";
 
@@ -76,8 +76,8 @@ export class DoctorsService {
     }
   }
 
-  public static async logDoctorClick(id: number) {
-    const data = await logDoctorClick(id);
+  public static async recordDoctorProfileView(id: number) {
+    const data = await recordDoctorProfileView(id);
     if (data) {
       return { message: "ok", data };
     } else {

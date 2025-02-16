@@ -7,7 +7,7 @@ import { AuthService } from "./service";
 import { ClinicService } from "../clinic/service";
 import { PatientService } from "../patients/services";
 
-// ***** sign-up *****
+// ***** clinic sign-up *****
 router.post(
   `/auth/clinic/register`,
   asyncHandler(async function clinicRegister(req: any, res: any) {
@@ -17,6 +17,7 @@ router.post(
     return res.status(buildResponse.code).json(buildResponse);
   })
 );
+// ***** patient sign-up *****
 router.post(
   `/auth/patient/register`,
   asyncHandler(async function patientRegister(req: any, res: any) {

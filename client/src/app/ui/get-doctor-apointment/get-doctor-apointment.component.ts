@@ -4,6 +4,7 @@ import {
   inject,
   makeStateKey,
   OnInit,
+  signal,
   TransferState,
   ViewEncapsulation,
 } from '@angular/core';
@@ -49,7 +50,7 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
     full: '../../../assets/images/ui/svg/star-full.svg',
   };
   specialization: ISpecialization[] = [];
-  doctorInfo: DoctorsDTO[] = [];
+  doctorInfo = signal<DoctorsDTO[]>([]);
   coordinates: { lat: number; lng: number }[] = [];
   doctorId!: number;
   private destroy$ = new Subject<void>();
@@ -88,7 +89,7 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
     }
 
     this.createForm();
-    this.getComment();
+    // this.getComment();
   }
 
   fetchData(doctorId: number) {
@@ -97,21 +98,23 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
     if (!storedData) {
       this.doctorService.doctorDetial(doctorId).subscribe({
         next: (response: any) => {
+          console.log('👉👉👉👉', response);
           if (response && response.length > 0) {
-            const newData = response.map((patient: any) => {
-              patient.profileImage = patient.profileImage
-                ? `${environment.urlProfileImg}${patient.profileImage}`
+            const newData = response.map((doctor: any) => {
+              doctor.profile_img = doctor.profile_img
+                ? `${environment.urlProfileImg}${doctor.profile_img}`
                 : '../../../assets/images/bg-01.png';
-              return patient;
+              return doctor;
             });
-            this.doctorInfo = newData;
-            const match = newData[0].address.match(/^Subang Jaya\s*/);
-            this.addressBreifly = match ? match[0] : '';
-            this.doctorService.doctorInfo.set(newData);
+            this.doctorInfo.set(newData);
 
-            this.transferState.set(this.DATA_KEY, this.doctorInfo);
+            // const match = newData[0].address.match(/^Subang Jaya\s*/);
+            // this.addressBreifly = match ? match[0] : '';
+            this.doctorService.storeDoctorInfo.set(newData);
 
-            this.coordinates = this.doctorInfo
+            this.transferState.set(this.DATA_KEY, this.doctorInfo());
+
+            this.coordinates = this.doctorInfo()
               .filter(item => item.location)
               .map((loc: any) => {
                 return {
@@ -127,7 +130,7 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
       });
     } else {
       this.doctorInfo = storedData;
-      this.coordinates = this.doctorInfo
+      this.coordinates = this.doctorInfo()
         .filter(item => item.location)
         .map((loc: any) => {
           console.log('📌', loc.location);
@@ -148,6 +151,7 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
     if (this.userData !== undefined) {
       this.dialog.open(FeedbackComponent, {
         width: '50rem',
+        data:id
       });
     } else {
       this.router.navigate(['login']);
@@ -183,9 +187,9 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   }
 
   getComment() {
-    this.userService.getUserInfo(this.userData.email).subscribe((res: any) => {
-      this.userInfo = res.data;
-    });
+    // this.userService.getUserInfo(this.userData.email).subscribe((res: any) => {
+    //   this.userInfo = res.data;
+    // });
   }
 
   getConsultation() {
@@ -223,7 +227,7 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   }
 
   toggleLike(info: DoctorsDTO, id: number) {
-    this.doctorInfo[id].is_liked = !this.doctorInfo[id].is_liked;
+    this.doctorInfo()[id].is_liked = !this.doctorInfo()[id].is_liked;
     const getId = this.userData.id;
     // const payload: likeDTO = {
     //   id: info.id,

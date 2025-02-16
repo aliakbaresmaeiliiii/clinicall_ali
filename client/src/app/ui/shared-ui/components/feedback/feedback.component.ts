@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReviewsDTO } from '../../../../modules/doctors/models/doctors';
 import { ToastrService } from 'ngx-toastr';
 import { DoctorsService } from '../../../../modules/doctors/services/doctors.service';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-feedback',
@@ -11,7 +12,10 @@ import { DoctorsService } from '../../../../modules/doctors/services/doctors.ser
   styleUrl: './feedback.component.scss',
 })
 export class FeedbackComponent implements OnInit {
-  doctorInfo: any;
+  // readonly data = inject<DoctorScheduleAvailability>(MAT_DIALOG_DATA);
+  readonly data = inject<any>(MAT_DIALOG_DATA);
+
+  doctorInfo :any;
   userData: any;
   doctorService = inject(DoctorsService);
   feedbackForm!: FormGroup;
@@ -24,18 +28,19 @@ export class FeedbackComponent implements OnInit {
   };
 
   ngOnInit(): void {
-    this.doctorInfo = this.doctorService.doctorInfo();
+    this.doctorInfo = this.doctorService.storeDoctorInfo();
     const getUserData = localStorage.getItem('userData');
     if (getUserData) {
       this.userData = JSON.parse(getUserData);
     }
     this.initializeForm();
+    console.log(this.data);
   }
 
   private initializeForm(): void {
     this.feedbackForm = this.fb.group({
       rating: [null, Validators.required],
-      recommendation: [false, Validators.required],
+      recommendations: [false, Validators.required],
       comment: [''],
       ratings: this.fb.group({
         professional_demeanor: [null, Validators.required],
@@ -51,11 +56,11 @@ export class FeedbackComponent implements OnInit {
   }
 
   recommended(value: boolean): void {
-    this.feedbackForm.patchValue({ recommendation: value });
+    this.feedbackForm.patchValue({ recommendations: value });
   }
 
   doNotRecommended(value: boolean): void {
-    this.feedbackForm.patchValue({ recommendation: value });
+    this.feedbackForm.patchValue({ recommendations: value });
   }
 
   onRatingSetPatient(rating: number): void {
@@ -85,11 +90,11 @@ export class FeedbackComponent implements OnInit {
   submitFeedback(): void {
     if (this.feedbackForm.value) {
       const valueForm = this.feedbackForm.value;
-      valueForm.map;
+      
       const payload: ReviewsDTO = {
         ...valueForm,
-        id: this.doctorInfo[0].id,
-        // id: this.userData.id,
+        doctor_id: this.doctorInfo[0].id,
+        user_id: this.userData.id,
       };
       this.doctorService.insertReviews(payload).subscribe(
         res => {

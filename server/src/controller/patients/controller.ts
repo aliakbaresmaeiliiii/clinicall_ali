@@ -22,9 +22,8 @@ router.get(
   asyncHandler(async function getNavItems(req: any, res: any) {
     const data = await PatientService.getPatients();
     const buildResponse = BuildResponse.get(data);
-    if (buildResponse) {
-      return res.status(200).json(buildResponse);
-    }
+    return res.status(buildResponse.code).json(buildResponse);
+
   })
 );
 
@@ -64,10 +63,8 @@ router.get(
     const patientId = +req.params.patientId;
     const data = await PatientService.patientDetial(patientId);
     const buildResponse = BuildResponse.get(data);
-    if (buildResponse) {
-      return res.status(200).json(buildResponse);
-    }
-    return;
+    return res.status(buildResponse.code).json(buildResponse);
+
   })
 );
 // **** uploadImage
@@ -89,14 +86,12 @@ router.get(
 // **** updatePatient
 router.put(
   "/admin/updatePatient",
-  asyncHandler(async function updatePatient(req: Request, res: Response) {
+  asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const formData = req.body;
     const data = await PatientService.updatePatient(formData);
     const buildResponse = BuildResponse.updated(data);
-    if (buildResponse) {
-      return res.status(200).json(buildResponse);
-    }
-    return formData;
+    return res.status(buildResponse.code).json(buildResponse);
+    ;
   })
 );
 // **** deletePatient
@@ -109,6 +104,6 @@ router.delete(
     const idPateint = +req.params.idPateint;
     await PatientService.deletePatient(idPateint);
     const buildResponse = BuildResponse.deleted(idPateint);
-    return res.status(200).json(buildResponse);
+    return res.status(buildResponse.code).json(buildResponse);
   })
 );

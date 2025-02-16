@@ -1,4 +1,4 @@
-@for (doctor of doctorInfo; track $index;; let i = $index) {
+@for (doctor of doctorInfo(); track $index;; let i = $index) {
 
 <div class="w-3/4 grid grid-cols-3 mx-auto gap-3">
   <div class="flex flex-col gap-4">
@@ -234,7 +234,7 @@
 
     <mat-card appearance="outlined" class="w-full">
       <mat-card-content>
-        <h2 class="pt-2 font-bold">Reviewes about Dr.{{ doctor.name }}:</h2>
+        <h2 class="pt-2 font-bold">Reviewes about Dr{{ doctor.name }}:</h2>
         <div
           class="flex items-center flex-row-reverse justify-center gap-3 mt-4">
           <div class="flex flex-col gap-1">
@@ -253,7 +253,7 @@
             </div>
           </div>
           <span class="text-3xl">
-            <strong> {{ formatRating(doctor.average_rating) }} </strong>
+            <!-- <strong> {{ formatRating(doctor.average_rating) }} </strong> -->
           </span>
         </div>
 

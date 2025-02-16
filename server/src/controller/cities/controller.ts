@@ -8,9 +8,8 @@ router.get(
   asyncHandler(async (req: any, res: any) => {
     const data = await citiesService.getAllCities();
     const buildResponse = BuildResponse.get(data);
-    if (buildResponse) {
-      return res.status(200).json(buildResponse);
-    }
+    return res.status(buildResponse.code).json(buildResponse);
+
   })
 );
 router.get(
@@ -19,8 +18,7 @@ router.get(
     const city_id = +req.params.id;
     const data = await citiesService.filtered_neighbor(city_id);
     const buildResponse = BuildResponse.get(data);
-    if (buildResponse) {
-      return res.status(200).json(buildResponse);
-    }
+    return res.status(buildResponse.code).json(buildResponse);
+
   })
 );
