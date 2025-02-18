@@ -7,7 +7,7 @@
         <div class="card">
           <div class="card__img">
             <div class="text-center pt-2 text-white text-xl">
-              {{ doctor.name }}
+              {{ doctor.first_name }}
             </div>
             <div class="text-center pt-2 text-white text-md font-medium">
               Senior Docto
@@ -21,10 +21,10 @@
               height="100%"
               class="rounded-full p-1" />
           </div>
-          <div class="card__title">{{ doctor.address }}</div>
+          <div class="card__title">{{ doctor.city }}</div>
           <div class="flex items-center mt-3 font-normal text-base">
             <mat-icon class="text-base">Contact info</mat-icon>
-            {{ doctor.contact_info }}
+            {{ doctor.phone }}
           </div>
           <div class="grid grid-cols-3 w-full text-center pt-10 pb-2">
             <div>
@@ -54,7 +54,7 @@
               <hr class="opacity-40 mb-3" />
 
               <small class="text-sm opacity-45">Contact info:</small>
-              <p class="text-sm opacity-70">{{ doctor.contact_info }}</p>
+              <p class="text-sm opacity-70">{{ doctor.phone }}</p>
               <hr class="opacity-40 mb-3" />
 
               <small class="text-sm opacity-45">Address:</small>
@@ -114,11 +114,11 @@
         <div class="grid desktop:grid-cols-4 auto-rows-[minmax(0,_2fr)]">
           <div>
             <strong>Full Name</strong>
-            <p class="opacity-55 text-xs pt-2">{{ doctor.name }}</p>
+            <p class="opacity-55 text-xs pt-2">{{ doctor.first_name }}</p>
           </div>
           <div>
             <strong>Contact info</strong>
-            <p class="opacity-55 text-xs pt-2">{{ doctor.contact_info }}</p>
+            <p class="opacity-55 text-xs pt-2">{{ doctor.phone }}</p>
           </div>
           <div>
             <strong>Email</strong>
@@ -126,7 +126,7 @@
           </div>
           <div>
             <strong>Location</strong>
-            <p class="opacity-55 text-xs pt-2">{{ doctor.address }}</p>
+            <p class="opacity-55 text-xs pt-2">{{ doctor.city }}</p>
           </div>
         </div>
 

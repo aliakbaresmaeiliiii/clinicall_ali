@@ -21,6 +21,7 @@ import { DoctorsService } from '../../modules/doctors/services/doctors.service';
 import { ToastrService } from 'ngx-toastr';
 import { of } from 'rxjs';
 import { OnlineConsultaionDialogComponent } from './online-consultaion-dialog/online-consultaion-dialog.component';
+import { DialogService } from '../../shared/services/dialog.service';
 
 @Component({
   selector: 'app-filter-layout',
@@ -29,11 +30,12 @@ import { OnlineConsultaionDialogComponent } from './online-consultaion-dialog/on
   styleUrl: './filter-layout.component.scss',
 })
 export class FilterLayoutComponent implements OnInit {
-  
   tabData = signal<DoctorsDTO[]>([]);
   mostPopular: DoctorsDTO[] = [];
   doctorService = inject(DoctorsService);
   toast = inject(ToastrService);
+  dialogService = inject(DialogService);
+
   router = inject(Router);
   isLiked = false;
   userData: any;
@@ -221,14 +223,19 @@ export class FilterLayoutComponent implements OnInit {
       this.router.navigate([`/doctor/${doctorName}/${doctor_id}`]);
     }
   }
-  onlineConsultationDialog(data: DoctorsDTO) {
+  onlineConsultationDialog(
+    data: DoctorsDTO,
+    enterAnimationDuration: string,
+    exitAnimationDuration: string
+  ) {
     if (!this.userData) {
       this.toast.error('Please login before make appointment...');
       this.router.navigate(['/login']);
     } else {
-      this.dialog.open(OnlineConsultaionDialogComponent, {
-        width: '500px',
-        data: data.id,
+      this.dialogService.openDialog(OnlineConsultaionDialogComponent, {
+        enterAnimationDuration,
+        exitAnimationDuration,
+        doctor_id: data.id,
       });
     }
   }
@@ -269,7 +276,7 @@ export class FilterLayoutComponent implements OnInit {
   }
 
   shareInfo(docotoInfo: DoctorsDTO) {
-    const doctorLink = `localhost:4200/doctor/${docotoInfo.name}/${docotoInfo.id}`; // Generate the doctor's link
+    const doctorLink = `localhost:4200/doctor/${docotoInfo.first_name}/${docotoInfo.id}`; // Generate the doctor's link
     this.dialog.open(CopyLinkDialogComponent, {
       data: { link: doctorLink },
     });

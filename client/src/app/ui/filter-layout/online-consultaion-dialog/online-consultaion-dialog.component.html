@@ -3,16 +3,18 @@
   <h2>Choose your turn type</h2>
 </div>
 
-<mat-dialog-content>
-  <form [formGroup]="form" (ngSubmit)="submitForm()">
-    <mat-radio-group formControlName="consultationType" class="w-full">
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-dialog-content>
+    <mat-radio-group formControlName="consultation_types" class="w-full">
       <!-- Phone Consultation -->
-      <mat-radio-button [value]="'Phone'" >
+      <mat-radio-button [value]="'Phone'">
         <div
           class="mb-2 !w-full cursor-pointer flex items-center group border border-transparent hover:border-blue-400 rounded-lg p-2 transition-all duration-300 ease-in-out">
           <div class="flex flex-col gap-2">
             <span class="flex gap-1">
-              <img src="../../../assets/images/ui/svg/phone.svg" alt="Phone Icon" />
+              <img
+                src="../../../assets/images/ui/svg/phone.svg"
+                alt="Phone Icon" />
               Phone consultation
             </span>
             <span>10 minutes conversation</span>
@@ -47,12 +49,11 @@
         </div>
       </mat-radio-button>
     </mat-radio-group>
-  </form>
-</mat-dialog-content>
-
-<mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">No Thanks</button>
-  <button mat-button color="primary" type="submit" [disabled]="form.invalid" (click)="submitForm()">
-    Choose and Continue
-  </button>
-</mat-dialog-actions>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">No Thanks</button>
+    <button mat-button color="primary" type="submit" [disabled]="!form.valid">
+      Choose and Continue
+    </button>
+  </mat-dialog-actions>
+</form>

@@ -41,11 +41,10 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
   cdr = inject(ChangeDetectorRef);
   doctorInfo: DoctorsDTO[] = [];
   doctorScheduleAvailability: DoctorScheduleAvailability[] = [];
-  availableTimes: DoctorScheduleTimeAvailability[] = [];
+  available_time: DoctorScheduleTimeAvailability[] = [];
   days: { label: string; date: Date }[] = [];
   @ViewChild('sliderRef', { static: false })
   sliderRef!: ElementRef<HTMLElement>;
-  datePipe = inject(DatePipe);
   slider!: KeenSliderInstance;
   currentSlide: number = 1;
   dotHelper: Array<Number> = [];
@@ -55,22 +54,63 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
   closestSchedule: DoctorScheduleAvailability | null = null;
   today: string = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
   bookingStatus = BookingStatus;
+  bookedId!: number;
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
+  ngAfterViewInit() {
+    this.initializeKeenSlider();
+  }
+
+  initializeKeenSlider() {
+    setTimeout(() => {
+      this.slider = new KeenSlider(this.sliderRef.nativeElement, {
+        initial: this.currentSlide,
+        slideChanged: s => {
+          this.currentSlide = s.track.details.rel;
+        },
+        slides: {
+          perView: 4,
+          spacing: 5,
+        },
+        breakpoints: {
+          '(max-width: 1024px)': {
+            slides: {
+              perView: 3,
+            },
+          },
+          '(max-width: 768px)': {
+            slides: {
+              perView: 2,
+              spacing: 8,
+            },
+          },
+          '(max-width: 480px)': {
+            slides: {
+              perView: 1,
+              spacing: 5,
+            },
+          },
+        },
+      });
+      this.dotHelper = [
+        ...Array(this.slider.track.details.slides.length).keys(),
+      ];
+    }, 500);
+  }
   ngOnInit(): void {
     this.initializeComponent();
   }
 
   private initializeComponent(): void {
-    const { id, consultationType } = this.data;
-    this.loadDoctorData(id, consultationType);
+    const { doctor_id, consultation_types } = this.data;
+    this.loadDoctorData(doctor_id, consultation_types);
   }
-  private loadDoctorData(id: number, consultationType: string): void {
-    this.fetchData(id);
-    this.fetchDoctorScheduleAvailability(id, consultationType);
+  private loadDoctorData(doctor_id: number, consultation_types: string): void {
+    this.fetchData(doctor_id);
+    this.fetchDoctorScheduleAvailability(doctor_id, consultation_types);
   }
 
   fetchData(doctorId: number) {
@@ -94,33 +134,43 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
     });
   }
 
-  fetchDoctorScheduleAvailability(id: number, text: string) {
+  fetchDoctorScheduleAvailability(
+    doctor_id: number,
+    consultation_types: string
+  ) {
     this.schedulesService
-      .fetchDoctorScheduleAvailability(id, text)
+      .fetchDoctorScheduleAvailability(doctor_id, consultation_types)
       .subscribe((res: any) => {
+        console.log('schedule', res.data);
         this.doctorScheduleAvailability = res.data.map((item: any) => ({
           ...item,
-          weekday: this.datePipe.transform(item.availableDate, 'EEEE'), // Extract weekday
-          formattedDate: this.datePipe.transform(item.availableDate, 'MMMM d'),
-          isBooked:
-            item.isBooked === 1
-              ? BookingStatus.Booked
-              : BookingStatus.Available,
+          // weekday: this.datePipe.transform(item.avaliable_date, 'EEEE'), // Extract weekday
+          // formattedDate: this.datePipe.transform(item.avaliable_date, 'MMMM d'),
+          is_booked:
+            item.is_booked === 1
+              ? BookingStatus.is_booked
+              : BookingStatus.is_available,
         }));
+        console.log(
+          'doctorScheduleAvailability',
+          this.doctorScheduleAvailability
+        );
+
         this.selectToday();
       });
   }
 
   selectToday() {
+    debugger;
     this.doctorScheduleAvailability.forEach((item, index) => {
-      const receivedStartDate = new Date(item.availableDate);
+      const receivedStartDate = new Date(item.appointment_date);
       const todayDate = moment().local().startOf('day').format('YYYY-MM-DD');
       const availableDate = moment(receivedStartDate)
         .local()
         .startOf('day')
         .format('YYYY-MM-DD');
       if (availableDate === todayDate) {
-        const scheduleID = this.doctorScheduleAvailability[index]?.scheduleID;
+        const scheduleID = this.doctorScheduleAvailability[index]?.id;
         if (scheduleID) {
           this.fetchDoctorScheduleTimeAvailability(scheduleID, index);
         }
@@ -135,9 +185,11 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
       .pipe(take(1))
       .subscribe({
         next: (result: any) => {
-          this.availableTimes = result.data.map((item: any) => ({
+          console.log('schedule', result.data);
+
+          this.available_time = result.data.map((item: any) => ({
             ...item,
-            formattedTime: item.availableTime.split(':').slice(0, 2).join(':'),
+            formattedTime: item.available_time.split(':').slice(0, 2).join(':'),
             timeID: item.timeID,
           }));
         },
@@ -151,36 +203,40 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
   }
 
   bookedTime(bookeData: DoctorScheduleTimeAvailability) {
-    const timeID = bookeData.timeID;
-    this.schedulesService.markAsBooked(timeID).subscribe({
-      next: (res: any) => {
-        if (res.code === 200) {
-          this.toast.success('Your booking has been successfully confirmed.');
+    this.bookedId = bookeData.id;
+    this.submit();
+  }
 
-          // Check if selectedIndex is a valid number
-          if (
-            typeof this.selectedIndex === 'number' &&
-            this.availableTimes.length
-          ) {
-            const scheduleID =
-              this.doctorScheduleAvailability[this.selectedIndex]?.scheduleID;
-            // if (scheduleID) {
-            //   this.selectToday();
-            // }
-          }
+  submit() {
+    const id = this.bookedId
+    // this.schedulesService.markAsBooked(id).subscribe({
+    //   next: (res: any) => {
+    //     if (res.code === 200) {
+    //       this.toast.success('Your booking has been successfully confirmed.');
+    //       debugger;
+    //       if (
+    //         typeof this.selectedIndex === 'number' &&
+    //         this.available_time.length
+    //       ) {
+    //         const scheduleID =
+    //           this.doctorScheduleAvailability[this.selectedIndex]?.scheduleID;
+    //         if (scheduleID) {
+    //           this.selectToday();
+    //         }
+    //       }
 
-          // Refresh the entire schedule availability
-          const { id, consultationType } = this.data;
-          this.fetchDoctorScheduleAvailability(id, consultationType);
-        }
-      },
-      error: e => {
-        this.toast.error(e);
-      },
-      complete: () => {
-        console.log('Booking process complete');
-      },
-    });
+    //       // Refresh the entire schedule availability
+    //       const { doctor_id, consultation_types } = this.data;
+    //       this.fetchDoctorScheduleAvailability(doctor_id, consultation_types);
+    //     }
+    //   },
+    //   error: e => {
+    //     this.toast.error(e);
+    //   },
+    //   complete: () => {
+    //     console.log('Booking process complete');
+    //   },
+    // });
   }
 
   getDayName(date: Date): string {
@@ -194,27 +250,6 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
       'Saturday',
     ];
     return daysOfWeek[date.getDay()];
-  }
-
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.initializeSlider();
-    }, 100);
-  }
-
-  initializeSlider() {
-    this.slider = new KeenSlider(this.sliderRef.nativeElement, {
-      initial: this.currentSlide,
-      slideChanged: s => {
-        this.currentSlide = s.track.details.rel;
-      },
-      mode: 'free-snap',
-      slides: {
-        perView: 5,
-        spacing: 5,
-      },
-    });
-    this.dotHelper = [...Array(this.slider.track.details.slides.length).keys()];
   }
 
   ngOnDestroy() {

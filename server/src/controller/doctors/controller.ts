@@ -30,7 +30,6 @@ router.get(
     const data = await DoctorsService.checkDoctorPhoneNumberExists(mobile);
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
-   
   })
 );
 
@@ -41,7 +40,6 @@ router.post(
     const data = await DoctorsService.registerDoctor(formData);
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
-
   })
 );
 
@@ -62,7 +60,6 @@ router.put(
     const data = await DoctorsService.updateDoctor(formData);
     const buildResponse = BuildResponse.updated(data);
     return res.status(buildResponse.code).json(buildResponse);
-
   })
 );
 
@@ -92,7 +89,6 @@ router.get(
     const data = await DoctorsService.getSpecialties();
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
-
   })
 );
 
@@ -118,7 +114,6 @@ router.get(
     const data = await DoctorsService.filterSpecialtyById(queryParams);
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
-
   })
 );
 router.get(
@@ -149,13 +144,13 @@ router.get(
 );
 
 router.get(
-  "/doctors/:id/schedule-availability",
+  "/doctors/:id/doctor_schedules",
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
-    const id = +req.params.id;
-    const consultationType = req.query.consultationType;
-    const data = await DoctorsService.doctorScheduleAvailability(
-      id,
-      consultationType
+    const doctor_id = +req.params.id;
+    const consultation_types = req.query.consultation_types;
+    const data = await DoctorsService.doctorSchadules(
+      doctor_id,
+      consultation_types
     );
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
@@ -178,6 +173,17 @@ router.post(
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const likes = req.body.formData;
     const data = await DoctorsService.toggleLike(likes);
+    const buildResponse = BuildResponse.get(data);
+    return res.status(buildResponse.code).json(buildResponse);
+  })
+);
+
+
+router.put(
+  `/doctors/:id/booked`,
+  asyncHandler(async (req: Request, res: Response): Promise<any> => {
+    const id = +req.params.id;
+    const data = await DoctorsService.booked(id);
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
   })

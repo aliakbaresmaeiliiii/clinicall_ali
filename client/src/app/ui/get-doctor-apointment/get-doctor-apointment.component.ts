@@ -52,7 +52,8 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   specialization: ISpecialization[] = [];
   doctorInfo = signal<DoctorsDTO[]>([]);
   coordinates: { lat: number; lng: number }[] = [];
-  doctorId!: number;
+  doctorId!: any;
+  doctorName!: any;
   private destroy$ = new Subject<void>();
   briefText: string =
     'Has a specialized board for diseases of infants and children, treatment of digestive and allergic disorders...';
@@ -64,7 +65,12 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   commentForm!: FormGroup;
 
   ngAfterViewInit() {
-    this.fetchData(this.doctorId);
+    this.route.paramMap.subscribe(params => {
+      this.doctorId = params.get('id');
+      this.doctorName = params.get('name');
+      this.fetchData(this.doctorId);
+      window.scroll({ top: 0, behavior: 'smooth' });
+    });
   }
 
   createForm() {
@@ -98,7 +104,6 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
     if (!storedData) {
       this.doctorService.doctorDetial(doctorId).subscribe({
         next: (response: any) => {
-          console.log('👉👉👉👉', response);
           if (response && response.length > 0) {
             const newData = response.map((doctor: any) => {
               doctor.profile_img = doctor.profile_img
@@ -113,15 +118,12 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
             this.doctorService.storeDoctorInfo.set(newData);
 
             this.transferState.set(this.DATA_KEY, this.doctorInfo());
-
-            this.coordinates = this.doctorInfo()
-              .filter(item => item.location)
-              .map((loc: any) => {
-                return {
-                  lng: loc.location.x,
-                  lat: loc.location.y,
-                };
-              });
+            this.coordinates = this.doctorInfo().map((loc: any) => {
+              return {
+                lng: loc.longitude,
+                lat: loc.latitude,
+              };
+            });
           }
         },
 
@@ -151,7 +153,7 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
     if (this.userData !== undefined) {
       this.dialog.open(FeedbackComponent, {
         width: '50rem',
-        data:id
+        data: id,
       });
     } else {
       this.router.navigate(['login']);
@@ -220,7 +222,7 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   }
 
   shareInfo(docotoInfo: DoctorsDTO) {
-    const doctorLink = `localhost:4200/doctor/${docotoInfo.name}/${docotoInfo.id}`; // Generate the doctor's link
+    const doctorLink = `localhost:4200/doctor/${docotoInfo.first_name}/${docotoInfo.id}`; // Generate the doctor's link
     this.dialog.open(CopyLinkDialogComponent, {
       data: { link: doctorLink },
     });

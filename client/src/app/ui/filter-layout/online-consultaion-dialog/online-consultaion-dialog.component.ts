@@ -19,6 +19,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { DoctorsService } from '../../../modules/doctors/services/doctors.service';
+import { DialogService } from '../../../shared/services/dialog.service';
 
 export interface DialogData {
   animal: string;
@@ -34,7 +35,7 @@ export interface DialogData {
 })
 export class OnlineConsultaionDialogComponent implements OnInit {
   readonly dialogRef = inject(MatDialogRef<OnlineConsultaionDialogComponent>);
-  dialog = inject(MatDialog);
+  dialogService = inject(DialogService);
   fb = inject(FormBuilder);
   doctorService = inject(DoctorsService);
   readonly data = inject<DoctorsDTO>(MAT_DIALOG_DATA);
@@ -42,29 +43,25 @@ export class OnlineConsultaionDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      consultationType: [null, Validators.required], // Radio button value
+      consultation_types: [null, Validators.required], // Radio button value
     });
+    console.log('👉👉👉', this.data);
   }
 
-  submitForm(): void {
+  onSubmit(): void {
     if (this.form.valid) {
-      console.log(
-        'Selected Consultation Type:',
-        this.form.value.consultationType
-      );
-      this.continue();
+      this.openChoosingAppointmentDialog();
     } else {
       console.log('Form is invalid');
     }
   }
 
-  continue(): void {
-    this.dialog.open(ChoosingAppointmentComponent, {
-      width: '700px',
-      data: {
-        id: this.data,
-        consultationType: this.form.value.consultationType,
-      },
+  openChoosingAppointmentDialog(): void {
+    this.dialogService.openDialog(ChoosingAppointmentComponent, {
+      doctor_id: this.data.doctor_id,
+      consultation_types: this.form.value.consultation_types,
+      enterAnimationDuration: '400ms',
+      exitAnimationDuration: '300ms',
     });
   }
 

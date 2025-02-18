@@ -3,11 +3,13 @@ import { likeDTO } from '../../../ui/shared-ui/models/like';
 export interface DoctorsDTO {
   position?: number | any;
   id?: any;
-  name: string;
-  contact_info?: string | undefined | null;
+  doctor_id?: any;
+  first_name: string;
+  last_name: string;
+  phone?: string | undefined | null;
   specialty_name?: string | null | undefined;
   dateOfBirth?: string | undefined | any;
-  address?: string | null;
+  city?: string | null;
   department?: string | undefined | any;
   degree?: string | undefined | any;
   email?: string | null | undefined;
@@ -42,10 +44,12 @@ export interface ReviewsDTO {
 }
 
 export interface DoctorScheduleAvailability {
-  availableDate: string;
   availableTime: string[];
-  consultationType: string;
+  appointment_date:string;
+  day_of_week:string;
+  consultation_types: string;
   id: number;
+  doctor_id: number;
   scheduleID: number;
   weekday: string;
   formattedDate: string;
@@ -53,13 +57,13 @@ export interface DoctorScheduleAvailability {
 
 export interface DoctorScheduleTimeAvailability {
   timeID: number;
-  scheduleID: number;
-  availableTime: string;
-  isBooked: any;
+  id: number;
+  available_time: string;
+  is_booked: any;
   formattedTime: string;
 }
 
 export enum BookingStatus {
-  Booked = 1,
-  Available = 0,
+  is_booked = 1,
+  is_available = 0,
 }

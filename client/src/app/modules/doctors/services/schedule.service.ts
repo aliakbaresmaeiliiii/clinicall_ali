@@ -12,11 +12,11 @@ export class ScheduleService {
   config = environment.apiEndPoint;
 
   fetchDoctorScheduleAvailability(
-    id: number,
-    consultationType: string
+    doctor_id: number,
+    consultation_types: string
   ): Observable<DoctorScheduleAvailability[]> {
-    const params = new HttpParams().set('consultationType', consultationType);
-    const url = `${this.config}doctors/${id}/schedule-availability`;
+    const params = new HttpParams().set('consultation_types', consultation_types);
+    const url = `${this.config}doctors/${doctor_id}/doctor_schedules`;
     return this.#http.get<DoctorScheduleAvailability[]>(url, {
       params: params,
     });
@@ -28,7 +28,7 @@ export class ScheduleService {
     return this.#http.get<DoctorScheduleAvailability[]>(url);
   }
 
-  markAsBooked(timeID: number): Observable<boolean> {
-    return this.#http.put<boolean>(`${this.config}doctors/${timeID}/booked`, {});
+  markAsBooked(id: number): Observable<boolean> {
+    return this.#http.put<boolean>(`${this.config}doctors/${id}/booked`, {});
   }
 }

@@ -1,15 +1,15 @@
-[class^="number-slide"],
-[class*=" number-slide"] {
-  background: grey;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 50px;
-  color: #fff;
-  font-weight: 500;
-  height: 300px;
-  max-height: 100vh;
-}
+// [class^="number-slide"],
+// [class*=" number-slide"] {
+//   background: grey;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   font-size: 50px;
+//   color: #fff;
+//   font-weight: 500;
+//   height: 300px;
+//   max-height: 100vh;
+// }
 
 
 .navigation-wrapper {
@@ -66,3 +66,208 @@
   fill: rgba(255, 255, 255, 0.5);
 }
 
+
+.single-service-box {
+  position: relative;
+  z-index: 1;
+  margin-bottom: 30px;
+  transition: 0.5s;
+  overflow: hidden;
+  width: 22rem;
+}
+
+.service-thumb {
+  position: relative;
+  background-image: linear-gradient(0deg, rgba(0, 37, 111, 0.9999999999999999) 0%, rgba(0, 37, 111, 0.7999999999999999) 20%, rgba(0, 37, 111, 0) 50%, rgba(0, 37, 111, 0) 100%);
+  transition: 0.5s;
+  border-radius: 18px;
+}
+
+.service-thumb:before {
+  position: absolute;
+  content: "";
+  right: -256px;
+  top: -40px;
+  text-align: right;
+  // background: url(../../../../../assets/images/ui/srvce-shp.png);
+  width: 100%;
+  height: 100%;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: 0.5s;
+
+}
+
+.single-service-box:hover .service-thumb:after {
+  height: 100%;
+  color: white;
+
+}
+
+.service-thumb .img-slide {
+  position: relative;
+  z-index: -1;
+  border-radius: 20px;
+  width: 100%;
+  height: 100%;
+  object-fit: none;
+  max-height: 380px;
+  min-height: 370px;
+}
+
+
+.single-service-box:hover .service-icon a i {
+  opacity: 1;
+  right: 0;
+}
+
+// .bi::before,
+// [class^="bi-"]::before,
+// [class*=" bi-"]::before {
+//     display: inline-block;
+//     font-family: bootstrap-icons !important;
+//     font-style: normal;
+//     font-weight: normal !important;
+//     font-variant: normal;
+//     text-transform: none;
+//     line-height: 1;
+//     vertical-align: -.125em;
+//     -webkit-font-smoothing: antialiased;
+//     -moz-osx-font-smoothing: grayscale;
+
+// }
+
+.single-service-box:hover .service-thumb:before {
+  opacity: 1;
+  top: -0px;
+}
+
+
+.service-icon a i {
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  border-radius: 30px;
+  text-align: center;
+  background-color: #007eff;
+  display: inline-block;
+  font-size: 20px;
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  right: 40px;
+  color: #fff;
+  transition: 0.5s;
+  opacity: 0;
+  transform: rotate(-4deg);
+
+}
+
+
+
+.service-thumb:after {
+  position: absolute;
+  content: "";
+  left: 0;
+  bottom: 0;
+  background-image: linear-gradient(0deg, rgba(0, 125, 255, 0.9999999999999999) 0%, rgba(0, 125, 255, 0.9999999999999999) 20%, rgba(0, 125, 255, 0) 50%, rgba(0, 125, 255, 0) 100%);
+  width: 100%;
+  height: 0%;
+  transition: 0.5s;
+  border-radius: 18px;
+}
+
+
+/* General Keen Slider styling */
+.keen-slider {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.keen-slider__slide {
+  max-width: 22rem;
+  min-width: 100%;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+
+.service-thumb img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 10px;
+}
+
+.service-icon {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 10px;
+  border-radius: 50%;
+  transition: 0.5s;
+}
+
+.service-icon i {
+  color: #fff;
+}
+
+
+
+.navigation-wrapper {
+  position: relative;
+}
+
+.dots {
+  display: flex;
+  padding: 10px 0;
+  justify-content: center;
+}
+
+.dot {
+  border: none;
+  width: 10px;
+  height: 10px;
+  background: #c5c5c5;
+  border-radius: 50%;
+  margin: 0 5px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.dot:focus {
+  outline: none;
+}
+
+.dot.active {
+  background: #1100fc;
+}
+
+.arrow {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  fill: #017CFD;
+  cursor: pointer;
+}
+
+.arrow--left {
+  left: 5px;
+}
+
+.arrow--right {
+  left: auto;
+  right: 5px;
+}
+
+.arrow--disabled {
+  fill: rgba(255, 255, 255, 0.5);
+}

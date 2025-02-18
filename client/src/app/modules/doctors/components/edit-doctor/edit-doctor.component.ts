@@ -64,12 +64,12 @@ export class EditDoctorComponent extends BaseComponent {
   updateDoctor() {
     this.form.patchValue({
       id: this.doctorInfo.id,
-      name: this.doctorInfo.name,
+      name: this.doctorInfo.first_name,
       gender: this.doctorInfo.gender,
       email: this.doctorInfo.email,
       age: this.doctorInfo.age,
       specialization: this.doctorInfo.specialty_name,
-      address: this.doctorInfo.address,
+      address: this.doctorInfo.city,
     });
   }
   trackByFn() {}
