@@ -161,7 +161,6 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
   }
 
   selectToday() {
-    debugger;
     this.doctorScheduleAvailability.forEach((item, index) => {
       const receivedStartDate = new Date(item.appointment_date);
       const todayDate = moment().local().startOf('day').format('YYYY-MM-DD');
@@ -202,41 +201,46 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
       });
   }
 
+  selectedTime: unknown = null;
+
   bookedTime(bookeData: DoctorScheduleTimeAvailability) {
     this.bookedId = bookeData.id;
-    this.submit();
+    if (this.selectedTime === bookeData.id) {
+      this.selectedTime = null;
+    } else {
+      this.selectedTime = bookeData.id;
+    }
   }
 
   submit() {
-    const id = this.bookedId
-    // this.schedulesService.markAsBooked(id).subscribe({
-    //   next: (res: any) => {
-    //     if (res.code === 200) {
-    //       this.toast.success('Your booking has been successfully confirmed.');
-    //       debugger;
-    //       if (
-    //         typeof this.selectedIndex === 'number' &&
-    //         this.available_time.length
-    //       ) {
-    //         const scheduleID =
-    //           this.doctorScheduleAvailability[this.selectedIndex]?.scheduleID;
-    //         if (scheduleID) {
-    //           this.selectToday();
-    //         }
-    //       }
+    const id = this.bookedId;
+    this.schedulesService.markAsBooked(id).subscribe({
+      next: (res: any) => {
+        if (res.code === 200) {
+          this.toast.success('Your booking has been successfully confirmed.');
+          if (
+            typeof this.selectedIndex === 'number' &&
+            this.available_time.length
+          ) {
+            const scheduleID =
+              this.doctorScheduleAvailability[this.selectedIndex]?.scheduleID;
+            if (scheduleID) {
+              this.selectToday();
+            }
+          }
 
-    //       // Refresh the entire schedule availability
-    //       const { doctor_id, consultation_types } = this.data;
-    //       this.fetchDoctorScheduleAvailability(doctor_id, consultation_types);
-    //     }
-    //   },
-    //   error: e => {
-    //     this.toast.error(e);
-    //   },
-    //   complete: () => {
-    //     console.log('Booking process complete');
-    //   },
-    // });
+          // Refresh the entire schedule availability
+          const { doctor_id, consultation_types } = this.data;
+          this.fetchDoctorScheduleAvailability(doctor_id, consultation_types);
+        }
+      },
+      error: e => {
+        this.toast.error(e);
+      },
+      complete: () => {
+        console.log('Booking process complete');
+      },
+    });
   }
 
   getDayName(date: Date): string {

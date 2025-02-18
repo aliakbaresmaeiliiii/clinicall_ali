@@ -147,7 +147,9 @@
             'hover:bg-green-100': time.is_booked === bookingStatus.is_available,
             'border-gray-500': time.is_booked === bookingStatus.is_available,
             'cursor-not-allowed': time.is_booked === bookingStatus.is_booked,
-            'cursor-wait': time.is_booked === bookingStatus.is_booked
+            'cursor-wait': time.is_booked === bookingStatus.is_booked,
+            'bg-blue-400': selectedTime === time.id,
+            'text-white': selectedTime === time.id
           }"
           [matTooltip]="
             time.is_booked === bookingStatus.is_booked ? 'This time is booked' : ''
@@ -192,7 +194,7 @@
 
   <mat-dialog-actions>
     <button mat-button (click)="onNoClick()">No Thanks</button>
-    <button mat-button type="button" [mat-dialog-close]="submit()" cdkFocusInitial>Appointment</button>
+    <button mat-button type="button" (click)="submit()" cdkFocusInitial>Appointment</button>
   </mat-dialog-actions>
 </div>
 
