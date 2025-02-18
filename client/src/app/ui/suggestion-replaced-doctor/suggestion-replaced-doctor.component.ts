@@ -1,20 +1,22 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   inject,
   makeStateKey,
   OnInit,
   TransferState,
 } from '@angular/core';
-import { DoctorsDTO } from '../../modules/doctors/models/doctors';
-import { ISpecialization } from '../get-doctor-apointment/models/specializtion.model';
-import { environment } from '../../environments/environment';
 import { MatDialog } from '@angular/material/dialog';
-import { CopyLinkDialogComponent } from '../../shared/components/copy-link-dialog/copy-link-dialog.component';
-import { likeDTO } from '../shared-ui/models/like';
-import { LikesService } from '../shared-ui/services/likes.service';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
+import { DoctorsDTO } from '../../modules/doctors/models/doctors';
 import { DoctorsService } from '../../modules/doctors/services/doctors.service';
+import { CopyLinkDialogComponent } from '../../shared/components/copy-link-dialog/copy-link-dialog.component';
+import { ISpecialization } from '../get-doctor-apointment/models/specializtion.model';
+import { LikesService } from '../shared-ui/services/likes.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-suggestion-replaced-doctor',
@@ -25,8 +27,10 @@ import { DoctorsService } from '../../modules/doctors/services/doctors.service';
 export class SuggestionReplacedDoctorComponent
   implements OnInit, AfterViewInit
 {
+  toast = inject(ToastrService);
   transferState = inject(TransferState);
   doctorService = inject(DoctorsService);
+  cdr = inject(ChangeDetectorRef);
   likeService = inject(LikesService);
   dialog = inject(MatDialog);
   router = inject(Router);
@@ -64,6 +68,18 @@ export class SuggestionReplacedDoctorComponent
     });
   }
 
+  visitProfile(data: any) {
+    if (!this.userData) {
+      this.toast.error('Please login before make appointment...');
+      this.router.navigate(['/login']);
+    } else {
+      let doctorName = data.first_name.replace(/\s+/g, '-');
+      const doctor_id = data.id;
+      this.countDoctorClick(doctor_id);
+      this.router.navigate([`/doctor/${doctorName}/${doctor_id}`]);
+      this.cdr.markForCheck();
+    }
+  }
   //  this.doctorService.getDoctors().subscribe((response: any) => {
   //       const newData = response.data.map((doctor: any) => {
   //         doctor.profileImage = doctor.profileImage
@@ -131,7 +147,7 @@ export class SuggestionReplacedDoctorComponent
   takeTurn() {}
 
   shareInfo(docotoInfo: DoctorsDTO) {
-    const doctorLink = `localhost:4200/doctor/${docotoInfo.name}/${docotoInfo.id}`; // Generate the doctor's link
+    const doctorLink = `localhost:4200/doctor/${docotoInfo.first_name}/${docotoInfo.id}`; // Generate the doctor's link
     this.dialog.open(CopyLinkDialogComponent, {
       data: { link: doctorLink },
     });

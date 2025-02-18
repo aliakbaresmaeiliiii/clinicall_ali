@@ -499,62 +499,70 @@ export async function getReviews() {
   return result;
 }
 
-export async function doctorScheduleAvailability(
-  id: number,
-  ConsultationTypesAvailable: string
+export async function doctorSchadules(
+  doctor_id: number,
+  consultation_types?: string
 ) {
-  const result = await query<RowDataPacket>(
-    `
-    SELECT
-        ds.scheduleID,
-        ds.availableDate,
-        ds.ConsultationTypesAvailable
-    FROM
-      ${coreSchema}.doctor_schedules ds
-        WHERE
-        ds.id = ?
-        AND FIND_IN_SET(?, ds.ConsultationTypesAvailable) > 0
-    `,
-    {
-      values: [id, ConsultationTypesAvailable],
-    }
-  );
-  return result;
+  try {
+    const result = await query<RowDataPacket[]>(
+      `
+      SELECT id, doctor_id,appointment_date, day_of_week, start_time, end_time, is_available, consultation_types, consultation_mode 
+      FROM ${coreSchema}.doctor_schedules
+      WHERE doctor_id = ? AND consultation_types = ?`,
+      {
+        values: [doctor_id, consultation_types],
+      }
+    );
+    return result;
+  } catch (error) {
+    console.log(error);
+    throw new ResponseError.InternalServer("Internal server Error");
+  }
 }
 
-export async function doctorScheduleTimeAvailability(scheduleID: number) {
-  const result = await query<RowDataPacket[]>(
-    `
-    SELECT 
-       dat.availableTime,
-       dat.isBooked,
-       dat.timeID
-       FROM 
-        ${coreSchema}.doctor_schedules ds
-      JOIN 
-        ${coreSchema}.doctor_available_times dat
+export async function doctorScheduleTimeAvailability(id: number) {
+  try {
+    const result = await query<RowDataPacket[]>(
+      `
+      SELECT
+         dat.available_time,
+         dat.is_booked,
+         dat.id
+      FROM
+         ${coreSchema}.doctor_available_times dat
+      JOIN
+         ${coreSchema}.doctor_schedules ds
       ON
-        ds.scheduleID = dat.scheduleID
-      WHERE 
-        ds.scheduleID = ?;
-    `,
-    {
-      values: [scheduleID],
-    }
-  );
-  return result;
+         ds.id = dat.doctor_schedule_id
+      WHERE
+         ds.id = ?;
+      `,
+      {
+        values: [id],
+      }
+    );
+    return result;
+  } catch (error) {
+    console.error(error); // Better to use console.error for errors
+    throw new ResponseError.InternalServer("Internal Server Error");
+  }
 }
 
-export async function booked(timeID: number) {
-  const result = query<RowDataPacket>(
-    `
-    UPDATE ${coreSchema}.doctor_available_times
-      SET isBooked = 1
-      WHERE timeID = ?;
-    `,
-    {
-      values: [timeID],
-    }
-  );
-  return result;
+export async function booked(id: number) {
+  try {
+    const result = query<RowDataPacket>(
+      `
+      UPDATE ${coreSchema}.doctor_available_times
+        SET is_booked = 1
+        WHERE id = ?;
+      `,
+      {
+        values: [id],
+      }
+    );
+    return result;
+  } catch (error) {
+    console.error(error); // Better to use console.error for errors
+    throw new ResponseError.InternalServer("Internal Server Error");
+  }
 }

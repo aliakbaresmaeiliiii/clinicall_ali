@@ -24,7 +24,7 @@
             <div class="flex justify-between w-[28rem]">
               <div class="flex flex-col text-lg font-bold">
                 <span>
-                  {{ data.name }}
+                  {{ data.first_name }}
                 </span>
               </div>
             </div>
@@ -60,47 +60,97 @@
         </div>
       </div>
 
-      <div class="navigation-wrapper">
-        <div class="keen-slider flex" #sliderRef>
+      <!-- slider -->
+      <div class="mobile:w-full mx-auto">
+        <div class="keen-slider" #sliderRef>
           @for (availability of doctorScheduleAvailability; track $index;let i =
           $index) {
-          <div class="keen-slider__slide flex w-full">
-            <div
-              (click)="
-                fetchDoctorScheduleTimeAvailability(availability.scheduleID, i)
-              "
-              [ngClass]="{
-                'bg-blue-400 text-white': selectedIndex === i,
-                'hover:bg-blue-100': selectedIndex !== i,
-                'border-blue-400': selectedIndex === i
-              }"
-              class="flex flex-col justify-center shadow-md whitespace-nowrap h-32 w-32 border-2 text-center cursor-pointer duration-200 border-gray-200 text-xs rounded-2xl gap-3">
-              <div class="text-base font-semibold">
-                {{ availability.weekday }}
+          <div class="keen-slider__slide">
+            <div class="single-service-box aos-init aos-animate">
+              <div
+                class="service-thumb cursor-pointer"
+                (click)="
+                  fetchDoctorScheduleTimeAvailability(
+                    availability.id,
+                    i
+                  )
+                ">
+                <div
+                  [ngClass]="{
+                    'bg-blue-400 text-white': selectedIndex === i,
+                    'hover:bg-blue-100': selectedIndex !== i,
+                    'border-blue-400': selectedIndex === i
+                  }"
+                  class="flex flex-col justify-center shadow-md whitespace-nowrap h-32 w-32 border-2 text-center cursor-pointer duration-200 border-gray-200 text-xs rounded-2xl gap-3">
+                  <div class="text-base font-semibold">
+                    {{ availability.appointment_date | date }}
+                  </div>
+                  <div class="date text-xs">
+                    {{ availability.day_of_week }}
+                  </div>
+                  <span class="text-green-500 font-bold">
+                    {{ availability.id }}</span
+                  >
+                </div>
               </div>
-              <div class="date text-xs">
-                {{ availability.formattedDate }}
-              </div>
-              <span class="text-green-500"> {{ availability.scheduleID }}</span>
             </div>
           </div>
           }
+          <!-- <svg
+            [ngClass]="
+              'arrow arrow--left ' + (currentSlide === 0 ? 'arrow--disabled' : '')
+            "
+            (click)="slider.prev()"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24">
+            <path
+              d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z" />
+          </svg>
+          <svg
+            *ngIf="slider"
+            [ngClass]="
+              'arrow arrow--right ' +
+              (slider.track.details.slides.length - 1 === currentSlide
+                ? 'arrow--disabled'
+                : '')
+            "
+            (click)="slider.next()"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24">
+            <path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z" />
+          </svg> -->
+        </div>
+        <div class="dots">
+          <!-- <button
+            (click)="slider.moveToIdx(i)"
+            *ngFor="let slide of dotHelper; let i = index"
+            [class]="'dot ' + (i === currentSlide ? 'active' : '')"></button> -->
         </div>
       </div>
+      <!-- slider -->
+
+      <!-- <div class="navigation-wrapper">
+        <div class="keen-slider flex" #sliderRef>
+          @for (availability of doctorScheduleAvailability; track $index;let i =
+          $index) {
+          <div class="keen-slider__slide flex w-full"></div>
+          }
+        </div>
+      </div> -->
 
       <div class="flex justify-center align-center gap-4">
-        @for (time of availableTimes; track $index;let i = $index) { @if (time)
+        @for (time of available_time; track $index;let i = $index) { @if (time)
         {
         <div
-          (click)="time.isBooked !== bookingStatus.Booked && bookedTime(time)"
+          (click)="time.is_booked !== bookingStatus.is_booked && bookedTime(time)"
           [ngClass]="{
-            'hover:bg-green-100': time.isBooked === bookingStatus.Available,
-            'border-gray-500': time.isBooked === bookingStatus.Available,
-            'cursor-not-allowed': time.isBooked === bookingStatus.Booked,
-            'cursor-wait': time.isBooked === bookingStatus.Booked
+            'hover:bg-green-100': time.is_booked === bookingStatus.is_available,
+            'border-gray-500': time.is_booked === bookingStatus.is_available,
+            'cursor-not-allowed': time.is_booked === bookingStatus.is_booked,
+            'cursor-wait': time.is_booked === bookingStatus.is_booked
           }"
           [matTooltip]="
-            time.isBooked === bookingStatus.Booked ? 'This time is booked' : ''
+            time.is_booked === bookingStatus.is_booked ? 'This time is booked' : ''
           "
           matTooltipPosition="above"
           class="relative flex justify-center mt-4 whitespace-nowrap cursor-pointer h-8 w-14 border-2 text-center duration-200 border-green-500 text-xs rounded-md gap-3">
@@ -108,8 +158,8 @@
             {{ time.formattedTime }}
           </span>
           <span
-            *ngIf="time.isBooked === bookingStatus.Booked"
-            class="ml-2 text-red-500 absolute opacity-55 ">
+            *ngIf="time.is_booked === bookingStatus.is_booked"
+            class="ml-2 text-red-500 absolute opacity-55">
             <mat-icon>block</mat-icon>
           </span>
         </div>
@@ -142,7 +192,7 @@
 
   <mat-dialog-actions>
     <button mat-button (click)="onNoClick()">No Thanks</button>
-    <button mat-button type="button">choose and continue</button>
+    <button mat-button type="button" [mat-dialog-close]="submit()" cdkFocusInitial>Appointment</button>
   </mat-dialog-actions>
 </div>
 

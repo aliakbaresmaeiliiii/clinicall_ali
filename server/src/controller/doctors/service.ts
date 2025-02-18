@@ -1,4 +1,9 @@
-import { CommentsDTO, DoctorsDTO, likeDTO, ReviewsDTO } from "../../models/doctors";
+import {
+  CommentsDTO,
+  DoctorsDTO,
+  likeDTO,
+  ReviewsDTO,
+} from "../../models/doctors";
 import { ResponseError } from "../../modules/error/response_error";
 import {
   addComment,
@@ -6,7 +11,7 @@ import {
   booked,
   checkDoctorPhoneNumberExists,
   doctorDetail,
-  doctorScheduleAvailability,
+  doctorSchadules,
   doctorScheduleTimeAvailability,
   existingFeedback,
   filterServicesById,
@@ -19,11 +24,10 @@ import {
   insertReviews,
   like,
   recordDoctorProfileView,
-  updateDoctor
+  updateDoctor,
 } from "./db";
 
 export class DoctorsService {
-
   public static async getDoctors() {
     const data = await getDoctors();
     if (data) {
@@ -147,11 +151,11 @@ export class DoctorsService {
     }
   }
 
-  public static async doctorScheduleAvailability(
-    id: number,
-    consultationType: any
+  public static async doctorSchadules(
+    doctor_id: number,
+    consultation_types: any
   ) {
-    const data = await doctorScheduleAvailability(id, consultationType);
+    const data = await doctorSchadules(doctor_id, consultation_types);
     if (data) {
       return { message: "ok", data };
     } else {
