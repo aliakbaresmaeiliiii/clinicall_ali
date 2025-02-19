@@ -22,6 +22,7 @@ import { ToastrService } from 'ngx-toastr';
 import { of } from 'rxjs';
 import { OnlineConsultaionDialogComponent } from './online-consultaion-dialog/online-consultaion-dialog.component';
 import { DialogService } from '../../shared/services/dialog.service';
+import { PatientFavoritesService } from '../shared-ui/services/patient-favorites.service';
 
 @Component({
   selector: 'app-filter-layout',
@@ -35,6 +36,7 @@ export class FilterLayoutComponent implements OnInit {
   doctorService = inject(DoctorsService);
   toast = inject(ToastrService);
   dialogService = inject(DialogService);
+  patientFavoriteService = inject(PatientFavoritesService);
 
   router = inject(Router);
   isLiked = false;
@@ -45,6 +47,7 @@ export class FilterLayoutComponent implements OnInit {
   starsComponent!: NgxStarsComponent;
   transferState = inject(TransferState);
   DATA_KEY = makeStateKey<any>('tabData');
+  ratingDisplay: number = 0;
 
   urlIcon = {
     empty: '../../../assets/images/ui/svg/star-empty.svg',
@@ -230,7 +233,7 @@ export class FilterLayoutComponent implements OnInit {
   ) {
     if (!this.userData) {
       this.toast.error('Please login before make appointment...');
-      this.router.navigate(['/login']);
+      this.router.navigate(['auth/login']);
     } else {
       this.dialogService.openDialog(OnlineConsultaionDialogComponent, {
         enterAnimationDuration,
@@ -281,8 +284,27 @@ export class FilterLayoutComponent implements OnInit {
       data: { link: doctorLink },
     });
   }
-
-  ratingDisplay: number = 0;
+  favoriteStates: boolean[] = [];
+  toggleFavorite(doctor_id: number, index: number) {
+    if (!this.userData) {
+      this.toast.info('Please login first!');
+      this.router.navigate(['auth/login']);
+      return;
+    }
+    const patient_id = this.userData.id;
+    const payload = { doctor_id, patient_id };
+    this.favoriteStates[index] = !this.favoriteStates[index];
+    this.patientFavoriteService.addFavoritePatient(payload).subscribe({
+      next: (res) => {
+        console.log('✅ Favorite toggled:', res);
+      },
+      error: (err) => {
+        console.error('❌ Error:', err);
+        // Revert UI change if API call fails
+        this.favoriteStates[index] = !this.favoriteStates[index];
+      },
+    });
+  }
 
   onRatingSet(rating: number): void {
     this.ratingDisplay = rating;

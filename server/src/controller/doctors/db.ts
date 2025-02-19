@@ -566,3 +566,4 @@ export async function booked(id: number) {
     throw new ResponseError.InternalServer("Internal Server Error");
   }
 }
+

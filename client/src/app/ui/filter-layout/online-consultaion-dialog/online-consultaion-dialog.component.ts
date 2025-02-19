@@ -43,7 +43,7 @@ export class OnlineConsultaionDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      consultation_types: [null, Validators.required], // Radio button value
+      consultation_types: [null, Validators.required], 
     });
     console.log('👉👉👉', this.data);
   }

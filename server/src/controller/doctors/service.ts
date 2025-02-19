@@ -24,7 +24,7 @@ import {
   insertReviews,
   like,
   recordDoctorProfileView,
-  updateDoctor,
+  updateDoctor
 } from "./db";
 
 export class DoctorsService {
@@ -188,4 +188,5 @@ export class DoctorsService {
       return null;
     }
   }
+
 }

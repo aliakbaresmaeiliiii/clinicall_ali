@@ -23,7 +23,7 @@ export class ErrorService {
   handle401Error(error: HttpErrorResponse) {
     this.notificationService.showError(this.getErrorMessage(error));
     this.dialog.closeAll();
-    this.router.navigate(['/login']);
+    this.router.navigate(['auth/login']);
   }
 
   handle403Error(err: HttpErrorResponse): void {
