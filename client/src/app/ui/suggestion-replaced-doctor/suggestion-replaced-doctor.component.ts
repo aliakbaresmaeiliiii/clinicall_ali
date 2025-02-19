@@ -17,6 +17,7 @@ import { CopyLinkDialogComponent } from '../../shared/components/copy-link-dialo
 import { ISpecialization } from '../get-doctor-apointment/models/specializtion.model';
 import { LikesService } from '../shared-ui/services/likes.service';
 import { ToastrService } from 'ngx-toastr';
+import { PatientFavoritesService } from '../shared-ui/services/patient-favorites.service';
 
 @Component({
   selector: 'app-suggestion-replaced-doctor',
@@ -34,6 +35,7 @@ export class SuggestionReplacedDoctorComponent
   likeService = inject(LikesService);
   dialog = inject(MatDialog);
   router = inject(Router);
+  patientFavoriteService = inject(PatientFavoritesService);
 
   DATA_KEY = makeStateKey<any>('doctorInfo');
   specialization: ISpecialization[] = [];
@@ -71,7 +73,7 @@ export class SuggestionReplacedDoctorComponent
   visitProfile(data: any) {
     if (!this.userData) {
       this.toast.error('Please login before make appointment...');
-      this.router.navigate(['/login']);
+      this.router.navigate(['auth/login']);
     } else {
       let doctorName = data.first_name.replace(/\s+/g, '-');
       const doctor_id = data.id;
@@ -153,6 +155,8 @@ export class SuggestionReplacedDoctorComponent
     });
   }
 
+
+
   toggleLike(info: DoctorsDTO, id: number) {
     this.doctors[id].is_liked = !this.doctors[id].is_liked;
     const user_id = this.userData;
@@ -162,6 +166,28 @@ export class SuggestionReplacedDoctorComponent
     //   doctor_id: info.id,
     // };
     // this.likeService.addLike(payload).subscribe(res => {});
+  }
+
+  favoriteStates: boolean[] = [];
+  toggleFavorite(doctor_id: number, index: number) {
+    if (!this.userData) {
+      this.toast.info('Please login first!');
+      this.router.navigate(['auth/login']);
+      return;
+    }
+    const patient_id = this.userData.id;
+    const payload = { doctor_id, patient_id };
+    this.favoriteStates[index] = !this.favoriteStates[index];
+    this.patientFavoriteService.addFavoritePatient(payload).subscribe({
+      next: (res) => {
+        console.log('✅ Favorite toggled:', res);
+      },
+      error: (err) => {
+        console.error('❌ Error:', err);
+        // Revert UI change if API call fails
+        this.favoriteStates[index] = !this.favoriteStates[index];
+      },
+    });
   }
 
   getAppointment(data: any) {

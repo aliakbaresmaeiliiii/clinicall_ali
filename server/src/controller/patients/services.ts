@@ -9,7 +9,7 @@ import {
 import { PatientDTO } from "../../models/patients";
 import jwt from "jsonwebtoken";
 import ms from "ms";
-import { checkExistPatient, registerPatient } from "./patients.db";
+import { addFavorite, checkExistPatient, registerPatient } from "./patients.db";
 import { ResponseError } from "../../modules/error/response_error";
 import { getUniqueCodev3 } from "../../helper/common";
 import SendMail from "../../helper/send_email";
@@ -105,6 +105,18 @@ export class PatientService {
 
   public static async deletePatient(id: number) {
     const data = await deletePatient(id);
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
+  }
+
+  public static async addFavorite(formData: {
+    patient_id: number;
+    doctor_id: number;
+  }) {
+    const data = await addFavorite(formData.patient_id, formData.doctor_id);
     if (data) {
       return { message: "ok", data };
     } else {

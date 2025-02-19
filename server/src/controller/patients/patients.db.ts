@@ -56,3 +56,47 @@ export async function registerPatient(data: IPatient): Promise<IPatient> {
     throw new ResponseError.InternalServer("Failed to insert clinic.");
   }
 }
+
+export async function addFavorite(patient_id: number, doctor_id: number) {
+  try {
+    const existingFavorite = await query<RowDataPacket[]>(
+      `SELECT * FROM ${coreSchema}.patient_favorites
+         WHERE patient_id = ? AND doctor_id = ?`,
+      {
+        values: [patient_id, doctor_id],
+      }
+    );
+    if (existingFavorite.length > 0) {
+      await query<RowDataPacket>(
+        `DELETE FROM ${coreSchema}.patient_favorites
+            WHERE doctor_id = ? AND patient_id = ?`,
+        {
+          values: [doctor_id, patient_id],
+        }
+      );
+      await query<RowDataPacket>(
+        `UPDATE ${coreSchema}.patient SET favorite_id = NULL WHERE id = ?`,
+        [patient_id]
+      );
+
+      return { message: "Favorite removed" };
+    } else {
+      const favoriteResult = await query<RowDataPacket>(
+        `INSERT INTO ${coreSchema}.patient_favorites (patient_id, doctor_id) 
+         VALUES (?, ?)`,
+        {
+          values: [patient_id, doctor_id],
+        }
+      );
+      const favorite_id = (favoriteResult as any).insertId;
+      await query<RowDataPacket>(
+        `UPDATE ${coreSchema}.patient SET favorite_id = ? WHERE id = ?`,
+        [favorite_id, patient_id]
+      );
+      return { favorite_id };
+    }
+  } catch (error) {
+    console.log(error);
+    throw new ResponseError.InternalServer("Failed to add favorite.");
+  }
+}

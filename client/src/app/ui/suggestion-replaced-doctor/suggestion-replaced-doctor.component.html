@@ -185,20 +185,26 @@
             <circle cx="19" cy="12" r="1"></circle>
             <circle cx="5" cy="12" r="1"></circle>
           </svg>
-          <svg
-            class="h-4 w-4 text-gray-500 dark:text-gray-200"
-            fill="none"
-            height="24"
-            stroke="currentColor"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-            width="24"
-            xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
-          </svg>
+          <a (click)="toggleFavorite(data.id, i)">
+            <svg
+              [class.text-red-500]="favoriteStates[i]"
+              [class.text-gray-500]="!favoriteStates[i]"
+              [class.bg-blue-500]="favoriteStates[i]"
+              [attr.fill]="favoriteStates[i] ? 'currentColor' : 'none'"
+              class="h-8 w-8 p-1 rounded text-gray-500 dark:text-gray-200 transition-all"
+              fill="none"
+              height="24"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="24"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path>
+            </svg>
+          </a>
         </div>
       </div>
     </div>

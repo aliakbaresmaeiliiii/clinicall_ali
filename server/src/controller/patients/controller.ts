@@ -1,8 +1,8 @@
-import {asyncHandler} from "../../helper/async-handler";
-import {router} from "../../routes/public";
+import { asyncHandler } from "../../helper/async-handler";
+import { router } from "../../routes/public";
 import { Request, Response } from "express";
-import {PatientService} from "./services";
-import {BuildResponse} from "../../modules/response/app_response";
+import { PatientService } from "./services";
+import { BuildResponse } from "../../modules/response/app_response";
 import multer from "multer";
 
 const storage = multer.diskStorage({
@@ -23,7 +23,6 @@ router.get(
     const data = await PatientService.getPatients();
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
-
   })
 );
 
@@ -36,8 +35,8 @@ router.get(
     const buildResponse = BuildResponse.get(data);
     if (buildResponse) {
       return buildResponse;
-    }else{
-      return false
+    } else {
+      return false;
     }
   })
 );
@@ -64,7 +63,6 @@ router.get(
     const data = await PatientService.patientDetial(patientId);
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
-
   })
 );
 // **** uploadImage
@@ -91,7 +89,6 @@ router.put(
     const data = await PatientService.updatePatient(formData);
     const buildResponse = BuildResponse.updated(data);
     return res.status(buildResponse.code).json(buildResponse);
-    ;
   })
 );
 // **** deletePatient
@@ -104,6 +101,17 @@ router.delete(
     const idPateint = +req.params.idPateint;
     await PatientService.deletePatient(idPateint);
     const buildResponse = BuildResponse.deleted(idPateint);
+    return res.status(buildResponse.code).json(buildResponse);
+  })
+);
+
+router.post(
+  '/admin/add_favorite',
+  asyncHandler(async (req: Request, res: Response): Promise<any> => {
+    const { patient_id, doctor_id } = req.body;
+    const formData = {patient_id,doctor_id}
+    const data = await PatientService.addFavorite(formData);
+    const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
   })
 );
