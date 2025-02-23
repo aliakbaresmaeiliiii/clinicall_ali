@@ -107,51 +107,105 @@ export async function like(data: likeDTO) {
   return { success: true, isLiked };
 }
 
-export async function getDoctors(): Promise<DoctorsDTO[] | null> {
+
+export async function getDoctors(filters: {
+  name?: string;
+  service_id?: string;
+  speciality_id?: string;
+  city_id?: string;
+  minRating?: number;
+  maxRating?: number;
+}): Promise<DoctorsDTO[] | null> {
   try {
-    const sql = `
+    let sql = `
     SELECT 
       d.*,
-      COALESCE(ld.city, 'No City') AS city,
-      COALESCE(ld.state, '') AS state,
-      COALESCE(ld.country, '') AS country,
-      COALESCE(ld.latitude, 0) AS latitude,
-      COALESCE(ld.longitude, 0) AS longitude,
-      COALESCE(ld.address_line1, '') AS address_line1,
-      COALESCE(ld.address_line2, '') AS address_line2,
-      COALESCE(ld.zipcode, '') AS zipcode,
-
-    (SELECT AVG(rating) 
-      FROM ${coreSchema}.doctor_reviews r 
-        WHERE r.doctor_id = d.id) AS average_rating,
-        COUNT(r.id) AS total_reviews,
-        COALESCE(AVG(r.professional_demeanor), 0) AS avg_professional_demeanor,
-        COALESCE(AVG(r.sufficient_time), 0) AS avg_sufficient_time,
-        COALESCE(AVG(r.skill), 0) AS avg_skill,
-        COALESCE(AVG(r.staff_behavior), 0) AS avg_staff_behavior,
-        COALESCE(AVG(r.clinic_condition), 0) AS avg_clinic_condition,
-          CASE 
+      ld.*,
+      sp.*,
+      (SELECT AVG(rating) FROM ${coreSchema}.doctor_reviews r WHERE r.doctor_id = d.id),
+      COUNT(r.id) AS total_reviews,
+      COALESCE(AVG(r.professional_demeanor), 0) AS avg_professional_demeanor,
+      COALESCE(AVG(r.sufficient_time), 0) AS avg_sufficient_time,
+      COALESCE(AVG(r.skill), 0) AS avg_skill,
+      COALESCE(AVG(r.staff_behavior), 0) AS avg_staff_behavior,
+      COALESCE(AVG(r.clinic_condition), 0) AS avg_clinic_condition,
+      CASE 
         WHEN EXISTS (SELECT 1 FROM ${coreSchema}.doctor_likes dl WHERE dl.doctor_id = d.id) 
         THEN 1 ELSE 0
       END AS isLiked
-         FROM 
+    FROM 
       ${coreSchema}.doctors d
     LEFT JOIN 
       ${coreSchema}.doctor_locations ld ON d.id = ld.doctor_id AND ld.is_primary = 1
     LEFT JOIN 
-      ${coreSchema}.specialties s ON d.speciality_id = s.id
+      ${coreSchema}.cities c ON d.id = ld.city_id AND c.id
+    LEFT JOIN 
+      ${coreSchema}.specialties sp ON d.speciality_id = sp.id
     LEFT JOIN 
       ${coreSchema}.doctor_reviews r ON d.id = r.doctor_id
-    GROUP BY d.id, ld.city, ld.state, ld.country, ld.latitude, ld.longitude, 
-             ld.address_line1, ld.address_line2, ld.zipcode
+    LEFT JOIN 
+      ${coreSchema}.doctor_services ds ON d.service_id = ds.id
+    LEFT JOIN 
+      ${coreSchema}.services s ON sp.id = s.speciality_id
   `;
 
-    const result = await query<RowDataPacket[]>(sql);
+    // **Adding Filtering Conditions**
+    const conditions: string[] = [];
+    const values: any[] = [];
+
+    if (filters.name) {
+      conditions.push("d.name = ?");
+      values.push(filters.name);
+    }
+    if (filters.service_id) {
+      conditions.push("d.service_id = ?");
+      values.push(filters.service_id);
+    }
+
+    if (filters.speciality_id) {
+      conditions.push("sp.id = ?");
+      values.push(filters.speciality_id);
+    }
+
+    if (filters.city_id) {
+      conditions.push("ld.city_id = ?");
+      values.push(filters.city_id);
+    }
+
+    if (filters.minRating !== undefined) {
+      conditions.push("HAVING average_rating >= ?");
+      values.push(filters.minRating);
+    }
+    
+    if (filters.maxRating !== undefined) {
+      conditions.push("HAVING average_rating <= ?");
+      values.push(filters.maxRating);
+    }
+
+    if (conditions.length) {
+      sql += " WHERE " + conditions.join(" AND ");
+    }
+
+    sql += `
+    GROUP BY d.id, ld.city_id, ld.state, ld.country, ld.latitude, ld.longitude, 
+             ld.address_line1, ld.address_line2, ld.zipcode
+    `;
+
+    const result = await query<RowDataPacket[]>(sql, {
+      values: [values],
+    });
     return result as DoctorsDTO[];
   } catch (error) {
     console.log(error);
     throw new ResponseError.InternalServer("An unexpected error occurred.");
   }
+}
+
+export async function getServices() {
+  const result = await query<RowDataPacket[]>(
+    `SELECT * FROM ${coreSchema}.services`
+  );
+  return result;
 }
 
 export async function getMostPopularDoctors(): Promise<any> {
@@ -258,6 +312,7 @@ export async function doctorDetail(doctorId: number): Promise<any> {
       (SELECT AVG(rating) 
         FROM ${coreSchema}.doctor_reviews r 
         WHERE r.doctor_id = d.id) AS average_rating,
+        
       CASE 
         WHEN EXISTS (SELECT 1 FROM ${coreSchema}.doctor_likes dl WHERE dl.doctor_id = d.id) 
         THEN 1 ELSE 0
@@ -369,30 +424,35 @@ export async function getSubSpecialtiesById(specialtyId: number) {
 }
 
 export async function filterSpecialtyById(specialty: any) {
-  const result = await query<RowDataPacket>(
-    `
-     SELECT 
-      d.*, 
-      COALESCE(ld.location, 'No Location') AS location,
-      s.name AS specialty_name,
-      (SELECT AVG(rating) 
-       FROM ${coreSchema}.ratings r 
-       WHERE r.id = d.id) AS average_rating
-    FROM 
-      ${coreSchema}.doctors d
-    LEFT JOIN 
-      ${coreSchema}.locations_doctors ld ON d.id = ld.id
-    LEFT JOIN 
-      ${coreSchema}.specialties s ON d.speciality_id = s.id
-
-    WHERE 
-    s.id = ?;
-    `,
-    {
-      values: [specialty],
-    }
-  );
-  return result;
+  try {
+    const result = await query<RowDataPacket>(
+      `
+       SELECT 
+        d.*, 
+        COALESCE(ld.location, 'No Location') AS location,
+        s.name AS specialty_name,
+        (SELECT AVG(rating) 
+         FROM ${coreSchema}.ratings r 
+         WHERE r.id = d.id) AS average_rating
+      FROM 
+        ${coreSchema}.doctors d
+      LEFT JOIN 
+        ${coreSchema}.doctor_locations ld ON d.id = ld.id
+      LEFT JOIN 
+        ${coreSchema}.specialties s ON d.speciality_id = s.id
+  
+      WHERE 
+      s.id = ?;
+      `,
+      {
+        values: [specialty],
+      }
+    );
+    return result;
+  } catch (error) {
+    console.log(error);
+    throw new ResponseError.InternalServer("...");
+  }
 }
 
 export async function getSuggestionsBySpecialty(specialtyId: number) {
@@ -566,4 +626,3 @@ export async function booked(id: number) {
     throw new ResponseError.InternalServer("Internal Server Error");
   }
 }
-

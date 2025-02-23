@@ -137,17 +137,8 @@ export class FilterLayoutComponent implements OnInit {
     }
   }
 
-  handleChangeValueInput(data: { field: string; id: any }) {
-    switch (data.field) {
-      case 'speciality':
-        this.filterSpecialtyById(data.id);
-        break;
-      case 'services':
-        this.filterServicesById(data.id);
-        break;
-      default:
-        break;
-    }
+  handleChangeValueInput(data: { name: string; id: number }) {
+    this.filterDoctor(data);
   }
 
   fetchDefaultData() {
@@ -191,8 +182,8 @@ export class FilterLayoutComponent implements OnInit {
     });
   }
 
-  filterSpecialtyById(data: string) {
-    this.doctorService.filterSpecialtyById(data).subscribe((res: any) => {
+  filterDoctor(filterValue: any) {
+    this.doctorService.getDoctors(filterValue).subscribe((res: any) => {
       const newData = res.data.map((doctor: any) => {
         doctor.profileImage = doctor.profileImage
           ? `${environment.urlProfileImg}${doctor.profileImage}`
@@ -295,10 +286,10 @@ export class FilterLayoutComponent implements OnInit {
     const payload = { doctor_id, patient_id };
     this.favoriteStates[index] = !this.favoriteStates[index];
     this.patientFavoriteService.addFavoritePatient(payload).subscribe({
-      next: (res) => {
+      next: res => {
         console.log('✅ Favorite toggled:', res);
       },
-      error: (err) => {
+      error: err => {
         console.error('❌ Error:', err);
         // Revert UI change if API call fails
         this.favoriteStates[index] = !this.favoriteStates[index];

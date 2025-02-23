@@ -92,9 +92,8 @@ export async function getClinicByPassword(
     );
     return user;
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
- 
 }
 export async function getDoctorByPassword(
   email: string,
@@ -120,15 +119,19 @@ export async function getPatientByPassword(
   email: string,
   password: string
 ): Promise<any> {
-  const user = await query<RowDataPacket[]>(
-    ` SELECT *
-    FROM ${coreSchema}.patient 
-    WHERE email = ?`,
-    {
-      values: [email],
-    }
-  );
-  return user;
+  try {
+    const user = await query<RowDataPacket[]>(
+      ` SELECT *
+      FROM ${coreSchema}.patient 
+      WHERE email = ?`,
+      {
+        values: [email],
+      }
+    );
+    return user;
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // *****getClinicVerificationCode*****
@@ -165,7 +168,7 @@ export async function getClinicVerificationCode(clinicData: {
     { values: [clinicData.email] }
   );
 
-  return rows; 
+  return rows;
 }
 
 // *****getPatientVerificationCode*****
@@ -202,5 +205,5 @@ export async function getPatientVerificationCode(patientData: {
     { values: [patientData.email] }
   );
 
-  return rows; 
+  return rows;
 }

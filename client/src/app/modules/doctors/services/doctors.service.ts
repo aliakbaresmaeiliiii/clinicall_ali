@@ -22,8 +22,25 @@ export class DoctorsService {
   doctorImg$ = this.doctorImg.asObservable();
   storeDoctorInfo = signal<any>(null);
 
-  getDoctors(): Observable<DoctorsDTO[]> {
-    return this.#http.get<DoctorsDTO[]>(`${this.config}doctors`);
+  getDoctors(filters?: {
+    name?: string;
+    service_id: string;
+    speciality_id?: string;
+    city?: string;
+    minRating?: number;
+    maxRating?: number;
+  }): Observable<DoctorsDTO[]> {
+    let params = new HttpParams();
+    if (filters) {
+      Object.keys(filters).forEach(key => {
+        const value = (filters as any)[key];
+        if (value !== undefined && value !== null) {
+          params = params.set(key, value.toString());
+        }
+      });
+    }
+    return this.#http.get<DoctorsDTO[]>(`${this.config}/doctors`, { params });
+    // .pipe(map(response => response));
   }
 
   getMostPopularDoctor() {
@@ -82,11 +99,11 @@ export class DoctorsService {
     });
   }
 
-  filterSpecialtyById(id: string): Observable<string> {
-    return this.#http.get<string>(
-      `${this.config}admin/filterSpecialtyById/${id}`
-    );
-  }
+  // filterSpecialtyById(id: string): Observable<string> {
+  //   return this.#http.get<string>(
+  //     `${this.config}admin/filterSpecialtyById/${id}`
+  //   );
+  // }
 
   filterServicesById(id: string): Observable<string> {
     return this.#http.get<string>(
@@ -104,8 +121,8 @@ export class DoctorsService {
     return this.#http.get<ReviewsDTO>(`${this.config}getReviews`);
   }
 
-  getClinicServices(): Observable<any> {
-    return this.#http.get<any>(`${this.config}getClinicServices`);
+  fetchServices(): Observable<any> {
+    return this.#http.get<any>(`${this.config}doctors/services`);
   }
 
   getAllCities(): Observable<any> {
