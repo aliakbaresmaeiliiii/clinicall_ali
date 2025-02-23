@@ -6,7 +6,7 @@ import {
   inject,
   input,
   output,
-  TemplateRef
+  TemplateRef,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { map, Observable, startWith } from 'rxjs';
@@ -86,7 +86,7 @@ export class CustomTabComponent
   doctorService = inject(DoctorsService);
   activeFilter = 0;
   tabTitle = output<string>();
-  onChangeValueInput = output<{ field: string; value: any } | any>();
+  onChangeValueInput = output<{ name: string; id: any } | any>();
 
   onDeleteValue = output<string>();
   valueFiltering: string = '';
@@ -113,7 +113,7 @@ export class CustomTabComponent
 
   ngOnInit() {
     this.getSpecialties();
-    this.getClinicServices();
+    this.fetchServices();
     this.getAllCities();
     this.getAllInsurances();
   }
@@ -139,18 +139,40 @@ export class CustomTabComponent
       }));
   }
 
-  handleInputChange(field: string, selected: any) {
-    this.valueFiltering = selected.name;
-   const  id = selected.id
-    this.onChangeValueInput.emit({ field, id });
+  handleInputChange(mode: string, valueOption: { name: string; id: number }) {
+      this.valueFiltering = valueOption.name;
+     const  id = valueOption.id
+    const payloadSpeciality = {
+      speciality_id: id,
+    };
+    const payloadServices = {
+      service_id: id,
+    };
+    const cityServices = {
+      city_id: id,
+    };
+    switch (mode) {
+      case 'speciality':
+        this.onChangeValueInput.emit(payloadSpeciality);
+        break;
+      case 'services':
+        this.onChangeValueInput.emit(payloadServices);
+        break;
+      case 'city':
+        this.onChangeValueInput.emit(cityServices);
+        break;
+
+      default:
+        break;
+    }
   }
 
   getValueChange(option: FilerValue) {
     this.valueFiltering = option.name;
   }
 
-  getClinicServices() {
-    this.doctorService.getClinicServices().subscribe(res => {
+  fetchServices() {
+    this.doctorService.fetchServices().subscribe(res => {
       this.clinicServices = res.data;
       this.filteredServices = this.form.controls.services.valueChanges.pipe(
         startWith(''),
@@ -163,10 +185,10 @@ export class CustomTabComponent
     const filterValue = value.toLowerCase();
     return this.clinicServices
       .filter((service: any) =>
-        service.service_name.toLowerCase().includes(filterValue)
+        service.name.toLowerCase().includes(filterValue)
       )
       .map((service: any) => ({
-        name: service.service_name,
+        name: service.name,
         id: service.id,
       }));
   }
@@ -191,21 +213,21 @@ export class CustomTabComponent
       .filter((city: any) => city.name.toLowerCase().includes(filterValue))
       .map((city: any) => ({
         name: city.name,
-        city_id: city.city_id,
+        id: city.id,
       }));
   }
 
-  getValueCity(option: { name: string; city_id: number }) {
-    this.valueFiltering = option.name;
-    this.doctorService.filteredNeighbor(option.city_id).subscribe(res => {
-      this.neighborhood = res.data;
-      this.filteredNeighborhood =
-        this.form.controls.neighborhoodForm.valueChanges.pipe(
-          startWith(''),
-          map(value => this._filterNeighbore(value || ''))
-        );
-    });
-  }
+  // getValueCity(option: { name: string; city_id: number }) {
+  //   this.valueFiltering = option.name;
+  //   this.doctorService.filteredNeighbor(option.city_id).subscribe(res => {
+  //     this.neighborhood = res.data;
+  //     this.filteredNeighborhood =
+  //       this.form.controls.neighborhoodForm.valueChanges.pipe(
+  //         startWith(''),
+  //         map(value => this._filterNeighbore(value || ''))
+  //       );
+  //   });
+  // }
 
   _filterNeighbore(value: string): FilerValue[] {
     const filterValue = value.toLowerCase();

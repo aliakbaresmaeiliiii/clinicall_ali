@@ -7,7 +7,7 @@ export interface DoctorsDTO {
   first_name: string;
   last_name: string;
   phone?: string | undefined | null;
-  specialty_name?: string | null | undefined;
+  specialty_name: string | null | undefined;
   dateOfBirth?: string | undefined | any;
   city?: string | null;
   department?: string | undefined | any;

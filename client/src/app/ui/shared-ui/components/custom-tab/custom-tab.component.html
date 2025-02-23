@@ -25,14 +25,14 @@
         </ng-template>
 
         <!-- tettgeneric -->
-        <form action="" [formGroup]="form">
+        <form [formGroup]="form">
           <app-generic-auto-compelete
             [label]="'Specialty and Super-specialty'"
             [placeHolder]="'Test Placeholder'"
             [parentForm]="form"
             [formCrName]="'speciality'"
             [filterOption]="filteredSpeciality"
-            (valueInput)="handleInputChange('speciality', $event)" />
+            (valueInput)="handleInputChange('speciality',$event)" />
           <mat-divider></mat-divider>
 
           <app-generic-auto-compelete
@@ -41,7 +41,7 @@
             [parentForm]="form"
             [formCrName]="'services'"
             [filterOption]="filteredServices"
-            (valueInput)="handleInputChange('services', $event)" />
+            (valueInput)="handleInputChange('services',$event)" />
           <mat-divider></mat-divider>
           <app-generic-auto-compelete
             [label]="'City'"
@@ -49,7 +49,7 @@
             [parentForm]="form"
             [fieldCtrl]="'city'"
             [filterOption]="filteredCity"
-            (valueInput)="getValueCity($event)" />
+            (valueInput)="handleInputChange('city',$event)" />
           <mat-divider></mat-divider>
 
           <app-generic-auto-compelete
@@ -58,7 +58,7 @@
             [parentForm]="form"
             [formCrName]="'neighborhoodForm'"
             [filterOption]="filteredNeighborhood"
-            (valueInput)="handleInputChange('Neighborhood', $event)" />
+            (valueInput)="handleInputChange('neighborhoodForm',$event)" />
           <mat-divider></mat-divider>
 
           <app-generic-auto-compelete
@@ -67,7 +67,7 @@
             [parentForm]="form"
             [formCrName]="'insurance'"
             [filterOption]="filteredInsurance"
-            (valueInput)="handleInputChange('insurance', $event)" />
+            (valueInput)="handleInputChange('insurance',$event)" />
         </form>
       </mat-tab>
 

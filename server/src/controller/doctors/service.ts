@@ -19,17 +19,24 @@ import {
   getDoctors,
   getMostPopularDoctors,
   getReviews,
+  getServices,
   getSpecialties,
   getSubSpecialtiesById,
   insertReviews,
   like,
   recordDoctorProfileView,
-  updateDoctor
+  updateDoctor,
 } from "./db";
 
 export class DoctorsService {
-  public static async getDoctors() {
-    const data = await getDoctors();
+  public static async getDoctors(filters: {
+    name?: string;
+    id?: string;
+    city_id?: string;
+    minRating?: number;
+    maxRating?: number;
+  }) {
+    const data = await getDoctors(filters);
     if (data) {
       return { message: "ok", data };
     } else {
@@ -179,6 +186,14 @@ export class DoctorsService {
       return null;
     }
   }
+  public static async fetchServices() {
+    const data = await getServices();
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
+  }
 
   public static async toggleLike(likeInfo: likeDTO) {
     const data = await like(likeInfo);
@@ -188,5 +203,4 @@ export class DoctorsService {
       return null;
     }
   }
-
 }

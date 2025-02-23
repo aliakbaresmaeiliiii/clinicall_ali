@@ -8,7 +8,15 @@ import { DoctorsService } from "./service";
 router.get(
   "/doctors",
   asyncHandler(async (req: any, res: any) => {
-    const data = await DoctorsService.getDoctors();
+    const filters = {
+      name: req.query.name as string,
+      service_id: req.query.service_id as string,
+      speciality_id: req.query.speciality_id as string,
+      city_id: req.query.city_id as string,
+      minRating: req.query.minRating ? parseFloat(req.query.minRating as string) : undefined,
+      maxRating: req.query.maxRating ? parseFloat(req.query.maxRating as string) : undefined,
+    };
+    const data = await DoctorsService.getDoctors(filters);
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
   })
@@ -107,15 +115,15 @@ router.get(
   })
 );
 
-router.get(
-  `/admin/filterSpecialtyById/:id`,
-  asyncHandler(async (req: Request, res: Response): Promise<any> => {
-    const queryParams = +req.params.id;
-    const data = await DoctorsService.filterSpecialtyById(queryParams);
-    const buildResponse = BuildResponse.get(data);
-    return res.status(buildResponse.code).json(buildResponse);
-  })
-);
+// router.get(
+//   `/admin/filterSpecialtyById/:id`,
+//   asyncHandler(async (req: Request, res: Response): Promise<any> => {
+//     const queryParams = +req.params.id;
+//     const data = await DoctorsService.filterSpecialtyById(queryParams);
+//     const buildResponse = BuildResponse.get(data);
+//     return res.status(buildResponse.code).json(buildResponse);
+//   })
+// );
 router.get(
   `/admin/filterServicesById/:id`,
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
@@ -188,3 +196,12 @@ router.put(
     return res.status(buildResponse.code).json(buildResponse);
   })
 );
+router.get(
+  `/doctors/services`,
+  asyncHandler(async (req: Request, res: Response): Promise<any> => {
+    const data = await DoctorsService.fetchServices();
+    const buildResponse = BuildResponse.get(data);
+    return res.status(buildResponse.code).json(buildResponse);
+  })
+);
+
