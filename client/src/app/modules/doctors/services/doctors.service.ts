@@ -39,7 +39,7 @@ export class DoctorsService {
         }
       });
     }
-    return this.#http.get<DoctorsDTO[]>(`${this.config}/doctors`, { params });
+    return this.#http.get<DoctorsDTO[]>(`${this.config}doctors`, { params });
     // .pipe(map(response => response));
   }
 

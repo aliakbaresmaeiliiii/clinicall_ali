@@ -37,6 +37,9 @@ app.use(
     type: 'application/json',
   })
 )
+
+
+
 app.use(cookieParser())
 app.use(compression())
 app.use(express.static(path.join(`${__dirname}/../`, 'public')))
