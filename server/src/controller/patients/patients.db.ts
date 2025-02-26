@@ -30,11 +30,10 @@ export async function registerPatient(data: IPatient): Promise<IPatient> {
   try {
     const result = await query<RowDataPacket>(
       `INSERT INTO ${coreSchema}.patient
-          (id,first_name,last_name,email,password,token_verify,verify_code,phone,city,state,country,created_at,updated_at)
-          VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+          (first_name,last_name,email,password,token_verify,verify_code,phone,city,state,country,created_at,updated_at)
+          VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`,
       {
         values: [
-          newId,
           data.first_name,
           data.last_name,
           data.email,
