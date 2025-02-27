@@ -110,6 +110,7 @@ export async function like(data: likeDTO) {
 export async function getDoctors(filters: {
   name?: string;
   service_id?: string;
+  doctor_id?: string;
   specialty_id?: string;
   city_id?: string;
   minRating?: number;
@@ -118,7 +119,7 @@ export async function getDoctors(filters: {
   try {
     let sql = `
     SELECT 
-      d.id, d.first_name, d.last_name, d.email, d.phone, d.specialty_id, d.insurance_id, d.click_count,
+      d.id, d.first_name,d.last_name,d.profile_img,  d.email, d.phone, d.specialty_id, d.insurance_id, d.click_count,
       sp.name AS specialty_name, 
       i.name AS insurance_name,  
       (SELECT AVG(rating) FROM ${coreSchema}.doctor_reviews r WHERE r.doctor_id = d.id) AS average_rating,
@@ -167,6 +168,10 @@ export async function getDoctors(filters: {
     const conditions: string[] = [];
     const values: any[] = [];
 
+    if (filters.doctor_id) {
+      conditions.push("d.id = ?");
+      values.push(filters.doctor_id);
+    }
     if (filters.name) {
       conditions.push("CONCAT(d.first_name, ' ', d.last_name) LIKE ?");
       values.push(`%${filters.name}%`);
@@ -188,7 +193,7 @@ export async function getDoctors(filters: {
       sql += " WHERE " + conditions.join(" AND ");
     }
 
-    sql += ` GROUP BY d.id, d.first_name, d.last_name, d.email, d.phone, d.specialty_id, d.insurance_id, sp.name, i.name;`;
+    sql += ` GROUP BY d.id, d.first_name, d.last_name,d.profile_img,d.email, d.phone, d.specialty_id, d.insurance_id, sp.name, i.name;`;
 
     const havingConditions: string[] = [];
     if (filters.minRating !== undefined) {
@@ -207,9 +212,14 @@ export async function getDoctors(filters: {
     console.log("Generated SQL:", sql, values);
 
     const result = await query<RowDataPacket[]>(sql, {
-      values: values, // Fixed: No need to wrap values in an array
+      values: values,
     });
-    return result as DoctorsDTO[];
+
+    // if (filters.doctor_id) {
+    //   return result.length ? result[0] : null;
+    // }
+
+    return result ? (result as unknown as DoctorsDTO[]) : null;
   } catch (error) {
     console.error(error);
     throw new ResponseError.InternalServer("An unexpected error occurred.");
@@ -273,86 +283,72 @@ export async function checkDoctorPhoneNumberExists(
   return result;
 }
 
-// export async function addDoctor(doctorInfo: DoctorsDTO): Promise<any> {
-//   const result = await query<RowDataPacket[]>(
-//     `INSERT INTO ${coreSchema}.doctors
-//         (name,gender,contact_info,degree,dateOfBirth,department,
-//          age,email,address,profileImage,specialization,joingin_date)
-//          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-//     {
-//       values: [
-//         doctorInfo.name,
-//         doctorInfo.gender,
-//         doctorInfo.contact_info,
-//         doctorInfo.degree,
-//         doctorInfo.dateOfBirth,
-//         doctorInfo.department,
-//         doctorInfo.age,
-//         doctorInfo.email,
-//         doctorInfo.address,
-//         doctorInfo.profileImage,
-//         doctorInfo.specialty_name,
-//         new Date(),
-//       ],
+// export async function doctorDetail(doctorId: number): Promise<any> {
+//   try {
+//     const sql = `
+//       SELECT 
+//         d.*, 
+//         COALESCE(ld.country, '') AS country,
+//         COALESCE(ld.latitude, 0) AS latitude,
+//         COALESCE(ld.longitude, 0) AS longitude,
+//         COALESCE(ld.address_line1, '') AS address_line1,
+//         COALESCE(ld.address_line2, '') AS address_line2,
+//         COALESCE(ld.zipcode, '') AS zipcode,
+//         COALESCE(AVG(r.rating), 0) AS average_rating,
+//         COALESCE(AVG(r.professional_demeanor), 0) AS avg_professional_demeanor,
+//         COALESCE(AVG(r.sufficient_time), 0) AS avg_sufficient_time,
+//         COALESCE(AVG(r.skill), 0) AS avg_skill,
+//         COALESCE(AVG(r.staff_behavior), 0) AS avg_staff_behavior,
+//         COALESCE(AVG(r.clinic_condition), 0) AS avg_clinic_condition,
+//         COUNT(r.id) AS total_reviews,
+//         COALESCE(GROUP_CONCAT(DISTINCT r.comment SEPARATOR ' | '), 'No comments') AS comments,
+//         s.name AS specialty_name,
+//         i.name AS insurance_name,
+//         CASE 
+//           WHEN EXISTS (SELECT 1 FROM ${coreSchema}.doctor_likes dl WHERE dl.doctor_id = d.id) 
+//           THEN 1 ELSE 0
+//         END AS isLiked
+//         JSON_ARRAYAGG(
+//         JSON_OBJECT(
+//           'country', ld.country,
+//           'latitude', ld.latitude,
+//           'longitude', ld.longitude,
+//           'address_line1', ld.address_line1,
+//           'address_line2', ld.address_line2,
+//           'zipcode', ld.zipcode,
+//           'city',ci.name,
+//           'state',ci.state
+//         )
+//       ) AS addresses
+//       FROM 
+//         ${coreSchema}.doctors d
+//       LEFT JOIN 
+//         ${coreSchema}.doctor_locations ld ON d.id = ld.doctor_id AND ld.is_primary = 1
+//       LEFT JOIN 
+//         ${coreSchema}.doctor_reviews r ON d.id = r.doctor_id
+//       LEFT JOIN 
+//         ${coreSchema}.specialties s ON d.specialty_id = s.id
+//       LEFT JOIN
+//         ${coreSchema}.insurances i ON d.insurance_id = i.id
+//       WHERE 
+//         d.id = ?
+//       GROUP BY 
+//         d.id,  ld.country, ld.latitude, ld.longitude, ld.address_line1, 
+//         ld.address_line2, ld.zipcode, s.name, i.name;
+//     `;
+
+//     const result = await query<RowDataPacket[]>(sql, { values: [doctorId] });
+
+//     if (!result || result.length === 0) {
+//       return { message: "Doctor not found" };
 //     }
-//   );
-//   return result;
+
+//     return result[0]; // Return single doctor object instead of an array
+//   } catch (error) {
+//     console.error("Error fetching doctor details:", error);
+//     throw new ResponseError.InternalServer("An unexpected error occurred.");
+//   }
 // }
-
-export async function doctorDetail(doctorId: number): Promise<any> {
-  try {
-    const sql = `
-      SELECT 
-        d.*, 
-        COALESCE(ld.country, '') AS country,
-        COALESCE(ld.latitude, 0) AS latitude,
-        COALESCE(ld.longitude, 0) AS longitude,
-        COALESCE(ld.address_line1, '') AS address_line1,
-        COALESCE(ld.address_line2, '') AS address_line2,
-        COALESCE(ld.zipcode, '') AS zipcode,
-        COALESCE(AVG(r.rating), 0) AS average_rating,
-        COALESCE(AVG(r.professional_demeanor), 0) AS avg_professional_demeanor,
-        COALESCE(AVG(r.sufficient_time), 0) AS avg_sufficient_time,
-        COALESCE(AVG(r.skill), 0) AS avg_skill,
-        COALESCE(AVG(r.staff_behavior), 0) AS avg_staff_behavior,
-        COALESCE(AVG(r.clinic_condition), 0) AS avg_clinic_condition,
-        COUNT(r.id) AS total_reviews,
-        COALESCE(GROUP_CONCAT(DISTINCT r.comment SEPARATOR ' | '), 'No comments') AS comments,
-        s.name AS specialty_name,
-        i.name AS insurance_name,
-        CASE 
-          WHEN EXISTS (SELECT 1 FROM ${coreSchema}.doctor_likes dl WHERE dl.doctor_id = d.id) 
-          THEN 1 ELSE 0
-        END AS isLiked
-      FROM 
-        ${coreSchema}.doctors d
-      LEFT JOIN 
-        ${coreSchema}.doctor_locations ld ON d.id = ld.doctor_id AND ld.is_primary = 1
-      LEFT JOIN 
-        ${coreSchema}.doctor_reviews r ON d.id = r.doctor_id
-      LEFT JOIN 
-        ${coreSchema}.specialties s ON d.specialty_id = s.id
-      LEFT JOIN
-        ${coreSchema}.insurances i ON d.insurance_id = i.id
-      WHERE 
-        d.id = ?
-      GROUP BY 
-        d.id,  ld.country, ld.latitude, ld.longitude, ld.address_line1, 
-        ld.address_line2, ld.zipcode, s.name, i.name;
-    `;
-
-    const result = await query<RowDataPacket[]>(sql, { values: [doctorId] });
-
-    if (!result || result.length === 0) {
-      return { message: "Doctor not found" };
-    }
-
-    return result[0]; // Return single doctor object instead of an array
-  } catch (error) {
-    console.error("Error fetching doctor details:", error);
-    throw new ResponseError.InternalServer("An unexpected error occurred.");
-  }
-}
 
 export async function updateDoctor(doctorData: DoctorsDTO): Promise<any> {
   const result = await query<RowDataPacket>(

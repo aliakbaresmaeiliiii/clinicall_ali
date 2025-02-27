@@ -24,8 +24,9 @@ export class DoctorsService {
 
   getDoctors(filters?: {
     name?: string;
-    service_id: string;
+    service_id?: string;
     specialty_id?: string;
+    doctor_id?: string;
     city?: string;
     minRating?: number;
     maxRating?: number;
@@ -54,11 +55,11 @@ export class DoctorsService {
     );
   }
 
-  doctorDetial(id: number): Observable<DoctorsDTO[]> {
-    return this.#http
-      .get<{ data: DoctorsDTO[] }>(`${this.config}admin/doctor-detial/${id}`)
-      .pipe(map(response => response.data));
-  }
+  // doctorDetial(id: number): Observable<DoctorsDTO[]> {
+  //   return this.#http
+  //     .get<{ data: DoctorsDTO[] }>(`${this.config}admin/doctor-detial/${id}`)
+  //     .pipe(map(response => response.data));
+  // }
 
   getAddresses(): Observable<{ lat: number; lng: number }[]> {
     return this.#http.get<{ lat: number; lng: number }[]>(this.config);

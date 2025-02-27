@@ -207,14 +207,14 @@ export class FilterLayoutComponent implements OnInit {
   }
 
   visitProfile(data: any) {
+    debugger
     if (!this.userData) {
       this.toast.error('Please login before make appointment...');
       this.router.navigate(['/login']);
     } else {
       let doctorName = data.first_name.replace(/\s+/g, '-');
-      const doctor_id = data.id;
-      this.countDoctorClick(doctor_id);
-      this.router.navigate([`/doctor/${doctorName}/${doctor_id}`]);
+      this.countDoctorClick(data.id);
+      this.router.navigate([`/doctor/${doctorName}/${data.id}`]);
     }
   }
   onlineConsultationDialog(
@@ -255,7 +255,7 @@ export class FilterLayoutComponent implements OnInit {
 
     const payload: likeDTO = {
       isLike: this.tabData()[id].is_liked,
-      user_id: user_id,
+      patient_id: user_id,
       doctor_id: data.id, // Ensure correct doctor ID
     };
 

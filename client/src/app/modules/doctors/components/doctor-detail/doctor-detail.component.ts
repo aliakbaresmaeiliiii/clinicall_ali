@@ -25,7 +25,9 @@ export class DoctorDetailComponent extends BaseComponent {
     super();
     this.activatedRoute.params.subscribe((param: any) => {
       this.doctorId = +param.id;
-      this.fetchData(this.doctorId);
+      this.fetchData({ doctor_id: param.id });
+      console.log('kl;asjdf;lskdfm',{ doctor_id: param.id });
+      
     });
   }
 
@@ -34,12 +36,14 @@ export class DoctorDetailComponent extends BaseComponent {
       this.isMobile = result.matches;
     });
   }
-  fetchData(doctorId: number) {
+  fetchData(filter:{doctor_id:string}) {
     this.transferState.remove(this.DATA_KEY);
     const storedData = this.transferState.get(this.DATA_KEY, null);
+    console.log('dfsfsdfs',filter);
+    
 
     if (!storedData) {
-      this.service.doctorDetial(doctorId).subscribe({
+      this.service.getDoctors(filter).subscribe({
         next: (response: any) => {
           if (response && response.length > 0) {
             const newData = response.map((patient: any) => {

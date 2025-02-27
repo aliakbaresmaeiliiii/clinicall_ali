@@ -140,9 +140,8 @@ export class CustomTabComponent
   }
 
   handleInputChange(mode: string, valueOption: { name: string; id: number }) {
-      this.valueFiltering = valueOption.name;
-      debugger;
-     const  id = valueOption.id
+    this.valueFiltering = valueOption.name;
+    const id = valueOption.id;
     const payloadSpeciality = {
       specialty_id: id,
     };
@@ -161,7 +160,7 @@ export class CustomTabComponent
         break;
       case 'city':
         this.onChangeValueInput.emit(cityServices);
-        this.fetchNeighborhood(cityServices.city_id)
+        this.fetchNeighborhood(cityServices.city_id);
         break;
 
       default:
@@ -202,7 +201,6 @@ export class CustomTabComponent
   //   this.valueFiltering = option.name;
   // }
 
-
   getAllCities() {
     this.doctorService.getAllCities().subscribe(res => {
       this.cities = res.data;
@@ -221,11 +219,9 @@ export class CustomTabComponent
         name: city.name,
         id: city.id,
       }));
-
   }
 
-
-  fetchNeighborhood(city_id:number){
+  fetchNeighborhood(city_id: number) {
     this.doctorService.filteredNeighbor(city_id).subscribe(res => {
       this.neighborhood = res.data;
       this.filteredNeighborhood =
