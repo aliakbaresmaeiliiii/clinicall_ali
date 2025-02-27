@@ -11,7 +11,7 @@ router.get(
     const filters = {
       name: req.query.name as string,
       service_id: req.query.service_id as string,
-      speciality_id: req.query.speciality_id as string,
+      specialty_id: req.query.specialty_id as string,
       city_id: req.query.city_id as string,
       minRating: req.query.minRating ? parseFloat(req.query.minRating as string) : undefined,
       maxRating: req.query.maxRating ? parseFloat(req.query.maxRating as string) : undefined,

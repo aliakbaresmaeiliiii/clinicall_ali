@@ -11,7 +11,7 @@ export async function GetNeighborhoods(city_id: number) {
   const adjustedCityId = city_id + 1;
   const result = await query<RowDataPacket[]>(
     `
-     SELECT * FROM ${coreSchema}.filtered_neighborhoods
+     SELECT * FROM ${coreSchema}.neighborhoods
      WHERE city_id = ?
     `,
     {

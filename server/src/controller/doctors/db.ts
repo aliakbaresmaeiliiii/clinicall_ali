@@ -58,9 +58,9 @@ export async function addDoctor(data: DoctorsDTO) {
 export async function like(data: likeDTO) {
   const existingLike = await query<RowDataPacket>(
     `SELECT * FROM ${coreSchema}.doctor_likes 
-     WHERE doctor_id = ? AND user_id = ?`,
+     WHERE doctor_id = ? AND patient_id = ?`,
     {
-      values: [data.doctor_id, data.user_id],
+      values: [data.doctor_id, data.patient_id],
     }
   );
 
@@ -68,18 +68,18 @@ export async function like(data: likeDTO) {
     // Unlike the doctor: Remove the like
     await query<RowDataPacket>(
       `DELETE FROM ${coreSchema}.doctor_likes 
-       WHERE doctor_id = ? AND user_id = ?`,
+       WHERE doctor_id = ? AND patient_id = ?`,
       {
-        values: [data.doctor_id, data.user_id],
+        values: [data.doctor_id, data.patient_id],
       }
     );
   } else {
     // Like the doctor: Insert new like record
     await query<RowDataPacket>(
-      `INSERT INTO ${coreSchema}.doctor_likes (doctor_id, user_id, isLike) 
+      `INSERT INTO ${coreSchema}.doctor_likes (doctor_id, patient_id, isLike) 
        VALUES (?, ?, ?)`,
       {
-        values: [data.doctor_id, data.user_id, 1],
+        values: [data.doctor_id, data.patient_id, 1],
       }
     );
   }
@@ -107,11 +107,10 @@ export async function like(data: likeDTO) {
   return { success: true, isLiked };
 }
 
-
 export async function getDoctors(filters: {
   name?: string;
   service_id?: string;
-  speciality_id?: string;
+  specialty_id?: string;
   city_id?: string;
   minRating?: number;
   maxRating?: number;
@@ -119,10 +118,10 @@ export async function getDoctors(filters: {
   try {
     let sql = `
     SELECT 
-      d.*,
-      ld.*,
-      sp.*,
-      (SELECT AVG(rating) FROM ${coreSchema}.doctor_reviews r WHERE r.doctor_id = d.id),
+      d.id, d.first_name, d.last_name, d.email, d.phone, d.specialty_id, d.insurance_id, d.click_count,
+      sp.name AS specialty_name, 
+      i.name AS insurance_name,  
+      (SELECT AVG(rating) FROM ${coreSchema}.doctor_reviews r WHERE r.doctor_id = d.id) AS average_rating,
       COUNT(r.id) AS total_reviews,
       COALESCE(AVG(r.professional_demeanor), 0) AS avg_professional_demeanor,
       COALESCE(AVG(r.sufficient_time), 0) AS avg_sufficient_time,
@@ -132,71 +131,87 @@ export async function getDoctors(filters: {
       CASE 
         WHEN EXISTS (SELECT 1 FROM ${coreSchema}.doctor_likes dl WHERE dl.doctor_id = d.id) 
         THEN 1 ELSE 0
-      END AS isLiked
+      END AS isLiked,
+
+      JSON_ARRAYAGG(
+        JSON_OBJECT(
+          'country', ld.country,
+          'latitude', ld.latitude,
+          'longitude', ld.longitude,
+          'address_line1', ld.address_line1,
+          'address_line2', ld.address_line2,
+          'zipcode', ld.zipcode,
+          'city',ci.name,
+          'state',ci.state
+        )
+      ) AS addresses
+
     FROM 
       ${coreSchema}.doctors d
     LEFT JOIN 
-      ${coreSchema}.doctor_locations ld ON d.id = ld.doctor_id AND ld.is_primary = 1
+      ${coreSchema}.doctor_locations ld ON d.id = ld.doctor_id
     LEFT JOIN 
-      ${coreSchema}.cities c ON d.id = ld.city_id AND c.id
-    LEFT JOIN 
-      ${coreSchema}.specialties sp ON d.speciality_id = sp.id
+      ${coreSchema}.specialties sp ON d.specialty_id = sp.id
     LEFT JOIN 
       ${coreSchema}.doctor_reviews r ON d.id = r.doctor_id
     LEFT JOIN 
       ${coreSchema}.doctor_services ds ON d.service_id = ds.id
     LEFT JOIN 
-      ${coreSchema}.services s ON sp.id = s.speciality_id
+      ${coreSchema}.services s ON sp.id = s.specialty_id
+    LEFT JOIN 
+      ${coreSchema}.insurances i ON d.insurance_id = i.id
+    LEFT JOIN 
+      ${coreSchema}.cities ci ON ld.city_id = ci.id
   `;
 
-    // **Adding Filtering Conditions**
     const conditions: string[] = [];
     const values: any[] = [];
 
     if (filters.name) {
-      conditions.push("d.name = ?");
-      values.push(filters.name);
+      conditions.push("CONCAT(d.first_name, ' ', d.last_name) LIKE ?");
+      values.push(`%${filters.name}%`);
+    }
+    if (filters.specialty_id) {
+      conditions.push("sp.id = ?");
+      values.push(filters.specialty_id);
     }
     if (filters.service_id) {
       conditions.push("d.service_id = ?");
       values.push(filters.service_id);
     }
-
-    if (filters.speciality_id) {
-      conditions.push("sp.id = ?");
-      values.push(filters.speciality_id);
-    }
-
     if (filters.city_id) {
       conditions.push("ld.city_id = ?");
       values.push(filters.city_id);
-    }
-
-    if (filters.minRating !== undefined) {
-      conditions.push("HAVING average_rating >= ?");
-      values.push(filters.minRating);
-    }
-    
-    if (filters.maxRating !== undefined) {
-      conditions.push("HAVING average_rating <= ?");
-      values.push(filters.maxRating);
     }
 
     if (conditions.length) {
       sql += " WHERE " + conditions.join(" AND ");
     }
 
-    sql += `
-    GROUP BY d.id, ld.city_id, ld.state, ld.country, ld.latitude, ld.longitude, 
-             ld.address_line1, ld.address_line2, ld.zipcode
-    `;
+    sql += ` GROUP BY d.id, d.first_name, d.last_name, d.email, d.phone, d.specialty_id, d.insurance_id, sp.name, i.name;`;
+
+    const havingConditions: string[] = [];
+    if (filters.minRating !== undefined) {
+      havingConditions.push("average_rating >= ?");
+      values.push(filters.minRating);
+    }
+    if (filters.maxRating !== undefined) {
+      havingConditions.push("average_rating <= ?");
+      values.push(filters.maxRating);
+    }
+
+    if (havingConditions.length) {
+      sql += " HAVING " + havingConditions.join(" AND ");
+    }
+
+    console.log("Generated SQL:", sql, values);
 
     const result = await query<RowDataPacket[]>(sql, {
-      values: [values],
+      values: values, // Fixed: No need to wrap values in an array
     });
     return result as DoctorsDTO[];
   } catch (error) {
-    console.log(error);
+    console.error(error);
     throw new ResponseError.InternalServer("An unexpected error occurred.");
   }
 }
@@ -227,7 +242,7 @@ export async function getMostPopularDoctors(): Promise<any> {
       LEFT JOIN 
         ${coreSchema}.doctor_locations ld ON d.id = ld.id
       LEFT JOIN 
-        ${coreSchema}.specialties s ON d.speciality_id = s.id
+        ${coreSchema}.specialties s ON d.specialty_id = s.id
       HAVING 
         total_ratings > 3
       ORDER BY 
@@ -286,20 +301,15 @@ export async function checkDoctorPhoneNumberExists(
 
 export async function doctorDetail(doctorId: number): Promise<any> {
   try {
-    const result = await query<RowDataPacket>(
-      `
-       SELECT 
-      d.*, 
-        COALESCE(ld.city, 'No City') AS city,
-        COALESCE(ld.state, '') AS state,
+    const sql = `
+      SELECT 
+        d.*, 
         COALESCE(ld.country, '') AS country,
         COALESCE(ld.latitude, 0) AS latitude,
         COALESCE(ld.longitude, 0) AS longitude,
         COALESCE(ld.address_line1, '') AS address_line1,
         COALESCE(ld.address_line2, '') AS address_line2,
-        COALESCE(ld.state, '') AS state,
         COALESCE(ld.zipcode, '') AS zipcode,
-        COALESCE(ld.country, '') AS country,
         COALESCE(AVG(r.rating), 0) AS average_rating,
         COALESCE(AVG(r.professional_demeanor), 0) AS avg_professional_demeanor,
         COALESCE(AVG(r.sufficient_time), 0) AS avg_sufficient_time,
@@ -309,32 +319,35 @@ export async function doctorDetail(doctorId: number): Promise<any> {
         COUNT(r.id) AS total_reviews,
         COALESCE(GROUP_CONCAT(DISTINCT r.comment SEPARATOR ' | '), 'No comments') AS comments,
         s.name AS specialty_name,
-      (SELECT AVG(rating) 
-        FROM ${coreSchema}.doctor_reviews r 
-        WHERE r.doctor_id = d.id) AS average_rating,
-        
-      CASE 
-        WHEN EXISTS (SELECT 1 FROM ${coreSchema}.doctor_likes dl WHERE dl.doctor_id = d.id) 
-        THEN 1 ELSE 0
-      END AS isLiked
-    FROM 
-      ${coreSchema}.doctors d
-    LEFT JOIN 
-      ${coreSchema}.doctor_locations ld ON d.id = ld.doctor_id AND ld.is_primary = 1
-          LEFT JOIN 
-      ${coreSchema}.doctor_reviews r ON d.id = r.doctor_id
-    LEFT JOIN 
-      ${coreSchema}.specialties s ON d.speciality_id = s.id
+        i.name AS insurance_name,
+        CASE 
+          WHEN EXISTS (SELECT 1 FROM ${coreSchema}.doctor_likes dl WHERE dl.doctor_id = d.id) 
+          THEN 1 ELSE 0
+        END AS isLiked
+      FROM 
+        ${coreSchema}.doctors d
+      LEFT JOIN 
+        ${coreSchema}.doctor_locations ld ON d.id = ld.doctor_id AND ld.is_primary = 1
+      LEFT JOIN 
+        ${coreSchema}.doctor_reviews r ON d.id = r.doctor_id
+      LEFT JOIN 
+        ${coreSchema}.specialties s ON d.specialty_id = s.id
+      LEFT JOIN
+        ${coreSchema}.insurances i ON d.insurance_id = i.id
       WHERE 
-         d.id = ?
-      `,
+        d.id = ?
+      GROUP BY 
+        d.id,  ld.country, ld.latitude, ld.longitude, ld.address_line1, 
+        ld.address_line2, ld.zipcode, s.name, i.name;
+    `;
 
-      { values: [doctorId] }
-    );
+    const result = await query<RowDataPacket[]>(sql, { values: [doctorId] });
+
     if (!result || result.length === 0) {
       return { message: "Doctor not found" };
     }
-    return result;
+
+    return result[0]; // Return single doctor object instead of an array
   } catch (error) {
     console.error("Error fetching doctor details:", error);
     throw new ResponseError.InternalServer("An unexpected error occurred.");
@@ -439,7 +452,7 @@ export async function filterSpecialtyById(specialty: any) {
       LEFT JOIN 
         ${coreSchema}.doctor_locations ld ON d.id = ld.id
       LEFT JOIN 
-        ${coreSchema}.specialties s ON d.speciality_id = s.id
+        ${coreSchema}.specialties s ON d.specialty_id = s.id
   
       WHERE 
       s.id = ?;
@@ -490,9 +503,9 @@ export async function filterServicesById(serviceId: number) {
     LEFT JOIN 
       ${coreSchema}.locations_doctors ld ON d.id = ld.id
     LEFT JOIN 
-      ${coreSchema}.specialties s ON d.speciality_id = s.id
+      ${coreSchema}.specialties s ON d.specialty_id = s.id
     JOIN 
-      ${coreSchema}.services srv  ON srv.speciality_id = s.id
+      ${coreSchema}.services srv  ON srv.specialty_id = s.id
     WHERE 
     srv.id = ?;
     `,
