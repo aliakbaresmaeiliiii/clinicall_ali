@@ -6,6 +6,7 @@ export interface DoctorsDTO {
   doctor_id?: any;
   first_name: string;
   last_name: string;
+  addresses: IDoctorAddresses[];
   phone?: string | undefined | null;
   specialty_name: string | null | undefined;
   dateOfBirth?: string | undefined | any;
@@ -40,13 +41,13 @@ export interface ReviewsDTO {
   skill: number;
   staff_behavior: number;
   clinic_condition: number;
-  comment:string
+  comment: string;
 }
 
 export interface DoctorScheduleAvailability {
   availableTime: string[];
-  appointment_date:string;
-  day_of_week:string;
+  appointment_date: string;
+  day_of_week: string;
   consultation_types: string;
   id: number;
   doctor_id: number;
@@ -66,4 +67,15 @@ export interface DoctorScheduleTimeAvailability {
 export enum BookingStatus {
   is_booked = 1,
   is_available = 0,
+}
+
+export interface IDoctorAddresses {
+  address_line1: string;
+  address_line2: string;
+  city: string;
+  country: string;
+  latitude: string;
+  longitude: string;
+  state: string;
+  zipcode: string;
 }

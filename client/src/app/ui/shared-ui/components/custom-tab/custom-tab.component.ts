@@ -141,9 +141,10 @@ export class CustomTabComponent
 
   handleInputChange(mode: string, valueOption: { name: string; id: number }) {
       this.valueFiltering = valueOption.name;
+      debugger;
      const  id = valueOption.id
     const payloadSpeciality = {
-      speciality_id: id,
+      specialty_id: id,
     };
     const payloadServices = {
       service_id: id,
@@ -160,6 +161,7 @@ export class CustomTabComponent
         break;
       case 'city':
         this.onChangeValueInput.emit(cityServices);
+        this.fetchNeighborhood(cityServices.city_id)
         break;
 
       default:
@@ -167,9 +169,9 @@ export class CustomTabComponent
     }
   }
 
-  getValueChange(option: FilerValue) {
-    this.valueFiltering = option.name;
-  }
+  // getValueChange(option: FilerValue) {
+  //   this.valueFiltering = option.name;
+  // }
 
   fetchServices() {
     this.doctorService.fetchServices().subscribe(res => {
@@ -193,9 +195,13 @@ export class CustomTabComponent
       }));
   }
 
-  getValueService(option: FilerValue) {
-    this.valueFiltering = option.name;
-  }
+  // getValueService(option: FilerValue) {
+  //   this.valueFiltering = option.name;
+  // }
+  // getValueCity(option: FilerValue) {
+  //   this.valueFiltering = option.name;
+  // }
+
 
   getAllCities() {
     this.doctorService.getAllCities().subscribe(res => {
@@ -215,19 +221,20 @@ export class CustomTabComponent
         name: city.name,
         id: city.id,
       }));
+
   }
 
-  // getValueCity(option: { name: string; city_id: number }) {
-  //   this.valueFiltering = option.name;
-  //   this.doctorService.filteredNeighbor(option.city_id).subscribe(res => {
-  //     this.neighborhood = res.data;
-  //     this.filteredNeighborhood =
-  //       this.form.controls.neighborhoodForm.valueChanges.pipe(
-  //         startWith(''),
-  //         map(value => this._filterNeighbore(value || ''))
-  //       );
-  //   });
-  // }
+
+  fetchNeighborhood(city_id:number){
+    this.doctorService.filteredNeighbor(city_id).subscribe(res => {
+      this.neighborhood = res.data;
+      this.filteredNeighborhood =
+        this.form.controls.neighborhoodForm.valueChanges.pipe(
+          startWith(''),
+          map(value => this._filterNeighbore(value || ''))
+        );
+    });
+  }
 
   _filterNeighbore(value: string): FilerValue[] {
     const filterValue = value.toLowerCase();

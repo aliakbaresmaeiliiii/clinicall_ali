@@ -47,19 +47,19 @@
             [label]="'City'"
             [placeHolder]="'City'"
             [parentForm]="form"
-            [fieldCtrl]="'city'"
+            [formCrName]="'city'"
             [filterOption]="filteredCity"
             (valueInput)="handleInputChange('city',$event)" />
           <mat-divider></mat-divider>
 
-          <app-generic-auto-compelete
+          <!-- <app-generic-auto-compelete
             [label]="'Neighborhood'"
             [placeHolder]="'Neighborhood'"
             [parentForm]="form"
             [formCrName]="'neighborhoodForm'"
             [filterOption]="filteredNeighborhood"
             (valueInput)="handleInputChange('neighborhoodForm',$event)" />
-          <mat-divider></mat-divider>
+          <mat-divider></mat-divider> -->
 
           <app-generic-auto-compelete
             [label]="'Insurance'"
