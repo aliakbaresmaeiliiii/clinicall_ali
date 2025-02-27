@@ -68,7 +68,7 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
     this.route.paramMap.subscribe(params => {
       this.doctorId = params.get('id');
       this.doctorName = params.get('name');
-      this.fetchData(this.doctorId);
+      this.fetchData({ doctor_id: this.doctorId });
       window.scroll({ top: 0, behavior: 'smooth' });
     });
   }
@@ -98,20 +98,23 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
     // this.getComment();
   }
 
-  fetchData(doctorId: number) {
+  fetchData(filter: { doctor_id: string }) {
+    debugger;
     this.transferState.remove(this.DATA_KEY);
     const storedData = this.transferState.get(this.DATA_KEY, null);
     if (!storedData) {
-      this.doctorService.doctorDetial(doctorId).subscribe({
+      this.doctorService.getDoctors(filter).subscribe({
         next: (response: any) => {
-          if (response && response.length > 0) {
-            const newData = response.map((doctor: any) => {
-              doctor.profile_img = doctor.profile_img
-                ? `${environment.urlProfileImg}${doctor.profile_img}`
+          if (response.data) {
+            const newData = response.data.map((img: any) => {
+              img.profile_img = img.profile_img
+                ? `${environment.urlProfileImg}${img.profile_img}`
                 : '../../../assets/images/bg-01.png';
-              return doctor;
+              return img;
             });
             this.doctorInfo.set(newData);
+            console.log('🤲🤲🤲🤲',newData);
+            
 
             // const match = newData[0].address.match(/^Subang Jaya\s*/);
             // this.addressBreifly = match ? match[0] : '';

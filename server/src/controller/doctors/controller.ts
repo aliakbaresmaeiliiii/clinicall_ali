@@ -13,6 +13,7 @@ router.get(
       service_id: req.query.service_id as string,
       specialty_id: req.query.specialty_id as string,
       city_id: req.query.city_id as string,
+      doctor_id: req.query.doctor_id as string,
       minRating: req.query.minRating ? parseFloat(req.query.minRating as string) : undefined,
       maxRating: req.query.maxRating ? parseFloat(req.query.maxRating as string) : undefined,
     };
@@ -51,15 +52,15 @@ router.post(
   })
 );
 
-router.get(
-  `/admin/doctor-detial/:doctorId`,
-  asyncHandler(async (req: Request, res: Response): Promise<any> => {
-    const doctorId = +req.params.doctorId;
-    const data = await DoctorsService.doctorDetial(doctorId);
-    const buildResponse = BuildResponse.get(data);
-    return res.status(buildResponse.code).json(buildResponse);
-  })
-);
+// router.get(
+//   `/admin/doctor-detial/:doctorId`,
+//   asyncHandler(async (req: Request, res: Response): Promise<any> => {
+//     const doctorId = +req.params.doctorId;
+//     const data = await DoctorsService.doctorDetial(doctorId);
+//     const buildResponse = BuildResponse.get(data);
+//     return res.status(buildResponse.code).json(buildResponse);
+//   })
+// );
 
 router.put(
   "/admin/updateDoctor",

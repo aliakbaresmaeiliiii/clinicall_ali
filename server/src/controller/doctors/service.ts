@@ -10,7 +10,6 @@ import {
   addDoctor,
   booked,
   checkDoctorPhoneNumberExists,
-  doctorDetail,
   doctorSchadules,
   doctorScheduleTimeAvailability,
   existingFeedback,
@@ -33,6 +32,7 @@ export class DoctorsService {
     name?: string;
     id?: string;
     city_id?: string;
+    doctor_id?: string;
     minRating?: number;
     maxRating?: number;
   }) {
@@ -70,14 +70,14 @@ export class DoctorsService {
       return null;
     }
   }
-  public static async doctorDetial(doctortId: number) {
-    const data = await doctorDetail(doctortId);
-    if (data) {
-      return { message: "ok", data };
-    } else {
-      return null;
-    }
-  }
+  // public static async doctorDetial(doctortId: number) {
+  //   const data = await doctorDetail(doctortId);
+  //   if (data) {
+  //     return { message: "ok", data };
+  //   } else {
+  //     return null;
+  //   }
+  // }
   public static async updateDoctor(formData: DoctorsDTO) {
     const data = await updateDoctor(formData);
     if (data) {

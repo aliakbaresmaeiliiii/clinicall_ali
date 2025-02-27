@@ -113,8 +113,8 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
     this.fetchDoctorScheduleAvailability(doctor_id, consultation_types);
   }
 
-  fetchData(doctorId: number) {
-    this.service.doctorDetial(doctorId).subscribe({
+  fetchData(doctor_id: any) {
+    this.service.getDoctors(doctor_id).subscribe({
       next: (response: any) => {
         console.log('response', response);
         if (response && response.length > 0) {
