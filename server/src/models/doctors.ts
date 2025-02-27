@@ -28,7 +28,7 @@ interface Password {
 
 export interface likeDTO {
   doctor_id: number;
-  user_id: string;
+  patient_id: string;
   isLike: boolean;
 }
 
