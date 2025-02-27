@@ -25,7 +25,7 @@ export class DoctorsService {
   getDoctors(filters?: {
     name?: string;
     service_id: string;
-    speciality_id?: string;
+    specialty_id?: string;
     city?: string;
     minRating?: number;
     maxRating?: number;
