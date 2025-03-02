@@ -105,12 +105,12 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
   }
 
   private initializeComponent(): void {
-    const { doctor_id, consultation_types } = this.data;
-    this.loadDoctorData(doctor_id, consultation_types);
+    const { doctor_id, consultatio_types_available } = this.data;
+    this.loadDoctorData(doctor_id, consultatio_types_available);
   }
-  private loadDoctorData(doctor_id: number, consultation_types: string): void {
+  private loadDoctorData(doctor_id: number, consultatio_types_available: string): void {
     this.fetchData(doctor_id);
-    this.fetchDoctorScheduleAvailability(doctor_id, consultation_types);
+    this.fetchDoctorScheduleAvailability(doctor_id, consultatio_types_available);
   }
 
   fetchData(doctor_id: any) {
@@ -136,10 +136,10 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
 
   fetchDoctorScheduleAvailability(
     doctor_id: number,
-    consultation_types: string
+    consultatio_types_available: string
   ) {
     this.schedulesService
-      .fetchDoctorScheduleAvailability(doctor_id, consultation_types)
+      .fetchDoctorScheduleAvailability(doctor_id, consultatio_types_available)
       .subscribe((res: any) => {
         console.log('schedule', res.data);
         this.doctorScheduleAvailability = res.data.map((item: any) => ({
@@ -230,8 +230,8 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
           }
 
           // Refresh the entire schedule availability
-          const { doctor_id, consultation_types } = this.data;
-          this.fetchDoctorScheduleAvailability(doctor_id, consultation_types);
+          const { doctor_id, consultatio_types_available } = this.data;
+          this.fetchDoctorScheduleAvailability(doctor_id, consultatio_types_available);
         }
       },
       error: e => {

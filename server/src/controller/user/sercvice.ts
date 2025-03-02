@@ -2,7 +2,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import ms from "ms";
 import { getUniqueCodev2, getUniqueCodev3 } from "../../helper/common";
-import SendMail from "../../helper/send_email";
 import { useValidation } from "../../helper/use_validation";
 import { ResponseError } from "../../modules/error/response_error";
 import { User } from "../../types/user";
@@ -13,7 +12,7 @@ import {
   comparePassword,
   getOTP,
   getUserInfo,
-  updateProfileUser,
+  updateProfilePatient,
   updateUserVerifyCode
 } from "./db";
 import { checkEmailSchema } from "./schema";
@@ -79,7 +78,8 @@ export class UserService {
    * @param userData
    */
 
-  public static async updateProfileuser(userData: User) {
+
+  public static async updateProfilePatient(userData: User) {
     const generateToken = {
       code: getUniqueCodev2(),
     };
@@ -93,13 +93,14 @@ export class UserService {
     );
 
     userData.verify_code = getUniqueCodev3();
-    userData.tokenVerify = tokenVerify;
-    const result = await updateProfileUser(userData);
-    if (!result) {
-      throw new ResponseError.BadRequest("Can Not Update profile...");
+    userData.token_verify = tokenVerify;
+    const data = await updateProfilePatient(userData);
+    if (data) {
+      return data
     } else {
-      return result;
+      return null
     }
+
   }
 
   /**

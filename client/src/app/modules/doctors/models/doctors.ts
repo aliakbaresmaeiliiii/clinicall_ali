@@ -48,7 +48,7 @@ export interface DoctorScheduleAvailability {
   availableTime: string[];
   appointment_date: string;
   day_of_week: string;
-  consultation_types: string;
+  consultatio_types_available: string;
   id: number;
   doctor_id: number;
   scheduleID: number;

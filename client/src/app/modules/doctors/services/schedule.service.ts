@@ -13,14 +13,14 @@ export class ScheduleService {
 
   fetchDoctorScheduleAvailability(
     doctor_id: number,
-    consultation_types: string
+    consultatio_types_available: string
   ): Observable<DoctorScheduleAvailability[]> {
-    const params = new HttpParams().set('consultation_types', consultation_types);
+    const params = new HttpParams().set('consultatio_types_available', consultatio_types_available);
     const url = `${this.config}doctors/${doctor_id}/doctor_schedules`;
-    return this.#http.get<DoctorScheduleAvailability[]>(url, {
-      params: params,
-    });
+    
+    return this.#http.get<DoctorScheduleAvailability[]>(url, { params });
   }
+  
   doctorScheduleTimeAvailability(
     scheduleID: number
   ): Observable<DoctorScheduleAvailability[]> {

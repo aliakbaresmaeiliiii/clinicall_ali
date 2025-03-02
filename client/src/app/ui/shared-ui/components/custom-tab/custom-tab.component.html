@@ -1,4 +1,4 @@
-<div class="grid grid-rows-9 grid-cols-9 grid-flow-col gap-4 w-10/12 m-auto ">
+<div class="grid grid-rows-9 grid-cols-9 grid-flow-col gap-4 w-10/12 mx-auto mt-36">
   <div class="row-span-9 col-span-2 bg-white rounded-2xl p-4">
     <h2 class="pb-2">Filters</h2>
     <ng-content></ng-content>
@@ -6,10 +6,8 @@
       <mat-tab>
         <div class="mx-4">
           @if (valueFiltering) {
-          <span
-            class="bg-gray-300 rounded-2xl w-fit max-w-56 flex items-center gap-4 my-3 px-3"
-            (click)="deleteFilter(valueFiltering)"
-            >{{ valueFiltering }}
+          <span class="bg-gray-300 rounded-2xl w-fit max-w-56 flex items-center gap-4 my-3 px-3"
+            (click)="deleteFilter(valueFiltering)">{{ valueFiltering }}
             <i class="fa-solid fa-xmark"></i>
           </span>
           <mat-divider></mat-divider>
@@ -17,39 +15,24 @@
         </div>
         <ng-template mat-tab-label>
           <div class="flex gap-1">
-            <img
-              src="../../../../assets/images/ui/svg/clinic-appointment.svg"
-              alt="" />
+            <img src="../../../../assets/images/ui/svg/clinic-appointment.svg" alt="" />
             <span class="text-xs"> Clinic Appointment </span>
           </div>
         </ng-template>
 
         <!-- tettgeneric -->
         <form [formGroup]="form">
-          <app-generic-auto-compelete
-            [label]="'Specialty and Super-specialty'"
-            [placeHolder]="'Test Placeholder'"
-            [parentForm]="form"
-            [formCrName]="'speciality'"
-            [filterOption]="filteredSpeciality"
+          <app-generic-auto-compelete [label]="'Specialty and Super-specialty'" [placeHolder]="'Test Placeholder'"
+            [parentForm]="form" [formCrName]="'speciality'" [filterOption]="filteredSpeciality"
             (valueInput)="handleInputChange('speciality',$event)" />
           <mat-divider></mat-divider>
 
-          <app-generic-auto-compelete
-            [label]="'Services'"
-            [placeHolder]="'Please choose the service you need.'"
-            [parentForm]="form"
-            [formCrName]="'services'"
-            [filterOption]="filteredServices"
+          <app-generic-auto-compelete [label]="'Services'" [placeHolder]="'Please choose the service you need.'"
+            [parentForm]="form" [formCrName]="'services'" [filterOption]="filteredServices"
             (valueInput)="handleInputChange('services',$event)" />
           <mat-divider></mat-divider>
-          <app-generic-auto-compelete
-            [label]="'City'"
-            [placeHolder]="'City'"
-            [parentForm]="form"
-            [formCrName]="'city'"
-            [filterOption]="filteredCity"
-            (valueInput)="handleInputChange('city',$event)" />
+          <app-generic-auto-compelete [label]="'City'" [placeHolder]="'City'" [parentForm]="form" [formCrName]="'city'"
+            [filterOption]="filteredCity" (valueInput)="handleInputChange('city',$event)" />
           <mat-divider></mat-divider>
 
           <!-- <app-generic-auto-compelete
@@ -61,12 +44,8 @@
             (valueInput)="handleInputChange('neighborhoodForm',$event)" />
           <mat-divider></mat-divider> -->
 
-          <app-generic-auto-compelete
-            [label]="'Insurance'"
-            [placeHolder]="'Insurance'"
-            [parentForm]="form"
-            [formCrName]="'insurance'"
-            [filterOption]="filteredInsurance"
+          <app-generic-auto-compelete [label]="'Insurance'" [placeHolder]="'Insurance'" [parentForm]="form"
+            [formCrName]="'insurance'" [filterOption]="filteredInsurance"
             (valueInput)="handleInputChange('insurance',$event)" />
         </form>
       </mat-tab>
@@ -74,9 +53,7 @@
       <mat-tab>
         <ng-template mat-tab-label>
           <div class="flex gap-1">
-            <img
-              src="../../../../assets/images/ui/svg/phone-consultaion.svg"
-              alt="" />
+            <img src="../../../../assets/images/ui/svg/phone-consultaion.svg" alt="" />
             <span class="text-xs"> Phone Consultation </span>
           </div>
         </ng-template>
@@ -86,9 +63,7 @@
       <mat-tab>
         <ng-template mat-tab-label>
           <div class="flex gap-1">
-            <img
-              src="../../../../assets/images/ui/svg/text-consultaion.svg"
-              alt="" />
+            <img src="../../../../assets/images/ui/svg/text-consultaion.svg" alt="" />
             <span class="text-xs"> Text Consultation </span>
           </div>
         </ng-template>
@@ -105,24 +80,14 @@
   <div class="row-span-8 col-span-7 bg-slate-100 p-4 rounded-2xl">
     <div class="grid grid-cols-8 my-auto">
       <span class="flex items-center gap-1 opacity-55">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 20 20"
-          width="24"
-          height="24">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="24" height="24">
           <path
             d="M17.5 6.458h-15a.63.63 0 0 1-.625-.625.63.63 0 0 1 .625-.625h15a.63.63 0 0 1 .625.625.63.63 0 0 1-.625.625M15 10.625H5A.63.63 0 0 1 4.375 10 .63.63 0 0 1 5 9.375h10a.63.63 0 0 1 .625.625.63.63 0 0 1-.625.625M11.665 14.792H8.332a.63.63 0 0 1-.625-.625.63.63 0 0 1 .625-.625h3.333a.63.63 0 0 1 .625.625.63.63 0 0 1-.625.625"
-            stroke="black"
-            stroke-width="2"
-            stroke-linecap="round" />
+            stroke="black" stroke-width="2" stroke-linecap="round" />
         </svg>
-        Sort by:</span
-      >
+        Sort by:</span>
       @for (option of filterOptions; track $index) {
-      <button
-        mat-button
-        class="filter-item"
-        (click)="setActiveFilter(option)"
+      <button mat-button class="filter-item" (click)="setActiveFilter(option)"
         [class.active]="option.key === activeFilter">
         <span class="text-xs">{{ option.label }}</span>
       </button>

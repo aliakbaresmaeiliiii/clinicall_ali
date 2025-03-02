@@ -49,14 +49,15 @@ router.get(
     res.json(buildResponse);
   })
 );
+
 // ***** updateProfile
 router.put(
-  `/user/updateProfile`,
-  asyncHandler(async function updateProfileUser(req: Request, res: Response) {
+  `/api/updateProfilePatient`,
+  asyncHandler(async function updateProfilePatient(req: any, res: any) {
     const formData = req.body;
-    const result = await UserService.updateProfileuser(formData);
+    const result = await UserService.updateProfilePatient(formData);
     const buildResponse = await BuildResponse.get(result);
-    res.json(buildResponse);
+    return res.status(buildResponse.code).json(buildResponse);
   })
 );
 

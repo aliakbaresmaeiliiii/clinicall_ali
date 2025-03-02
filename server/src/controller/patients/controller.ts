@@ -18,7 +18,7 @@ const uploadImgProfile = multer({ storage });
 
 // **** GetAll
 router.get(
-  "/admin/patients",
+  "/api/patients",
   asyncHandler(async function getNavItems(req: any, res: any) {
     const data = await PatientService.getPatients();
     const buildResponse = BuildResponse.get(data);

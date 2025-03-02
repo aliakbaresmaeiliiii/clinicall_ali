@@ -570,19 +570,30 @@ export async function getReviews() {
 
 export async function doctorSchadules(
   doctor_id: number,
-  consultation_types?: string
+  consultatio_types_available?: string
 ) {
+  const queryParams: any[] = [doctor_id];
   try {
-    const result = await query<RowDataPacket[]>(
-      `
-      SELECT id, doctor_id,appointment_date, day_of_week, start_time, end_time, is_available, consultation_types, consultation_mode 
-      FROM ${coreSchema}.doctor_schedules
-      WHERE doctor_id = ? AND consultation_types = ?`,
-      {
-        values: [doctor_id, consultation_types],
-      }
-    );
-    return result;
+    let queryStr = `
+   SELECT 
+        d.schedule_id
+        ds.id AS schedule_id,
+        ds.consultatio_types_available,
+        dat.id AS available_time_id,
+        dat.time AS available_time,
+        dat.is_booked
+      FROM ${coreSchema}.doctors d
+      LEFT JOIN ${coreSchema}.doctor_schedules ds
+      LEFT JOIN ${coreSchema}.doctor_available_times dat ON ds.availableTime_id = dat.id
+      WHERE d.id = ?
+    `
+
+    if (consultatio_types_available) {
+      queryStr += ' AND ds.consultatio_types_available =?';
+      queryParams.push(consultatio_types_available)
+    }
+    const result = await query<RowDataPacket[]>(queryStr, { values: queryParams })
+    return result
   } catch (error) {
     console.log(error);
     throw new ResponseError.InternalServer("Internal server Error");

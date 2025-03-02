@@ -33,7 +33,7 @@ export class PatientsService {
   // }
   getPatients(): Observable<PatientDTO[]> {
     return this.#http.get<PatientDTO[]>(
-      `${environment.apiEndPoint}admin/patients`
+      `${environment.apiEndPoint}api/patients`
     );
   }
   patientDetial(id: number) {

@@ -13,7 +13,7 @@ export class ProfileLayoutComponent implements OnInit{
   userImg: any;
   focusedRoute: string | null = null;
   router = inject(Router);
-  titleRoute = signal<string>('');
+  titleRoute = signal<string>('userInformation');
 
   settingsRoutes = routes
     .flatMap(route => route.children)

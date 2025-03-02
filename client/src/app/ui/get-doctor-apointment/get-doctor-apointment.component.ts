@@ -99,7 +99,6 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
   }
 
   fetchData(filter: { doctor_id: string }) {
-    debugger;
     this.transferState.remove(this.DATA_KEY);
     const storedData = this.transferState.get(this.DATA_KEY, null);
     if (!storedData) {

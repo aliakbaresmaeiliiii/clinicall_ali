@@ -207,7 +207,6 @@ export class FilterLayoutComponent implements OnInit {
   }
 
   visitProfile(data: any) {
-    debugger
     if (!this.userData) {
       this.toast.error('Please login before make appointment...');
       this.router.navigate(['/login']);
