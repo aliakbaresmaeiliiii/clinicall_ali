@@ -1,7 +1,8 @@
 import { coreSchema, query, RowDataPacket } from "../../bin/mysql";
 import { ConfirmEmail } from "../../models/auth";
+import { ResponseError } from "../../modules/error/response_error";
 import { AppResponse } from "../../types/response.interface";
-import {  CreateUser, User } from "../../types/user";
+import { CreateUser, User } from "../../types/user";
 import { createPasswordSchema } from "./schema";
 import bcrypt from "bcrypt";
 
@@ -109,48 +110,58 @@ export async function comparePassword(data: any): Promise<any> {
   return result;
 }
 
-export async function updateProfileUser(data: User): Promise<any> {
-  // Perform the update query
-  await query<RowDataPacket>(
-    `
-      UPDATE ${coreSchema}.users
+export async function updateProfilePatient(data: User): Promise<any> {
+  try {
+    // Perform the update query
+    await query<RowDataPacket>(
+      `
+      UPDATE ${coreSchema}.patients
       SET 
-        firstName = ?,
-        lastName = ?,
+        first_name = ?,
+        last_name = ?,
         national_code = ?,
-        dateOfBirth = ?,
+        date_of_birth = ?,
         gender = ?,
         city = ?,
-        phoneNumber = ?,
+        phone = ?,
         verify_code = ?,
-        tokenVerify = ?
+        token_verify = ?
       WHERE id = ?;
     `,
-    {
-      values: [
-        data.firstName,
-        data.lastName,
-        data.national_code,
-        data.dateOfBirth,
-        data.gender,
-        data.city,
-        data.phoneNumber,
-        data.verify_code,
-        data.tokenVerify,
-        data.id,
-      ],
-    }
-  );
+      {
+        values: [
+          data.first_name,
+          data.last_name,
+          data.national_code,
+          data.date_of_birth,
+          data.gender,
+          data.city,
+          data.phone,
+          data.verify_code,
+          data.token_verify,
+          data.id,
+        ],
+      }
+    );
 
-  // Fetch the updated user profile
-  const result = await query<RowDataPacket>(
-    `SELECT * FROM ${coreSchema}.users WHERE id = ?`,
-    {
-      values: [data.id],
+    // Fetch the updated user profile
+    const result = await query<RowDataPacket>(
+      `SELECT * FROM ${coreSchema}.patients WHERE id = ?`,
+      {
+        values: [data.id],
+      }
+    );
+    if (result.affectedRows > 0) {
+      return `This ID ${data.id} updated successfully`;
+    } else {
+      return `No record found with ID ${data.id}`;
     }
-  );
+  } catch (error) {
+    console.log(error)
+    throw new ResponseError.InternalServer('Could not update patientProfile')
+  }
 
-  return result[0]; // Assuming result is an array of rows
+
 }
 
 export async function checkNickName(): Promise<any> {

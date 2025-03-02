@@ -122,7 +122,7 @@ export async function getPatientByPassword(
   try {
     const user = await query<RowDataPacket[]>(
       ` SELECT *
-      FROM ${coreSchema}.patient 
+      FROM ${coreSchema}.patients
       WHERE email = ?`,
       {
         values: [email],

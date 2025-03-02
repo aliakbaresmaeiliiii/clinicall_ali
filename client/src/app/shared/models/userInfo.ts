@@ -3,10 +3,10 @@ export interface UserInfo {
   patientName: string;
   age: number;
   sex: string;
-  phoneNumber: any;
+  phone: any;
   external_id?: number;
-  firstName?: any;
-  lastName?: any;
+  first_name?: any;
+  last_name?: any;
   national_code?: any;
   surname?: string;
   middle_name?: string;

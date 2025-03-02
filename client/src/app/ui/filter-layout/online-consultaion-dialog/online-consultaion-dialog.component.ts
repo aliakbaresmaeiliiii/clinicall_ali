@@ -43,7 +43,7 @@ export class OnlineConsultaionDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.form = this.fb.group({
-      consultation_types: [null, Validators.required], 
+      consultatio_types_available: [null, Validators.required], 
     });
     console.log('👉👉👉', this.data);
   }
@@ -59,7 +59,7 @@ export class OnlineConsultaionDialogComponent implements OnInit {
   openChoosingAppointmentDialog(): void {
     this.dialogService.openDialog(ChoosingAppointmentComponent, {
       doctor_id: this.data.doctor_id,
-      consultation_types: this.form.value.consultation_types,
+      consultatio_types_available: this.form.value.consultatio_types_available,
       enterAnimationDuration: '400ms',
       exitAnimationDuration: '300ms',
     });

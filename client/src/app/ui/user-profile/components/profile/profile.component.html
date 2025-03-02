@@ -1,62 +1,63 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-4">
+<form [formGroup]="form" (ngSubmit)="onSubmit()" >
   <div class="desktop:grid grid-cols-2 gap-4 w-[70rem]">
-    <!-- *****firstName***** -->
-    <mat-form-field data-testing="firstName" appearance="outline" class="w-full">
-      <mat-label>firstName</mat-label>
+    <!-- <h2>{{'User Information'}}</h2> -->
+    <!-- *****first_name***** -->
+    <mat-form-field data-testing="first_name" appearance="outline" class="w-full">
+      <mat-label>first_name</mat-label>
       <input
         type="text"
         matInput
         [errorStateMatcher]="matcher"
-        formControlName="firstName"
-        placeholder="firstName" />
+        formControlName="first_name"
+        placeholder="first_name" />
       <!-- Error handling -->
-      <mat-error *ngIf="firstName?.hasError('firstName') && !firstName?.hasError('required')"
-        >Please enter a valid firstName</mat-error
+      <mat-error *ngIf="first_name?.hasError('first_name') && !first_name?.hasError('required')"
+        >Please enter a valid first_name</mat-error
       >
-      <mat-error *ngIf="firstName?.hasError('required')"
-        >firstName is <strong>required</strong></mat-error
+      <mat-error *ngIf="first_name?.hasError('required')"
+        >first_name is <strong>required</strong></mat-error
       >
-      <mat-error *ngIf="firstName?.hasError('minlength')"
-        >firstName is too short
+      <mat-error *ngIf="first_name?.hasError('minlength')"
+        >first_name is too short
         <strong>{{
-          firstName?.getError('minlength')?.requiredLength
+          first_name?.getError('minlength')?.requiredLength
         }}</strong></mat-error
       >
-      <mat-error *ngIf="firstName?.hasError('banWords')"
+      <mat-error *ngIf="first_name?.hasError('banWords')"
         >The value
-        <strong>{{ firstName?.getError('banWords').bannedWord }} </strong>is
+        <strong>{{ first_name?.getError('banWords').bannedWord }} </strong>is
         banned</mat-error
       >
     </mat-form-field>
 
-    <!-- *****lastName***** -->
-    <mat-form-field data-testing="lastName" appearance="outline" class="w-full">
-      <mat-label>lastName</mat-label>
+    <!-- *****last_name***** -->
+    <mat-form-field data-testing="last_name" appearance="outline" class="w-full">
+      <mat-label>last_name</mat-label>
       <input
         type="text"
         matInput
         [errorStateMatcher]="matcher"
-        formControlName="lastName"
-        placeholder="lastName" />
+        formControlName="last_name"
+        placeholder="last_name" />
       <!-- Error handling -->
       <mat-error
         *ngIf="
-          lastName?.hasError('lastName') && !lastName?.hasError('required')
+          last_name?.hasError('last_name') && !last_name?.hasError('required')
         "
-        >Please enter a valid lastName</mat-error
+        >Please enter a valid last_name</mat-error
       >
-      <mat-error *ngIf="lastName?.hasError('required')"
-        >lastName is <strong>required</strong></mat-error
+      <mat-error *ngIf="last_name?.hasError('required')"
+        >last_name is <strong>required</strong></mat-error
       >
-      <mat-error *ngIf="lastName?.hasError('minlength')"
-        >lastName is too short
+      <mat-error *ngIf="last_name?.hasError('minlength')"
+        >last_name is too short
         <strong>{{
-          lastName?.getError('minlength')?.requiredLength
+          last_name?.getError('minlength')?.requiredLength
         }}</strong></mat-error
       >
-      <mat-error *ngIf="lastName?.hasError('banWords')"
+      <mat-error *ngIf="last_name?.hasError('banWords')"
         >The value
-        <strong>{{ lastName?.getError('banWords').bannedWord }} </strong>is
+        <strong>{{ last_name?.getError('banWords').bannedWord }} </strong>is
         banned</mat-error
       >
     </mat-form-field>
@@ -105,7 +106,7 @@
         [matDatepicker]="picker"
         [max]="maxDate"
         [min]="minDate"
-        formControlName="dateOfBirth" />
+        formControlName="date_of_birth" />
       <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
       <mat-datepicker-toggle matIconSuffix [for]="picker">
         <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
@@ -158,7 +159,7 @@
     <mat-form-field appearance="outline">
       <mat-label>Telephone</mat-label>
       <span matTextPrefix>+60 &nbsp;</span>
-      <input type="tel" formControlName="phoneNumber" matInput placeholder="555-555-1234">
+      <input type="tel" formControlName="phone" matInput placeholder="555-555-1234">
       <mat-icon matSuffix>mode_edit</mat-icon>
     </mat-form-field>
 

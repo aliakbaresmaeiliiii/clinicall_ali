@@ -70,81 +70,29 @@ export class SuggestionReplacedDoctorComponent
     });
   }
 
+  // visitProfile(data: any) {
+  //   if (!this.userData) {
+  //     this.toast.error('Please login before make appointment...');
+  //     this.router.navigate(['auth/login']);
+  //   } else {
+  //     let doctorName = data.first_name.replace(/\s+/g, '-');
+  //     const doctor_id = data.id;
+  //     this.countDoctorClick(doctor_id);
+  //     this.router.navigate([`/doctor/${doctorName}/${doctor_id}`]);
+  //     this.cdr.markForCheck();
+  //   }
+  // }
+
   visitProfile(data: any) {
     if (!this.userData) {
       this.toast.error('Please login before make appointment...');
-      this.router.navigate(['auth/login']);
+      this.router.navigate(['/login']);
     } else {
       let doctorName = data.first_name.replace(/\s+/g, '-');
-      const doctor_id = data.id;
-      this.countDoctorClick(doctor_id);
-      this.router.navigate([`/doctor/${doctorName}/${doctor_id}`]);
-      this.cdr.markForCheck();
+      this.countDoctorClick(data.id);
+      this.router.navigate([`/doctor/${doctorName}/${data.id}`]);
     }
   }
-  //  this.doctorService.getDoctors().subscribe((response: any) => {
-  //       const newData = response.data.map((doctor: any) => {
-  //         doctor.profileImage = doctor.profileImage
-  //           ? `${environment.urlProfileImg}${doctor.profileImage}`
-  //           : '../../../assets/images/bg-01.png';
-  //         return doctor;
-  //       });
-  //       this.tabData = newData;
-  //     });
-
-  // fetchData(doctorId: number) {
-  //   this.transferState.remove(this.DATA_KEY);
-  //   const storedData = this.transferState.get(this.DATA_KEY, null);
-
-  //   if (!storedData) {
-  //     this.doctorService
-  //       .getDoctors()
-  //       .subscribe((data: any) => {
-  //         this.specialization = data.data;
-  //       });
-  //     this.doctorService.doctorDetial(doctorId).subscribe({
-  //       next: (response: any) => {
-  //         if (response && response.length > 0) {
-  //           const newData = response.map((patient: any) => {
-  //             patient.profileImage = patient.profileImage
-  //               ? `${environment.urlProfileImg}${patient.profileImage}`
-  //               : '../../../assets/images/bg-01.png';
-  //             return patient;
-  //           });
-  //           this.data = newData;
-  //           const match = newData[0].address.match(/^Klinik Kesihatan\s*/);
-  //           this.addressBreifly = match ? match[0] : '';
-
-  //           this.transferState.set(this.DATA_KEY, this.data);
-
-  //           this.coordinates = this.data
-  //             .filter(item => item.location)
-  //             .map((loc: any) => {
-  //               return {
-  //                 lng: loc.location.x,
-  //                 lat: loc.location.y,
-  //               };
-  //             });
-  //         }
-  //       },
-
-  //       error: e => console.error(e),
-  //       complete: () => console.info('complete'),
-  //     });
-  //   } else {
-  //     this.data = storedData;
-  //     this.coordinates = this.data
-  //       .filter(item => item.location)
-  //       .map((loc: any) => {
-  //         console.log('📌', loc.location);
-  //         return {
-  //           lng: loc.location.x,
-  //           lat: loc.location.y,
-  //         };
-  //       });
-  //     return;
-  //   }
-  // }
 
   takeTurn() {}
 

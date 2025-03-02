@@ -54,7 +54,7 @@ export class UserService {
   }
 
   updateProfile(data: any): Observable<User> {
-    return this.#http.put<User>(`${this.config}user/updateProfile`, data);
+    return this.#http.put<User>(`${this.config}api/updateProfilePatient`, data);
   }
 
   forgetPassword(email: any): Observable<{}> {

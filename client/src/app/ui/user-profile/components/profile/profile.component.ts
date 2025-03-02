@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { ErrorStateMatcher } from '@angular/material/core';
 import {
   CountryISO,
@@ -9,6 +9,7 @@ import { BaseComponent } from '../../../../shared/components/base/base.component
 import { UserInfo } from '../../../../shared/models/userInfo';
 import { UserService } from '../../../../core/services/user.service';
 import { Validators } from '@angular/forms';
+import { PatientsService } from '../../../../modules/patients/services/patients.service';
 
 @Component({
   selector: 'app-profile',
@@ -21,18 +22,20 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   maxDate!: Date;
   minDate!: Date;
   genders: string[] = ['Man', 'Woman', 'Custom'];
-  userData!: UserInfo | null;
+  patientData = signal<UserInfo[]>([]);
   cachedUserData: any;
   valueGender = '';
+  patientService = inject(PatientsService)
+  patientID: string = '';
 
   form = this.fb.group({
-    firstName: ['', [Validators.required]],
-    lastName: ['', [Validators.required]],
+    first_name: ['', [Validators.required]],
+    last_name: ['', [Validators.required]],
     national_code: ['', [Validators.required]],
-    dateOfBirth: [new Date(), [Validators.required]],
+    date_of_birth: [new Date(), [Validators.required]],
     gender: ['', [Validators.required]],
     city: ['', [Validators.required]],
-    phoneNumber: ['', [Validators.required]],
+    phone: ['', [Validators.required]],
   });
   // phone variables
   separateDialCode = false;
@@ -47,27 +50,36 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     const userDataString = localStorage.getItem('userData');
     if (userDataString) {
-      this.userData = JSON.parse(userDataString);
-      console.log(this.userData);
+      const data = JSON.parse(userDataString);
+      this.patientID = data.id
     }
+    this.fetchPatients();
+  }
 
-    this.pathValueForm();
+
+  fetchPatients() {
+    this.patientService.getPatients().subscribe((res: any) => {
+      this.patientData.set(res.data);
+      this.pathValueForm();
+
+
+    })
   }
 
   pathValueForm() {
-    this.firstName?.patchValue(this.userData?.firstName);
-    this.lastName?.patchValue(this.userData?.lastName);
-    this.national_code?.patchValue(this.userData?.national_code);
-    this.gender?.patchValue(this.userData?.gender);
-    this.city?.patchValue(this.userData?.city);
-    this.phoneNumber?.patchValue(this.userData?.phoneNumber);
+    this.first_name?.patchValue(this.patientData()[0]?.first_name);
+    this.last_name?.patchValue(this.patientData()[0]?.last_name);
+    this.national_code?.patchValue(this.patientData()[0]?.national_code);
+    this.gender?.patchValue(this.patientData()[0]?.gender);
+    this.city?.patchValue(this.patientData()[0]?.city);
+    this.phone?.patchValue(this.patientData()[0].phone);
   }
   onSelectedChange(value: any) {
     this.valueGender = value.value;
   }
 
   onSubmit() {
-    const id = this.userData?.id;
+    const id = this.patientID;
     const paylod = {
       ...this.form.value,
       id,
@@ -76,29 +88,29 @@ export class ProfileComponent extends BaseComponent implements OnInit {
       this.userService.updateProfile(paylod).subscribe((res: any) => {
         if (res) {
           this.signalService.setData(res);
-          this.userData = res;
+          this.patientData = res;
           localStorage.clear();
           const dataJson = JSON.stringify(res);
-          localStorage.setItem('userData', dataJson);
+          localStorage.setItem('patientData', dataJson);
           this.toastrService.success('Profile updated successfully');
         }
       });
     }
   }
 
-  trackByFn() {}
+  trackByFn() { }
 
-  get firstName() {
-    return this.form.get('firstName');
+  get first_name() {
+    return this.form.get('first_name');
   }
-  get lastName() {
-    return this.form.get('lastName');
+  get last_name() {
+    return this.form.get('last_name');
   }
   get national_code() {
     return this.form.get('national_code');
   }
-  get dateOfBirth() {
-    return this.form.get('dateOfBirth');
+  get date_of_birth() {
+    return this.form.get('date_of_birth');
   }
   get gender() {
     return this.form.get('gender');
@@ -106,7 +118,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
   get city() {
     return this.form.get('city');
   }
-  get phoneNumber() {
-    return this.form.get('phoneNumber');
+  get phone() {
+    return this.form.get('phone');
   }
 }

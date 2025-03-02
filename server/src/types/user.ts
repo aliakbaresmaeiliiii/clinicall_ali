@@ -3,15 +3,15 @@ import { CommentsDTO } from "../models/doctors";
 export interface User {
   id: string;
   userName?: string;
-  firstName?: string;
-  lastName?: string;
+  first_name?: string;
+  last_name?: string;
   national_code?: string;
   gender?: string;
   email: string;
-  phoneNumber?: string;
+  phone?: string;
   newPassword?: string;
   confirmPassword?: string;
-  dateOfBirth?: string;
+  date_of_birth?: string;
   password?: string | any;
   emailConfirmed?: number;
   signupStatus?: number;
@@ -22,7 +22,7 @@ export interface User {
   city?: string;
   state?: string;
   zipcode?: string;
-  tokenVerify?: string | null;
+  token_verify?: string | null;
   imgUser?: string;
   oldPassword?: string | any;
   comment?: CommentsDTO;

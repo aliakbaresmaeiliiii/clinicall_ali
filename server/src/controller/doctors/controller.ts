@@ -156,10 +156,10 @@ router.get(
   "/doctors/:id/doctor_schedules",
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const doctor_id = +req.params.id;
-    const consultation_types = req.query.consultation_types;
+    const consultatio_types_available = req.query.consultatio_types_available;
     const data = await DoctorsService.doctorSchadules(
       doctor_id,
-      consultation_types
+      consultatio_types_available
     );
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);

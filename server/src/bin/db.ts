@@ -157,7 +157,9 @@ export async function deleteAppointment(event_id: string) {
 // ****** Patients ******
 export async function getPatients() {
   const patients = await query<RowDataPacket[]>(`
-  SELECT * FROM ${coreSchema}.patients
+  SELECT p.first_name,p.last_name,p.first_name,p.email,p.date_of_birth,p.user_name,
+         p.phone,p.gender,p.address,p.first_name,p.national_code
+     FROM ${coreSchema}.patients p
   `);
   return patients;
 }
@@ -197,7 +199,7 @@ export async function addPatient(data: PatientDTO) {
   const newId = uuidv4();
 
   const result = await query<RowDataPacket[]>(
-    `INSERT INTO ${coreSchema}.patient
+    `INSERT INTO ${coreSchema}.patients
       (id,first_name,last_name,phone,email,password,token_verify,verify_code,created_at,updated_at)
         VALUES(?,?,?,?,?,?,?,?,?,?)`,
     {
