@@ -148,10 +148,8 @@ export class GoogleMapComponent implements OnInit {
         const address = response.features[0]?.place_name || 'Unknown location';
         const location: any = { lat, lng, address };
         this.markerMoved.emit(location);
-        console.log('Address:', address);
       },
       error => {
-        console.log('Reverse geocoding error:', error);
       }
     );
   }
@@ -195,7 +193,6 @@ export class GoogleMapComponent implements OnInit {
     });
   
     dialogRef.afterClosed().subscribe(result => {
-      console.log('Dialog closed', result);
     });
   }
 }

@@ -72,7 +72,6 @@ export class AddDoctorComponent extends BaseComponent implements AfterViewInit {
     this.shareService.getStoreProfileImg$.subscribe(res => {
       this.profileImg = res;
       this.shareService.setLoading(false);
-      console.log('File:📁', this.profileImg);
     });
   }
 
@@ -97,7 +96,6 @@ export class AddDoctorComponent extends BaseComponent implements AfterViewInit {
   }
 
   onAutofill(event: any) {
-    console.log('Autofilled:', event.isAutofilled);
     this.mobile?.valueChanges
       .pipe(
         debounceTime(300),

@@ -286,8 +286,8 @@ export async function checkDoctorPhoneNumberExists(
 // export async function doctorDetail(doctorId: number): Promise<any> {
 //   try {
 //     const sql = `
-//       SELECT 
-//         d.*, 
+//       SELECT
+//         d.*,
 //         COALESCE(ld.country, '') AS country,
 //         COALESCE(ld.latitude, 0) AS latitude,
 //         COALESCE(ld.longitude, 0) AS longitude,
@@ -304,8 +304,8 @@ export async function checkDoctorPhoneNumberExists(
 //         COALESCE(GROUP_CONCAT(DISTINCT r.comment SEPARATOR ' | '), 'No comments') AS comments,
 //         s.name AS specialty_name,
 //         i.name AS insurance_name,
-//         CASE 
-//           WHEN EXISTS (SELECT 1 FROM ${coreSchema}.doctor_likes dl WHERE dl.doctor_id = d.id) 
+//         CASE
+//           WHEN EXISTS (SELECT 1 FROM ${coreSchema}.doctor_likes dl WHERE dl.doctor_id = d.id)
 //           THEN 1 ELSE 0
 //         END AS isLiked
 //         JSON_ARRAYAGG(
@@ -320,20 +320,20 @@ export async function checkDoctorPhoneNumberExists(
 //           'state',ci.state
 //         )
 //       ) AS addresses
-//       FROM 
+//       FROM
 //         ${coreSchema}.doctors d
-//       LEFT JOIN 
+//       LEFT JOIN
 //         ${coreSchema}.doctor_locations ld ON d.id = ld.doctor_id AND ld.is_primary = 1
-//       LEFT JOIN 
+//       LEFT JOIN
 //         ${coreSchema}.doctor_reviews r ON d.id = r.doctor_id
-//       LEFT JOIN 
+//       LEFT JOIN
 //         ${coreSchema}.specialties s ON d.specialty_id = s.id
 //       LEFT JOIN
 //         ${coreSchema}.insurances i ON d.insurance_id = i.id
-//       WHERE 
+//       WHERE
 //         d.id = ?
-//       GROUP BY 
-//         d.id,  ld.country, ld.latitude, ld.longitude, ld.address_line1, 
+//       GROUP BY
+//         d.id,  ld.country, ld.latitude, ld.longitude, ld.address_line1,
 //         ld.address_line2, ld.zipcode, s.name, i.name;
 //     `;
 
@@ -575,50 +575,34 @@ export async function doctorSchadules(
   const queryParams: any[] = [doctor_id];
   try {
     let queryStr = `
-   SELECT 
-        d.schedule_id
-        ds.id AS schedule_id,
-        ds.consultatio_types_available,
-        dat.id AS available_time_id,
-        dat.time AS available_time,
-        dat.is_booked
-      FROM ${coreSchema}.doctors d
-      LEFT JOIN ${coreSchema}.doctor_schedules ds
-      LEFT JOIN ${coreSchema}.doctor_available_times dat ON ds.availableTime_id = dat.id
-      WHERE d.id = ?
-    `
+   SELECT * FROM ${coreSchema}.doctor_schedules ds
+      WHERE doctor_id = ?
+    `;
 
     if (consultatio_types_available) {
-      queryStr += ' AND ds.consultatio_types_available =?';
-      queryParams.push(consultatio_types_available)
+      queryStr += " AND ds.consultatio_types_available =?";
+      queryParams.push(consultatio_types_available);
     }
-    const result = await query<RowDataPacket[]>(queryStr, { values: queryParams })
-    return result
+    const result = await query<RowDataPacket[]>(queryStr, {
+      values: queryParams,
+    });
+    return result;
   } catch (error) {
     console.log(error);
     throw new ResponseError.InternalServer("Internal server Error");
   }
 }
 
-export async function doctorScheduleTimeAvailability(id: number) {
+export async function doctorScheduleTimeAvailability(schedule_id: number) {
   try {
     const result = await query<RowDataPacket[]>(
       `
-      SELECT
-         dat.available_time,
-         dat.is_booked,
-         dat.id
-      FROM
-         ${coreSchema}.doctor_available_times dat
-      JOIN
-         ${coreSchema}.doctor_schedules ds
-      ON
-         ds.id = dat.doctor_schedule_id
-      WHERE
-         ds.id = ?;
+      SELECT *
+      FROM ${coreSchema}.doctor_available_times 
+      WHERE schedule_id = ?;
       `,
       {
-        values: [id],
+        values: [schedule_id],
       }
     );
     return result;

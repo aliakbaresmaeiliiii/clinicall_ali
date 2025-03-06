@@ -138,7 +138,8 @@ export class FilterLayoutComponent implements OnInit {
   }
 
   handleChangeValueInput(data: { name: string; id: number }) {
-    this.filterDoctor(data);
+    const doctor_id = data.id;
+    this.filterDoctor({ doctor_id });
   }
 
   fetchDefaultData() {
@@ -147,11 +148,11 @@ export class FilterLayoutComponent implements OnInit {
     if (!storedData) {
       this.doctorService.getDoctors().subscribe({
         next: (response: any) => {
-          const newData = response.data.map((doctor: any) => {
-            doctor.profileImage = doctor.profileImage
-              ? `${environment.urlProfileImg}${doctor.profileImage}`
+          const newData = response.data.map((img: any) => {
+            img.profile_img = img.profile_img
+              ? `${environment.urlProfileImg}${img.profile_img}`
               : '../../../assets/images/bg-01.png';
-            return doctor;
+            return img;
           });
           this.tabData.set(newData);
           this.transferState.set(this.DATA_KEY, newData);
@@ -161,7 +162,6 @@ export class FilterLayoutComponent implements OnInit {
           return of([]);
         },
         complete: () => {
-          console.log('the operation was successfully');
         },
       });
     } else {
@@ -173,8 +173,8 @@ export class FilterLayoutComponent implements OnInit {
   fetchMostPopularData() {
     this.doctorService.getMostPopularDoctor().subscribe((data: any) => {
       const newData = data.data.map((doctor: any) => {
-        doctor.profileImage = doctor.profileImage
-          ? `${environment.urlProfileImg}${doctor.profileImage}`
+        doctor.profile_img = doctor.profile_img
+          ? `${environment.urlProfileImg}${doctor.profile_img}`
           : '../../../assets/images/bg-01.png';
         return doctor;
       });
@@ -182,11 +182,11 @@ export class FilterLayoutComponent implements OnInit {
     });
   }
 
-  filterDoctor(filterValue: any) {
-    this.doctorService.getDoctors(filterValue).subscribe((res: any) => {
+  filterDoctor(filter: { doctor_id: number }) {
+    this.doctorService.getDoctors(filter).subscribe((res: any) => {
       const newData = res.data.map((doctor: any) => {
-        doctor.profileImage = doctor.profileImage
-          ? `${environment.urlProfileImg}${doctor.profileImage}`
+        doctor.profile_img = doctor.profile_img
+          ? `${environment.urlProfileImg}${doctor.profile_img}`
           : '../../../assets/images/bg-01.png';
         return doctor;
       });
@@ -197,8 +197,8 @@ export class FilterLayoutComponent implements OnInit {
   filterServicesById(data: string) {
     this.doctorService.filterServicesById(data).subscribe((res: any) => {
       const newData = res.data.map((doctor: any) => {
-        doctor.profileImage = doctor.profileImage
-          ? `${environment.urlProfileImg}${doctor.profileImage}`
+        doctor.profile_img = doctor.profile_img
+          ? `${environment.urlProfileImg}${doctor.profile_img}`
           : '../../../assets/images/bg-01.png';
         return doctor;
       });
@@ -260,10 +260,8 @@ export class FilterLayoutComponent implements OnInit {
 
     this.likeService.addLike(payload).subscribe({
       next: res => {
-        console.log('Like status updated successfully', res);
       },
       error: err => {
-        console.error('Error updating like status', err);
       },
     });
   }
@@ -286,7 +284,6 @@ export class FilterLayoutComponent implements OnInit {
     this.favoriteStates[index] = !this.favoriteStates[index];
     this.patientFavoriteService.addFavoritePatient(payload).subscribe({
       next: res => {
-        console.log('✅ Favorite toggled:', res);
       },
       error: err => {
         console.error('❌ Error:', err);

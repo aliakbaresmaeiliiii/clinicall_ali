@@ -38,6 +38,7 @@ import { RatingPickerPageComponent } from './components/rating-picker-page/ratin
 import { AgeValidatorDirective } from './directives/age-validator/age-validator.directive';
 import { ChunkPipe } from './pipes/chunk/chunk.pipe';
 import { SearchBarComponent } from './search-bar/search-bar.component';
+import { ProfileImageComponent } from './components/profile-image/profile-image.component';
 
 const ANGULR_MATERIAL_MODULES = [
   MatAutocompleteModule,
@@ -94,6 +95,7 @@ const SHARED_COMPONENT = [
   SearchBarComponent,
   RangePickerComponent,
   LocationAppDialogComponent,
+  ProfileImageComponent
 ];
 
 const SHARED_PIPES = [ChunkPipe];

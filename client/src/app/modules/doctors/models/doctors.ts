@@ -15,7 +15,7 @@ export interface DoctorsDTO {
   degree?: string | undefined | any;
   email?: string | null | undefined;
   age?: string | undefined | null;
-  profileImage?: string | undefined | any;
+  profile_img?: string | undefined | any;
   joingin_date?: Date;
   gender?: string | null | undefined;
   location?: string | null | undefined;
@@ -46,12 +46,12 @@ export interface ReviewsDTO {
 
 export interface DoctorScheduleAvailability {
   availableTime: string[];
-  appointment_date: string;
+  avaliable_date: string;
   day_of_week: string;
   consultatio_types_available: string;
   id: number;
   doctor_id: number;
-  scheduleID: number;
+  schedule_id: number;
   weekday: string;
   formattedDate: string;
 }

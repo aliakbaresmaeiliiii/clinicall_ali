@@ -26,7 +26,6 @@ export class DoctorDetailComponent extends BaseComponent {
     this.activatedRoute.params.subscribe((param: any) => {
       this.doctorId = +param.id;
       this.fetchData({ doctor_id: param.id });
-      console.log('kl;asjdf;lskdfm',{ doctor_id: param.id });
       
     });
   }
@@ -36,10 +35,9 @@ export class DoctorDetailComponent extends BaseComponent {
       this.isMobile = result.matches;
     });
   }
-  fetchData(filter:{doctor_id:string}) {
+  fetchData(filter:{doctor_id:number}) {
     this.transferState.remove(this.DATA_KEY);
     const storedData = this.transferState.get(this.DATA_KEY, null);
-    console.log('dfsfsdfs',filter);
     
 
     if (!storedData) {
@@ -58,7 +56,6 @@ export class DoctorDetailComponent extends BaseComponent {
             this.coordinates = this.doctorInfo
               .filter(item => item.location)
               .map((loc: any) => {
-                console.log('📌', loc.location);
                 return {
                   lng: loc.location.x,
                   lat: loc.location.y,

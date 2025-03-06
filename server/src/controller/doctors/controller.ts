@@ -23,6 +23,7 @@ router.get(
   })
 );
 
+
 router.get(
   "/getMostPopularDoctor",
   asyncHandler(async (req: any, res: any) => {
@@ -166,11 +167,11 @@ router.get(
   })
 );
 router.get(
-  "/doctors/:scheduleID/schedule-time-availability",
+  "/doctors/:schedule_id/schedule-time-availability",
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
-    const scheduleID = +req.params.scheduleID;
+    const schedule_id = +req.params.schedule_id;
     const data = await DoctorsService.doctorScheduleTimeAvailability(
-      scheduleID
+      schedule_id
     );
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);

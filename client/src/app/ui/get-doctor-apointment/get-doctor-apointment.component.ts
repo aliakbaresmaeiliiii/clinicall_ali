@@ -98,7 +98,7 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
     // this.getComment();
   }
 
-  fetchData(filter: { doctor_id: string }) {
+  fetchData(filter: { doctor_id: number }) {
     this.transferState.remove(this.DATA_KEY);
     const storedData = this.transferState.get(this.DATA_KEY, null);
     if (!storedData) {
@@ -112,9 +112,6 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
               return img;
             });
             this.doctorInfo.set(newData);
-            console.log('🤲🤲🤲🤲',newData);
-            
-
             // const match = newData[0].address.match(/^Subang Jaya\s*/);
             // this.addressBreifly = match ? match[0] : '';
             this.doctorService.storeDoctorInfo.set(newData);
@@ -137,7 +134,6 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
       this.coordinates = this.doctorInfo()
         .filter(item => item.location)
         .map((loc: any) => {
-          console.log('📌', loc.location);
           return {
             lng: loc.location.x,
             lat: loc.location.y,

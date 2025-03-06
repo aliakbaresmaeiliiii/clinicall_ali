@@ -45,14 +45,12 @@ export class OnlineConsultaionDialogComponent implements OnInit {
     this.form = this.fb.group({
       consultatio_types_available: [null, Validators.required], 
     });
-    console.log('👉👉👉', this.data);
   }
 
   onSubmit(): void {
     if (this.form.valid) {
       this.openChoosingAppointmentDialog();
     } else {
-      console.log('Form is invalid');
     }
   }
 

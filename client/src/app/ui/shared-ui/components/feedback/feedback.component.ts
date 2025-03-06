@@ -34,7 +34,6 @@ export class FeedbackComponent implements OnInit {
       this.userData = JSON.parse(getUserData);
     }
     this.initializeForm();
-    console.log(this.data);
   }
 
   private initializeForm(): void {

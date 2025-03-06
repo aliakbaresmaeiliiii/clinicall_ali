@@ -6,14 +6,17 @@
       class="w-full min-w-96 bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden mt-5">
       <div class="flex justify-between items-center px-6 py-4">
         <div class="flex space-x-4">
-          <div>
-            <img
-              [src]="data.profileImage"
-              crossorigin="anonymous"
-              class="rounded-3xl"
-              height="48"
-              width="48"
-              alt="Doctor's Profile Image" />
+          <div
+            class="relative flex items-center justify-center"
+            [ngStyle]="{ width: 120 + 'px', height: 120 + 'px' }">
+            <div
+              class="absolute inset-0 bg-gradient-to-r rounded-full p-1 from-blue-400 via-blue-500 to-blue-600">
+              <img
+                [src]="data.profile_img"
+                crossorigin="anonymous"
+                class="w-full h-full object-cover object-[0_15%] rounded-full border-2 border-white shadow-lg"
+                alt="Profile Image" />
+            </div>
           </div>
 
           <div class="flex justify-between min-w-96 text-white">
@@ -26,17 +29,16 @@
               </span>
             </div>
           </div>
-        
         </div>
         <div
-        (click)="visitProfile(data)"
-        class="cursor-pointer flex items-center text-white justify-end group border border-transparent hover:border-gray-400 rounded-lg p-2 transition-all duration-300 ease-in-out">
-        Visit Profile
-        <mat-icon
-          class="menu-button ml-2 transform -translate-x-4 opacity-0 transition-all duration-300 ease-in-out group-hover:translate-x-0 group-hover:opacity-100">
-          chevron_right
-        </mat-icon>
-      </div>
+          (click)="visitProfile(data)"
+          class="cursor-pointer flex items-center text-white justify-end group border border-transparent hover:border-gray-400 rounded-lg p-2 transition-all duration-300 ease-in-out">
+          Visit Profile
+          <mat-icon
+            class="menu-button ml-2 transform -translate-x-4 opacity-0 transition-all duration-300 ease-in-out group-hover:translate-x-0 group-hover:opacity-100">
+            chevron_right
+          </mat-icon>
+        </div>
       </div>
 
       <div class="flex items-center gap-4 text-xs text-gray-200 pt-4 pl-6">

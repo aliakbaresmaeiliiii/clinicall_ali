@@ -10,19 +10,22 @@
         class="w-full min-w-[36rem] bg-white max-h-[20rem] dark:bg-gray-800 rounded-xl shadow-md overflow-hidden mx-auto">
         <div class="flex justify-between items-center px-6 py-4">
           <div class="flex space-x-4">
-            <div>
+            <div
+            class="relative flex items-center justify-center"
+            [ngStyle]="{ width: 100 + 'px', height: 100 + 'px' }">
+            <div
+              class="absolute inset-0 bg-gradient-to-r rounded-full p-1 from-blue-400 via-blue-500 to-blue-600">
               <img
-                [src]="data.profileImage"
+                [src]="data.profile_img"
                 crossorigin="anonymous"
-                class="rounded-3xl"
-                height="48"
-                width="48"
-                alt="Doctor's Profile Image" />
+                class="w-full h-full object-cover object-[0_15%] rounded-full border-2 border-white shadow-lg"
+                alt="Profile Image" />
             </div>
+          </div>
 
             <div>
-              <div class="flex justify-between w-[28rem] text-white">
-                <div class="flex flex-col text-lg font-bold">
+              <div class="flex justify-between max-w-96 min-w-96 text-white">
+                <div class="flex flex-col gap-4 text-lg font-bold">
                   <span>
                     {{ data.first_name }}
                   </span>

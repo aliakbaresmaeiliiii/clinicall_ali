@@ -307,10 +307,6 @@ export class HeaderComponent {
         this.userData = getItem.first_name;
       }
     }
-    // effect(() => {
-    //   const value = this.signalService.getUserData();
-    //   console.log('signal', value);
-    // });
   }
 
   onWindowScroll(): void {

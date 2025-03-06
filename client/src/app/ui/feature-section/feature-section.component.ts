@@ -39,7 +39,6 @@ export class FeatureSectionComponent implements OnInit, AfterViewInit {
     this.awsService.listFolderContents().subscribe({
       next: (blob: Blob) => {
         this.imageUrl = URL.createObjectURL(blob); // Convert Blob to Object URL
-        console.log('👉👉👉👉👉', this.imageUrl);
       },
       error: err => {
         console.error('Error fetching the image:', err);
