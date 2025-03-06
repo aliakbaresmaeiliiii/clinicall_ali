@@ -30,22 +30,20 @@ export class DoctorsService {
     city?: string;
     minRating?: number;
     maxRating?: number;
+    isPopular?: boolean;
   }): Observable<DoctorsDTO[]> {
     let params = new HttpParams();
+    debugger;
     if (filters) {
       Object.keys(filters).forEach(key => {
         const value = (filters as any)[key];
+        params = params.set(key, value.toString());
         if (value !== undefined && value !== null) {
-          params = params.set(key, value.toString());
         }
       });
     }
     return this.#http.get<DoctorsDTO[]>(`${this.config}doctors`, { params });
     // .pipe(map(response => response));
-  }
-
-  getMostPopularDoctor() {
-    return this.#http.get<DoctorsDTO[]>(`${this.config}getMostPopularDoctor`);
   }
 
   addDoctor(formData: any): Observable<DoctorsDTO[]> {

@@ -131,15 +131,13 @@ export class FilterLayoutComponent implements OnInit {
     if (data.label === 'Default') {
       this.fetchDefaultData();
     } else if (data.label === 'Most Popular') {
-      this.fetchMostPopularData();
     } else {
       this.tabData.set([]);
     }
   }
 
-  handleChangeValueInput(data: { name: string; id: number }) {
-    const doctor_id = data.id;
-    this.filterDoctor({ doctor_id });
+  handleChangeValueInput(data: any) {
+    this.filterDoctor(data);
   }
 
   fetchDefaultData() {
@@ -161,8 +159,7 @@ export class FilterLayoutComponent implements OnInit {
           this.toast.error(e);
           return of([]);
         },
-        complete: () => {
-        },
+        complete: () => {},
       });
     } else {
       this.tabData.set(storedData);
@@ -170,19 +167,27 @@ export class FilterLayoutComponent implements OnInit {
     return;
   }
 
-  fetchMostPopularData() {
-    this.doctorService.getMostPopularDoctor().subscribe((data: any) => {
-      const newData = data.data.map((doctor: any) => {
-        doctor.profile_img = doctor.profile_img
-          ? `${environment.urlProfileImg}${doctor.profile_img}`
-          : '../../../assets/images/bg-01.png';
-        return doctor;
-      });
-      this.tabData.set(newData);
-    });
+  handleTabChangeTitle(data: any) {
+    const query = {
+      isPopular: true,
+    };
+    switch (data.label) {
+      case 'Defualt':
+        this.filterDoctor();
+        break;
+
+      case 'Most Popular':
+        this.filterDoctor(query);
+
+        break;
+
+      default:this.filterDoctor()
+        break;
+    }
   }
 
-  filterDoctor(filter: { doctor_id: number }) {
+  filterDoctor(filter?: any) {
+    debugger;
     this.doctorService.getDoctors(filter).subscribe((res: any) => {
       const newData = res.data.map((doctor: any) => {
         doctor.profile_img = doctor.profile_img
@@ -259,10 +264,8 @@ export class FilterLayoutComponent implements OnInit {
     };
 
     this.likeService.addLike(payload).subscribe({
-      next: res => {
-      },
-      error: err => {
-      },
+      next: res => {},
+      error: err => {},
     });
   }
 
@@ -283,8 +286,7 @@ export class FilterLayoutComponent implements OnInit {
     const payload = { doctor_id, patient_id };
     this.favoriteStates[index] = !this.favoriteStates[index];
     this.patientFavoriteService.addFavoritePatient(payload).subscribe({
-      next: res => {
-      },
+      next: res => {},
       error: err => {
         console.error('❌ Error:', err);
         // Revert UI change if API call fails

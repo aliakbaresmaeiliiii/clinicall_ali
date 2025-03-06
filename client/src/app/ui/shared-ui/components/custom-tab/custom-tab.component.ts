@@ -249,6 +249,7 @@ export class CustomTabComponent
   }
   getAllInsurances() {
     this.doctorService.getAllInsurances().subscribe((res: any) => {
+      console.log(res.data); // Check the structure of the response
       this.insurances = res.data;
       this.filteredInsurance = this.insuranceForm.valueChanges.pipe(
         startWith(''),

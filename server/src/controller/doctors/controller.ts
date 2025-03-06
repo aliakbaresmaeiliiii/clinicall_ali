@@ -14,6 +14,7 @@ router.get(
       specialty_id: req.query.specialty_id as string,
       city_id: req.query.city_id as string,
       doctor_id: req.query.doctor_id as string,
+      isPopular: req.query.isPopular as boolean,
       minRating: req.query.minRating ? parseFloat(req.query.minRating as string) : undefined,
       maxRating: req.query.maxRating ? parseFloat(req.query.maxRating as string) : undefined,
     };
@@ -24,14 +25,14 @@ router.get(
 );
 
 
-router.get(
-  "/getMostPopularDoctor",
-  asyncHandler(async (req: any, res: any) => {
-    const data = await DoctorsService.getMostPopularDoctors();
-    const buildResponse = BuildResponse.get(data);
-    return res.status(buildResponse.code).json(buildResponse);
-  })
-);
+// router.get(
+//   "/getMostPopularDoctor",
+//   asyncHandler(async (req: any, res: any) => {
+//     const data = await DoctorsService.getMostPopularDoctors();
+//     const buildResponse = BuildResponse.get(data);
+//     return res.status(buildResponse.code).json(buildResponse);
+//   })
+// );
 
 router.get(
   "/admin/check-phone/:phone",

@@ -115,11 +115,12 @@ export async function getDoctors(filters: {
   city_id?: string;
   minRating?: number;
   maxRating?: number;
+  isPopular?: boolean;
 }): Promise<DoctorsDTO[] | null> {
   try {
     let sql = `
     SELECT 
-      d.id, d.first_name,d.last_name,d.profile_img,  d.email, d.phone, d.specialty_id, d.insurance_id, d.click_count,
+      d.id, d.first_name,d.last_name,d.profile_img,  d.email, d.phone, d.specialty_id, d.insurance_id, d.click_count,d.average_rating,
       sp.name AS specialty_name, 
       i.name AS insurance_name,  
       (SELECT AVG(rating) FROM ${coreSchema}.doctor_reviews r WHERE r.doctor_id = d.id) AS average_rating,
@@ -193,23 +194,25 @@ export async function getDoctors(filters: {
       sql += " WHERE " + conditions.join(" AND ");
     }
 
-    sql += ` GROUP BY d.id, d.first_name, d.last_name,d.profile_img,d.email, d.phone, d.specialty_id, d.insurance_id, sp.name, i.name;`;
+    sql += ` GROUP BY d.id, d.first_name, d.last_name,d.profile_img,d.email, d.phone, d.specialty_id, d.insurance_id, sp.name, i.name`;
 
     const havingConditions: string[] = [];
     if (filters.minRating !== undefined) {
-      havingConditions.push("average_rating >= ?");
+      havingConditions.push("total_reviews >= ?");
       values.push(filters.minRating);
     }
     if (filters.maxRating !== undefined) {
-      havingConditions.push("average_rating <= ?");
+      havingConditions.push("total_reviews <= ?");
       values.push(filters.maxRating);
+    }
+
+    if (filters.isPopular) {
+      havingConditions.push("average_rating > 4");
     }
 
     if (havingConditions.length) {
       sql += " HAVING " + havingConditions.join(" AND ");
     }
-
-    console.log("Generated SQL:", sql, values);
 
     const result = await query<RowDataPacket[]>(sql, {
       values: values,
@@ -233,40 +236,40 @@ export async function getServices() {
   return result;
 }
 
-export async function getMostPopularDoctors(): Promise<any> {
-  try {
-    const result = await query<RowDataPacket[]>(
-      `
-      SELECT 
-        d.*, 
-        COALESCE(ld.id, 'No Location') AS location,
-        s.name AS specialty_name,
-        (SELECT AVG(r.rating) 
-         FROM ${coreSchema}.ratings r 
-         WHERE r.id = d.id) AS average_rating,
-        (SELECT COUNT(r.rating) 
-         FROM ${coreSchema}.ratings r 
-         WHERE r.id = d.id) AS total_ratings
-      FROM 
-        ${coreSchema}.doctors d
-      LEFT JOIN 
-        ${coreSchema}.doctor_locations ld ON d.id = ld.id
-      LEFT JOIN 
-        ${coreSchema}.specialties s ON d.specialty_id = s.id
-      HAVING 
-        total_ratings > 3
-      ORDER BY 
-        average_rating DESC,
-        total_ratings DESC
-      LIMIT 10;
-      `
-    );
-    return result;
-  } catch (error) {
-    console.log(error);
-    throw new ResponseError.InternalServer("An unexpected error occurred.");
-  }
-}
+// export async function getMostPopularDoctors(): Promise<any> {
+//   try {
+//     const result = await query<RowDataPacket[]>(
+//       `
+//       SELECT
+//         d.*,
+//         COALESCE(ld.id, 'No Location') AS location,
+//         s.name AS specialty_name,
+//         (SELECT AVG(r.rating)
+//          FROM ${coreSchema}.ratings r
+//          WHERE r.id = d.id) AS average_rating,
+//         (SELECT COUNT(r.rating)
+//          FROM ${coreSchema}.ratings r
+//          WHERE r.id = d.id) AS total_ratings
+//       FROM
+//         ${coreSchema}.doctors d
+//       LEFT JOIN
+//         ${coreSchema}.doctor_locations ld ON d.id = ld.id
+//       LEFT JOIN
+//         ${coreSchema}.specialties s ON d.specialty_id = s.id
+//       HAVING
+//         total_ratings > 3
+//       ORDER BY
+//         average_rating DESC,
+//         total_ratings DESC
+//       LIMIT 10;
+//       `
+//     );
+//     return result;
+//   } catch (error) {
+//     console.log(error);
+//     throw new ResponseError.InternalServer("An unexpected error occurred.");
+//   }
+// }
 
 export async function checkDoctorPhoneNumberExists(
   mobile: string

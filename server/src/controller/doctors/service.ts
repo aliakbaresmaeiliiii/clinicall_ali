@@ -16,7 +16,6 @@ import {
   filterServicesById,
   filterSpecialtyById,
   getDoctors,
-  getMostPopularDoctors,
   getReviews,
   getServices,
   getSpecialties,
@@ -35,6 +34,7 @@ export class DoctorsService {
     doctor_id?: string;
     minRating?: number;
     maxRating?: number;
+    isPopular?: boolean;
   }) {
     const data = await getDoctors(filters);
     if (data) {
@@ -44,14 +44,14 @@ export class DoctorsService {
     }
   }
 
-  public static async getMostPopularDoctors() {
-    const data = await getMostPopularDoctors();
-    if (data) {
-      return { message: "ok", data };
-    } else {
-      return null;
-    }
-  }
+  // public static async getMostPopularDoctors() {
+  //   const data = await getMostPopularDoctors();
+  //   if (data) {
+  //     return { message: "ok", data };
+  //   } else {
+  //     return null;
+  //   }
+  // }
   public static async checkDoctorPhoneNumberExists(
     mobile: string
   ): Promise<boolean> {
