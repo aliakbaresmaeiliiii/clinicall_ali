@@ -37,7 +37,6 @@ export class DialogLocationDrComponent implements OnInit, AfterViewInit {
         const coordinates = response.features[0].center;
         this.coordinates = coordinates;
       }
-      console.log('👉👉👉', this.coordinates);
     });
   }
 }

@@ -76,8 +76,8 @@ export class DoctorsComponent extends BaseComponent {
   fetchData() {
     this.service.getDoctors().subscribe((response: any) => {
       const newData = response.data.map((doctor: any) => {
-        doctor.profileImage = doctor.profileImage
-          ? `${environment.urlProfileImg}${doctor.profileImage}`
+        doctor.profile_img = doctor.profile_img
+          ? `${environment.urlProfileImg}${doctor.profile_img}`
           : '../../../assets/images/bg-01.png';
         return doctor;
       });

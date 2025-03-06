@@ -61,8 +61,8 @@ export class SuggestionReplacedDoctorComponent
   fetchDefaultData() {
     this.doctorService.getDoctors().subscribe((response: any) => {
       const newData = response.data.map((doctor: any) => {
-        doctor.profileImage = doctor.profileImage
-          ? `${environment.urlProfileImg}${doctor.profileImage}`
+        doctor.profile_img = doctor.profile_img
+          ? `${environment.urlProfileImg}${doctor.profile_img}`
           : '../../../assets/images/bg-01.png';
         return doctor;
       });
@@ -128,10 +128,8 @@ export class SuggestionReplacedDoctorComponent
     this.favoriteStates[index] = !this.favoriteStates[index];
     this.patientFavoriteService.addFavoritePatient(payload).subscribe({
       next: (res) => {
-        console.log('✅ Favorite toggled:', res);
       },
       error: (err) => {
-        console.error('❌ Error:', err);
         // Revert UI change if API call fails
         this.favoriteStates[index] = !this.favoriteStates[index];
       },

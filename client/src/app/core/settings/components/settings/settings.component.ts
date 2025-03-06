@@ -173,10 +173,8 @@ export class SettingsComponent
             this.mapCoordinates = coordinates;
             this.cdr.detectChanges();
           }
-          console.log('👉👉👉', this.mapCoordinates);
         },
         error => {
-          console.log('Geocoding error:', error);
         }
       );
     }
@@ -193,18 +191,14 @@ export class SettingsComponent
             this.mapCoordinates = coordinates;
             this.cdr.detectChanges();
           }
-          console.log('👉👉👉', this.mapCoordinates);
         },
         error => {
-          console.log('Geocoding error:', error);
         }
       );
     }
   }
 
   onMarkerMoved(event: any): void {
-    console.log('Marker moved to:', event);
-    console.log('Address:', event.address);
     const getCountry = this.extractCounty(event.address);
     const city = this.extractState(event.address);
     const zipcode = this.extractPostalCode(event.address);

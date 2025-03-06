@@ -73,6 +73,7 @@ import { OnlineConsultaionDialogComponent } from './filter-layout/online-consult
 import { ChoosingAppointmentComponent } from './filter-layout/choosing-appointment/choosing-appointment.component';
 import { ToBooleanPipe } from '../shared/pipes/to-boolean.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { SharedModule } from '../shared/shared.module';
 
 const routes: Routes = [
   {
@@ -194,10 +195,11 @@ const routes: Routes = [
     MatToolbarModule,
     MatIconModule,
     ToBooleanPipe,
-    MatTooltipModule
+    MatTooltipModule,
+    SharedModule
   ],
   exports: [BlogComponent, MatToolbarModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [DatePipe, ToBooleanPipe],
+  providers: [DatePipe, ToBooleanPipe, ToBooleanPipe],
 })
 export class UiModule {}

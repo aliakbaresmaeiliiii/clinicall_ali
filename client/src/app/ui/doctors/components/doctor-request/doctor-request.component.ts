@@ -26,6 +26,5 @@ export class DoctorRequestComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {}
 
   sendRequest() {
-    console.log(this.form.value);
   }
 }

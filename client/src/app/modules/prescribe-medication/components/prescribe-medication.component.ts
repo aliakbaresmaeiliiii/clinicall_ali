@@ -165,12 +165,10 @@ export class PrescribeMedicationComponent
 
   patientNextTab() {
     this.patientInfoTab.push(this.form.controls.patientInfo.value);
-    console.log('this.patientInfoTab',this.patientInfoTab);
     this.selectedIndex++;
   }
   diseasesNextTab() {
     this.diseaseTab.push(this.form.controls.diseases.value);
-    console.log('this.diseaseTab',this.diseaseTab);
     this.selectedIndex++;
   }
 
@@ -244,7 +242,6 @@ export class PrescribeMedicationComponent
               return b.isFavorite - a.isFavorite;
             });
           this.filterMedicData = [...mappedData];
-          console.log('this.filterMedicData', this.filterMedicData);
           this.transferState.set(this.DATA_KEY_MEDIC, mappedData);
         }
       });
@@ -344,7 +341,6 @@ export class PrescribeMedicationComponent
 
   medicationNextTab() {
     this.medicationTab.push(this.form.controls.medication.value);
-    console.log('this.medicationTab',this.medicationTab)
     this.selectedIndex++;
   }
   onSubmit(form: any) {
@@ -390,7 +386,6 @@ export class PrescribeMedicationComponent
     this.prescribeService
       .updateIsFavorite(medic.medication_id, medic.isFavorite)
       .subscribe((res:any) => {
-        console.log('Favorite status updated successfully:', res);
       });
   }
 

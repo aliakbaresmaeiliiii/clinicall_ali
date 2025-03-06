@@ -26,7 +26,7 @@ export class DoctorsService {
     name?: string;
     service_id?: string;
     specialty_id?: string;
-    doctor_id?: string;
+    doctor_id?: number;
     city?: string;
     minRating?: number;
     maxRating?: number;

@@ -69,7 +69,6 @@ export class DialogCalendarComponent {
       const getStoreItem = localStorage.getItem('userData');
       if (getStoreItem) {
         const getItem = JSON.parse(getStoreItem);
-        console.log('localstorage', getItem);
       } else {
       }
     }

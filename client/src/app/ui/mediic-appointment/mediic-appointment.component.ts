@@ -72,7 +72,6 @@ export class MediicAppointmentComponent implements OnInit {
     }
   }
   onAutofill(event: any) {
-    console.log('Autofilled:', event.isAutofilled);
     this.phone?.valueChanges
       .pipe(
         debounceTime(300),

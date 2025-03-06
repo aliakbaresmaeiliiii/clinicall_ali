@@ -6,6 +6,7 @@ import {
   ElementRef,
   inject,
   OnInit,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -31,6 +32,7 @@ import { ToastrService } from 'ngx-toastr';
     '../../../../../node_modules/keen-slider/keen-slider.min.css',
     './choosing-appointment.component.scss',
   ],
+  providers:[DatePipe]
 })
 export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
   readonly dialogRef = inject(MatDialogRef<ChoosingAppointmentComponent>);
@@ -39,7 +41,7 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
   toast = inject(ToastrService);
   schedulesService = inject(ScheduleService);
   cdr = inject(ChangeDetectorRef);
-  doctorInfo: DoctorsDTO[] = [];
+  doctorInfo = signal<DoctorsDTO[]>([]);
   doctorScheduleAvailability: DoctorScheduleAvailability[] = [];
   available_time: DoctorScheduleTimeAvailability[] = [];
   days: { label: string; date: Date }[] = [];
@@ -49,12 +51,12 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
   currentSlide: number = 1;
   dotHelper: Array<Number> = [];
   selectedIndex: number | null = null;
+  datePipe = inject(DatePipe)
   // test
-  schedules: DoctorScheduleAvailability[] = [];
-  closestSchedule: DoctorScheduleAvailability | null = null;
-  today: string = formatDate(new Date(), 'yyyy-MM-dd', 'en-US');
   bookingStatus = BookingStatus;
   bookedId!: number;
+
+  
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -109,23 +111,22 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
     this.loadDoctorData(doctor_id, consultatio_types_available);
   }
   private loadDoctorData(doctor_id: number, consultatio_types_available: string): void {
-    this.fetchData(doctor_id);
+    this.fetchData({doctor_id});
     this.fetchDoctorScheduleAvailability(doctor_id, consultatio_types_available);
   }
 
-  fetchData(doctor_id: any) {
-    this.service.getDoctors(doctor_id).subscribe({
+  fetchData(filter: { doctor_id: number }) {
+    this.service.getDoctors(filter).subscribe({
       next: (response: any) => {
-        console.log('response', response);
-        if (response && response.length > 0) {
-          const newData = response.map((patient: any) => {
-            patient.profileImage = patient.profileImage
-              ? `${environment.urlProfileImg}${patient.profileImage}`
-              : '../../../../assets/images/bg-01.png';
-            return patient;
+        if (response && response.data.length > 0) {
+          const newData = response.data.map((img: any) => {
+            img.profile_img = img.profile_img
+            ? `${environment.urlProfileImg}${img.profile_img}`
+            : '../../../../assets/images/bg-01.png';
+            
+            return img;
           });
-          this.doctorInfo = newData;
-          console.log('this.doctorInfo', this.doctorInfo);
+          this.doctorInfo.set(newData);
         }
       },
 
@@ -141,62 +142,55 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
     this.schedulesService
       .fetchDoctorScheduleAvailability(doctor_id, consultatio_types_available)
       .subscribe((res: any) => {
-        console.log('schedule', res.data);
+        console.log(res.data)
         this.doctorScheduleAvailability = res.data.map((item: any) => ({
           ...item,
-          // weekday: this.datePipe.transform(item.avaliable_date, 'EEEE'), // Extract weekday
-          // formattedDate: this.datePipe.transform(item.avaliable_date, 'MMMM d'),
+          weekday: this.datePipe.transform(item.avaliable_date, 'EEEE'), // Extract weekday
+          formattedDate: this.datePipe.transform(item.avaliable_date, 'MMMM d'),
           is_booked:
             item.is_booked === 1
               ? BookingStatus.is_booked
               : BookingStatus.is_available,
         }));
-        console.log(
-          'doctorScheduleAvailability',
-          this.doctorScheduleAvailability
-        );
-
         this.selectToday();
       });
   }
 
   selectToday() {
     this.doctorScheduleAvailability.forEach((item, index) => {
-      const receivedStartDate = new Date(item.appointment_date);
+      this.selectedIndex = index
+      debugger;
+      const receivedStartDate = new Date(item.avaliable_date);
       const todayDate = moment().local().startOf('day').format('YYYY-MM-DD');
       const availableDate = moment(receivedStartDate)
         .local()
         .startOf('day')
         .format('YYYY-MM-DD');
       if (availableDate === todayDate) {
-        const scheduleID = this.doctorScheduleAvailability[index]?.id;
-        if (scheduleID) {
-          this.fetchDoctorScheduleTimeAvailability(scheduleID, index);
+        const schedule_id = this.doctorScheduleAvailability[index]?.id;
+        if (schedule_id) {
+          this.fetchDoctorScheduleTimeAvailability(schedule_id, index);
         }
       }
     });
   }
 
-  fetchDoctorScheduleTimeAvailability(scheduleID: any, index: number) {
+  fetchDoctorScheduleTimeAvailability(schedule_id: any, index: number) {
     this.selectedIndex = index;
     this.schedulesService
-      .doctorScheduleTimeAvailability(scheduleID)
+      .doctorScheduleTimeAvailability(schedule_id)
       .pipe(take(1))
       .subscribe({
         next: (result: any) => {
-          console.log('schedule', result.data);
-
           this.available_time = result.data.map((item: any) => ({
             ...item,
-            formattedTime: item.available_time.split(':').slice(0, 2).join(':'),
-            timeID: item.timeID,
+            formattedTime: item.time.split(':').slice(0, 2).join(':'),
+            timeID: item.item,
           }));
         },
         error: err => {
-          console.log(err);
         },
         complete: () => {
-          console.log('complete');
         },
       });
   }
@@ -222,9 +216,9 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
             typeof this.selectedIndex === 'number' &&
             this.available_time.length
           ) {
-            const scheduleID =
-              this.doctorScheduleAvailability[this.selectedIndex]?.scheduleID;
-            if (scheduleID) {
+            const schedule_id =
+              this.doctorScheduleAvailability[this.selectedIndex]?.schedule_id;
+            if (schedule_id) {
               this.selectToday();
             }
           }
@@ -238,7 +232,6 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
         this.toast.error(e);
       },
       complete: () => {
-        console.log('Booking process complete');
       },
     });
   }

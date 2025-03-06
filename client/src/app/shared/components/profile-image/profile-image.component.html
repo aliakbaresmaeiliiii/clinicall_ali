@@ -1,0 +1,14 @@
+<div class="relative flex items-center justify-center"
+     [ngStyle]="{ width: size + 'px', height: size + 'px' }">
+  <!-- Outer Gradient Ring -->
+  <div
+    class="absolute inset-0 bg-gradient-to-r rounded-full p-1"
+    [ngClass]="borderColor">
+    <img
+      [src]="imageUrl()"
+      crossorigin="anonymous"
+      class="w-full h-full object-cover object-[0_80%] rounded-full border-2 border-white shadow-lg"
+      alt="Profile Image"
+    />
+  </div>
+</div>

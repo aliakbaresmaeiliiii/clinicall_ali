@@ -72,7 +72,6 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
   ngOnInit(): void {
     this.shareService.getStoreProfileImg$.subscribe(res => {
       this.profileImg = res;
-      console.log(this.profileImg);
     });
     this.validationAge();
   }
@@ -99,7 +98,6 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
   }
 
   onAutofill(event: any) {
-    console.log('Autofilled:', event.isAutofilled);
     this.mobile?.valueChanges
       .pipe(
         debounceTime(300),
@@ -138,7 +136,7 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
         treatment: this.form.value.treatment,
         description: this.form.value.description,
         injury: this.form.value.injury,
-        profileImage: imgProfile.name,
+        profile_img: imgProfile.name,
       };
       this.service.addPatient(payload).subscribe((res: any) => {
         if (res.code === 200) {

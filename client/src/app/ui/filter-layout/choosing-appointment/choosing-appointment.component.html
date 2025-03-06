@@ -1,30 +1,36 @@
-<div *ngIf="doctorInfo.length > 0; else noData">
+<div *ngIf="doctorInfo().length > 0; else noData">
   <div class="flex flex-col justify-center text-center pt-2">
     <h2 class="text-black !text-xl font-bold">
       Choosing an office appointment
     </h2>
   </div>
   <mat-dialog-content class="mat-typography">
-    @for (data of doctorInfo; track $index) {
+    @for (data of doctorInfo(); track $index) {
 
     <div class="w-full rounded-xl shadow-md overflow-hidden mx-auto">
       <div class="flex justify-between items-center px-6 py-4">
         <div class="flex space-x-4">
-          <div>
-            <img
-              [src]="data.profileImage"
-              crossorigin="anonymous"
-              class="rounded-3xl"
-              height="48"
-              width="48"
-              alt="Doctor's Profile Image" />
+          <div
+            class="relative flex items-center justify-center"
+            [ngStyle]="{ width: 120 + 'px', height: 120 + 'px' }">
+            <div
+              class="absolute inset-0 bg-gradient-to-r rounded-full p-1 from-blue-400 via-blue-500 to-blue-600">
+              <img
+                [src]="data.profile_img"
+                crossorigin="anonymous"
+                class="w-full h-full object-cover object-[0_15%] rounded-full border-2 border-white shadow-lg"
+                alt="Profile Image" />
+            </div>
           </div>
 
           <div>
             <div class="flex justify-between w-[28rem]">
-              <div class="flex flex-col text-lg font-bold">
+              <div class="flex flex-col gap-4 text-lg font-bold">
                 <span>
                   {{ data.first_name }}
+                </span>
+                <span class="opacity-75">
+                  {{ data.specialty_name }}
                 </span>
               </div>
             </div>
@@ -83,12 +89,12 @@
                   }"
                   class="flex flex-col justify-center shadow-md whitespace-nowrap h-32 w-32 border-2 text-center cursor-pointer duration-200 border-gray-200 text-xs rounded-2xl gap-3">
                   <div class="text-base font-semibold">
-                    {{ availability.appointment_date | date }}
+                    {{ availability.avaliable_date | date }}
                   </div>
                   <div class="date text-xs">
                     {{ availability.day_of_week }}
                   </div>
-                  <span class="text-green-500 font-bold">
+                  <span class="text-green-500 font-black">
                     {{ availability.id }}</span
                   >
                 </div>
@@ -127,22 +133,14 @@
             [class]="'dot ' + (i === currentSlide ? 'active' : '')"></button> -->
         </div>
       </div>
-      <!-- slider -->
 
-      <!-- <div class="navigation-wrapper">
-        <div class="keen-slider flex" #sliderRef>
-          @for (availability of doctorScheduleAvailability; track $index;let i =
-          $index) {
-          <div class="keen-slider__slide flex w-full"></div>
-          }
-        </div>
-      </div> -->
-
-      <div class="flex justify-center align-center gap-4">
+      <div class="flex justify-center align-center flex-wrap gap-4 ">
         @for (time of available_time; track $index;let i = $index) { @if (time)
         {
         <div
-          (click)="time.is_booked !== bookingStatus.is_booked && bookedTime(time)"
+          (click)="
+            time.is_booked !== bookingStatus.is_booked && bookedTime(time)
+          "
           [ngClass]="{
             'hover:bg-green-100': time.is_booked === bookingStatus.is_available,
             'border-gray-500': time.is_booked === bookingStatus.is_available,
@@ -152,7 +150,9 @@
             'text-white': selectedTime === time.id
           }"
           [matTooltip]="
-            time.is_booked === bookingStatus.is_booked ? 'This time is booked' : ''
+            time.is_booked === bookingStatus.is_booked
+              ? 'This time is booked'
+              : ''
           "
           matTooltipPosition="above"
           class="relative flex justify-center mt-4 whitespace-nowrap cursor-pointer h-8 w-14 border-2 text-center duration-200 border-green-500 text-xs rounded-md gap-3">
@@ -194,7 +194,9 @@
 
   <mat-dialog-actions>
     <button mat-button (click)="onNoClick()">No Thanks</button>
-    <button mat-button type="button" (click)="submit()" cdkFocusInitial>Appointment</button>
+    <button mat-button type="button" (click)="submit()" cdkFocusInitial>
+      Appointment
+    </button>
   </mat-dialog-actions>
 </div>
 

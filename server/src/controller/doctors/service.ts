@@ -169,8 +169,8 @@ export class DoctorsService {
       return null;
     }
   }
-  public static async doctorScheduleTimeAvailability(scheduleID: number) {
-    const data = await doctorScheduleTimeAvailability(scheduleID);
+  public static async doctorScheduleTimeAvailability(schedule_id: number) {
+    const data = await doctorScheduleTimeAvailability(schedule_id);
     if (data) {
       return { message: "ok", data };
     } else {

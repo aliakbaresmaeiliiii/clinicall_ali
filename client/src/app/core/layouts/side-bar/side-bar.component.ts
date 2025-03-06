@@ -118,7 +118,6 @@ export class SideBarComponent
     this.navService.getNavItems().subscribe({
       next: (res: any) => {
         this.groupedData = this.groupByMenu(res.data, 'name');
-        console.log((this.groupedData = this.groupByMenu(res.data, 'name')));
       },
       error: e => console.error(e),
       complete: () => {},

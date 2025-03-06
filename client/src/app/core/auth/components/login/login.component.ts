@@ -97,7 +97,6 @@ export class LoginComponent implements OnInit {
       client_id:
         '940657570058-gpm7buu1t25nlls0pcbs95c6t2bf4rg4.apps.googleusercontent.com',
       callback: (resp: any) => {
-        console.log('resposend', resp);
 
         this.handleLogin(resp);
       },
@@ -117,8 +116,6 @@ export class LoginComponent implements OnInit {
     if (response && response.credential) {
       // Decode the token
       const payload = this.decodeToken(response.credential);
-      console.log('payload', payload);
-
       // Store in session
       sessionStorage.setItem('loggedInUser', JSON.stringify(payload));
 

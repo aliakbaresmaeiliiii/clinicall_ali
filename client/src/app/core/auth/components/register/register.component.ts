@@ -134,7 +134,6 @@ export class RegisterComponent extends BaseComponent implements OnInit {
       this.signUpUser(payload);
     }
 
-    console.log('Submitted:', { role: this.selectedRole, data: formData });
   }
 
   signUpUser(payload: any) {
@@ -151,7 +150,6 @@ export class RegisterComponent extends BaseComponent implements OnInit {
           }
         },
         error: () => {
-          console.log('Registration failed. Please try again.');
         },
         complete: () => console.log('complete'),
       });
