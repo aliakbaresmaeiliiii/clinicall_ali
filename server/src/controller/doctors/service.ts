@@ -15,6 +15,7 @@ import {
   existingFeedback,
   filterServicesById,
   filterSpecialtyById,
+  getDoctoLike,
   getDoctors,
   getReviews,
   getServices,
@@ -25,6 +26,7 @@ import {
   recordDoctorProfileView,
   updateDoctor,
 } from "./db";
+const moment = require("moment");
 
 export class DoctorsService {
   public static async getDoctors(filters: {
@@ -178,14 +180,24 @@ export class DoctorsService {
     }
   }
 
-  public static async booked(timeID: number) {
-    const data = await booked(timeID);
-    if (data) {
-      return { message: "ok", data };
-    } else {
-      return null;
-    }
+  public static async booked(
+    doctor_schedule_id: number,
+    patient_id: number,
+    clinic_id: number,
+    appointment_date: string,
+    appointment_time: string
+  ) {
+    appointment_date = moment(appointment_date).format("YYYY-MM-DD");
+    const data = await booked(
+      doctor_schedule_id,
+      patient_id,
+      clinic_id,
+      appointment_date,
+      appointment_time
+    );
+    return data ? { message: "ok", data } : null;
   }
+
   public static async fetchServices() {
     const data = await getServices();
     if (data) {
@@ -197,6 +209,14 @@ export class DoctorsService {
 
   public static async toggleLike(likeInfo: likeDTO) {
     const data = await like(likeInfo);
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
+  }
+  public static async getDcotorLike(patient_id: number) {
+    const data = await getDoctoLike(patient_id);
     if (data) {
       return { message: "ok", data };
     } else {

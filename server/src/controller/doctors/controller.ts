@@ -15,15 +15,18 @@ router.get(
       city_id: req.query.city_id as string,
       doctor_id: req.query.doctor_id as string,
       isPopular: req.query.isPopular as boolean,
-      minRating: req.query.minRating ? parseFloat(req.query.minRating as string) : undefined,
-      maxRating: req.query.maxRating ? parseFloat(req.query.maxRating as string) : undefined,
+      minRating: req.query.minRating
+        ? parseFloat(req.query.minRating as string)
+        : undefined,
+      maxRating: req.query.maxRating
+        ? parseFloat(req.query.maxRating as string)
+        : undefined,
     };
     const data = await DoctorsService.getDoctors(filters);
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
   })
 );
-
 
 // router.get(
 //   "/getMostPopularDoctor",
@@ -189,14 +192,39 @@ router.post(
   })
 );
 
+router.get(
+  `/doctor/get_likes`,
+  asyncHandler(async (req: Request, res: Response): Promise<any> => {
+    const patient_id = Number(req.query.param);
+    const data = await DoctorsService.getDcotorLike(patient_id);
+    const buildResponse = BuildResponse.get(data);
+    return res.status(buildResponse.code).json(buildResponse);
+  })
+);
 
 router.put(
   `/doctors/:id/booked`,
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
-    const id = +req.params.id;
-    const data = await DoctorsService.booked(id);
-    const buildResponse = BuildResponse.get(data);
-    return res.status(buildResponse.code).json(buildResponse);
+    const doctor_schedule_id = +req.params.id;
+    const { patient_id, clinic_id, appointment_date, appointment_time } =
+      req.body;
+    if (!patient_id || !clinic_id || !appointment_date || !appointment_time) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+    try {
+      const data = await DoctorsService.booked(
+        doctor_schedule_id,
+        patient_id,
+        clinic_id,
+        appointment_date,
+        appointment_time
+      );
+      const buildResponse = BuildResponse.get(data);
+      return res.status(buildResponse.code).json(buildResponse);
+    } catch (error) {
+      console.error("Error booking appointment:", error);
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
   })
 );
 router.get(
@@ -207,4 +235,3 @@ router.get(
     return res.status(buildResponse.code).json(buildResponse);
   })
 );
-

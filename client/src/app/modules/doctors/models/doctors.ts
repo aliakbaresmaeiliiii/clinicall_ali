@@ -59,7 +59,7 @@ export interface DoctorScheduleAvailability {
 export interface DoctorScheduleTimeAvailability {
   timeID: number;
   id: number;
-  available_time: string;
+  time: string;
   is_booked: any;
   formattedTime: string;
 }

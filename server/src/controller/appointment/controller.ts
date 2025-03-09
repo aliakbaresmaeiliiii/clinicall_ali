@@ -4,16 +4,27 @@ import { BuildResponse } from "../../modules/response/app_response";
 import { router } from "../../routes/public";
 import { CalendarService } from "./service";
 
-router.post(
-  "/insertAppointment",
-  asyncHandler(async function insertEvent(req: any, res: any) {
-    const eventData = req.body;
-    const data = await CalendarService.insertEvent(eventData);
-    const buildResponse = BuildResponse.get(data);
-   return res.status(buildResponse.code).json(buildResponse);
-
-  })
-);
+// router.post(
+//   "/insertAppointment",
+//   asyncHandler(async function insertEvent(req: any, res: any) {
+//     try {
+//       const eventData = req.body;
+//       if (
+//         !eventData ||
+//         !eventData.appointment_date ||
+//         !eventData.appointment_time
+//       ) {
+//         return res.status(400).json({ message: "Missing required feilds." });
+//       }
+//       const data = await CalendarService.insertEvent(eventData);
+//       const buildResponse = BuildResponse.get(data);
+//       return res.status(buildResponse.code).json(buildResponse);
+//     } catch (error) {
+//       console.log("Error inserting appointment:", error);
+//       return res.status(500).json({ message: "Internal Server Error." });
+//     }
+//   })
+// );
 
 router.get(
   "/getAppointment",
@@ -21,7 +32,6 @@ router.get(
     const data = await CalendarService.getEventData();
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
-
   })
 );
 

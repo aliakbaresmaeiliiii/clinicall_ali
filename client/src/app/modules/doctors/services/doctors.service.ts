@@ -33,7 +33,6 @@ export class DoctorsService {
     isPopular?: boolean;
   }): Observable<DoctorsDTO[]> {
     let params = new HttpParams();
-    debugger;
     if (filters) {
       Object.keys(filters).forEach(key => {
         const value = (filters as any)[key];
@@ -59,6 +58,12 @@ export class DoctorsService {
   //     .pipe(map(response => response.data));
   // }
 
+  fetchDoctorLikes(patient_id: string): Observable<any> {
+    const params = new HttpParams().set('param', patient_id);
+    return this.#http.get<number>(`${this.config}doctor/get_likes`, {
+      params: params,
+    });
+  }
   getAddresses(): Observable<{ lat: number; lng: number }[]> {
     return this.#http.get<{ lat: number; lng: number }[]>(this.config);
   }
