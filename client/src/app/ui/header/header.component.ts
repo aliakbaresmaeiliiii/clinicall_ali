@@ -89,6 +89,12 @@ export class HeaderComponent {
              </svg>`,
     },
     {
+      label: 'My Favorites',
+      icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+               <path d="M7 2h10v2h5v16H2V4h5V2zm0 4V4H4v16h16V4h-3v2H7zm2 2h6v2H9V8zm0 4h6v2H9v-2z"/>
+             </svg>`,
+    },
+    {
       label: 'Chat Page',
       icon: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
                <path d="M20 2H4a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2zm-3 9h-4v-2h4v2zm-6 0H7v-2h4v2zm6-4h-6V5h6v2z"/>
@@ -346,6 +352,9 @@ export class HeaderComponent {
           break;
         case 'My Appointments':
           this.router.navigate(['profile/user-appointments']);
+          break;
+        case 'My Favorites':
+          this.router.navigate(['profile/user-Favorites']);
           break;
 
         case 'Chat Page':

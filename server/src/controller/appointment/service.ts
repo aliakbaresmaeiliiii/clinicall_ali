@@ -1,45 +1,42 @@
 import {
   deleteAppointment,
-  getAppointment,
   updateAppointment,
 } from "../../bin/db";
 import { IAppointment } from "../../types/appointment.interface";
-import { saveAppointment } from "./db";
+import { getAppointment } from "./db";
 const moment = require("moment");
 
 export class CalendarService {
-  public static async insertEvent(eventData: IAppointment) {
+  // public static async insertEvent(eventData: IAppointment) {
+  //   // const appointment_date = new Date(eventData.appointment_date);
+  //   // // const receivedEndDate = new Date(eventData.end_date);
+  //   // // const receivedAppointmentDate = new Date(eventData.appointmentDate);
+  //   // const startLocalDate = moment(appointment_date)
+  //   //   .local()
+  //   //   .format("YYYY-MM-DD");
+  //   // const endLocalDate = moment(receivedEndDate).local().format("YYYY-MM-DD");
 
-    const receivedStartDate = new Date(eventData.start_date);
-    const receivedEndDate = new Date(eventData.end_date);
-    const receivedAppointmentDate = new Date(eventData.appointmentDate);
-    const startLocalDate = moment(receivedStartDate)
-      .local()
-      .format("YYYY-MM-DD");
-    const endLocalDate = moment(receivedEndDate).local().format("YYYY-MM-DD");
-    
-    const appointmentLocalDate = moment(receivedAppointmentDate).local().format("YYYY-MM-DD");
+  //   // const appointmentLocalDate = moment(receivedAppointmentDate).local().format("YYYY-MM-DD");
+  //   const appointment_date = moment(eventData.appointment_date).format(
+  //     "YYYY-MM-DD"
+  //   );
 
+  //   const payload: IAppointment = {
+  //     id: eventData.id,
+  //     patient_id: eventData.patient_id,
+  //     doctor_schedule_id: eventData.doctor_schedule_id,
+  //     clinic_id: eventData.clinic_id,
+  //     appointment_date: appointment_date,
+  //     appointment_time: eventData.appointment_time,
+  //     completed_time: eventData.completed_time,
+  //     arrival_time: eventData.arrival_time,
+  //     status: eventData.status,
+  //     note: eventData.note,
+  //   };
+  //   const data = await saveAppointment(payload);
 
-    const payload: any = {
-      appointmentDate: appointmentLocalDate,
-      start_date: startLocalDate,
-      end_date: endLocalDate,
-      campaignTime: eventData.campaignTime,
-      date: eventData.date,
-      id: eventData.id,
-      event_description: eventData.event_description,
-      event_title: eventData.event_title,
-      priority: eventData.priority,
-    };
-
-    const data = await saveAppointment(payload);
-    if (data) {
-      return { message: "ok", data };
-    } else {
-      return null;
-    }
-  }
+  //   return data ? { message: "ok", data } : null;
+  // }
 
   public static async getEventData() {
     const data = await getAppointment();

@@ -22,6 +22,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { SharedModule } from '../../shared/shared.module';
 import { MatIconModule } from '@angular/material/icon';
+import { UserFavoritesComponent } from './components/user-favorites/user-favorites.component';
 
 export const routes: Routes = [
   {
@@ -37,46 +38,52 @@ export const routes: Routes = [
       {
         path: 'user-information',
         component: ProfileComponent,
-        title: 'user-information',
+        title: 'information',
         data: { icon: 'info' },
       },
       {
         path: 'user-appointments',
         component: UserAppointmentsComponent,
-        title: 'user-appointments',
+        title: 'appointments',
+        data: { icon: 'fact_check' },
+      },
+      {
+        path: 'user-Favorites',
+        component: UserFavoritesComponent,
+        title: 'favorites',
         data: { icon: 'fact_check' },
       },
 
       {
         path: 'user-chat-page',
         component: UserChatPageComponent,
-        title: 'user-chat-page',
+        title: 'chat-page',
         data: { icon: 'chat' },
       },
       {
         path: 'user-lsit',
         component: UserListComponent,
-        title: 'user-list',
+        title: 'list',
         data: { icon: 'chat' },
       },
 
       {
         path: 'user-orders',
         component: UserOrdersComponent,
-        title: 'user-orders',
+        title: 'orders',
         data: { icon: 'order_approve' },
       },
 
       {
         path: 'user-transactions',
         component: UserTransactionsComponent,
-        title: 'user-transactions',
+        title: 'transactions',
         data: { icon: 'receipt_long' },
       },
       {
         path: 'user-wallet',
         component: UserWalletComponent,
-        title: 'user-wallet',
+        title: 'wallet',
         data: { icon: 'wallet' },
       },
     ],
@@ -93,6 +100,7 @@ export const routes: Routes = [
     UserOrdersComponent,
     UserTransactionsComponent,
     UserWalletComponent,
+    UserFavoritesComponent
   ],
 
   imports: [

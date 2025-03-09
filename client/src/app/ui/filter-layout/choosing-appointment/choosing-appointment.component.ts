@@ -32,7 +32,7 @@ import { ToastrService } from 'ngx-toastr';
     '../../../../../node_modules/keen-slider/keen-slider.min.css',
     './choosing-appointment.component.scss',
   ],
-  providers:[DatePipe]
+  providers: [DatePipe],
 })
 export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
   readonly dialogRef = inject(MatDialogRef<ChoosingAppointmentComponent>);
@@ -51,12 +51,14 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
   currentSlide: number = 1;
   dotHelper: Array<Number> = [];
   selectedIndex: number | null = null;
-  datePipe = inject(DatePipe)
+  datePipe = inject(DatePipe);
   // test
   bookingStatus = BookingStatus;
   bookedId!: number;
-
-  
+  patient_id!: number;
+  selectedTime: unknown = null;
+  appointment_date!: string;
+  appointment_time!: string;
 
   onNoClick(): void {
     this.dialogRef.close();
@@ -103,6 +105,10 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
     }, 500);
   }
   ngOnInit(): void {
+    const getUserData = localStorage.getItem('userData');
+    if (getUserData) {
+      this.patient_id = JSON.parse(getUserData).id;
+    }
     this.initializeComponent();
   }
 
@@ -110,9 +116,15 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
     const { doctor_id, consultatio_types_available } = this.data;
     this.loadDoctorData(doctor_id, consultatio_types_available);
   }
-  private loadDoctorData(doctor_id: number, consultatio_types_available: string): void {
-    this.fetchData({doctor_id});
-    this.fetchDoctorScheduleAvailability(doctor_id, consultatio_types_available);
+  private loadDoctorData(
+    doctor_id: number,
+    consultatio_types_available: string
+  ): void {
+    this.fetchData({ doctor_id });
+    this.fetchDoctorScheduleAvailability(
+      doctor_id,
+      consultatio_types_available
+    );
   }
 
   fetchData(filter: { doctor_id: number }) {
@@ -121,9 +133,9 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
         if (response && response.data.length > 0) {
           const newData = response.data.map((img: any) => {
             img.profile_img = img.profile_img
-            ? `${environment.urlProfileImg}${img.profile_img}`
-            : '../../../../assets/images/bg-01.png';
-            
+              ? `${environment.urlProfileImg}${img.profile_img}`
+              : '../../../../assets/images/bg-01.png';
+
             return img;
           });
           this.doctorInfo.set(newData);
@@ -142,7 +154,6 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
     this.schedulesService
       .fetchDoctorScheduleAvailability(doctor_id, consultatio_types_available)
       .subscribe((res: any) => {
-        console.log(res.data)
         this.doctorScheduleAvailability = res.data.map((item: any) => ({
           ...item,
           weekday: this.datePipe.transform(item.avaliable_date, 'EEEE'), // Extract weekday
@@ -158,8 +169,7 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
 
   selectToday() {
     this.doctorScheduleAvailability.forEach((item, index) => {
-      this.selectedIndex = index
-      debugger;
+      this.selectedIndex = index;
       const receivedStartDate = new Date(item.avaliable_date);
       const todayDate = moment().local().startOf('day').format('YYYY-MM-DD');
       const availableDate = moment(receivedStartDate)
@@ -175,8 +185,11 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
     });
   }
 
-  fetchDoctorScheduleTimeAvailability(schedule_id: any, index: number) {
+  fetchDoctorScheduleTimeAvailability(availability: any, index: number) {
     this.selectedIndex = index;
+    debugger;
+    this.appointment_date = availability.avaliable_date;
+    const schedule_id = availability.id;
     this.schedulesService
       .doctorScheduleTimeAvailability(schedule_id)
       .pipe(take(1))
@@ -188,16 +201,14 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
             timeID: item.item,
           }));
         },
-        error: err => {
-        },
-        complete: () => {
-        },
+        error: err => {},
+        complete: () => {},
       });
   }
 
-  selectedTime: unknown = null;
-
   bookedTime(bookeData: DoctorScheduleTimeAvailability) {
+    debugger;
+    this.appointment_time = bookeData.time;
     this.bookedId = bookeData.id;
     if (this.selectedTime === bookeData.id) {
       this.selectedTime = null;
@@ -208,7 +219,14 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
 
   submit() {
     const id = this.bookedId;
-    this.schedulesService.markAsBooked(id).subscribe({
+    const payload = {
+      doctor_schedule_id: id,
+      patient_id: this.patient_id,
+      appointment_date: this.appointment_date,
+      appointment_time: this.appointment_time,
+      clinic_id:1
+    };
+    this.schedulesService.markAsBooked(id,payload).subscribe({
       next: (res: any) => {
         if (res.code === 200) {
           this.toast.success('Your booking has been successfully confirmed.');
@@ -225,14 +243,16 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
 
           // Refresh the entire schedule availability
           const { doctor_id, consultatio_types_available } = this.data;
-          this.fetchDoctorScheduleAvailability(doctor_id, consultatio_types_available);
+          this.fetchDoctorScheduleAvailability(
+            doctor_id,
+            consultatio_types_available
+          );
         }
       },
       error: e => {
         this.toast.error(e);
       },
-      complete: () => {
-      },
+      complete: () => {},
     });
   }
 

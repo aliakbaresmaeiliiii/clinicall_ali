@@ -99,3 +99,5 @@ export async function addFavorite(patient_id: number, doctor_id: number) {
     throw new ResponseError.InternalServer("Failed to add favorite.");
   }
 }
+
+

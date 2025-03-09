@@ -1,27 +1,22 @@
 export interface IAppointment {
   id: number;
-  id: number;
-  event_id?: number;
-  event_start?: string;
-  event_end?: string;
-  location?: string;
-  organizer?: string;
-  attendess?: string;
-  reminder_minutes_before?: string;
-  create_at?: string;
-  date: string;
-  priority: string;
-  appointmentDate: string;
-  event_description: string;
-  campaignTime: campaignTime;
-  start_date: string;
-  end_date: string;
-  event_title: string;
+  patient_id: number;
+  doctor_schedule_id: number;
+  clinic_id: number;
+  appointment_date: string;
+  appointment_time: string;
+  completed_time: string;
+  arrival_time: string;
+  status: AppointmentStatus;
+  note: string;
 }
 
-export interface campaignDate {
-
+export enum AppointmentStatus {
+  Scheduled = "Scheduled",
+  Completed = "Completed",
+  Cancelled = "Cancelled",
 }
+export interface campaignDate {}
 export interface campaignTime {
   start_time: string;
   end_time: string;

@@ -48,6 +48,7 @@ export class FilterLayoutComponent implements OnInit {
   transferState = inject(TransferState);
   DATA_KEY = makeStateKey<any>('tabData');
   ratingDisplay: number = 0;
+  favoriteStates: boolean[] = [];
 
   urlIcon = {
     empty: '../../../assets/images/ui/svg/star-empty.svg',
@@ -187,7 +188,6 @@ export class FilterLayoutComponent implements OnInit {
   }
 
   filterDoctor(filter?: any) {
-    debugger;
     this.doctorService.getDoctors(filter).subscribe((res: any) => {
       const newData = res.data.map((doctor: any) => {
         doctor.profile_img = doctor.profile_img
@@ -275,7 +275,6 @@ export class FilterLayoutComponent implements OnInit {
       data: { link: doctorLink },
     });
   }
-  favoriteStates: boolean[] = [];
   toggleFavorite(doctor_id: number, index: number) {
     if (!this.userData) {
       this.toast.info('Please login first!');

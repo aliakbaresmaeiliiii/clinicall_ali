@@ -26,7 +26,9 @@ export class DoctorListComponent {
   readonly paginator = viewChild.required(MatPaginator);
   readonly sort = viewChild.required(MatSort);
   readonly title = input.required<string>();
-  constructor(private service: CustomersService, private dialog: MatDialog) {}
+
+
+  constructor( private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.getData();

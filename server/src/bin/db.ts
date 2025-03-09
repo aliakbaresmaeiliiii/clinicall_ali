@@ -121,27 +121,22 @@ export async function getNavItems() {
   }
 }
 
-export async function getAppointment() {
-  const getEventData = await query<RowDataPacket[]>(
-    `SELECT * FROM ${coreSchema}.appointments`
-  );
-  return getEventData;
-}
+
 
 export async function updateAppointment(
   data: IAppointment
-): Promise<IAppointment[] | undefined> {
-  const result = await query<RowDataPacket[]>(
-    `UPDATE ${coreSchema}.appointments
-    SET date = ?, updated_at = ?
-    WHERE event_id = ?`,
-    {
-      values: [data.date, new Date(), data.event_id],
-    }
-  );
-  if (result) {
-    return result as IAppointment[];
-  }
+) {
+  // const result = await query<RowDataPacket[]>(
+  //   `UPDATE ${coreSchema}.appointments
+  //   SET date = ?, updated_at = ?
+  //   WHERE event_id = ?`,
+  //   {
+  //     values: [data.date, new Date(), data.event_id],
+  //   }
+  // );
+  // if (result) {
+  //   return result as IAppointment[];
+  // }
 }
 
 export async function deleteAppointment(event_id: string) {

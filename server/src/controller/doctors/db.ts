@@ -107,6 +107,27 @@ export async function like(data: likeDTO) {
   return { success: true, isLiked };
 }
 
+export async function getDoctoLike(patient_id: number) {
+  try {
+    const result = await query<RowDataPacket>(
+      `
+      SELECT
+      d.*
+        FROM ${coreSchema}.doctor_likes dl
+        LEFT JOIN ${coreSchema}.doctors d
+        ON dl.doctor_id = d.id
+        WHERE dl.patient_id = ?`,
+      {
+        values: [patient_id],
+      }
+    );
+    return result;
+  } catch (error) {
+    console.log(error);
+    throw new ResponseError.InternalServer("Failed to get response");
+  }
+}
+
 export async function getDoctors(filters: {
   name?: string;
   service_id?: string;
@@ -615,21 +636,45 @@ export async function doctorScheduleTimeAvailability(schedule_id: number) {
   }
 }
 
-export async function booked(id: number) {
+export async function booked(
+  doctor_schedule_id: number,
+  patient_id: number,
+  clinic_id: number,
+  appointment_date: string,
+  appointment_time: string
+) {
   try {
-    const result = query<RowDataPacket>(
-      `
-      UPDATE ${coreSchema}.doctor_available_times
-        SET is_booked = 1
-        WHERE id = ?;
-      `,
+    const [existing] = await query<RowDataPacket[]>(
+      `SELECT is_booked FROM ${coreSchema}.doctor_available_times WHERE id = ? FOR UPDATE`,
+      { values: [doctor_schedule_id] }
+    );
+
+    if (!existing || existing[0]?.is_booked === 1) {
+      throw new ResponseError.BadRequest("Doctor schedule is alreday boooked.");
+    }
+
+    const appointmentResult = await query<RowDataPacket>(
+      `INSERT INTO ${coreSchema}.appointments
+      (patient_id,doctor_schedule_id,clinic_id,appointment_date,appointment_time,status)
+      VALUES (?, ?, ?, ?, ?, 'Scheduled');`,
       {
-        values: [id],
+        values: [
+          patient_id,
+          doctor_schedule_id,
+          clinic_id,
+          appointment_date,
+          appointment_time,
+        ],
       }
     );
-    return result;
+    return {
+      message: "Appointment successfuly booked",
+      appointmentId: appointmentResult.insertId,
+    };
   } catch (error) {
-    console.error(error); // Better to use console.error for errors
+    console.error(error);
     throw new ResponseError.InternalServer("Internal Server Error");
+  } finally {
+    console.log("final");
   }
 }
