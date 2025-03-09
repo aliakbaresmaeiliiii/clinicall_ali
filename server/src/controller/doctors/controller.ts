@@ -14,6 +14,7 @@ router.get(
       specialty_id: req.query.specialty_id as string,
       city_id: req.query.city_id as string,
       doctor_id: req.query.doctor_id as string,
+      patient_id: req.query.patient_id as string,
       isPopular: req.query.isPopular as boolean,
       minRating: req.query.minRating
         ? parseFloat(req.query.minRating as string)

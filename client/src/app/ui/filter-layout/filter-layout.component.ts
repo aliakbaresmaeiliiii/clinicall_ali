@@ -254,11 +254,11 @@ export class FilterLayoutComponent implements OnInit {
       console.error('Invalid tabData reference');
       return;
     }
-    // Toggle is_liked status
-    this.tabData()[id].is_liked = !this.tabData()[id].is_liked;
+    // Toggle isLiked status
+    this.tabData()[id].isLiked = !this.tabData()[id].isLiked;
 
     const payload: likeDTO = {
-      isLike: this.tabData()[id].is_liked,
+      isLike: this.tabData()[id].isLiked,
       patient_id: user_id,
       doctor_id: data.id, // Ensure correct doctor ID
     };

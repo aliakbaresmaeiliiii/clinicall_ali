@@ -1,16 +1,20 @@
-<div class="content-toolbar">
-  <mat-form-field appearance="outline">
-    <mat-label>Filter</mat-label>
-    <input
-      matInput
-      (keyup)="applyFilter($event)"
-      placeholder="Search doctor name"
-      #input />
-  </mat-form-field>
-  <!-- <button class="add-user-info" (click)="addUserInfo()">+</button> -->
-</div>
 <div class="w-full">
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+  <div class="content-toolbar">
+    <mat-form-field appearance="outline">
+      <mat-label>Filter</mat-label>
+      <input
+        matInput
+        (keyup)="applyFilter($event)"
+        placeholder="Search doctor name"
+        #input />
+    </mat-form-field>
+    <!-- <button class="add-user-info" (click)="addUserInfo()">+</button> -->
+  </div>
+  <table
+    mat-table
+    [dataSource]="dataSource"
+    class="mat-elevation-z8"
+    matSort>
     <ng-container matColumnDef="select">
       <th mat-header-cell *matHeaderCellDef>
         <mat-checkbox

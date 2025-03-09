@@ -1,4 +1,5 @@
-<div class="grid grid-rows-9 grid-cols-9 grid-flow-col gap-4 w-10/12 m-auto mt-36">
+<div
+  class="grid grid-rows-9 grid-cols-9 grid-flow-col gap-4 w-10/12 m-auto mt-36">
   <div class="row-span-9 col-span-2 bg-white rounded-2xl p-4 min-h-fit">
     <mat-card appearance="outlined" class="min-h-fit">
       <mat-card-content>
@@ -38,7 +39,6 @@
           <mat-divider class="w-64"></mat-divider>
           <div class="p-5">
             @for (route of settingsRoutes; track $index;let i = $index) {
-
             <ng-container>
               <a
                 [routerLink]="route?.path"
@@ -83,8 +83,10 @@
       </span>
     </div>
     <div
-      class="flexmt-6 border-2 rounded-xl p-4 border-gray-300 max-h-[35rem]">
-      <router-outlet />
+      class="flex flex-wrap justify-center mt-6 overflow-auto border-2 rounded-xl p-2 border-gray-300 max-h-[35rem] min-h-[35rem]">
+      <div class="w-full">
+        <router-outlet />
+      </div>
     </div>
   </div>
 </div>

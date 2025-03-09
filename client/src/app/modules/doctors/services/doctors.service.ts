@@ -31,6 +31,7 @@ export class DoctorsService {
     minRating?: number;
     maxRating?: number;
     isPopular?: boolean;
+    patient_id?: string;
   }): Observable<DoctorsDTO[]> {
     let params = new HttpParams();
     if (filters) {

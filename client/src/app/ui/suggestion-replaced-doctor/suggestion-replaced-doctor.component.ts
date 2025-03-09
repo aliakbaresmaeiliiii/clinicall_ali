@@ -18,6 +18,7 @@ import { ISpecialization } from '../get-doctor-apointment/models/specializtion.m
 import { LikesService } from '../shared-ui/services/likes.service';
 import { ToastrService } from 'ngx-toastr';
 import { PatientFavoritesService } from '../shared-ui/services/patient-favorites.service';
+import { likeDTO } from '../shared-ui/models/like';
 
 @Component({
   selector: 'app-suggestion-replaced-doctor',
@@ -105,16 +106,33 @@ export class SuggestionReplacedDoctorComponent
 
 
 
-  toggleLike(info: DoctorsDTO, id: number) {
-    this.doctors[id].is_liked = !this.doctors[id].is_liked;
-    const user_id = this.userData;
+  toggleLike(data: DoctorsDTO, id: number) {
+    if (!this.userData) {
+      this.toast.info('Please login first!');
+      this.router.navigate(['auth/login']);
+      return;
+    }
+    const user_id = this.userData.id;
+    // Ensure tabData exists before modifying
+    if (!this.doctors || !this.doctors[id]) {
+      console.error('Invalid tabData reference');
+      return;
+    }
+    // Toggle is_liked status
+    this.doctors[id].isLiked = !this.doctors[id].isLiked;
 
-    // const payload: likeDTO = {
-    //   user_id: info.id,
-    //   doctor_id: info.id,
-    // };
-    // this.likeService.addLike(payload).subscribe(res => {});
+    const payload: likeDTO = {
+      isLike: this.doctors[id].isLiked,
+      patient_id: user_id,
+      doctor_id: data.id, // Ensure correct doctor ID
+    };
+
+    this.likeService.addLike(payload).subscribe({
+      next: res => {},
+      error: err => {},
+    });
   }
+
 
   favoriteStates: boolean[] = [];
   toggleFavorite(doctor_id: number, index: number) {
