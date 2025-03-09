@@ -1,20 +1,22 @@
-
-
 @for (doctor of doctorInfo(); track $index;; let i = $index) {
 
-<div class="w-3/4 grid grid-cols-3 mx-auto gap-3">
+<div class="w-3/4 grid grid-cols-3 mx-auto gap-3 mt-36">
   <div class="flex flex-col gap-4">
     <div
       class="w-full min-w-64 max-h-60 bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden mx-auto">
       <div class="flex justify-between items-center px-6 py-4">
         <div class="flex space-x-4">
-          <div>
-            <img
-              crossorigin="anonymous"
-              [src]="doctor?.profile_img"
-              width="48"
-              height="48"
-              class="rounded-full p-1" />
+          <div
+            class="relative flex items-center justify-center"
+            [ngStyle]="{ width: 100 + 'px', height: 100 + 'px' }">
+            <div
+              class="absolute inset-0 bg-gradient-to-r rounded-full p-1 from-blue-400 via-blue-500 to-blue-600">
+              <img
+                [src]="doctor.profile_img"
+                crossorigin="anonymous"
+                class="w-full h-full object-cover object-[0_15%] rounded-full border-2 border-white shadow-lg"
+                alt="Profile Image" />
+            </div>
           </div>
 
           <div>
@@ -50,7 +52,7 @@
       </div>
 
       <div
-        class="flex justify-center items-center gap-8 text-xs text-gray-200 py-4 pl-6">
+        class="flex justify-center items-center gap-8 text-xs text-gray-200 pl-6">
         <div class="flex flex-col gap-1">
           <div class="flex gap-2 text-yellow-400">
             <ngx-stars
@@ -118,9 +120,9 @@
           </svg> -->
           <svg
             (click)="toggleLike(doctor, i)"
-            [class.text-red-500]="doctor.is_liked"
-            [class.text-gray-500]="!doctor.is_liked"
-            [attr.fill]="doctor.is_liked ? 'currentColor' : 'none'"
+            [class.text-red-500]="doctor.isLiked"
+            [class.text-gray-500]="!doctor.isLiked"
+            [attr.fill]="doctor.isLiked ? 'currentColor' : 'none'"
             height="24"
             stroke="currentColor"
             stroke-linecap="round"
@@ -203,20 +205,20 @@
         </h2>
         <div
           class="border-2 border-gray-400 rounded-lg border-opacity-30 p-4 mt-4 bg-slate-100">
-          <h2 class=" font-bold">{{ doctor.addresses[0].city }}</h2>
+          <h2 class="font-bold">{{ doctor.addresses[0].city }}</h2>
           <div class="flex gap-1 pt-2">
             <i class="fa-solid fa-location-dot text-blue-600 text-lg"></i>
-            <div class="flex gap-1 " *ngIf="doctor.addresses[0]">
+            <div class="flex gap-1" *ngIf="doctor.addresses[0]">
               <strong>Address:</strong>
-            <p>
-              <ng-container *ngIf="doctor.addresses[0] as addr">
-                {{ addr.zipcode ? addr.zipcode + ', ' : '' }}
-                {{ addr.address_line1 ? addr.address_line1 + ', ' : '' }}
-                {{ addr.city ? addr.city + ', ' : '' }}
-                {{ addr.country ? addr.country : '' }}
-              </ng-container>
-            </p>
-          </div>
+              <p>
+                <ng-container *ngIf="doctor.addresses[0] as addr">
+                  {{ addr.zipcode ? addr.zipcode + ', ' : '' }}
+                  {{ addr.address_line1 ? addr.address_line1 + ', ' : '' }}
+                  {{ addr.city ? addr.city + ', ' : '' }}
+                  {{ addr.country ? addr.country : '' }}
+                </ng-container>
+              </p>
+            </div>
           </div>
 
           <div class="flex gap-1 pt-2">

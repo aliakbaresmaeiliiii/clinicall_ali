@@ -24,7 +24,7 @@ export interface DoctorsDTO {
   description: string;
   click_count: number;
   likeInfo: likeDTO;
-  is_liked: boolean;
+  isLiked: boolean;
 }
 
 export interface LocaitonDTO {

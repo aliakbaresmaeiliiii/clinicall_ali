@@ -139,9 +139,9 @@
               </svg> -->
           <svg
             (click)="toggleLike(data, i)"
-            [class.text-red-500]="data.is_liked"
-            [class.text-gray-500]="!data.is_liked"
-            [attr.fill]="data.is_liked ? 'currentColor' : 'none'"
+            [class.text-red-500]="data.isLiked"
+            [class.text-gray-500]="!data.isLiked"
+            [attr.fill]="data.isLiked ? 'currentColor' : 'none'"
             class="cursor-pointer"
             height="24"
             stroke="currentColor"

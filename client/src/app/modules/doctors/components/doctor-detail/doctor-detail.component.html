@@ -13,13 +13,17 @@
               Senior Docto
             </div>
           </div>
-          <div class="card__avatar">
-            <img
-              crossorigin="anonymous"
-              [src]="doctor?.profile_img"
-              width="100%"
-              height="100%"
-              class="rounded-full p-1" />
+          <div
+            class="relative flex items-center justify-center"
+            [ngStyle]="{ width: 100 + 'px', height: 100 + 'px' }">
+            <div
+              class="absolute inset-0 bg-gradient-to-r rounded-full p-1 from-blue-400 via-blue-500 to-blue-600">
+              <img
+                [src]="doctor.profile_img"
+                crossorigin="anonymous"
+                class="w-full h-full object-cover object-[0_15%] rounded-full border-2 border-white shadow-lg"
+                alt="Profile Image" />
+            </div>
           </div>
           <div class="card__title">{{ doctor.city }}</div>
           <div class="flex items-center mt-3 font-normal text-base">

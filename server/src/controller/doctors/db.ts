@@ -137,12 +137,15 @@ export async function getDoctors(filters: {
   minRating?: number;
   maxRating?: number;
   isPopular?: boolean;
+  patient_id?: boolean;
 }): Promise<DoctorsDTO[] | null> {
   try {
     let sql = `
     SELECT 
-      d.id, d.first_name,d.last_name,d.profile_img,  d.email, d.phone, d.specialty_id, d.insurance_id, d.click_count,d.average_rating,
-      sp.name AS specialty_name, 
+      d.id, d.first_name,d.last_name,d.profile_img,  d.email, d.phone, d.specialty_id, d.insurance_id,
+      d.click_count,d.average_rating,
+      d.medical_code,
+      sp.name AS specialty_name,
       i.name AS insurance_name,  
       (SELECT AVG(rating) FROM ${coreSchema}.doctor_reviews r WHERE r.doctor_id = d.id) AS average_rating,
       COUNT(r.id) AS total_reviews,
@@ -185,6 +188,8 @@ export async function getDoctors(filters: {
       ${coreSchema}.insurances i ON d.insurance_id = i.id
     LEFT JOIN 
       ${coreSchema}.cities ci ON ld.city_id = ci.id
+    LEFT JOIN
+      ${coreSchema}.doctor_likes dk ON d.id = dk.doctor_id
   `;
 
     const conditions: string[] = [];
@@ -210,7 +215,10 @@ export async function getDoctors(filters: {
       conditions.push("ld.city_id = ?");
       values.push(filters.city_id);
     }
-
+    if (filters.patient_id) {
+      conditions.push("dk.patient_id =?");
+      values.push(filters.patient_id);
+    }
     if (conditions.length) {
       sql += " WHERE " + conditions.join(" AND ");
     }
