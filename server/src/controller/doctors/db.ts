@@ -439,27 +439,26 @@ export async function getSubSpecialtiesById(specialtyId: number) {
     const limit = 20; // Default limit
     const offset = 0; // Default offset
     const result = await query<RowDataPacket[]>(
-      `SELECT 
-      s.id AS specialty_id,
-      s.name AS specialty_name,
-      s.images AS specialty_image,
-      ss.id AS sub_specialty_id,
-      ss.name AS sub_specialty_name,
-      ss.image_url AS sub_specialty_image
-    FROM ${coreSchema}.specialties s
-    LEFT JOIN ${coreSchema}.sub_specialties ss 
-    ON s.id = ss.specialty_id
-    WHERE s.id = ? 
-    ORDER BY ss.id;`,
+    `SELECT 
+        s.id AS specialty_id,
+        s.name AS specialty_name,
+        s.images AS specialty_image,
+        ss.id AS sub_specialty_id,
+        ss.sub_specialty AS sub_specialty_name
+      FROM ${coreSchema}.specialties s
+      LEFT JOIN ${coreSchema}.sub_specialties ss 
+      ON s.id = ss.specialty_id
+      WHERE s.id = ? 
+      ORDER BY ss.id;`,
       { values: [specialtyId] }
     );
     return result.map((row) => ({
       id: row.sub_specialty_id || null,
       name: row.sub_specialty_name || "N/A",
-      images: row.sub_specialty_image || "default_image.jpeg",
+      images: row.specialty_image || "default_image.jpeg",
     }));
   } catch (error) {
-    console.log(error);
+    console.error("Error fetching sub-specialties:", error);
     throw new ResponseError.InternalServer("An unexpected error occurred.");
   }
 }
@@ -594,7 +593,7 @@ export async function insertReviews(reviewData: ReviewsDTO) {
 export async function getReviews() {
   const result = await query<RowDataPacket[]>(
     `
-    SELECT * FROM ${coreSchema}.reviews
+    SELECT * FROM ${coreSchema}.doctor_reviews
     `
   );
   return result;
