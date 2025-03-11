@@ -73,7 +73,7 @@ export class SwiperSliderComponent implements AfterViewInit, OnInit {
         },
       });
       this.dotHelper = [
-        ...Array(this.slider.track.details.slides?.length).keys(),
+        ...Array(this.slider.track.details.slides.length)?.keys(),
       ];
     }, 500);
   }
