@@ -23,6 +23,9 @@ const optCors: cors.CorsOptions = {
 };
 const app = express();
 
+
+
+
 app.use(
   cors({
     origin: "*",

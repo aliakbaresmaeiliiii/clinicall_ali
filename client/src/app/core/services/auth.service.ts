@@ -91,6 +91,10 @@ export class AuthService {
     return !!this.getToken();
   }
 
+  verifyCaptcha(token: string): Observable<any> {
+    return this.#http.post<any>(`${this.config}auth/verify-recaptcha`, {  token });
+  } 
+
   isTokenExpired(): boolean {
     const token = this.getToken();
     if (!token) return true;
