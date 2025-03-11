@@ -304,13 +304,15 @@ export class HeaderComponent {
   ];
 
   ngOnInit(): void {
-    window.addEventListener('scroll', this.onWindowScroll.bind(this));
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', this.onWindowScroll.bind(this));
 
-    if (typeof localStorage !== 'undefined') {
-      const getStoreItem = localStorage.getItem('userData');
-      if (getStoreItem) {
-        const getItem = JSON.parse(getStoreItem);
-        this.userData = getItem.first_name;
+      if (typeof localStorage !== 'undefined') {
+        const getStoreItem = localStorage.getItem('userData');
+        if (getStoreItem) {
+          const getItem = JSON.parse(getStoreItem);
+          this.userData = getItem.first_name;
+        }
       }
     }
   }
@@ -385,6 +387,9 @@ export class HeaderComponent {
     this.router.navigate(['doctors/request']);
   }
   ngOnDestroy(): void {
-    window.removeEventListener('scroll', this.onWindowScroll.bind(this));
+    if(typeof window !== 'undefined'){
+
+      window.removeEventListener('scroll', this.onWindowScroll.bind(this));
+    }
   }
 }

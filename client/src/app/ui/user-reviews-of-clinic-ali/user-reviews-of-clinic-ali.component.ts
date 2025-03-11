@@ -11,6 +11,7 @@ import {
 import KeenSlider, { KeenSliderInstance } from 'keen-slider';
 import { DoctorsService } from '../../modules/doctors/services/doctors.service';
 import { ReviewsDTO } from '../../modules/doctors/models/doctors';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-user-reviews-of-clinic-ali',
@@ -26,8 +27,6 @@ export class UserReviewsOfClinicAliComponent implements OnInit, AfterViewInit {
   service = inject(DoctorsService);
   userReview = signal<ReviewsDTO[]>([]);
 
-  
-
   urlIcon = {
     empty: '../../../assets/images/ui/svg/star-empty.svg',
     half: '../../../assets/images/ui/svg/star-half.svg',
@@ -37,7 +36,7 @@ export class UserReviewsOfClinicAliComponent implements OnInit, AfterViewInit {
   currentSlide: number = 1;
   dotHelper: Array<Number> = [];
   @ViewChild('sliderRef') sliderRef!: ElementRef<HTMLElement>;
-
+  private destroy$ = new Subject<void>();
   slider!: KeenSliderInstance;
 
   ngOnInit(): void {
@@ -45,9 +44,18 @@ export class UserReviewsOfClinicAliComponent implements OnInit, AfterViewInit {
   }
 
   fetchData() {
-    this.service.getReviews().subscribe((res: any) => {
-      this.userReview.set(res.data);
-    });
+    this.service
+      .getReviews()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (res: any) => {
+          this.userReview.set(res.data);
+        },
+        error: err => {
+          console.error('Error fetching reviews:', err);
+          // Optionally, you can show a toast notification or handle the error in another way
+        },
+      });
   }
 
   ngAfterViewInit() {
@@ -87,5 +95,7 @@ export class UserReviewsOfClinicAliComponent implements OnInit, AfterViewInit {
 
   ngOnDestroy() {
     if (this.slider) this.slider.destroy();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
