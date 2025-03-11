@@ -19,6 +19,7 @@ import { LikesService } from '../shared-ui/services/likes.service';
 import { ToastrService } from 'ngx-toastr';
 import { PatientFavoritesService } from '../shared-ui/services/patient-favorites.service';
 import { likeDTO } from '../shared-ui/models/like';
+import { catchError, throwError } from 'rxjs';
 
 @Component({
   selector: 'app-suggestion-replaced-doctor',
@@ -154,14 +155,36 @@ export class SuggestionReplacedDoctorComponent
     });
   }
 
-  getAppointment(data: any) {
-    let doctorName = data.name.replace(/\s+/g, '-');
+  // getAppointment(data: any) {
+  //   let doctorName = data.name.replace(/\s+/g, '-');
+  //   const doctorId = data.id;
+  //   this.countDoctorClick(doctorId);
+  //   this.router.navigate([`/doctor/${doctorName}/${doctorId}`]);
+  // }
+  getAppointment(data: DoctorsDTO) {
+    const doctorName = data.first_name.replace(/\s+/g, '-');
     const doctorId = data.id;
-    this.countDoctorClick(doctorId);
-    this.router.navigate([`/doctor/${doctorName}/${doctorId}`]);
-  }
+    this.countDoctorClick(doctorId).subscribe({
+        next: () => {
+            this.router.navigate([`/doctor/${doctorName}/${doctorId}`]);
+        },
+        error: (err) => {
+            console.error('Error counting doctor click:', err);
+            this.toast.error('An error occurred while processing your request.');
+        }
+    });
+}
 
+  // countDoctorClick(id: number) {
+  //   this.doctorService.countDoctorClick(id).subscribe(res => {});
+  // }
   countDoctorClick(id: number) {
-    this.doctorService.countDoctorClick(id).subscribe(res => {});
-  }
+    return this.doctorService.countDoctorClick(id).pipe(
+        catchError((err) => {
+            console.error('Error counting doctor click:', err);
+            this.toast.error('An error occurred while processing your request.');
+            return throwError(() => err);;
+        })
+    );
+}
 }
