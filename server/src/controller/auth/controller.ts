@@ -6,6 +6,7 @@ import { router } from "../../routes/public";
 import { AuthService } from "./service";
 import { ClinicService } from "../clinic/service";
 import { PatientService } from "../patients/services";
+import axios from "axios";
 
 // ***** clinic sign-up *****
 router.post(
@@ -27,6 +28,34 @@ router.post(
     return res.status(buildResponse.code).json(buildResponse);
   })
 );
+
+router.post(
+  "/auth/verify-recaptcha",
+  asyncHandler(async function verifyRecaptcha(req: any, res: any) {
+    const { token } = req.body;
+    const secretKey = '6Lfts_AqAAAAAJ6Rct_LzxLQC5Ox5G1tOJHS_Bhr';
+
+    if (!token) {
+      return res.status(400).json({ success: false, message: "Token is required" });
+    }
+
+    try {
+      const response = await axios.post(
+        `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`
+      );
+
+      if (response.data.success) {
+        return res.status(200).json({ success: true });
+      } else {
+        return res.status(400).json({ success: false, message: "Recaptcha verification failed" });
+      }
+    } catch (error) {
+      console.error("Recaptcha verification error:", error);
+      return res.status(500).json({ success: false, message: "Server error" });
+    }
+  })
+);
+
 // ***** confirm *****
 router.post(
   "/auth/verify-clinic-email",
@@ -37,7 +66,7 @@ router.post(
   ): Promise<any> {
     const { email, verify_code } = req.body;
 
-    const data = await AuthService.confirmClinicEmail({email, verify_code});
+    const data = await AuthService.confirmClinicEmail({ email, verify_code });
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
   })
@@ -50,12 +79,11 @@ router.post(
     next: NextFunction
   ): Promise<any> {
     const { email, verify_code } = req.body;
-    const data = await AuthService.confirmPatientEmail({email, verify_code});
+    const data = await AuthService.confirmPatientEmail({ email, verify_code });
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
   })
 );
-
 
 // ***** clinic-sign-in *****
 router.post(

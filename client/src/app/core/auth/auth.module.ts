@@ -15,6 +15,7 @@ import { MatInputModule } from '@angular/material/input';
 import { RouterLink, RouterModule } from '@angular/router';
 import { NgOtpInputModule } from 'ali';
 import { AuthLayoutComponent } from './components/auth-layout/auth-layout.component';
+import { RECAPTCHA_V3_SITE_KEY, RecaptchaModule } from 'ng-recaptcha';
 
 const routes = [
   {
@@ -73,6 +74,7 @@ const routes = [
     MatCheckboxModule,
     SocialLoginModule,
     NgOtpInputModule,
+    RecaptchaModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   exports: [
@@ -88,5 +90,6 @@ const routes = [
     SocialLoginModule,
     NgOtpInputModule,
   ],
+  providers: [{provide:RECAPTCHA_V3_SITE_KEY,useValue:'6LcWrPAqAAAAAGCPuLNhdXoJ7eqaEFSjXCTjrTbn'}],
 })
 export class AuthModule {}

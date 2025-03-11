@@ -1,5 +1,12 @@
 declare var google: any;
-import { Component, inject, OnInit, Renderer2, signal } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  Renderer2,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { Router } from '@angular/router';
@@ -15,7 +22,9 @@ import {
 import { AnimationEvent } from '@angular/animations';
 import { ToastrService } from 'ngx-toastr';
 import { PermissionService } from '../../../services/permission.service';
-
+import { Subject, takeUntil } from 'rxjs';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
+import { ReCaptcha2Component } from 'ngx-captcha';
 // Client ID
 // 302618903274-6bfd6agmkoanb474m3e1ii3oc1phjl40.apps.googleusercontent.com
 
@@ -26,6 +35,7 @@ import { PermissionService } from '../../../services/permission.service';
   templateUrl: './login.component.html',
   standalone: false,
   providers: [
+    ReCaptchaV3Service,
     SocialAuthService,
     {
       provide: 'SocialAuthServiceConfig',
@@ -53,10 +63,13 @@ export class LoginComponent implements OnInit {
   #authService = inject(AuthService);
   permissionService = inject(PermissionService);
   toast = inject(ToastrService);
+  recaptchaV3Service = inject(ReCaptchaV3Service);
   renderer = inject(Renderer2);
   matcher = new ErrorStateMatcher();
   private themeManager = inject(ThemeManagerService);
   selectedRole: string = '';
+  private destroy$ = new Subject<void>();
+  successCaptcha = signal<boolean>(false);
 
   labelUserName: string = 'UserName';
   labelPassword: string = 'password';
@@ -67,7 +80,7 @@ export class LoginComponent implements OnInit {
   protected wobbleField = false;
   theme = this.themeManager.theme;
   title = signal<string>('');
-  stroeDataUser: any;
+  storeDataUser: any;
   toggleTheme() {
     this.themeManager.toggleTheme();
   }
@@ -89,6 +102,9 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.recaptchaV3Service.execute('homepage').subscribe(token => {
+      console.log('reCAPTCHA token:', token);
+    });
     this.setRole('clinic');
 
     this.createForm();
@@ -97,7 +113,6 @@ export class LoginComponent implements OnInit {
       client_id:
         '940657570058-gpm7buu1t25nlls0pcbs95c6t2bf4rg4.apps.googleusercontent.com',
       callback: (resp: any) => {
-
         this.handleLogin(resp);
       },
     });
@@ -134,8 +149,8 @@ export class LoginComponent implements OnInit {
           this.#authService.clinicSignIn(formValue).subscribe({
             next: (res: any) => {
               // this.permissionService.setPermissions(res.data.permissions);
-              this.stroeDataUser = res;
-              const dataJson = JSON.stringify(this.stroeDataUser);
+              this.storeDataUser = res;
+              const dataJson = JSON.stringify(this.storeDataUser);
               localStorage.setItem('userData', dataJson);
               if (res.code === 200) {
                 this.toast.success('login is successfully');
@@ -145,7 +160,7 @@ export class LoginComponent implements OnInit {
             error: e => {
               if (e) {
                 this.router.navigate(['auth/confirm-email']);
-                this.stroeDataUser;
+                this.storeDataUser;
                 const email = localStorage.getItem('emailClinic');
                 if (email) {
                   this.#authService.fetchConfirmCode(email).subscribe(res => {
@@ -162,8 +177,8 @@ export class LoginComponent implements OnInit {
           this.#authService.doctorSignIn(formValue).subscribe({
             next: (res: any) => {
               // this.permissionService.setPermissions(res.data.permissions);
-              const stroeDataUser = res;
-              const dataJson = JSON.stringify(stroeDataUser);
+              const storeDataUser = res;
+              const dataJson = JSON.stringify(storeDataUser);
               localStorage.setItem('userData', dataJson);
               if (res.code === 200) {
                 this.toast.success(`You are now sign in as a ${res.email}`);
@@ -173,7 +188,7 @@ export class LoginComponent implements OnInit {
             error: e => {
               if (e) {
                 this.router.navigate(['auth/confirm-email']);
-                this.stroeDataUser;
+                this.storeDataUser;
                 const email = localStorage.getItem('emailClinic');
                 if (email) {
                   this.#authService.fetchConfirmCode(email).subscribe(res => {
@@ -190,12 +205,16 @@ export class LoginComponent implements OnInit {
           this.#authService.patientSignIn(formValue).subscribe({
             next: (res: any) => {
               // this.permissionService.setPermissions(res.data.permissions);
-              const stroeDataUser = res;
-              const dataJson = JSON.stringify(stroeDataUser);
+              const storeDataUser = res;
+              const dataJson = JSON.stringify(storeDataUser);
               localStorage.setItem('userData', dataJson);
               if (res.code === 200) {
-                this.toast.success('login is successfully');
-                this.router.navigate(['']);
+                if(this.successCaptcha()){
+                  this.toast.success('login is successfully');
+                  this.router.navigate(['']);
+                }else{
+                  this.toast.error('Captcha verification failed. Please try again.');
+                }
               }
             },
             error: e => {
@@ -208,6 +227,15 @@ export class LoginComponent implements OnInit {
           return;
       }
     }
+  }
+  resolved(captchaResponse: any) {
+    console.log(`Captcha resolved with response: ${captchaResponse}`);
+    // Send token to backend for verification
+    this.#authService.verifyCaptcha(captchaResponse).subscribe(res => {
+      this.successCaptcha.set(res.success);
+
+      console.log('from captcha', res);
+    });
   }
 
   navigateRegister() {
@@ -225,5 +253,10 @@ export class LoginComponent implements OnInit {
   }
   get password() {
     return this.form.get('password');
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

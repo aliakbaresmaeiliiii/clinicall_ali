@@ -342,7 +342,7 @@ export class HeaderComponent {
 
   navigateUrl(menuName: string) {
     if (menuName === 'Log out') {
-      this.router.navigate(['login']);
+      this.router.navigate(['auth/login']);
       localStorage.removeItem('userData');
       localStorage.clear();
       sessionStorage.clear();

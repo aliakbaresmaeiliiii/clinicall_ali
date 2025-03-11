@@ -74,6 +74,7 @@ import { ChoosingAppointmentComponent } from './filter-layout/choosing-appointme
 import { ToBooleanPipe } from '../shared/pipes/to-boolean.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from '../shared/shared.module';
+import { RecaptchaModule } from "ng-recaptcha";
 
 const routes: Routes = [
   {
@@ -196,7 +197,8 @@ const routes: Routes = [
     MatIconModule,
     ToBooleanPipe,
     MatTooltipModule,
-    SharedModule
+    SharedModule,
+    RecaptchaModule,
   ],
   exports: [BlogComponent, MatToolbarModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
