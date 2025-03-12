@@ -46,6 +46,12 @@ export class DoctorsService {
     // .pipe(map(response => response));
   }
 
+  searchDoctors(query: string): Observable<DoctorsDTO[]> {
+    return this.#http.get<DoctorsDTO[]>(
+      `${this.config}doctors/search?query=${query}`
+    );
+  }
+
   addDoctor(formData: any): Observable<DoctorsDTO[]> {
     return this.#http.post<DoctorsDTO[]>(
       `${this.config}admin/add-doctor`,

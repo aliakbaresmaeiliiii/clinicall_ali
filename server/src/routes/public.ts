@@ -17,3 +17,4 @@ require("../controller/clinic_services/controller");
 require("../controller/cities/controller");
 require("../controller/insurance/controller");
 require("../controller/clinic/controller");
+require("../controller/elastic-search/controlleer");

@@ -16,7 +16,7 @@ import {
   filterServicesById,
   filterSpecialtyById,
   getDoctoLike,
-  getDoctors,
+  getDoctorsFromElastic,
   getReviews,
   getServices,
   getSpecialties,
@@ -38,7 +38,7 @@ export class DoctorsService {
     maxRating?: number;
     isPopular?: boolean;
   }) {
-    const data = await getDoctors(filters);
+    const data = await getDoctorsFromElastic(filters);
     if (data) {
       return { message: "ok", data };
     } else {

@@ -5,18 +5,23 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import {
-  Component,
-  computed,
-  inject,
-  output,
-  signal
-} from '@angular/core';
+import { Component, computed, inject, output, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { PermissionService } from '../../core/services/permission.service';
 import { SignalService } from '../shared-ui/services/signal.service';
+import { FormControl } from '@angular/forms';
+import {
+  catchError,
+  debounceTime,
+  map,
+  Observable,
+  of,
+  startWith,
+  switchMap,
+} from 'rxjs';
+import { DoctorsService } from '../../modules/doctors/services/doctors.service';
 
 interface MenuItem {
   label: string;
@@ -74,6 +79,8 @@ export class HeaderComponent {
   sanitizer = inject(DomSanitizer);
   permissionService = inject(PermissionService);
   signalService = inject(SignalService);
+  doctorService = inject(DoctorsService);
+
   signalData = computed(() => this.signalService.getData());
   userMenu: MenuItem[] = [
     {
@@ -132,6 +139,14 @@ export class HeaderComponent {
              </svg>`,
     },
   ];
+
+  // Search Section
+  myControl = new FormControl('');
+  options: string[] = ['One', 'Two', 'Three'];
+  filteredOptions!: Observable<any>;
+  searchVisible = true;
+
+  // Search Section
 
   private lastScrollPosition = 0;
   bgColor: string = 'default';
@@ -315,6 +330,30 @@ export class HeaderComponent {
         }
       }
     }
+
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      debounceTime(300),
+      startWith(''),
+      switchMap(value => this._filter(value || ''))
+    );
+  }
+
+  private _filter(query: string): Observable<string[]> {
+    if (!query.trim()) {
+      return of([]);
+    } else {
+      return this.doctorService.searchDoctors(query).pipe(
+        map((doctor: any) => doctor.name),
+        catchError(error => {
+          console.log(error);
+          return of([]);
+        })
+      );
+    }
+  }
+
+  searchDoctor(searchValue: any): void {
+    // this.router.navigate(['doctors'], { queryParams: { search: searchValue } });
   }
 
   onWindowScroll(): void {
@@ -332,7 +371,6 @@ export class HeaderComponent {
   hoveredCategoryIndex: number | null = null;
 
   toggleCategory(index: number | null): void {
-
     this.hoveredCategoryIndex = index;
   }
 
@@ -387,8 +425,7 @@ export class HeaderComponent {
     this.router.navigate(['doctors/request']);
   }
   ngOnDestroy(): void {
-    if(typeof window !== 'undefined'){
-
+    if (typeof window !== 'undefined') {
       window.removeEventListener('scroll', this.onWindowScroll.bind(this));
     }
   }
