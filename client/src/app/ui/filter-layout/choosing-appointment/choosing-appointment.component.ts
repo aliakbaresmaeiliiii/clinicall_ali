@@ -187,7 +187,7 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
 
   fetchDoctorScheduleTimeAvailability(availability: any, index: number) {
     this.selectedIndex = index;
-    debugger;
+    
     this.appointment_date = availability.avaliable_date;
     const schedule_id = availability.id;
     this.schedulesService
@@ -207,7 +207,6 @@ export class ChoosingAppointmentComponent implements OnInit, AfterViewInit {
   }
 
   bookedTime(bookeData: DoctorScheduleTimeAvailability) {
-    debugger;
     this.appointment_time = bookeData.time;
     this.bookedId = bookeData.id;
     if (this.selectedTime === bookeData.id) {

@@ -8,11 +8,13 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build:docker": "npm run clean:docker && npm run before-build && npm run build:babel",
     "clean:docker": "rm -rf ./node_modules && rm yarn.lock && rm -rf ./dist",
-    "serve:production-docker": "NODE_ENV=production pm2-runtime ./dist/bin/server.js"
+    "serve:production-docker": "NODE_ENV=production pm2-runtime ./dist/bin/server.js",
+    "sync-doctors": "node scripts/syncDoctors.js"
   },
   "author": "Aliakbar_Esmaeili",
   "license": "ISC",
   "dependencies": {
+    "@elastic/elasticsearch": "^8.17.1",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",

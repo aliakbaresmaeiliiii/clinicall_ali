@@ -1,3 +1,4 @@
+import { Client } from "@elastic/elasticsearch";
 import { coreSchema, query, RowDataPacket } from "../../bin/mysql";
 import {
   CommentsDTO,
@@ -10,6 +11,9 @@ import { ResponseError } from "../../modules/error/response_error";
 import { doctorSchema } from "./schema";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
+
+const esClient = new Client({ node: process.env.ELASTICSEARCH_URL });
+
 
 export async function addDoctor(data: DoctorsDTO) {
   const { password } = data.password;
@@ -128,136 +132,190 @@ export async function getDoctoLike(patient_id: number) {
   }
 }
 
-export async function getDoctors(filters: {
+// export async function getDoctors(filters: {
+//   name?: string;
+//   service_id?: string;
+//   doctor_id?: string;
+//   specialty_id?: string;
+//   city_id?: string;
+//   minRating?: number;
+//   maxRating?: number;
+//   isPopular?: boolean;
+//   patient_id?: boolean;
+// }): Promise<DoctorsDTO[] | null> {
+//   try {
+//     let sql = `
+//     SELECT
+//       d.id, d.first_name,d.last_name,d.profile_img,  d.email, d.phone, d.specialty_id, d.insurance_id,
+//       d.click_count,d.average_rating,
+//       d.medical_code,
+//       sp.name AS specialty_name,
+//       i.name AS insurance_name,
+//       (SELECT AVG(rating) FROM ${coreSchema}.doctor_reviews r WHERE r.doctor_id = d.id) AS average_rating,
+//       COUNT(r.id) AS total_reviews,
+//       COALESCE(AVG(r.professional_demeanor), 0) AS avg_professional_demeanor,
+//       COALESCE(AVG(r.sufficient_time), 0) AS avg_sufficient_time,
+//       COALESCE(AVG(r.skill), 0) AS avg_skill,
+//       COALESCE(AVG(r.staff_behavior), 0) AS avg_staff_behavior,
+//       COALESCE(AVG(r.clinic_condition), 0) AS avg_clinic_condition,
+//       CASE
+//         WHEN EXISTS (SELECT 1 FROM ${coreSchema}.doctor_likes dl WHERE dl.doctor_id = d.id)
+//         THEN 1 ELSE 0
+//       END AS isLiked,
+
+//       JSON_ARRAYAGG(
+//         JSON_OBJECT(
+//           'country', ld.country,
+//           'latitude', ld.latitude,
+//           'longitude', ld.longitude,
+//           'address_line1', ld.address_line1,
+//           'address_line2', ld.address_line2,
+//           'zipcode', ld.zipcode,
+//           'city',ci.name,
+//           'state',ci.state
+//         )
+//       ) AS addresses
+
+//     FROM
+//       ${coreSchema}.doctors d
+//     LEFT JOIN
+//       ${coreSchema}.doctor_locations ld ON d.id = ld.doctor_id
+//     LEFT JOIN
+//       ${coreSchema}.specialties sp ON d.specialty_id = sp.id
+//     LEFT JOIN
+//       ${coreSchema}.doctor_reviews r ON d.id = r.doctor_id
+//     LEFT JOIN
+//       ${coreSchema}.doctor_services ds ON d.service_id = ds.id
+//     LEFT JOIN
+//       ${coreSchema}.services s ON sp.id = s.specialty_id
+//     LEFT JOIN
+//       ${coreSchema}.insurances i ON d.insurance_id = i.id
+//     LEFT JOIN
+//       ${coreSchema}.cities ci ON ld.city_id = ci.id
+//     LEFT JOIN
+//       ${coreSchema}.doctor_likes dk ON d.id = dk.doctor_id
+//   `;
+
+//     const conditions: string[] = [];
+//     const values: any[] = [];
+
+//     if (filters.doctor_id) {
+//       conditions.push("d.id = ?");
+//       values.push(filters.doctor_id);
+//     }
+//     if (filters.name) {
+//       conditions.push("CONCAT(d.first_name, ' ', d.last_name) LIKE ?");
+//       values.push(`%${filters.name}%`);
+//     }
+//     if (filters.specialty_id) {
+//       conditions.push("sp.id = ?");
+//       values.push(filters.specialty_id);
+//     }
+//     if (filters.service_id) {
+//       conditions.push("d.service_id = ?");
+//       values.push(filters.service_id);
+//     }
+//     if (filters.city_id) {
+//       conditions.push("ld.city_id = ?");
+//       values.push(filters.city_id);
+//     }
+//     if (filters.patient_id) {
+//       conditions.push("dk.patient_id =?");
+//       values.push(filters.patient_id);
+//     }
+//     if (conditions.length) {
+//       sql += " WHERE " + conditions.join(" AND ");
+//     }
+
+//     sql += ` GROUP BY d.id, d.first_name, d.last_name,d.profile_img,d.email, d.phone, d.specialty_id, d.insurance_id, sp.name, i.name`;
+
+//     const havingConditions: string[] = [];
+//     if (filters.minRating !== undefined) {
+//       havingConditions.push("total_reviews >= ?");
+//       values.push(filters.minRating);
+//     }
+//     if (filters.maxRating !== undefined) {
+//       havingConditions.push("total_reviews <= ?");
+//       values.push(filters.maxRating);
+//     }
+
+//     if (filters.isPopular) {
+//       havingConditions.push("average_rating > 4");
+//     }
+
+//     if (havingConditions.length) {
+//       sql += " HAVING " + havingConditions.join(" AND ");
+//     }
+
+//     const result = await query<RowDataPacket[]>(sql, {
+//       values: values,
+//     });
+
+//     // if (filters.doctor_id) {
+//     //   return result.length ? result[0] : null;
+//     // }
+
+//     return result ? (result as unknown as DoctorsDTO[]) : null;
+//   } catch (error) {
+//     console.error(error);
+//     throw new ResponseError.InternalServer("An unexpected error occurred.");
+//   }
+// }
+
+export async function getDoctorsFromElastic(filters: {
   name?: string;
-  service_id?: string;
-  doctor_id?: string;
   specialty_id?: string;
   city_id?: string;
   minRating?: number;
   maxRating?: number;
   isPopular?: boolean;
-  patient_id?: boolean;
-}): Promise<DoctorsDTO[] | null> {
+}) {
   try {
-    let sql = `
-    SELECT 
-      d.id, d.first_name,d.last_name,d.profile_img,  d.email, d.phone, d.specialty_id, d.insurance_id,
-      d.click_count,d.average_rating,
-      d.medical_code,
-      sp.name AS specialty_name,
-      i.name AS insurance_name,  
-      (SELECT AVG(rating) FROM ${coreSchema}.doctor_reviews r WHERE r.doctor_id = d.id) AS average_rating,
-      COUNT(r.id) AS total_reviews,
-      COALESCE(AVG(r.professional_demeanor), 0) AS avg_professional_demeanor,
-      COALESCE(AVG(r.sufficient_time), 0) AS avg_sufficient_time,
-      COALESCE(AVG(r.skill), 0) AS avg_skill,
-      COALESCE(AVG(r.staff_behavior), 0) AS avg_staff_behavior,
-      COALESCE(AVG(r.clinic_condition), 0) AS avg_clinic_condition,
-      CASE 
-        WHEN EXISTS (SELECT 1 FROM ${coreSchema}.doctor_likes dl WHERE dl.doctor_id = d.id) 
-        THEN 1 ELSE 0
-      END AS isLiked,
-
-      JSON_ARRAYAGG(
-        JSON_OBJECT(
-          'country', ld.country,
-          'latitude', ld.latitude,
-          'longitude', ld.longitude,
-          'address_line1', ld.address_line1,
-          'address_line2', ld.address_line2,
-          'zipcode', ld.zipcode,
-          'city',ci.name,
-          'state',ci.state
-        )
-      ) AS addresses
-
-    FROM 
-      ${coreSchema}.doctors d
-    LEFT JOIN 
-      ${coreSchema}.doctor_locations ld ON d.id = ld.doctor_id
-    LEFT JOIN 
-      ${coreSchema}.specialties sp ON d.specialty_id = sp.id
-    LEFT JOIN 
-      ${coreSchema}.doctor_reviews r ON d.id = r.doctor_id
-    LEFT JOIN 
-      ${coreSchema}.doctor_services ds ON d.service_id = ds.id
-    LEFT JOIN 
-      ${coreSchema}.services s ON sp.id = s.specialty_id
-    LEFT JOIN 
-      ${coreSchema}.insurances i ON d.insurance_id = i.id
-    LEFT JOIN 
-      ${coreSchema}.cities ci ON ld.city_id = ci.id
-    LEFT JOIN
-      ${coreSchema}.doctor_likes dk ON d.id = dk.doctor_id
-  `;
-
-    const conditions: string[] = [];
-    const values: any[] = [];
-
-    if (filters.doctor_id) {
-      conditions.push("d.id = ?");
-      values.push(filters.doctor_id);
-    }
+    const must: any[] = [];
     if (filters.name) {
-      conditions.push("CONCAT(d.first_name, ' ', d.last_name) LIKE ?");
-      values.push(`%${filters.name}%`);
+      must.push({ match: { name: filters.name } });
     }
     if (filters.specialty_id) {
-      conditions.push("sp.id = ?");
-      values.push(filters.specialty_id);
-    }
-    if (filters.service_id) {
-      conditions.push("d.service_id = ?");
-      values.push(filters.service_id);
+      must.push({ match: { specialty_id: filters.specialty_id } });
     }
     if (filters.city_id) {
-      conditions.push("ld.city_id = ?");
-      values.push(filters.city_id);
+      must.push({ match: { city_id: filters.city_id } });
     }
-    if (filters.patient_id) {
-      conditions.push("dk.patient_id =?");
-      values.push(filters.patient_id);
+    if (filters.minRating !== undefined || filters.maxRating !== undefined) {
+      must.push({
+        range: {
+          average_rating: {
+            gte: filters.minRating || 0,
+            lte: filters.maxRating || 5,
+          },
+        },
+      });
     }
-    if (conditions.length) {
-      sql += " WHERE " + conditions.join(" AND ");
-    }
-
-    sql += ` GROUP BY d.id, d.first_name, d.last_name,d.profile_img,d.email, d.phone, d.specialty_id, d.insurance_id, sp.name, i.name`;
-
-    const havingConditions: string[] = [];
-    if (filters.minRating !== undefined) {
-      havingConditions.push("total_reviews >= ?");
-      values.push(filters.minRating);
-    }
-    if (filters.maxRating !== undefined) {
-      havingConditions.push("total_reviews <= ?");
-      values.push(filters.maxRating);
-    }
-
     if (filters.isPopular) {
-      havingConditions.push("average_rating > 4");
+      must.push({
+        range: {
+          average_rating: {
+            gte: 4,
+          },
+        },
+      });
     }
 
-    if (havingConditions.length) {
-      sql += " HAVING " + havingConditions.join(" AND ");
-    }
-
-    const result = await query<RowDataPacket[]>(sql, {
-      values: values,
+    const query = must.length > 0 ? { bool: { must } } : { match_all: {} };
+    const body = await esClient.search({
+      index: "doctors",
+      body: {
+        query: query,
+        size: 1000, 
+      },
     });
-
-    // if (filters.doctor_id) {
-    //   return result.length ? result[0] : null;
-    // }
-
-    return result ? (result as unknown as DoctorsDTO[]) : null;
+    
+    return body.hits.hits.map((hit: any) => hit._source);
   } catch (error) {
-    console.error(error);
-    throw new ResponseError.InternalServer("An unexpected error occurred.");
+    console.error("Elasticsearch error:", error);
+    return [];
   }
 }
-
 export async function getServices() {
   const result = await query<RowDataPacket[]>(
     `SELECT * FROM ${coreSchema}.services`
@@ -439,7 +497,7 @@ export async function getSubSpecialtiesById(specialtyId: number) {
     const limit = 20; // Default limit
     const offset = 0; // Default offset
     const result = await query<RowDataPacket[]>(
-    `SELECT 
+      `SELECT 
         s.id AS specialty_id,
         s.name AS specialty_name,
         s.images AS specialty_image,

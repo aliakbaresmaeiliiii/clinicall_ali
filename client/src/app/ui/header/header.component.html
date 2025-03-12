@@ -1,7 +1,7 @@
 <app-scroll-progress-bar />
 
 <div
-  class="flex justify-between p-4 fixed z-10 top-0 w-full"
+  class="flex justify-between px-4 fixed z-10 top-0 w-full"
   [@bgColorChange]="bgColor">
   <div class="col-span-2 flex justify-center items-center">
     <div class="w-36 h-auto">
@@ -13,7 +13,6 @@
           height="100%"
           alt="" />
         <strong class="pl-"> Yours Doctor </strong>
-        
       </a>
       }@else{
       <a href="/">
@@ -28,6 +27,41 @@
   </div>
 
   <div class="col-span-8 flex justify-center items-center">
+    <!-- ***** Search Section -->
+    <div class="flex items-center mr-4">
+      @if (searchVisible) {
+      <button
+        mat-mini-fab
+        matTooltip="Search for a doctor"
+        class="flex justify-center items-center border-2 border-gray-200 rounded-xl"
+        (click)="searchDoctor($event); searchVisible = !searchVisible">
+        <mat-icon>search</mat-icon>
+      </button>
+      } @if ( !searchVisible ) {
+      <mat-form-field appearance="outline" class="pt-4 w-[35rem]">
+        <mat-label>Search...</mat-label>
+        <input
+          type="text"
+          placeholder="Search for Doctors, Clinics, Specializations..."
+          aria-label="Number"
+          matInput
+          [formControl]="myControl"
+          [matAutocomplete]="auto" />
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          @for (option of filteredOptions | async; track option) {
+          <mat-option [value]="option">{{ option }}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <i
+        (click)="searchVisible = true"
+        class="fa-solid fa-circle-xmark text-blue-600 text-center text-2xl cursor-pointer pl-2"></i>
+      }
+    </div>
+
+    <!-- ***** Search Section -->
+    @if (searchVisible) {
     <div class="menu bg-gray-200 rounded-2xl">
       <div class="item">
         <a class="link">
@@ -145,7 +179,6 @@
         </div> -->
       </div>
 
-     
       <div class="item">
         <a class="link" routerLink="/contact-us">
           <span> Contact Us </span>
@@ -157,6 +190,7 @@
         </a>
       </div>
     </div>
+    }
   </div>
   <!-- <div class="item flex justify-center items-center">
     <button
@@ -269,9 +303,6 @@
     </div>
   </div>
   <div class="col-span-2 flex justify-center items-center gap-4">
-    <button mat-icon-button matTooltip="View Detail">
-      <i class="fa-solid fa-magnifying-glass text-blue-600"></i>
-    </button>
     <div
       class="p-4 bg-blue-600 w-14 h-14 rounded-full cursor-pointer ease-in duration-300">
       <i
