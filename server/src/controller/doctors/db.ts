@@ -305,11 +305,9 @@ export async function getDoctorsFromElastic(filters: {
     const body = await esClient.search({
       index: "doctors",
       body: {
-        query: query,
-        size: 1000, 
+        query,
       },
     });
-    
     return body.hits.hits.map((hit: any) => hit._source);
   } catch (error) {
     console.error("Elasticsearch error:", error);

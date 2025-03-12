@@ -216,7 +216,7 @@ export class FilterLayoutComponent implements OnInit {
       this.toast.error('Please login before make appointment...');
       this.router.navigate(['/login']);
     } else {
-      let doctorName = data.first_name.replace(/\s+/g, '-');
+      let doctorName = data.first_name;
       this.countDoctorClick(data.id);
       this.router.navigate([`/doctor/${doctorName}/${data.id}`]);
     }
@@ -270,7 +270,7 @@ export class FilterLayoutComponent implements OnInit {
   }
 
   shareInfo(docotoInfo: DoctorsDTO) {
-    const doctorLink = `localhost:4200/doctor/${docotoInfo.first_name}/${docotoInfo.id}`; // Generate the doctor's link
+    const doctorLink = `localhost:4200/doctor/${docotoInfo.name}/${docotoInfo.id}`; // Generate the doctor's link
     this.dialog.open(CopyLinkDialogComponent, {
       data: { link: doctorLink },
     });

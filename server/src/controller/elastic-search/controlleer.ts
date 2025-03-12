@@ -1,7 +1,6 @@
-import { Request, Response } from "express";
+import { Client } from "@elastic/elasticsearch";
 import { asyncHandler } from "../../helper/async-handler";
 import { router } from "../../routes/public";
-import { Client } from "@elastic/elasticsearch";
 
 const esClient = new Client({ node: process.env.ELASTICSEARCH_URL });
 
