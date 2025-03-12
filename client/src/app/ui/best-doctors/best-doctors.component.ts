@@ -113,7 +113,7 @@ export class BestDoctorsComponent implements OnInit {
       this.toast.error('Please login before make appointment...');
       this.router.navigate(['/login']);
     } else {
-      let doctorName = data.first_name.replace(/\s+/g, '-');
+      let doctorName = data.first_name;
       this.countDoctorClick(data.id);
       this.router.navigate([`/doctor/${doctorName}/${data.id}`]);
     }

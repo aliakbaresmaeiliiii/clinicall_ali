@@ -90,7 +90,7 @@ export class SuggestionReplacedDoctorComponent
       this.toast.error('Please login before make appointment...');
       this.router.navigate(['/login']);
     } else {
-      let doctorName = data.first_name.replace(/\s+/g, '-');
+      let doctorName = data.first_name;
       this.countDoctorClick(data.id);
       this.router.navigate([`/doctor/${doctorName}/${data.id}`]);
     }
@@ -99,7 +99,7 @@ export class SuggestionReplacedDoctorComponent
   takeTurn() {}
 
   shareInfo(docotoInfo: DoctorsDTO) {
-    const doctorLink = `localhost:4200/doctor/${docotoInfo.first_name}/${docotoInfo.id}`; // Generate the doctor's link
+    const doctorLink = `localhost:4200/doctor/${docotoInfo.name}/${docotoInfo.id}`; // Generate the doctor's link
     this.dialog.open(CopyLinkDialogComponent, {
       data: { link: doctorLink },
     });
@@ -162,7 +162,7 @@ export class SuggestionReplacedDoctorComponent
   //   this.router.navigate([`/doctor/${doctorName}/${doctorId}`]);
   // }
   getAppointment(data: DoctorsDTO) {
-    const doctorName = data.first_name.replace(/\s+/g, '-');
+    const doctorName = data.name;
     const doctorId = data.id;
     this.countDoctorClick(doctorId).subscribe({
         next: () => {

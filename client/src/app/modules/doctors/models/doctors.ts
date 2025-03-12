@@ -4,8 +4,7 @@ export interface DoctorsDTO {
   position?: number | any;
   id?: any;
   doctor_id?: any;
-  first_name: string;
-  last_name: string;
+  name: string;
   addresses: IDoctorAddresses[];
   phone?: string | undefined | null;
   specialty_name: string | null | undefined;

@@ -64,7 +64,7 @@ export class EditDoctorComponent extends BaseComponent {
   updateDoctor() {
     this.form.patchValue({
       id: this.doctorInfo.id,
-      name: this.doctorInfo.first_name,
+      name: this.doctorInfo.name,
       gender: this.doctorInfo.gender,
       email: this.doctorInfo.email,
       age: this.doctorInfo.age,
