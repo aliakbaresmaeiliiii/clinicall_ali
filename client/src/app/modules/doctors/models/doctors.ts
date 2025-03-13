@@ -22,6 +22,7 @@ export interface DoctorsDTO {
   medical_code: string;
   description: string;
   click_count: number;
+  user_suggestion_percentage: number;
   likeInfo: likeDTO;
   isLiked: boolean;
 }

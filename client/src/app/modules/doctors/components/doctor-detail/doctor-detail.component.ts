@@ -25,7 +25,6 @@ export class DoctorDetailComponent extends BaseComponent {
     super();
     this.activatedRoute.params.subscribe((param: any) => {
       this.doctorId = +param.id;
-      this.fetchData({ doctor_id: param.id });
       
     });
   }
@@ -34,12 +33,13 @@ export class DoctorDetailComponent extends BaseComponent {
     this.breakPointObserver.observe([Breakpoints.Handset]).subscribe(result => {
       this.isMobile = result.matches;
     });
+    this.fetchData({ doctor_id: this.doctorId });
+
   }
   fetchData(filter:{doctor_id:number}) {
+    debugger;
     this.transferState.remove(this.DATA_KEY);
     const storedData = this.transferState.get(this.DATA_KEY, null);
-    
-
     if (!storedData) {
       this.service.getDoctors(filter).subscribe({
         next: (response: any) => {

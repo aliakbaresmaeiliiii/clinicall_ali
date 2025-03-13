@@ -14,7 +14,6 @@ import { v4 as uuidv4 } from "uuid";
 
 const esClient = new Client({ node: process.env.ELASTICSEARCH_URL });
 
-
 export async function addDoctor(data: DoctorsDTO) {
   const { password } = data.password;
   const { confirmPassword } = data.password;
@@ -59,6 +58,24 @@ export async function addDoctor(data: DoctorsDTO) {
   }
 }
 
+export async function getUserSuggestionPercentage(
+  doctorId: number
+): Promise<number> {
+  const result = await query<RowDataPacket>(
+    `SELECT COUNT(id) AS total_reviews,
+      SUM(CASE WHEN recommendation = 1 THEN 1 ELSE 0 END) AS total_recommended
+     FROM ${coreSchema}.doctor_reviews
+     WHERE doctor_id = ?`,
+    {
+      values: [doctorId],
+    }
+  );
+  if (!result.length || result[0].total_reviews === 0) return 0;
+
+  return parseFloat(
+    ((result[0].total_recommended / result[0].total_reviews) * 100).toFixed(2)
+  );
+}
 export async function like(data: likeDTO) {
   const existingLike = await query<RowDataPacket>(
     `SELECT * FROM ${coreSchema}.doctor_likes 
@@ -132,141 +149,14 @@ export async function getDoctoLike(patient_id: number) {
   }
 }
 
-// export async function getDoctors(filters: {
-//   name?: string;
-//   service_id?: string;
-//   doctor_id?: string;
-//   specialty_id?: string;
-//   city_id?: string;
-//   minRating?: number;
-//   maxRating?: number;
-//   isPopular?: boolean;
-//   patient_id?: boolean;
-// }): Promise<DoctorsDTO[] | null> {
-//   try {
-//     let sql = `
-//     SELECT
-//       d.id, d.first_name,d.last_name,d.profile_img,  d.email, d.phone, d.specialty_id, d.insurance_id,
-//       d.click_count,d.average_rating,
-//       d.medical_code,
-//       sp.name AS specialty_name,
-//       i.name AS insurance_name,
-//       (SELECT AVG(rating) FROM ${coreSchema}.doctor_reviews r WHERE r.doctor_id = d.id) AS average_rating,
-//       COUNT(r.id) AS total_reviews,
-//       COALESCE(AVG(r.professional_demeanor), 0) AS avg_professional_demeanor,
-//       COALESCE(AVG(r.sufficient_time), 0) AS avg_sufficient_time,
-//       COALESCE(AVG(r.skill), 0) AS avg_skill,
-//       COALESCE(AVG(r.staff_behavior), 0) AS avg_staff_behavior,
-//       COALESCE(AVG(r.clinic_condition), 0) AS avg_clinic_condition,
-//       CASE
-//         WHEN EXISTS (SELECT 1 FROM ${coreSchema}.doctor_likes dl WHERE dl.doctor_id = d.id)
-//         THEN 1 ELSE 0
-//       END AS isLiked,
-
-//       JSON_ARRAYAGG(
-//         JSON_OBJECT(
-//           'country', ld.country,
-//           'latitude', ld.latitude,
-//           'longitude', ld.longitude,
-//           'address_line1', ld.address_line1,
-//           'address_line2', ld.address_line2,
-//           'zipcode', ld.zipcode,
-//           'city',ci.name,
-//           'state',ci.state
-//         )
-//       ) AS addresses
-
-//     FROM
-//       ${coreSchema}.doctors d
-//     LEFT JOIN
-//       ${coreSchema}.doctor_locations ld ON d.id = ld.doctor_id
-//     LEFT JOIN
-//       ${coreSchema}.specialties sp ON d.specialty_id = sp.id
-//     LEFT JOIN
-//       ${coreSchema}.doctor_reviews r ON d.id = r.doctor_id
-//     LEFT JOIN
-//       ${coreSchema}.doctor_services ds ON d.service_id = ds.id
-//     LEFT JOIN
-//       ${coreSchema}.services s ON sp.id = s.specialty_id
-//     LEFT JOIN
-//       ${coreSchema}.insurances i ON d.insurance_id = i.id
-//     LEFT JOIN
-//       ${coreSchema}.cities ci ON ld.city_id = ci.id
-//     LEFT JOIN
-//       ${coreSchema}.doctor_likes dk ON d.id = dk.doctor_id
-//   `;
-
-//     const conditions: string[] = [];
-//     const values: any[] = [];
-
-//     if (filters.doctor_id) {
-//       conditions.push("d.id = ?");
-//       values.push(filters.doctor_id);
-//     }
-//     if (filters.name) {
-//       conditions.push("CONCAT(d.first_name, ' ', d.last_name) LIKE ?");
-//       values.push(`%${filters.name}%`);
-//     }
-//     if (filters.specialty_id) {
-//       conditions.push("sp.id = ?");
-//       values.push(filters.specialty_id);
-//     }
-//     if (filters.service_id) {
-//       conditions.push("d.service_id = ?");
-//       values.push(filters.service_id);
-//     }
-//     if (filters.city_id) {
-//       conditions.push("ld.city_id = ?");
-//       values.push(filters.city_id);
-//     }
-//     if (filters.patient_id) {
-//       conditions.push("dk.patient_id =?");
-//       values.push(filters.patient_id);
-//     }
-//     if (conditions.length) {
-//       sql += " WHERE " + conditions.join(" AND ");
-//     }
-
-//     sql += ` GROUP BY d.id, d.first_name, d.last_name,d.profile_img,d.email, d.phone, d.specialty_id, d.insurance_id, sp.name, i.name`;
-
-//     const havingConditions: string[] = [];
-//     if (filters.minRating !== undefined) {
-//       havingConditions.push("total_reviews >= ?");
-//       values.push(filters.minRating);
-//     }
-//     if (filters.maxRating !== undefined) {
-//       havingConditions.push("total_reviews <= ?");
-//       values.push(filters.maxRating);
-//     }
-
-//     if (filters.isPopular) {
-//       havingConditions.push("average_rating > 4");
-//     }
-
-//     if (havingConditions.length) {
-//       sql += " HAVING " + havingConditions.join(" AND ");
-//     }
-
-//     const result = await query<RowDataPacket[]>(sql, {
-//       values: values,
-//     });
-
-//     // if (filters.doctor_id) {
-//     //   return result.length ? result[0] : null;
-//     // }
-
-//     return result ? (result as unknown as DoctorsDTO[]) : null;
-//   } catch (error) {
-//     console.error(error);
-//     throw new ResponseError.InternalServer("An unexpected error occurred.");
-//   }
-// }
-
 export async function getDoctorsFromElastic(filters: {
   name?: string;
-  specialty_id?: string;
   city_id?: string;
+  service_id: string;
+  specialty_id: string;
+  insurance_id: string;
   minRating?: number;
+  doctor_id?: string;
   maxRating?: number;
   isPopular?: boolean;
 }) {
@@ -275,12 +165,26 @@ export async function getDoctorsFromElastic(filters: {
     if (filters.name) {
       must.push({ match: { name: filters.name } });
     }
+    if (filters.doctor_id) {
+      must.push({ match: { id: filters.doctor_id } });
+    }
     if (filters.specialty_id) {
       must.push({ match: { specialty_id: filters.specialty_id } });
     }
-    if (filters.city_id) {
-      must.push({ match: { city_id: filters.city_id } });
+    if (filters.service_id) {
+      must.push({ match: { service_ids: filters.service_id } });
     }
+    if (filters.insurance_id) {
+      must.push({
+        match: { "insurance_id": filters.insurance_id }
+      });
+    }
+    if (filters.city_id) {
+      must.push({
+        match: { "addresses.city_id": filters.city_id }
+      });
+    }
+
     if (filters.minRating !== undefined || filters.maxRating !== undefined) {
       must.push({
         range: {
@@ -308,12 +212,17 @@ export async function getDoctorsFromElastic(filters: {
         query,
       },
     });
+    console.log(JSON.stringify(body, null, 2));
+
     return body.hits.hits.map((hit: any) => hit._source);
-  } catch (error) {
+  } catch (error:any) {
+    console.log(JSON.stringify(error.meta.body, null, 2));
+
     console.error("Elasticsearch error:", error);
     return [];
   }
 }
+
 export async function getServices() {
   const result = await query<RowDataPacket[]>(
     `SELECT * FROM ${coreSchema}.services`
@@ -370,73 +279,6 @@ export async function checkDoctorPhoneNumberExists(
   );
   return result;
 }
-
-// export async function doctorDetail(doctorId: number): Promise<any> {
-//   try {
-//     const sql = `
-//       SELECT
-//         d.*,
-//         COALESCE(ld.country, '') AS country,
-//         COALESCE(ld.latitude, 0) AS latitude,
-//         COALESCE(ld.longitude, 0) AS longitude,
-//         COALESCE(ld.address_line1, '') AS address_line1,
-//         COALESCE(ld.address_line2, '') AS address_line2,
-//         COALESCE(ld.zipcode, '') AS zipcode,
-//         COALESCE(AVG(r.rating), 0) AS average_rating,
-//         COALESCE(AVG(r.professional_demeanor), 0) AS avg_professional_demeanor,
-//         COALESCE(AVG(r.sufficient_time), 0) AS avg_sufficient_time,
-//         COALESCE(AVG(r.skill), 0) AS avg_skill,
-//         COALESCE(AVG(r.staff_behavior), 0) AS avg_staff_behavior,
-//         COALESCE(AVG(r.clinic_condition), 0) AS avg_clinic_condition,
-//         COUNT(r.id) AS total_reviews,
-//         COALESCE(GROUP_CONCAT(DISTINCT r.comment SEPARATOR ' | '), 'No comments') AS comments,
-//         s.name AS specialty_name,
-//         i.name AS insurance_name,
-//         CASE
-//           WHEN EXISTS (SELECT 1 FROM ${coreSchema}.doctor_likes dl WHERE dl.doctor_id = d.id)
-//           THEN 1 ELSE 0
-//         END AS isLiked
-//         JSON_ARRAYAGG(
-//         JSON_OBJECT(
-//           'country', ld.country,
-//           'latitude', ld.latitude,
-//           'longitude', ld.longitude,
-//           'address_line1', ld.address_line1,
-//           'address_line2', ld.address_line2,
-//           'zipcode', ld.zipcode,
-//           'city',ci.name,
-//           'state',ci.state
-//         )
-//       ) AS addresses
-//       FROM
-//         ${coreSchema}.doctors d
-//       LEFT JOIN
-//         ${coreSchema}.doctor_locations ld ON d.id = ld.doctor_id AND ld.is_primary = 1
-//       LEFT JOIN
-//         ${coreSchema}.doctor_reviews r ON d.id = r.doctor_id
-//       LEFT JOIN
-//         ${coreSchema}.specialties s ON d.specialty_id = s.id
-//       LEFT JOIN
-//         ${coreSchema}.insurances i ON d.insurance_id = i.id
-//       WHERE
-//         d.id = ?
-//       GROUP BY
-//         d.id,  ld.country, ld.latitude, ld.longitude, ld.address_line1,
-//         ld.address_line2, ld.zipcode, s.name, i.name;
-//     `;
-
-//     const result = await query<RowDataPacket[]>(sql, { values: [doctorId] });
-
-//     if (!result || result.length === 0) {
-//       return { message: "Doctor not found" };
-//     }
-
-//     return result[0]; // Return single doctor object instead of an array
-//   } catch (error) {
-//     console.error("Error fetching doctor details:", error);
-//     throw new ResponseError.InternalServer("An unexpected error occurred.");
-//   }
-// }
 
 export async function updateDoctor(doctorData: DoctorsDTO): Promise<any> {
   const result = await query<RowDataPacket>(

@@ -68,7 +68,6 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
     this.route.paramMap.subscribe(params => {
       this.doctorId = params.get('id');
       this.doctorName = params.get('name');
-      this.fetchData({ doctor_id: this.doctorId });
       window.scroll({ top: 0, behavior: 'smooth' });
     });
   }
@@ -93,6 +92,7 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
     if (getUserData) {
       this.userData = JSON.parse(getUserData);
     }
+      this.fetchData({ doctor_id: this.doctorId });
 
     this.createForm();
     // this.getComment();

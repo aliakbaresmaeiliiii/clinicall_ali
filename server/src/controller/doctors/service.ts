@@ -34,6 +34,9 @@ export class DoctorsService {
     id?: string;
     city_id?: string;
     doctor_id?: string;
+    service_id: string;
+    specialty_id: string;
+    insurance_id: string;
     minRating?: number;
     maxRating?: number;
     isPopular?: boolean;
