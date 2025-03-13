@@ -85,7 +85,10 @@
                 d="M6.991 15.408V6.942c0-.334.1-.659.284-.934L9.55 2.625c.358-.542 1.25-.925 2.008-.642.816.275 1.358 1.192 1.183 2.009l-.433 2.725a.84.84 0 0 0 .175.65c.141.158.35.258.575.258h3.425c.658 0 1.225.267 1.558.733.317.45.375 1.034.167 1.625l-2.05 6.242c-.259 1.033-1.384 1.875-2.5 1.875h-3.25c-.558 0-1.342-.192-1.7-.55l-1.067-.825c-.408-.308-.65-.8-.65-1.317M4.342 5.317h-.858c-1.292 0-1.817.5-1.817 1.733v8.383c0 1.234.525 1.734 1.817 1.734h.858c1.292 0 1.817-.5 1.817-1.734V7.05c0-1.233-.525-1.733-1.817-1.733"></path>
             </svg>
           </span>
-          <strong> 96% User suggestion </strong>
+          <span *ngIf="doctor.user_suggestion_percentage">
+             {{ doctor.user_suggestion_percentage }}%
+            Recommended
+          </span>
         </span>
         <span class="flex flex-col items-center gap-1">
           <span>
@@ -187,9 +190,7 @@
 
     <mat-card appearance="outlined" class="w-full">
       <mat-card-content>
-        <h2 class="pt-2 font-bold">
-          About {{ doctor.name }}
-        </h2>
+        <h2 class="pt-2 font-bold">About {{ doctor.name }}</h2>
         <div class="flex flex-col gap-1 pt-2">
           {{ doctor.description }}
         </div>
@@ -198,9 +199,7 @@
 
     <mat-card appearance="outlined" class="w-full">
       <mat-card-content>
-        <h2 class="pt-2 font-bold">
-          Address Clinic Dr.{{ doctor.name }}
-        </h2>
+        <h2 class="pt-2 font-bold">Address Clinic Dr.{{ doctor.name }}</h2>
         <div
           class="border-2 border-gray-400 rounded-lg border-opacity-30 p-4 mt-4 bg-slate-100">
           <h2 class="font-bold">{{ doctor.addresses[0].city }}</h2>
@@ -238,9 +237,7 @@
     </mat-card>
     <mat-card appearance="outlined" class="w-full">
       <mat-card-content>
-        <h2 class="pt-2 font-bold">
-          Services Dr.{{ doctor.name }}:
-        </h2>
+        <h2 class="pt-2 font-bold">Services Dr.{{ doctor.name }}:</h2>
         <div class="flex items-center justify-center gap-3 mt-4">
           <span class="bg-slate-300 rounded-2xl text-xs p-2"
             >{{ doctor.specialty_name }}
@@ -251,9 +248,7 @@
 
     <mat-card appearance="outlined" class="w-full">
       <mat-card-content>
-        <h2 class="pt-2 font-bold">
-          Reviewes about Dr{{ doctor.name }}
-        </h2>
+        <h2 class="pt-2 font-bold">Reviewes about Dr{{ doctor.name }}</h2>
         <div
           class="flex items-center flex-row-reverse justify-center gap-3 mt-4">
           <div class="flex flex-col gap-1">
@@ -376,7 +371,6 @@
       <mat-card-content>
         <h2 class="font-bold !text-sm">
           Frequently Asked Questions about Dr.{{ doctor.name }}
-         
         </h2>
 
         <div class="dropdown w-full mt-4">
@@ -391,8 +385,7 @@
             for="state-dropdown"
             class="trigger"
             >How can we book an appointment with Dr.{{ doctor.name }}
-           </label
-          >
+          </label>
 
           <ul class="list webkit-scrollbar" role="list" dir="auto">
             <li class="listitem" role="listitem">
@@ -408,34 +401,32 @@
     <mat-card appearance="outlined" class="w-full">
       <mat-card-content>
         <h2 class="font-bold !text-base">
-          Appointment guide from Dr.{{ doctor.name
-          }}{{ doctor.name }}
+          Appointment guide from Dr.{{ doctor.name }}{{ doctor.name }}
         </h2>
         <article class="pt-7">
           <h2 class="font-bold !text-sm !text-gray-500">
-            Biography and Introduction of Dr.{{ doctor.name
-            }}{{ doctor.name }}
+            Biography and Introduction of Dr.{{ doctor.name }}{{ doctor.name }}
           </h2>
           <p class="text-xs text-gray-500">
             Welcome to the online appointment booking platform for Dr.{{
               doctor.name
             }}{{ doctor.name }}
             In this section, we will provide a detailed biography of Dr.
-            {{ doctor.name }}{{ doctor.name }}, including information
-            about his specialties, cities where he practices, the diseases and
-            symptoms he treats, as well as details about the medical centers he
-            operates in (clinic address, phone number). Let me know if you'd
-            like me to add more details or tailor the text further!
+            {{ doctor.name }}{{ doctor.name }}, including information about his
+            specialties, cities where he practices, the diseases and symptoms he
+            treats, as well as details about the medical centers he operates in
+            (clinic address, phone number). Let me know if you'd like me to add
+            more details or tailor the text further!
           </p>
         </article>
         <article class="pt-7">
           <h2 class="font-bold !text-sm !text-gray-500">
-            What are Dr. {{ doctor.name }}{{ doctor.name }}'s areas
-            of expertise and the cities where he practices?
+            What are Dr. {{ doctor.name }}{{ doctor.name }}'s areas of expertise
+            and the cities where he practices?
           </h2>
           <p class="text-xs text-gray-500">
-            Dr. {{ doctor.name }}{{ doctor.name }} specializes in 1
-            field and practices in 1 city: Pediatrician in Tehran
+            Dr. {{ doctor.name }}{{ doctor.name }} specializes in 1 field and
+            practices in 1 city: Pediatrician in Tehran
           </p>
         </article>
         <article class="pt-7">
@@ -445,14 +436,14 @@
           </h2>
 
           <p class="text-xs text-gray-500">
-            Dr. {{ doctor.name }}{{ doctor.name }} specializes in 1
-            field and practices in 1 city: Pediatrician in Tehran
+            Dr. {{ doctor.name }}{{ doctor.name }} specializes in 1 field and
+            practices in 1 city: Pediatrician in Tehran
           </p>
         </article>
         <article class="pt-7">
           <h2 class="font-bold !text-sm !text-gray-500">
-            Dr. {{ doctor.name }}{{ doctor.name }} specializes in
-            diagnosing and treating the following symptoms and diseases:"
+            Dr. {{ doctor.name }}{{ doctor.name }} specializes in diagnosing and
+            treating the following symptoms and diseases:"
           </h2>
           <ol class="text-xs">
             <li>{{ doctor.specialty_name }}</li>

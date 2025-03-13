@@ -148,8 +148,11 @@ export class CustomTabComponent
     const payloadServices = {
       service_id: id,
     };
-    const cityServices = {
+    const payloadCity = {
       city_id: id,
+    };
+    const payloadInsurance = {
+      insurance_id: id,
     };
     switch (mode) {
       case 'speciality':
@@ -159,8 +162,11 @@ export class CustomTabComponent
         this.onChangeValueInput.emit(payloadServices);
         break;
       case 'city':
-        this.onChangeValueInput.emit(cityServices);
-        this.fetchNeighborhood(cityServices.city_id);
+        this.onChangeValueInput.emit(payloadCity);
+        // this.fetchNeighborhood(cityServices.city_id);
+        break;
+      case 'insurance':
+        this.onChangeValueInput.emit(payloadInsurance);
         break;
 
       default:
