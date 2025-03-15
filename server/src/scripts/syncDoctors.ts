@@ -90,27 +90,41 @@ export async function syncDoctorsToElasticsearch() {
         isLiked: doc.isLiked,
         user_suggestion_percentage: doc.user_suggestion_percentage,
         service_ids:
-          typeof doc.service_ids === "string"
+          doc.service_id && typeof doc.service_ids === "string"
             ? JSON.parse(doc.service_ids)
-            : doc.service_ids,
+            : Array.isArray(doc.service_ids)
+            ? doc.service_ids
+            : [],
         cities_ids:
-          typeof doc.cities_ids === "string"
+          doc.city_id && typeof doc.cities_ids === "string"
             ? JSON.parse(doc.cities_ids)
-            : doc.cities_ids,
-        city_id: doc.city_id,
+            : Array.isArray(doc.cities_ids)
+            ? doc.cities_ids
+            : [],
         addresses:
-          typeof doc.addresses === "string"
+          doc.addresses && typeof doc.addresses === "string"
             ? JSON.parse(doc.addresses)
-            : doc.addresses,
+            : Array.isArray(doc.addresses)
+            ? doc.addresses
+            : [],
       },
     ]);
 
-    const response = await esClient.bulk({ index: "doctors", body });
+    const chunkSize = 1000;
+    for (let i = 0; i < body.length; i += chunkSize) {
+      const chunk = body.slice(i, i + chunkSize);
+      const response = await esClient.bulk({ index: "doctors", body: chunk });
 
-    if (response.errors) {
-    } else {
-      console.log("✅ Doctors synced successfully");
+      if (response.errors) {
+        const erroredDocuments = response.items.filter((item: any) => item.index && item.index.error);
+        console.error(`❌ ${erroredDocuments.length} errors occurred in bulk insert`, erroredDocuments);
+      } else {
+        console.log("✅ Doctors synced successfully");
+      }
+      
     }
+
+    // const response = await esClient.bulk({ index: "doctors", body });
 
     await esClient.indices.refresh({ index: "doctors" });
   } catch (error) {
