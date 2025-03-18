@@ -27,40 +27,7 @@
   </div>
 
   <div class="col-span-8 flex justify-center items-center">
-    <!-- ***** Search Section -->
-    <div class="flex items-center mr-4">
-      @if (searchVisible) {
-      <button
-        mat-mini-fab
-        matTooltip="Search for a doctor"
-        class="flex justify-center items-center border-2 border-gray-200 rounded-xl"
-        (click)="searchDoctor($event); searchVisible = !searchVisible">
-        <mat-icon>search</mat-icon>
-      </button>
-      } @if ( !searchVisible ) {
-      <mat-form-field appearance="outline" class="pt-4 w-[35rem]">
-        <mat-label>Search...</mat-label>
-        <input
-          type="text"
-          placeholder="Search for Doctors, Clinics, Specializations..."
-          aria-label="Number"
-          matInput
-          [formControl]="myControl"
-          [matAutocomplete]="auto" />
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-          @for (option of filteredOptions | async; track option) {
-          <mat-option [value]="option">{{ option }}</mat-option>
-          }
-        </mat-autocomplete>
-      </mat-form-field>
 
-      <i
-        (click)="searchVisible = true"
-        class="fa-solid fa-circle-xmark text-blue-600 text-center text-2xl cursor-pointer pl-2"></i>
-      }
-    </div>
-
-    <!-- ***** Search Section -->
     @if (searchVisible) {
     <div class="menu bg-gray-200 rounded-2xl">
       <div class="item">

@@ -1,21 +1,19 @@
 /* eslint-disable no-unused-vars */
-import hpp from "hpp";
-import cors from "cors";
-import path from "path";
-import helmet from "helmet";
-import requestIp from "request-ip";
 import compression from "compression";
-import createError from "http-errors";
 import cookieParser from "cookie-parser";
-import { routes } from "./routes/index";
-import userAgent from "express-useragent";
-import { ExpressErrorYup } from "./middlewares/express_error_yup";
+import cors from "cors";
 import express, { NextFunction, Request, Response } from "express";
+import userAgent from "express-useragent";
+import helmet from "helmet";
+import hpp from "hpp";
+import createError from "http-errors";
+import path from "path";
+import requestIp from "request-ip";
 import { allowedOrigins } from "./constants/constants_allowed_orginal";
-import { ExpressErrorResponse } from "./middlewares/express_error_response";
 import { ExpressAutoHandleTransaction } from "./middlewares/express_auto_handle_transaction";
-import { Client } from "@elastic/elasticsearch";
-import { syncDoctorsToElasticsearch } from "./scripts/syncDoctors";
+import { ExpressErrorResponse } from "./middlewares/express_error_response";
+import { ExpressErrorYup } from "./middlewares/express_error_yup";
+import { routes } from "./routes/index";
 
 // TODO: change to .ts
 const optCors: cors.CorsOptions = {
@@ -26,31 +24,6 @@ const optCors: cors.CorsOptions = {
 const app = express();
 
 
-const esClient = new Client({
-  node: process.env.ELASTICSEARCH_URL || "http://localhost:9200",  // ✅ مقدار پیش‌فرض اضافه شد
-});
-
-// ******  Elastic Search/ ******
-async function testConnection() {
-  try {
-    const health = await esClient.cluster.health({});
-    console.log("✅ Elasticsearch is connected:", health);
-
-    // ✅ اگر اتصال موفقیت‌آمیز بود، داده‌ها را سینک کن
-    await syncDoctorsToElasticsearch();
-  } catch (error) {
-    console.error("❌ Elasticsearch connection error:", error);
-  }
-}
-testConnection();
-
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET", "POST", "PUT", "DELTE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
 
 // view engine setup
 app.set("views", path.join(`${__dirname}/../`, "views"));
@@ -59,7 +32,7 @@ app.set("views", path.join(`${__dirname}/../`, "views"));
 app.use(helmet());
 app.use(cors(optCors));
 // app.use(logger('combined', { stream: winstonStream }))
-app.use(express.urlencoded({ extended: false })); // TODO :  check it should be false or true
+app.use(express.urlencoded({ extended: true })); // TODO :  check it should be false or true
 app.use(
   express.json({
     limit: "200mb",

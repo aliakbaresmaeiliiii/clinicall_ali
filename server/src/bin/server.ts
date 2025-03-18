@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
-
+import { syncDoctorsToElasticsearch } from '../scripts/syncDoctors';
+import cron from "node-cron";
 
 
 const pathEnv = path.resolve('.env')
@@ -10,6 +11,19 @@ if (!fs.existsSync(pathEnv)) {
         'Missing env!!!\nCopy / Duplicate ".env.example" root directory to ".env"'
     )
 }
+
+
+syncDoctorsToElasticsearch().then(() => {
+  console.log("✅ Doctors data synced with Elasticsearch at startup");
+}).catch(err => {
+  console.error("❌ Error syncing doctors to Elasticsearch:", err);
+});
+
+
+cron.schedule("0 */6 * * *", () => {
+  console.log("🔄 Syncing doctors with Elasticsearch...");
+  syncDoctorsToElasticsearch();
+});
 
 /**
 * Module dependencies.
@@ -74,6 +88,8 @@ function onError(error: { syscall: string; code: any }) {
     console.log(`Listening on ${bind}`)
     debug(`Listening on ${bind}`)
   }
+
+  
 
   /**
  * Listen on provided port, on all network interfaces.
