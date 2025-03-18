@@ -1,13 +1,17 @@
 import { Client } from "@elastic/elasticsearch";
 import { coreSchema, query, RowDataPacket } from "../bin/mysql";
-import { getUserSuggestionPercentage } from "../controller/doctors/db";
 
 const esClient = new Client({
-  node: process.env.ELASTICSEARCH_URL || "http://localhost:9200",
+  node: process.env.ELASTICSEARCH_URL,
+  auth: {
+    username: process.env.ELASTICSEARCH_USERNAME || "",
+    password: process.env.ELASTICSEARCH_PASSWORD || "",
+  },
 });
 
 export async function syncDoctorsToElasticsearch() {
   try {
+
     const rows = await query<RowDataPacket[]>(`
       SELECT 
         d.id, d.first_name, d.last_name, d.profile_img, d.email, d.phone, 
@@ -24,6 +28,7 @@ export async function syncDoctorsToElasticsearch() {
         COALESCE(AVG(r.skill), 0) AS avg_skill,
         COALESCE(AVG(r.staff_behavior), 0) AS avg_staff_behavior,
         COALESCE(AVG(r.clinic_condition), 0) AS avg_clinic_condition,
+        d.updated_at,
         CASE 
           WHEN EXISTS (SELECT 1 FROM ${coreSchema}.doctor_likes dl WHERE dl.doctor_id = d.id) 
           THEN 1 ELSE 0
@@ -57,6 +62,7 @@ export async function syncDoctorsToElasticsearch() {
       LEFT JOIN ${coreSchema}.insurances i ON d.insurance_id = i.id
       LEFT JOIN ${coreSchema}.cities ci ON ld.city_id = ci.id
       LEFT JOIN ${coreSchema}.doctor_likes dk ON d.id = dk.doctor_id
+      WHERE d.updated_at >= NOW() - INTERVAL 1 DAY
 
       GROUP BY d.id
     `);
@@ -116,18 +122,95 @@ export async function syncDoctorsToElasticsearch() {
       const response = await esClient.bulk({ index: "doctors", body: chunk });
 
       if (response.errors) {
-        const erroredDocuments = response.items.filter((item: any) => item.index && item.index.error);
-        console.error(`❌ ${erroredDocuments.length} errors occurred in bulk insert`, erroredDocuments);
+        const erroredDocuments = response.items.filter(
+          (item: any) => item.index && item.index.error
+        );
+        console.error(
+          `❌ ${erroredDocuments.length} errors occurred in bulk insert`,
+          erroredDocuments
+        );
       } else {
         console.log("✅ Doctors synced successfully");
       }
-      
     }
 
     // const response = await esClient.bulk({ index: "doctors", body });
+    // if (response.errors) {
+    //   const failedDocs = [];
+    //   response.items.forEach((item, index) => {
+    //     if (item.index && item.index.error) {
+    //       failedDocs.push(body[index * 2 + 1]); // گرفتن داکیومنت‌های مشکل‌دار
+    //     }
+    //   });
+    
+    //   if (failedDocs.length > 0) {
+    //     console.warn(`🔁 Retrying ${failedDocs.length} failed documents...`);
+    //     await esClient.bulk({ index: "doctors", body: failedDocs });
+    //   }
+    // }
+    
+    const response = await esClient.bulk({ index: "doctors", body });
+    console.log(JSON.stringify(response, null, 2));
+
 
     await esClient.indices.refresh({ index: "doctors" });
   } catch (error) {
     console.error("❌ Sync failed:", error);
+  }
+}
+
+export async function searchDoctors(query: string) {
+  try {
+    const response = await esClient.search({
+      index: "doctors",
+      size: 20,
+      query: {
+        bool: {
+          should: [
+            {
+              multi_match: {
+                query,
+                fields: ["name", "specialty_name", "insurance_name", "city"],
+              },
+            },
+            { match_phrase_prefix: { name: query } },
+            { match_phrase_prefix: { specialty_name: query } },
+            { match_phrase_prefix: { insurance_name: query } },
+            { match_phrase_prefix: { city: query } },
+          ],
+          minimum_should_match: 1,
+        },
+      },
+      sort: [{ average_rating: "desc" }],
+    });
+
+    return response.hits.hits.map((hit: any) => hit._source);
+  } catch (error) {
+    console.error("❌ Error searching doctors:", error);
+    return [];
+  }
+}
+
+export async function removeDeleteDoctorsFromElasticSeach() {
+  try {
+    const deletedDoctors = await query<RowDataPacket[]>(
+      `SELECT id FROM ${coreSchema}.doctors WHERE deleted_at >= NOW() - INTERVAL 1 DAY;`
+    );
+    if (deletedDoctors.length === 0) {
+      console.log("✅ No deleted doctors to remove");
+      return;
+    }
+    const body = deletedDoctors.flatMap((doc: any) => [
+      { delete: { _index: "doctors", _id: doc.id } },
+    ]);
+    const response = await esClient.bulk({ body });
+
+    if (response.errors) {
+      console.error("❌ Errors occurred in bulk delete:", response.items);
+    } else {
+      console.log("✅ Deleted doctors removed from Elasticsearch");
+    }
+  } catch (error) {
+    console.error("❌ Deletion sync failed:", error);
   }
 }

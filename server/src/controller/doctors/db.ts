@@ -12,7 +12,98 @@ import { doctorSchema } from "./schema";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 
-const esClient = new Client({ node: process.env.ELASTICSEARCH_URL });
+// const esClient = new Client({ node: process.env.ELASTICSEARCH_URL });
+
+const esClient = new Client({
+  node: "http://localhost:9200",
+  auth: { username: "elastic", password: "@Ali0011914505" },
+});
+
+async function indexDoctorData(doctor: any) {
+  await esClient.index({
+    index: "doctors",
+    id: doctor.id,
+    document: doctor,
+  });
+}
+
+export async function getDoctorsFromElastic(filters: {
+  name?: string;
+  city_id?: string;
+  service_id: string;
+  specialty_id: string;
+  insurance_id: string;
+  minRating?: number;
+  doctor_id?: string;
+  maxRating?: number;
+  isPopular?: boolean;
+}) {
+  try {
+    const must: any[] = [];
+    if (filters.name) {
+      must.push({ terms: { name: filters.name } });
+    }
+    if (filters.doctor_id) {
+      must.push({ term: { id: filters.doctor_id } });
+    }
+    if (filters.specialty_id) {
+      must.push({ terms: { specialty_id: filters.specialty_id } });
+    }
+    if (filters.service_id) {
+      must.push({ terms: { service_ids: filters.service_id } });
+    }
+    if (filters.insurance_id) {
+      must.push({
+        terms: { insurance_id: filters.insurance_id },
+      });
+    }
+    if (filters.city_id) {
+      must.push({
+        terms: { "addresses.city_id": filters.city_id },
+      });
+    }
+
+    if (filters.minRating !== undefined || filters.maxRating !== undefined) {
+      must.push({
+        range: {
+          average_rating: {
+            gte: filters.minRating || 0,
+            lte: filters.maxRating || 5,
+          },
+        },
+      });
+    }
+    if (filters.isPopular) {
+      must.push({
+        range: {
+          average_rating: {
+            gte: 4,
+          },
+        },
+      });
+    }
+
+    const query = must.length > 0 ? { bool: { must } } : { match_all: {} };
+    const body = await esClient.search({
+      index: "doctors",
+      body: {
+        query,
+      },
+    });
+    console.log(JSON.stringify(body, null, 2));
+
+    if (!body.hits || !body.hits.hits.length) {
+      return [];
+    }
+
+    return body.hits.hits.map((hit: any) => hit._source);
+  } catch (error: any) {
+    console.log(JSON.stringify(error.meta.body, null, 2));
+
+    console.error("Elasticsearch error:", error);
+    return [];
+  }
+}
 
 export async function addDoctor(data: DoctorsDTO) {
   const { password } = data.password;
@@ -146,80 +237,6 @@ export async function getDoctoLike(patient_id: number) {
   } catch (error) {
     console.log(error);
     throw new ResponseError.InternalServer("Failed to get response");
-  }
-}
-
-export async function getDoctorsFromElastic(filters: {
-  name?: string;
-  city_id?: string;
-  service_id: string;
-  specialty_id: string;
-  insurance_id: string;
-  minRating?: number;
-  doctor_id?: string;
-  maxRating?: number;
-  isPopular?: boolean;
-}) {
-  try {
-    const must: any[] = [];
-    if (filters.name) {
-      must.push({ match: { name: filters.name } });
-    }
-    if (filters.doctor_id) {
-      must.push({ match: { id: filters.doctor_id } });
-    }
-    if (filters.specialty_id) {
-      must.push({ match: { specialty_id: filters.specialty_id } });
-    }
-    if (filters.service_id) {
-      must.push({ match: { service_ids: filters.service_id } });
-    }
-    if (filters.insurance_id) {
-      must.push({
-        match: { "insurance_id": filters.insurance_id }
-      });
-    }
-    if (filters.city_id) {
-      must.push({
-        match: { "addresses.city_id": filters.city_id }
-      });
-    }
-
-    if (filters.minRating !== undefined || filters.maxRating !== undefined) {
-      must.push({
-        range: {
-          average_rating: {
-            gte: filters.minRating || 0,
-            lte: filters.maxRating || 5,
-          },
-        },
-      });
-    }
-    if (filters.isPopular) {
-      must.push({
-        range: {
-          average_rating: {
-            gte: 4,
-          },
-        },
-      });
-    }
-
-    const query = must.length > 0 ? { bool: { must } } : { match_all: {} };
-    const body = await esClient.search({
-      index: "doctors",
-      body: {
-        query,
-      },
-    });
-    console.log(JSON.stringify(body, null, 2));
-
-    return body.hits.hits.map((hit: any) => hit._source);
-  } catch (error:any) {
-    console.log(JSON.stringify(error.meta.body, null, 2));
-
-    console.error("Elasticsearch error:", error);
-    return [];
   }
 }
 

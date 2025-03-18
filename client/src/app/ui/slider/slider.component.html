@@ -26,8 +26,42 @@
         Doctor
       </span>
     </div>
+    <!-- ***** Elastic Search Section -->
+    <div
+      class="flex items-center justify-center relative z-50 bg-slate-200  rounded-2xl w-[42rem] ml-6">
+      <!-- @if (searchVisible) { -->
+      <!-- <button
+        mat-mini-fab
+        matTooltip="Search for a doctor"
+        class="flex justify-center items-center border-2 border-gray-200 rounded-xl"
+        (click)="searchDoctor($event); searchVisible = !searchVisible">
+        <mat-icon>search</mat-icon>
+      </button> -->
+      <!-- } @if ( !searchVisible ) { -->
+      <mat-form-field appearance="outline" class="pt-4 w-[35rem]">
+        <mat-label>Search for Doctors, Clinics, Specializations...</mat-label>
+        <input
+          type="text"
+          placeholder="Search for Doctors, Clinics, Specializations..."
+          aria-label="Number"
+          matInput
+          [formControl]="myControl"
+          [matAutocomplete]="auto" />
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          @for (option of filteredOptions | async; track option) {
+          <mat-option [value]="option">{{ option }}</mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
 
-    <div class="absolute top-4 mobile:hidden desktop:block">
+      <!-- <i
+        (click)="searchVisible = true"
+        class="fa-solid fa-circle-xmark text-blue-600 text-center text-2xl cursor-pointer pl-2"></i> -->
+      <!-- } -->
+    </div>
+    <!-- ***** Elastic Search Section -->
+
+    <div class="absolute top-6 mobile:hidden desktop:block opacity-25">
       <img
         src="../../../assets/images/ui/slider/hero-img.png"
         alt="doctor"
