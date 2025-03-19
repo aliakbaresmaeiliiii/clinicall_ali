@@ -13,10 +13,14 @@ import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 
 // const esClient = new Client({ node: process.env.ELASTICSEARCH_URL });
+console.log('ELASTICSEARCH_URL:', process.env.ELASTICSEARCH_URL);
 
 const esClient = new Client({
-  node: "http://localhost:9200",
-  auth: { username: "elastic", password: "@Ali0011914505" },
+  node: process.env.ELASTICSEARCH_URL,
+  auth: {
+    username: process.env.ELASTICSEARCH_USERNAME || "",
+    password: process.env.ELASTICSEARCH_PASSWORD || "",
+  },
 });
 
 async function indexDoctorData(doctor: any) {

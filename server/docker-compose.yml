@@ -11,7 +11,7 @@ services:
     networks:
       - elastic-net
     healthcheck:
-      test: ["CMD-SHELL", "curl --silent --fail ${ELASTICSEARCH_HOST}/_cluster/health || exit 1"]
+      test: ["CMD-SHELL", "curl --silent --fail ${ELASTICSEARCH_URL}/_cluster/health || exit 1"]
       interval: 10s
       retries: 5
       start_period: 10s
@@ -21,7 +21,7 @@ services:
     image: docker.elastic.co/kibana/kibana@sha256:ffbd605e4891c98d502bd78f474bbe424503cf81496a1bb2a71b58bc8f7742c1
     container_name: kibana
     environment:
-        - ELASTICSEARCH_HOSTS=${ELASTICSEARCH_HOST}
+        - ELASTICSEARCH_URLS=${ELASTICSEARCH_URL}
         - ELASTICSEARCH_USERNAME=
         - ELASTICSEARCH_PASSWORD=
        

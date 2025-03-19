@@ -1,13 +1,7 @@
-import { Client } from "@elastic/elasticsearch";
+import { esClient } from "../app";
 import { coreSchema, query, RowDataPacket } from "../bin/mysql";
 
-const esClient = new Client({
-  node: process.env.ELASTICSEARCH_URL,
-  auth: {
-    username: process.env.ELASTICSEARCH_USERNAME || "",
-    password: process.env.ELASTICSEARCH_PASSWORD || "",
-  },
-});
+
 
 export async function syncDoctorsToElasticsearch() {
   try {
@@ -183,6 +177,7 @@ export async function searchDoctors(query: string) {
       },
       sort: [{ average_rating: "desc" }],
     });
+    console.log("🔍 Search query:", query);
 
     return response.hits.hits.map((hit: any) => hit._source);
   } catch (error) {

@@ -14,6 +14,9 @@ import { ExpressAutoHandleTransaction } from "./middlewares/express_auto_handle_
 import { ExpressErrorResponse } from "./middlewares/express_error_response";
 import { ExpressErrorYup } from "./middlewares/express_error_yup";
 import { routes } from "./routes/index";
+import { createDoctorsIndex } from "./scripts/create-index";
+import { Client } from "@elastic/elasticsearch";
+import { config } from "./config/base_url";
 
 // TODO: change to .ts
 const optCors: cors.CorsOptions = {
@@ -23,8 +26,33 @@ const optCors: cors.CorsOptions = {
 };
 const app = express();
 
+console.log("Elasticsearch Node:", process.env.ELASTICSEARCH_URL);
 
+export const esClient = new Client({
+  node: "http://localhost:9200",
+  auth: {
+    username: process.env.ELASTICSEARCH_USERNAME || "elastic",
+    password: process.env.ELASTICSEARCH_PASSWORD || "@Ali0011914505",
+  },
+});
 
+fetch("http://localhost:9200")
+  .then((response) => response.json())
+  .then((data) => console.log(data))
+  .catch((error) => console.error("Error:", error));
+
+async function startServer() {
+  try {
+    await createDoctorsIndex(); // ساخت ایندکس در شروع برنامه
+    console.log("🚀 Server is ready!");
+
+    // بقیه کدهای مربوط به اجرای سرور
+  } catch (error) {
+    console.error("❌ Error during server startup:", error);
+  }
+}
+
+startServer();
 // view engine setup
 app.set("views", path.join(`${__dirname}/../`, "views"));
 // app.set('view engine', 'pug')
