@@ -1,6 +1,15 @@
 import { Client } from "@elastic/elasticsearch";
 
-const esClient = new Client({ node: "http://localhost:9200" });
+
+console.log('ELASTICSEARCH_URL:', process.env.ELASTICSEARCH_URL);
+
+const esClient = new Client({
+  node: process.env.ELASTICSEARCH_URL,
+  auth: {
+    username: process.env.ELASTICSEARCH_USERNAME || "",
+    password: process.env.ELASTICSEARCH_PASSWORD || "",
+  },
+});
 
 export async function createDoctorsIndex() {
   try {

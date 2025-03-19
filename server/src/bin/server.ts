@@ -13,17 +13,17 @@ if (!fs.existsSync(pathEnv)) {
 }
 
 
-syncDoctorsToElasticsearch().then(() => {
-  console.log("✅ Doctors data synced with Elasticsearch at startup");
-}).catch(err => {
-  console.error("❌ Error syncing doctors to Elasticsearch:", err);
-});
+// syncDoctorsToElasticsearch().then(() => {
+//   console.log("✅ Doctors data synced with Elasticsearch at startup");
+// }).catch(err => {
+//   console.error("❌ Error syncing doctors to Elasticsearch:", err);
+// });
 
 
-cron.schedule("0 */6 * * *", () => {
-  console.log("🔄 Syncing doctors with Elasticsearch...");
-  syncDoctorsToElasticsearch();
-});
+// cron.schedule("0 */6 * * *", () => {
+//   console.log("🔄 Syncing doctors with Elasticsearch...");
+//   syncDoctorsToElasticsearch();
+// });
 
 /**
 * Module dependencies.
