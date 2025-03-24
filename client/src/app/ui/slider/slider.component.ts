@@ -15,19 +15,15 @@ import {
 import { FormControl } from '@angular/forms';
 import AOS from 'aos';
 import {
-  catchError,
+  BehaviorSubject,
   debounceTime,
-  fromEvent,
   interval,
-  map,
   Observable,
-  of,
-  startWith,
   switchMap,
-  take,
-  takeWhile,
+  takeWhile
 } from 'rxjs';
 import { DoctorsService } from '../../modules/doctors/services/doctors.service';
+import { ElasticSearchService } from '../../shared/services/elastic-search.service';
 
 const style1 = style({
   opacity: 1,
@@ -59,40 +55,41 @@ export class SliderComponent implements OnInit {
   maxCounter: number = 20;
   el = inject(ElementRef);
   searchVisible = true;
-  myControl = new FormControl('');
   options: string[] = ['One', 'Two', 'Three'];
   filteredOptions!: Observable<any>;
   doctorService = inject(DoctorsService);
+  elasticSearchService = inject(ElasticSearchService);
+  searchControl = new FormControl('');
+  private filterDataSubject = new BehaviorSubject<any[]>([]);  
+  filterData: Observable<any[]> = this.filterDataSubject.asObservable();
 
+  isLoading = false;
   ngOnInit(): void {
     this.incrementCounter();
     AOS.init({
-      duration: 1000, // Animation duration in milliseconds
-      easing: 'ease-in-out', // Easing type
-      once: true, // Whether animation should happen only once
+      duration: 1000,
+      easing: 'ease-in-out',
+      once: true,
     });
     AOS.refresh();
 
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      debounceTime(300),
-      startWith(''),
-      switchMap(value => this._filter(value || ''))
-    );
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(300),
+        switchMap((query: any) => {
+          this.isLoading = true;
+          return this.elasticSearchService.searchDoctors(query);
+        })
+      )
+      .subscribe((res: any) => {
+     this.filterDataSubject.next(res); 
+        console.log(res);
+
+        this.isLoading = false;
+      });
   }
 
-  private _filter(query: string): Observable<string[]> {
-    if (!query.trim()) {
-      return of([]);
-    } else {
-      return this.doctorService.searchDoctors(query).pipe(
-        map((doctors: any) => doctors.map((d: any) => d.name)),
-        catchError(error => {
-          console.log("❌ Error:", error);
-          return of([]);
-        })
-      );
-    }
-  }
+  onSelectDoctor(data: any) {}
 
   @HostListener('window:scroll', ['$event'])
   checkScroll() {

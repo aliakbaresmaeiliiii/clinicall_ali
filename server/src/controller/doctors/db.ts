@@ -11,25 +11,10 @@ import { ResponseError } from "../../modules/error/response_error";
 import { doctorSchema } from "./schema";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
+import { esClient } from "../../app";
 
 // const esClient = new Client({ node: process.env.ELASTICSEARCH_URL });
-console.log('ELASTICSEARCH_URL:', process.env.ELASTICSEARCH_URL);
 
-const esClient = new Client({
-  node: process.env.ELASTICSEARCH_URL,
-  auth: {
-    username: process.env.ELASTICSEARCH_USERNAME || "",
-    password: process.env.ELASTICSEARCH_PASSWORD || "",
-  },
-});
-
-async function indexDoctorData(doctor: any) {
-  await esClient.index({
-    index: "doctors",
-    id: doctor.id,
-    document: doctor,
-  });
-}
 
 export async function getDoctorsFromElastic(filters: {
   name?: string;
@@ -43,36 +28,34 @@ export async function getDoctorsFromElastic(filters: {
   isPopular?: boolean;
 }) {
   try {
+    console.log("🔍 Filters:", JSON.stringify(filters, null, 2));
+
     const must: any[] = [];
+
     if (filters.name) {
-      must.push({ terms: { name: filters.name } });
+      must.push({ match: { name: filters.name } });
     }
     if (filters.doctor_id) {
       must.push({ term: { id: filters.doctor_id } });
     }
     if (filters.specialty_id) {
-      must.push({ terms: { specialty_id: filters.specialty_id } });
+      must.push({ term: { specialty_id: filters.specialty_id } });
     }
     if (filters.service_id) {
-      must.push({ terms: { service_ids: filters.service_id } });
+      must.push({ term: { service_ids: filters.service_id } });
     }
     if (filters.insurance_id) {
-      must.push({
-        terms: { insurance_id: filters.insurance_id },
-      });
+      must.push({ term: { insurance_id: filters.insurance_id } });
     }
     if (filters.city_id) {
-      must.push({
-        terms: { "addresses.city_id": filters.city_id },
-      });
+      must.push({ term: { "addresses.city_id": filters.city_id } });
     }
-
     if (filters.minRating !== undefined || filters.maxRating !== undefined) {
       must.push({
         range: {
           average_rating: {
-            gte: filters.minRating || 0,
-            lte: filters.maxRating || 5,
+            gte: filters.minRating ?? 0,
+            lte: filters.maxRating ?? 5,
           },
         },
       });
@@ -88,26 +71,29 @@ export async function getDoctorsFromElastic(filters: {
     }
 
     const query = must.length > 0 ? { bool: { must } } : { match_all: {} };
-    const body = await esClient.search({
+
+    console.log("🧐 ES Query:", JSON.stringify(query, null, 2));
+
+    const response = await esClient.search({
       index: "doctors",
       body: {
         query,
       },
     });
-    console.log(JSON.stringify(body, null, 2));
 
-    if (!body.hits || !body.hits.hits.length) {
+    console.log("📊 Response:", JSON.stringify(response, null, 2));
+
+    if (!response.hits || !response.hits.hits.length) {
       return [];
     }
 
-    return body.hits.hits.map((hit: any) => hit._source);
+    return response.hits.hits.map((hit: any) => hit._source);
   } catch (error: any) {
-    console.log(JSON.stringify(error.meta.body, null, 2));
-
-    console.error("Elasticsearch error:", error);
+    console.log("❌ Elasticsearch error:", JSON.stringify(error.meta?.body || error, null, 2));
     return [];
   }
 }
+
 
 export async function addDoctor(data: DoctorsDTO) {
   const { password } = data.password;

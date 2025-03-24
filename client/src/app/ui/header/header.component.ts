@@ -331,26 +331,10 @@ export class HeaderComponent {
       }
     }
 
-    this.filteredOptions = this.myControl.valueChanges.pipe(
-      debounceTime(300),
-      startWith(''),
-      switchMap(value => this._filter(value || ''))
-    );
+ 
   }
 
-  private _filter(query: string): Observable<string[]> {
-    if (!query.trim()) {
-      return of([]);
-    } else {
-      return this.doctorService.searchDoctors(query).pipe(
-        map((doctor: any) => doctor.name),
-        catchError(error => {
-          console.log(error);
-          return of([]);
-        })
-      );
-    }
-  }
+
 
   searchDoctor(searchValue: any): void {
     // this.router.navigate(['doctors'], { queryParams: { search: searchValue } });

@@ -18,3 +18,4 @@ require("../controller/cities/controller");
 require("../controller/insurance/controller");
 require("../controller/clinic/controller");
 require("../controller/elastic-search/controller");
+require("../controller/AI/controller");

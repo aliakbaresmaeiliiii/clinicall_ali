@@ -28,7 +28,7 @@
     </div>
     <!-- ***** Elastic Search Section -->
     <div
-      class="flex items-center justify-center relative z-50 bg-slate-200  rounded-2xl w-[42rem] ml-6">
+      class="flex items-center justify-center relative z-50 bg-slate-200 rounded-2xl w-[42rem] ml-6">
       <!-- @if (searchVisible) { -->
       <!-- <button
         mat-mini-fab
@@ -38,21 +38,47 @@
         <mat-icon>search</mat-icon>
       </button> -->
       <!-- } @if ( !searchVisible ) { -->
-      <mat-form-field appearance="outline" class="pt-4 w-[35rem]">
+      <!-- <mat-form-field appearance="outline" class="pt-4 w-[35rem]">
         <mat-label>Search for Doctors, Clinics, Specializations...</mat-label>
         <input
           type="text"
           placeholder="Search for Doctors, Clinics, Specializations..."
-          aria-label="Number"
+          aria-label="Search"
           matInput
-          [formControl]="myControl"
+          [formControl]="searchControl"
           [matAutocomplete]="auto" />
-        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-          @for (option of filteredOptions | async; track option) {
-          <mat-option [value]="option">{{ option }}</mat-option>
-          }
+        <mat-progress-spinner
+          *ngIf="isLoading"
+          diameter="20"
+          mode="indeterminate">
+        </mat-progress-spinner>
+
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="onSelectDoctor($event)">
+          <mat-option
+            *ngFor="let data of filterData | async"
+            [value]="data.name">
+            {{ data.name }}
+          </mat-option>
         </mat-autocomplete>
-      </mat-form-field>
+      </mat-form-field> -->
+
+      <app-chatbot />
+
+      <!-- <div class="search-container">
+        <mat-form-field appearance="outline" class="search-box">
+          <input type="text" matInput [formControl]="searchControl" [matAutocomplete]="auto" placeholder="جستجوی پزشک...">
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectDoctor($event)">
+            <mat-option *ngFor="let doctor of filteredDoctors | async" [value]="doctor.name">
+              <div class="autocomplete-item">
+                <span class="doctor-name">{{ doctor.name }}</span>
+                <span class="doctor-specialty">{{ doctor.specialty_name }}</span>
+              </div>
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div> -->
 
       <!-- <i
         (click)="searchVisible = true"
