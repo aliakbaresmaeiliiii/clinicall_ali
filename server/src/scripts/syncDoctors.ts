@@ -1,11 +1,8 @@
 import { esClient } from "../app";
 import { coreSchema, query, RowDataPacket } from "../bin/mysql";
 
-
-
 export async function syncDoctorsToElasticsearch() {
   try {
-
     const rows = await query<RowDataPacket[]>(`
       SELECT 
         d.id, d.first_name, d.last_name, d.profile_img, d.email, d.phone, 
@@ -56,10 +53,12 @@ export async function syncDoctorsToElasticsearch() {
       LEFT JOIN ${coreSchema}.insurances i ON d.insurance_id = i.id
       LEFT JOIN ${coreSchema}.cities ci ON ld.city_id = ci.id
       LEFT JOIN ${coreSchema}.doctor_likes dk ON d.id = dk.doctor_id
-      WHERE d.updated_at >= NOW() - INTERVAL 1 DAY
+    
 
       GROUP BY d.id
     `);
+    // WHERE d.updated_at >= NOW() - INTERVAL 1 DAY
+    console.log("❤️❤️❤️❤️❤️❤️❤️", rows);
 
     if (rows.length === 0) {
       console.log("❌ No doctors found in MySQL");
@@ -128,24 +127,23 @@ export async function syncDoctorsToElasticsearch() {
       }
     }
 
-    // const response = await esClient.bulk({ index: "doctors", body });
-    // if (response.errors) {
-    //   const failedDocs = [];
-    //   response.items.forEach((item, index) => {
-    //     if (item.index && item.index.error) {
-    //       failedDocs.push(body[index * 2 + 1]); // گرفتن داکیومنت‌های مشکل‌دار
-    //     }
-    //   });
-    
-    //   if (failedDocs.length > 0) {
-    //     console.warn(`🔁 Retrying ${failedDocs.length} failed documents...`);
-    //     await esClient.bulk({ index: "doctors", body: failedDocs });
-    //   }
-    // }
-    
     const response = await esClient.bulk({ index: "doctors", body });
-    console.log(JSON.stringify(response, null, 2));
+    if (response.errors) {
+      const failedDocs = [];
+      response.items.forEach((item, index) => {
+        if (item.index && item.index.error) {
+          failedDocs.push(body[index * 2 + 1]); // گرفتن داکیومنت‌های مشکل‌دار
+        }
+      });
 
+      if (failedDocs.length > 0) {
+        console.warn(`🔁 Retrying ${failedDocs.length} failed documents...`);
+        await esClient.bulk({ index: "doctors", body: [] });
+      }
+    }
+
+    // const response = await esClient.bulk({ index: "doctors", body });
+    // console.log(JSON.stringify(response, null, 2));
 
     await esClient.indices.refresh({ index: "doctors" });
   } catch (error) {
@@ -165,6 +163,7 @@ export async function searchDoctors(query: string) {
               multi_match: {
                 query,
                 fields: ["name", "specialty_name", "insurance_name", "city"],
+                type: "best_fields",
               },
             },
             { match_phrase_prefix: { name: query } },
@@ -177,9 +176,9 @@ export async function searchDoctors(query: string) {
       },
       sort: [{ average_rating: "desc" }],
     });
-    console.log("🔍 Search query:", query);
-
-    return response.hits.hits.map((hit: any) => hit._source);
+    console.log("📡 Elasticsearch Response:", response);
+    return response
+    // return response.hits.hits.map((hit: any) => hit._source);
   } catch (error) {
     console.error("❌ Error searching doctors:", error);
     return [];

@@ -1,15 +1,17 @@
-import { Client } from "@elastic/elasticsearch";
+import { esClient } from "../app";
 
 
-console.log('ELASTICSEARCH_URL:', process.env.ELASTICSEARCH_URL);
 
-const esClient = new Client({
-  node: process.env.ELASTICSEARCH_URL,
-  auth: {
-    username: process.env.ELASTICSEARCH_USERNAME || "",
-    password: process.env.ELASTICSEARCH_PASSWORD || "",
-  },
-});
+export async function checkIndexExists(): Promise<boolean> {
+  try {
+    return await esClient.indices.exists({ index: "doctors" });
+  } catch (error) {
+    console.error("❌ Error checking index existence:", error);
+    return false;
+  }
+}
+
+
 
 export async function createDoctorsIndex() {
   try {
@@ -19,6 +21,7 @@ export async function createDoctorsIndex() {
       console.log("⚠️ Index 'doctors' already exists. Skipping creation.");
       return;
     }
+    console.log("🔍 esClient:👍👍👍👍👍", esClient);
 
     await esClient.indices.create({
       index: "doctors",
@@ -33,7 +36,17 @@ export async function createDoctorsIndex() {
             name: { type: "text" },
             specialty_name: { type: "text" },
             insurance_name: { type: "text" },
-            addresses: { type: "nested" },
+            addresses: {
+              type: "nested",
+              properties: {
+                street: { type: "text" },
+                city: { type: "text" },
+                state: { type: "keyword" },
+                zip: { type: "keyword" },
+                lat: { type: "float" },
+                lon: { type: "float" },
+              },
+            },
             average_rating: { type: "float" },
           },
         },
@@ -46,4 +59,3 @@ export async function createDoctorsIndex() {
   }
 }
 
-createDoctorsIndex();

@@ -1,0 +1,43 @@
+<div class="max-w-md mx-auto bg-white dark:bg-zinc-800 shadow-md rounded-lg overflow-hidden">
+  <div class="flex flex-col h-[400px]">
+    <!-- Chat Header -->
+    <div class="px-4 py-3 border-b dark:border-zinc-700">
+      <div class="flex justify-between items-center">
+        <h2 class="text-lg font-semibold text-zinc-800 dark:text-white">
+          Chatbot Assistant
+        </h2>
+        <div class="bg-green-500 text-white text-xs px-2 py-1 rounded-full">
+          Online
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat Messages -->
+    <div class="flex-1 p-3 overflow-y-auto flex flex-col space-y-2" id="chatDisplay">
+      <div *ngFor="let msg of chatHistory" [ngClass]="msg.role === 'user' ? 'self-end bg-blue-500' : 'self-start bg-zinc-500'"
+        class="chat-message text-white max-w-xs rounded-lg px-3 py-1.5 text-sm">
+        {{ msg.content }}
+      </div>
+    </div>
+
+    <!-- Chat Input -->
+    <div class="px-3 py-2 border-t dark:border-zinc-700">
+      <div class="flex gap-2">
+        <input
+          [(ngModel)]="userMessage"
+          placeholder="Type your message..."
+          class="flex-1 p-2 border rounded-lg dark:bg-zinc-700 dark:text-white dark:border-zinc-600 text-sm"
+          id="chatInput"
+          type="text"
+          (keyup.enter)="sendMessage()" />
+
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1.5 px-3 rounded-lg transition duration-300 ease-in-out text-sm"
+          id="sendButton"
+          (click)="sendMessage()">
+          Send
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -75,6 +75,7 @@ import { ToBooleanPipe } from '../shared/pipes/to-boolean.pipe';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { SharedModule } from '../shared/shared.module';
 import { RecaptchaModule } from "ng-recaptcha";
+import { ChatbotComponent } from '../shared/components/chatbot/chatbot.component';
 
 const routes: Routes = [
   {
@@ -199,6 +200,7 @@ const routes: Routes = [
     MatTooltipModule,
     SharedModule,
     RecaptchaModule,
+    ChatbotComponent
   ],
   exports: [BlogComponent, MatToolbarModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

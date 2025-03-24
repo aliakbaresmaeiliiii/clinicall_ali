@@ -14,9 +14,11 @@ import { ExpressAutoHandleTransaction } from "./middlewares/express_auto_handle_
 import { ExpressErrorResponse } from "./middlewares/express_error_response";
 import { ExpressErrorYup } from "./middlewares/express_error_yup";
 import { routes } from "./routes/index";
-import { createDoctorsIndex } from "./scripts/create-index";
+import { checkIndexExists, createDoctorsIndex } from "./scripts/create-index";
 import { Client } from "@elastic/elasticsearch";
 import { config } from "./config/base_url";
+import { syncDoctorsToElasticsearch } from "./scripts/syncDoctors";
+import openai from "openai";
 
 // TODO: change to .ts
 const optCors: cors.CorsOptions = {
@@ -26,28 +28,33 @@ const optCors: cors.CorsOptions = {
 };
 const app = express();
 
-console.log("Elasticsearch Node:", process.env.ELASTICSEARCH_URL);
 
 export const esClient = new Client({
   node: "http://localhost:9200",
   auth: {
-    username: process.env.ELASTICSEARCH_USERNAME || "elastic",
-    password: process.env.ELASTICSEARCH_PASSWORD || "@Ali0011914505",
+    username: "elastic",
+    password: "Ali0011914505", // اینجا مطمئن شو که پسورد درسته
   },
 });
 
-fetch("http://localhost:9200")
-  .then((response) => response.json())
-  .then((data) => console.log(data))
-  .catch((error) => console.error("Error:", error));
+esClient.ping()
+  .then(() => console.log("Elasticsearch is connected"))
+  .catch(err => console.error("Elasticsearch connection error:", err));
+
+
 
 async function startServer() {
   try {
-    await createDoctorsIndex(); // ساخت ایندکس در شروع برنامه
+    const indexExists = await checkIndexExists();
+    if (!indexExists) {
+      await createDoctorsIndex();
+      console.log("✅ Doctors index created successfully.");
+    }
+    await syncDoctorsToElasticsearch();
+    console.log("🚀 Doctors data synced with Elasticsearch!");
     console.log("🚀 Server is ready!");
-
-    // بقیه کدهای مربوط به اجرای سرور
   } catch (error) {
+    await syncDoctorsToElasticsearch(); // ساخت ایندکس در شروع برنامه
     console.error("❌ Error during server startup:", error);
   }
 }
