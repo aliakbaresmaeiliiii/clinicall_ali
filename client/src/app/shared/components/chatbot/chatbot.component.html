@@ -1,20 +1,42 @@
-<div class="max-w-md mx-auto bg-white dark:bg-zinc-800 shadow-md rounded-lg overflow-hidden">
+<div id="chatbot">
+  <!-- Floating Chat Button (Hidden when Chatbot is Open) -->
+  <button
+  *ngIf="!isChatbotOpen"
+    (click)="toggleChatbot()"
+    matTooltip="Chatbot"
+    class="fixed bottom-6 left-6 bg-blue-500 hover:bg-blue-700 w-14 text-white p-4 rounded-full shadow-lg transition-all duration-300 ease-in-out">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="2"
+      stroke="currentColor"
+      class="w-6 h-6">
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M8 10h8M8 14h5M19 19l-2-2h-5a7 7 0 1 1 7-7v5l2 2z" />
+    </svg>
+  </button>
+
+  <!-- Chatbot Window -->
+  <div
+  [@chatAnimation]="isChatbotOpen ? 'open' : 'closed'"
+  class="chat-container fixed bottom-6 left-6 bg-white shadow-lg rounded-lg w-80">
   <div class="flex flex-col h-[400px]">
-    <!-- Chat Header -->
-    <div class="px-4 py-3 border-b dark:border-zinc-700">
-      <div class="flex justify-between items-center">
-        <h2 class="text-lg font-semibold text-zinc-800 dark:text-white">
-          Chatbot Assistant
-        </h2>
-        <div class="bg-green-500 text-white text-xs px-2 py-1 rounded-full">
-          Online
-        </div>
-      </div>
+    <!-- Header with Close Button -->
+    <div class="px-4 py-3 border-b dark:border-zinc-700 flex justify-between items-center">
+      <h2 class="text-lg font-semibold text-zinc-800 dark:text-white">Chatbot Assistant</h2>
+      <button (click)="toggleChatbot()" class="text-zinc-600 dark:text-white hover:text-red-500">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
     </div>
 
     <!-- Chat Messages -->
-    <div class="flex-1 p-3 overflow-y-auto flex flex-col space-y-2" id="chatDisplay">
-      <div *ngFor="let msg of chatHistory" [ngClass]="msg.role === 'user' ? 'self-end bg-blue-500' : 'self-start bg-zinc-500'"
+    <div class="flex-1 p-3 overflow-y-auto flex flex-col space-y-2">
+      <div *ngFor="let msg of chatHistory" [ngClass]="msg.role === 'user' ? 'self-end bg-blue-500' : 'self-start bg-gray-500'"
         class="chat-message text-white max-w-xs rounded-lg px-3 py-1.5 text-sm">
         {{ msg.content }}
       </div>
@@ -23,21 +45,17 @@
     <!-- Chat Input -->
     <div class="px-3 py-2 border-t dark:border-zinc-700">
       <div class="flex gap-2">
-        <input
-          [(ngModel)]="userMessage"
-          placeholder="Type your message..."
-          class="flex-1 p-2 border rounded-lg dark:bg-zinc-700 dark:text-white dark:border-zinc-600 text-sm"
-          id="chatInput"
-          type="text"
+        <input [(ngModel)]="userMessage" placeholder="Type your message..."
+          class="flex-1 p-2 border rounded-lg dark:bg-zinc-700 dark:text-white dark:border-zinc-600 text-sm" type="text"
           (keyup.enter)="sendMessage()" />
 
-        <button
-          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1.5 px-3 rounded-lg transition duration-300 ease-in-out text-sm"
-          id="sendButton"
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1.5 px-3 rounded-lg transition duration-300 ease-in-out text-sm"
           (click)="sendMessage()">
           Send
         </button>
       </div>
     </div>
   </div>
+</div>
+
 </div>

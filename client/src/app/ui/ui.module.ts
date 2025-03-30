@@ -200,7 +200,7 @@ const routes: Routes = [
     MatTooltipModule,
     SharedModule,
     RecaptchaModule,
-    ChatbotComponent
+    ChatbotComponent,
   ],
   exports: [BlogComponent, MatToolbarModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

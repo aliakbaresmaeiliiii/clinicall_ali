@@ -177,11 +177,11 @@ export async function searchDoctors(query: string) {
       sort: [{ average_rating: "desc" }],
     });
     console.log("📡 Elasticsearch Response:", response);
-    return response
+    return response;
     // return response.hits.hits.map((hit: any) => hit._source);
   } catch (error) {
     console.error("❌ Error searching doctors:", error);
-    return [];
+    return  {} as any;
   }
 }
 
@@ -208,3 +208,4 @@ export async function removeDeleteDoctorsFromElasticSeach() {
     console.error("❌ Deletion sync failed:", error);
   }
 }
+
