@@ -1,17 +1,15 @@
-import { Client } from "@elastic/elasticsearch";
+import bcrypt from "bcrypt";
+import { v4 as uuidv4 } from "uuid";
+import { esClient } from "../../app";
 import { coreSchema, query, RowDataPacket } from "../../bin/mysql";
 import {
   CommentsDTO,
   DoctorsDTO,
   likeDTO,
-  ReviewsDTO,
-  SubSpecialty,
+  ReviewsDTO
 } from "../../models/doctors";
 import { ResponseError } from "../../modules/error/response_error";
 import { doctorSchema } from "./schema";
-import bcrypt from "bcrypt";
-import { v4 as uuidv4 } from "uuid";
-import { esClient } from "../../app";
 
 // const esClient = new Client({ node: process.env.ELASTICSEARCH_URL });
 

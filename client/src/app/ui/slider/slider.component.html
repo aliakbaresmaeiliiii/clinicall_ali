@@ -28,62 +28,100 @@
     </div>
     <!-- ***** Elastic Search Section -->
     <div
-      class="flex items-center justify-center relative z-50 bg-slate-200 rounded-2xl w-[42rem] ml-6">
-      <!-- @if (searchVisible) { -->
-      <!-- <button
-        mat-mini-fab
-        matTooltip="Search for a doctor"
-        class="flex justify-center items-center border-2 border-gray-200 rounded-xl"
-        (click)="searchDoctor($event); searchVisible = !searchVisible">
-        <mat-icon>search</mat-icon>
-      </button> -->
-      <!-- } @if ( !searchVisible ) { -->
-      <!-- <mat-form-field appearance="outline" class="pt-4 w-[35rem]">
-        <mat-label>Search for Doctors, Clinics, Specializations...</mat-label>
-        <input
+      class="flex items-center justify-center relative gap-3 z-50 bg-slate-200 rounded-2xl w-[42rem] ml-6">
+      <mat-form-field appearance="outline" class="pt-4 w-[35rem]">
+        <div class="flex">
+          <input
           type="text"
           placeholder="Search for Doctors, Clinics, Specializations..."
           aria-label="Search"
           matInput
           [formControl]="searchControl"
-          [matAutocomplete]="auto" />
-        <mat-progress-spinner
-          *ngIf="isLoading"
-          diameter="20"
-          mode="indeterminate">
-        </mat-progress-spinner>
-
-        <mat-autocomplete
-          #auto="matAutocomplete"
-          (optionSelected)="onSelectDoctor($event)">
+          [matAutocomplete]="auto"
+          #searchInput />
+          <button
+          dfButton
+          appearance="solid"
+          class="flex"
+          (click)="startVoiceSearch(searchInput)">
+          <span class="material-symbols-outlined"> mic </span>
+        </button>
+      </div>
+        @if ((filterData | async)?.length ?? 0 > 0 && !isLoading) {
+        <div class="text-gray-600 text-sm mt-1">
+          <strong>{{ (filterData | async)?.length }}</strong> results found
+        </div>
+        } @if (isLoading) {
+        <app-loader />
+        }
+        <mat-autocomplete #auto="matAutocomplete">
           <mat-option
+            class="!bg-blue-200"
             *ngFor="let data of filterData | async"
+            (onSelectionChange)="onSelectDoctor(data)"
             [value]="data.name">
-            {{ data.name }}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field> -->
-
-      <app-chatbot />
-
-      <!-- <div class="search-container">
-        <mat-form-field appearance="outline" class="search-box">
-          <input type="text" matInput [formControl]="searchControl" [matAutocomplete]="auto" placeholder="جستجوی پزشک...">
-          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onSelectDoctor($event)">
-            <mat-option *ngFor="let doctor of filteredDoctors | async" [value]="doctor.name">
-              <div class="autocomplete-item">
-                <span class="doctor-name">{{ doctor.name }}</span>
-                <span class="doctor-specialty">{{ doctor.specialty_name }}</span>
+            <div class="flex items-center gap-3 p-2">
+              <!-- Doctor's Profile Image -->
+              <div
+                class="relative flex items-center justify-center"
+                [ngStyle]="{ width: 50 + 'px', height: 50 + 'px' }">
+                <div
+                  class="absolute inset-0 bg-gradient-to-r rounded-full p-1 from-blue-400 via-blue-500 to-blue-600">
+                  <img
+                    [src]="data.profile_img"
+                    crossorigin="anonymous"
+                    class="w-full h-full object-cover object-[0_15%] rounded-full border-2 border-white shadow-lg"
+                    alt="Profile Image" />
+                </div>
               </div>
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </div> -->
 
-      <!-- <i
-        (click)="searchVisible = true"
-        class="fa-solid fa-circle-xmark text-blue-600 text-center text-2xl cursor-pointer pl-2"></i> -->
-      <!-- } -->
+              <div class="flex flex-col">
+                <!-- Doctor Name -->
+                <span
+                  class="font-semibold text-gray-900"
+                  [innerHTML]="highlightText(data.name)">
+                </span>
+
+                <!-- Specialty -->
+                <span
+                  class="text-sm text-gray-600"
+                  [innerHTML]="highlightText(data.specialty_name)">
+                </span>
+
+                <!-- Star Rating -->
+                <div class="flex items-center gap-1 text-yellow-400">
+                  <ngx-stars
+                    [readonly]="true"
+                    [size]="1.5"
+                    [maxStars]="5"
+                    [initialStars]="data.average_rating"
+                    [wholeStars]="true"
+                    [color]="'#FFD700'"
+                    [customStarIcons]="urlIcon">
+                  </ngx-stars>
+                  <span class="text-xs text-gray-500">
+                    ({{ data.average_rating || '0' }} / 5)
+                  </span>
+                </div>
+              </div>
+            </div>
+          </mat-option>
+          @if ((filterData | async)?.length === 0 && !isLoading) {
+          <mat-option disabled>
+            <div class="flex items-center justify-center p-4">
+              <!-- No Data Icon -->
+              <span class="material-symbols-outlined"> search_off </span>
+
+              <!-- Message -->
+              <span class="text-gray-500 italic text-sm mt-2">
+                No results found. Try searching for something else.
+              </span>
+            </div>
+          </mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+   
     </div>
     <!-- ***** Elastic Search Section -->
 

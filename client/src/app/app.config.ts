@@ -17,7 +17,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideToastr } from 'ngx-toastr';
 import { routes } from './app.routes';
 import { AuthInterceptor } from './core/interceptors/auth-interceptor';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
 import { provideNgProgressOptions } from 'ngx-progressbar';
 
 export const appConfig: ApplicationConfig = {
