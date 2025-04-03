@@ -39,7 +39,10 @@
             [formControl]="searchControl"
             [matAutocomplete]="auto"
             #searchInput />
-          <div class="overlay" *ngIf="isListening"></div>
+          <mat-progress-spinner
+            *ngIf="isLoading"
+            diameter="20"
+            mode="indeterminate"></mat-progress-spinner>
 
           @if (isListening) {
           <div class="overlay">
@@ -61,66 +64,114 @@
             <span class="material-symbols-outlined"> mic </span>
           </button>
         </div>
-        @if ((filterData | async)?.length ?? 0 > 0 && !isLoading) {
+        @if (filterDataSignal().doctors.length) {
         <div class="text-gray-600 text-sm mt-1">
-          <strong>{{ (filterData | async)?.length }}</strong> results found
+          <strong>{{ filterDataSignal() }}</strong> results found
         </div>
         } @if (isLoading) {
         <app-loader />
         }
         <mat-autocomplete #auto="matAutocomplete">
-          <mat-option
-            class="!bg-blue-200"
-            *ngFor="let data of filterData | async"
-            (onSelectionChange)="onSelectDoctor(data)"
-            [value]="data.name">
-            <div class="flex items-center gap-3 p-2">
-              <!-- Doctor's Profile Image -->
-              <div
-                class="relative flex items-center justify-center"
-                [ngStyle]="{ width: 50 + 'px', height: 50 + 'px' }">
+          <!-- دکترها -->
+          <mat-optgroup label="Doctors">
+            <mat-option
+              *ngFor="let data of filterDataSignal().doctors"
+              [value]="data.name"
+              (onSelectionChange)="navigateToDetial(data)">
+              <div class="flex justify-between items-center">
+                <div class="flex space-x-4">
+                  <div
+                    class="relative flex items-center justify-center"
+                    [ngStyle]="{ width: 50 + 'px', height: 50 + 'px' }">
+                    <div
+                      class="absolute inset-0 bg-gradient-to-r rounded-full p-1 from-blue-400 via-blue-500 to-blue-600">
+                      <img
+                        [src]="data.profile_img"
+                        crossorigin="anonymous"
+                        class="w-full h-full object-cover object-[0_15%] rounded-full border-2 border-white shadow-lg"
+                        alt="Profile Image" />
+                    </div>
+                  </div>
+
+                  <div>
+                    <div class="flex justify-between">
+                      <div class="flex flex-col gap-4 text-lg font-bold">
+                        <span> {{ data.details.name }} </span>
+                        <div
+                          class="flex justify-between w-[26rem] bg-slate-600 rounded-3xl">
+                          <div>
+                            <span class="text-white pl-2">
+                              {{ data.details.specialty_name }}
+                            </span>
+                          </div>
+                          <div class="flex gap-2 text-yellow-400 pr-2">
+                            <ngx-stars
+                              [readonly]="true"
+                              [size]="1"
+                              [maxStars]="5"
+                              [initialStars]="data.average_rating"
+                              [wholeStars]="true"
+                              [color]="'#FFD700'"
+                              [customStarIcons]="urlIcon"></ngx-stars>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- <div class="flex">
                 <div
-                  class="absolute inset-0 bg-gradient-to-r rounded-full p-1 from-blue-400 via-blue-500 to-blue-600">
-                  <img
-                    [src]="data.profile_img"
-                    crossorigin="anonymous"
-                    class="w-full h-full object-cover object-[0_15%] rounded-full border-2 border-white shadow-lg"
-                    alt="Profile Image" />
+                  class="relative flex items-center justify-center"
+                  [ngStyle]="{ width: 40 + 'px', height: 40 + 'px' }">
+                  <div
+                    class="absolute inset-0 bg-gradient-to-r rounded-full p-1 from-blue-400 via-blue-500 to-blue-600">
+                    <img
+                      [src]="doctor.profile_img"
+                      crossorigin="anonymous"
+                      class="w-full h-full object-cover object-[0_15%] rounded-full border-2 border-white shadow-lg"
+                      alt="Profile Image" />
+                  </div>
                 </div>
+                👨‍⚕️ {{ doctor.details.name }} -
+                {{ doctor.details.specialty_name }}
               </div>
 
-              <div class="flex flex-col">
-                <!-- Doctor Name -->
-                <span
-                  class="font-semibold text-gray-900"
-                  [innerHTML]="highlightText(data.name)">
-                </span>
+              <div class="flex gap-2 text-yellow-400 ">
+                <ngx-stars
+                  [readonly]="false"
+                  [size]="2"
+                  [maxStars]="5"
+                  [wholeStars]="false"
+                  [color]="'#FFD700'"
+                  [customStarIcons]="urlIcon"></ngx-stars>
+              </div> -->
+            </mat-option>
+          </mat-optgroup>
 
-                <!-- Specialty -->
-                <span
-                  class="text-sm text-gray-600"
-                  [innerHTML]="highlightText(data.specialty_name)">
-                </span>
+          <!-- کلینیک‌ها -->
+          <mat-optgroup
+            *ngIf="filterDataSignal()?.clinics?.length"
+            label="Clinics">
+            <mat-option
+              *ngFor="let clinic of filterDataSignal()?.clinics"
+              [value]="clinic.name">
+              🏥 {{ clinic.details.name }} - {{ clinic.details.city }}
+            </mat-option>
+          </mat-optgroup>
 
-                <!-- Star Rating -->
-                <div class="flex items-center gap-1 text-yellow-400">
-                  <ngx-stars
-                    [readonly]="true"
-                    [size]="1.5"
-                    [maxStars]="5"
-                    [initialStars]="data.average_rating"
-                    [wholeStars]="true"
-                    [color]="'#FFD700'"
-                    [customStarIcons]="urlIcon">
-                  </ngx-stars>
-                  <span class="text-xs text-gray-500">
-                    ({{ data.average_rating || '0' }} / 5)
-                  </span>
-                </div>
-              </div>
-            </div>
-          </mat-option>
-          @if ((filterData | async)?.length === 0 && !isLoading) {
+          <!-- تخصص‌ها -->
+          <mat-optgroup
+            *ngIf="filterDataSignal()?.specializations?.length"
+            label="Specializations">
+            <mat-option
+              *ngFor="let specialization of filterDataSignal()?.specializations"
+              [value]="specialization.name">
+              🔬 {{ specialization?.details?.name }}
+            </mat-option>
+          </mat-optgroup>
+          @if (filterDataSignal().doctors.length === 0 && !isLoading) {
           <mat-option disabled>
             <div class="flex items-center justify-center p-4">
               <!-- No Data Icon -->
@@ -169,7 +220,7 @@
     </div>
     <div
       class="hero-socail-icon cursor-scale small desktop:block mobile:hidden">
-      <a>
+      <a aria-label="Facebook">
         <i class="fa-brands fa-facebook-f hover:text-blue-600 text-white"></i>
       </a>
       <a>

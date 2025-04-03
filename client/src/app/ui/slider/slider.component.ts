@@ -15,6 +15,7 @@ import {
   signal,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import AOS from 'aos';
 import {
   BehaviorSubject,
@@ -28,11 +29,9 @@ import {
   switchMap,
   takeWhile,
 } from 'rxjs';
+import { environment } from '../../environments/environment';
 import { DoctorsService } from '../../modules/doctors/services/doctors.service';
 import { ElasticSearchService } from '../../shared/services/elastic-search.service';
-import { MatSelect } from '@angular/material/select';
-import { Router } from '@angular/router';
-import { environment } from '../../environments/environment';
 
 const style1 = style({
   opacity: 1,
@@ -76,13 +75,29 @@ export class SliderComponent implements OnInit {
   doctorService = inject(DoctorsService);
   elasticSearchService = inject(ElasticSearchService);
   searchControl = new FormControl('');
-  private filterDataSubject = new BehaviorSubject<any[]>([]);
-  filterData: Observable<any[]> = this.filterDataSubject.asObservable();
   selectedStore = signal<any>('');
   recognition: any;
   isLoading = false;
   isListening = false;
   recognizedText = '';
+
+  // filterDataSubject = new BehaviorSubject<{
+  //   doctors: any[];
+  //   clinics: any[];
+  //   specializations: any[];
+  // }>({ doctors: [], clinics: [], specializations: [] });
+
+  filterDataSignal = signal<{
+    doctors: any[];
+    clinics: any[];
+    specializations: any[];
+  }>({ doctors: [], clinics: [], specializations: [] });
+
+  // filterData$: Observable<{
+  //   doctors: any[];
+  //   clinics: any[];
+  //   specializations: any[];
+  // }> = this.filterDataSubject.asObservable();
 
   constructor(private ngZone: NgZone) {
     setTimeout(() => {
@@ -124,35 +139,46 @@ export class SliderComponent implements OnInit {
     this.searchControl.valueChanges
       .pipe(
         debounceTime(300),
-        distinctUntilChanged(), // Avoids duplicate API calls for the same input
+        distinctUntilChanged(),
         switchMap((query: any) => {
-          this.isLoading = true;
           if (!query.trim()) {
-            this.filterDataSubject.next([]); // Clears results if input is empty
-            return of([]); // Prevents unnecessary API calls
+            this.filterDataSignal.set({
+              doctors: [],
+              clinics: [],
+              specializations: [],
+            });
+            return of({ doctors: [], clinics: [], specializations: [] });
+            // this.filterDataSubject.next([]);
+            // return of([]);
           }
-
           this.isLoading = true;
           return this.elasticSearchService.searchDoctors(query).pipe(
-            finalize(() => (this.isLoading = false)), // Ensures loading state resets
-            catchError(() => of([])) // Prevents errors from breaking the search
+            finalize(() => (this.isLoading = false)),
+            catchError(() =>
+              of({ doctors: [], clinics: [], specializations: [] })
+            )
           );
         })
       )
       .subscribe((res: any) => {
-        if (res && res.length > 0) {
-          const newData = res.map((data: any) => {
-            data.profile_img = data.profile_img
-              ? `${environment.urlProfileImg}${data.profile_img}`
-              : '../../../assets/images/bg-01.png';
-            return data;
-          });
-          this.filterDataSubject.next(newData);
+        if (res) {
+          console.log('this.res',res);
+
+          res.doctors =
+            res.doctors?.map((doctor: any) => ({
+              ...doctor,
+              profile_img: doctor.details.profile_img
+                ? `${environment.urlProfileImg}${doctor.details.profile_img}`
+                : '../../../assets/images/default-profile.png',
+            })) || [];
+
+          this.filterDataSignal.set(res);
+          console.log('this.filterDataSubject', this.filterDataSignal());
         }
       });
   }
 
-  onSelectDoctor(selectedDoctor: any) {
+  navigateToDetial(selectedDoctor: any) {
     if (!selectedDoctor) return;
     const doctorName = selectedDoctor.name;
     const id = selectedDoctor.id;
