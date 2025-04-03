@@ -81,18 +81,26 @@ export class SliderComponent implements OnInit {
   selectedStore = signal<any>('');
   recognition: any;
   isLoading = false;
+  isListening = false;
+  recognizedText = '';
 
   constructor(private ngZone: NgZone) {
-    const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
+    setTimeout(() => {
+      this.recognition.stop();
+    }, 5000);
+    const SpeechRecognition =
+      (window as any).webkitSpeechRecognition ||
+      (window as any).SpeechRecognition;
     this.recognition = new SpeechRecognition();
     this.recognition.lang = 'en-US';
     this.recognition.continuous = false;
     this.recognition.interimResults = false;
 
     this.recognition.onresult = (event: any) => {
-      const transcript = event.results[0][0].transcript;
+      this.recognizedText = event.results[0][0].transcript;
       this.ngZone.run(() => {
-        this.searchControl.setValue(transcript);
+        this.searchControl.setValue(this.recognizedText);
+        this.isListening = false;
       });
     };
 
@@ -100,7 +108,6 @@ export class SliderComponent implements OnInit {
       console.error('Speech recognition error:', event.error);
     };
   }
-
 
   ngOnInit(): void {
     this.incrementCounter();
@@ -119,6 +126,7 @@ export class SliderComponent implements OnInit {
         debounceTime(300),
         distinctUntilChanged(), // Avoids duplicate API calls for the same input
         switchMap((query: any) => {
+          this.isLoading = true;
           if (!query.trim()) {
             this.filterDataSubject.next([]); // Clears results if input is empty
             return of([]); // Prevents unnecessary API calls
@@ -175,7 +183,9 @@ export class SliderComponent implements OnInit {
   searchDoctor(searchValue: any): void {
     // this.router.navigate(['doctors'], { queryParams: { search: searchValue } });
   }
-  startVoiceSearch(inputElement: HTMLInputElement) {
+  startVoiceSearch() {
+    this.isListening = true;
+
     this.recognition.start();
   }
   incrementCounter(): void {

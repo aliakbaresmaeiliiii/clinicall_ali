@@ -31,16 +31,6 @@ export class MediicAppointmentComponent implements OnInit {
   textDirection: 'ltr' | 'rtl' = 'ltr';
   service = inject(DoctorsService);
 
-  ngOnInit() {
-    AOS.init({
-      duration: 1000, // Animation duration in milliseconds
-      easing: 'ease-in-out', // Easing type
-      once: true // Whether animation should happen only once
-    });
-    AOS.refresh();
-    AOS.refresh();
-  }
-
   form = this.fb.group({
     name: [
       '',
@@ -54,6 +44,18 @@ export class MediicAppointmentComponent implements OnInit {
     subject: [''],
 
   });
+
+  ngOnInit() {
+    AOS.init({
+      duration: 1000, // Animation duration in milliseconds
+      easing: 'ease-in-out', // Easing type
+      once: true // Whether animation should happen only once
+    });
+    AOS.refresh();
+    AOS.refresh();
+  }
+
+
 
   onSubmit() {
     if (this.form.value) {

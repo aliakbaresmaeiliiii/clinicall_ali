@@ -29,24 +29,38 @@
     <!-- ***** Elastic Search Section -->
     <div
       class="flex items-center justify-center relative gap-3 z-50 bg-slate-200 rounded-2xl w-[42rem] ml-6">
-      <mat-form-field appearance="outline" class="pt-4 w-[35rem]">
+      <mat-form-field appearance="outline" class="pt-4 w-[34rem]">
         <div class="flex">
           <input
-          type="text"
-          placeholder="Search for Doctors, Clinics, Specializations..."
-          aria-label="Search"
-          matInput
-          [formControl]="searchControl"
-          [matAutocomplete]="auto"
-          #searchInput />
+            type="text"
+            placeholder="Search for Doctors, Clinics, Specializations..."
+            aria-label="Search"
+            matInput
+            [formControl]="searchControl"
+            [matAutocomplete]="auto"
+            #searchInput />
+          <div class="overlay" *ngIf="isListening"></div>
+
+          @if (isListening) {
+          <div class="overlay">
+            <!-- From Uiverse.io by Praashoo7 -->
+            <div class="load">
+              <div class="progress"></div>
+              <div class="progress"></div>
+              <div class="progress"></div>
+            </div>
+          </div>
+
+          }
+
           <button
-          dfButton
-          appearance="solid"
-          class="flex"
-          (click)="startVoiceSearch(searchInput)">
-          <span class="material-symbols-outlined"> mic </span>
-        </button>
-      </div>
+            dfButton
+            appearance="solid"
+            class="flex"
+            (click)="startVoiceSearch()">
+            <span class="material-symbols-outlined"> mic </span>
+          </button>
+        </div>
         @if ((filterData | async)?.length ?? 0 > 0 && !isLoading) {
         <div class="text-gray-600 text-sm mt-1">
           <strong>{{ (filterData | async)?.length }}</strong> results found
@@ -121,7 +135,6 @@
           }
         </mat-autocomplete>
       </mat-form-field>
-   
     </div>
     <!-- ***** Elastic Search Section -->
 
