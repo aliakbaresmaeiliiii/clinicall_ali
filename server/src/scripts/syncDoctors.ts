@@ -158,29 +158,61 @@ export async function searchDoctors(query: string) {
       query: {
         bool: {
           should: [
-            {
-              multi_match: {
-                query,
-                fields: ["name", "specialty_name", "insurance_name", "city"],
-                type: "best_fields",
-              },
-            },
-            { match_phrase_prefix: { name: query } },
+            { match: { specialty_name: query } }, // دکترهایی که تخصص مرتبط دارند
+            { match: { clinic_services: query } }, // کلینیک‌هایی که این سرویس را دارند
             { match_phrase_prefix: { specialty_name: query } },
-            { match_phrase_prefix: { insurance_name: query } },
-            { match_phrase_prefix: { city: query } },
+            { match_phrase_prefix: { clinic_services: query } },
           ],
           minimum_should_match: 1,
         },
       },
       sort: [{ average_rating: "desc" }],
+      aggs: {
+        doctors: {
+          terms: { field: "id" },
+          aggs: {
+            details: { top_hits: { size: 1 } },
+          },
+        },
+        clinics: {
+          terms: { field: "id" },
+          aggs: {
+            details: { top_hits: { size: 1 } },
+          },
+        },
+        specializations: {
+          terms: { field: "id" },
+          aggs: {
+            details: { top_hits: { size: 1 } },
+          },
+        },
+      },
     });
-    console.log("📡 Elasticsearch Response:", response);
-    return response;
-    // return response.hits.hits.map((hit: any) => hit._source);
+
+    const doctors =
+      (response.aggregations as any)?.doctors?.buckets.map((bucket: any) => ({
+        id: bucket.key,
+        count: bucket.doc_count,
+        details: bucket.details.hits.hits[0]?._source || null,
+      })) ?? [];
+    const clinics =
+      (response.aggregations as any)?.clinics?.buckets.map((bucket: any) => ({
+        id: bucket.key,
+        count: bucket.doc_count,
+        details: bucket.details.hits.hits[0]?._source || null,
+      })) ?? [];
+    const specializations =
+      (response.aggregations as any)?.specializations?.buckets.map(
+        (bucket: any) => ({
+          id: bucket.key,
+          count: bucket.doc_count,
+        })
+      ) ?? [];
+
+    return { doctors, clinics, specializations };
   } catch (error) {
     console.error("❌ Error searching doctors:", error);
-    return  {} as any;
+    return { doctors: [], clinics: [], specializations: [] };
   }
 }
 
@@ -207,4 +239,3 @@ export async function removeDeleteDoctorsFromElasticSeach() {
     console.error("❌ Deletion sync failed:", error);
   }
 }
-

@@ -2,6 +2,10 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { asyncHandler } from "../../helper/async-handler";
 import { router } from "../../routes/public";
 
+/**
+ * @description This file contains the AI controller which handles the chat functionality.
+ */
+
 // const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const genAI = new GoogleGenerativeAI(process.env.OPENAI_API_KEY || "");
 

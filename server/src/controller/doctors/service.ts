@@ -42,7 +42,8 @@ export class DoctorsService {
     maxRating?: number;
     isPopular?: boolean;
   }) {
-    const data = await getDoctorsFromElastic(filters);
+    const data = await 
+    getDoctorsFromElastic(filters);
     if (data) {
       return { message: "ok", data };
     } else {

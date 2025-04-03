@@ -15,9 +15,9 @@ export class ElasticSearchService {
       .get<any>(
         `${this.config}doctors/search?query=${encodeURIComponent(query)}`
       )
-      .pipe(
-        map(response => response.hits.hits.map((hit: any) => hit._source)) // Map to an array of doctor objects
-      );
+      // .pipe(
+      //   map(response => response.hits.hits.map((hit: any) => hit._source)) // Map to an array of doctor objects
+      // );
   }
 }
 // searchDoctors(query: string): Observable<DoctorsDTO[]> {
