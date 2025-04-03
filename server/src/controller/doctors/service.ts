@@ -36,6 +36,7 @@ export class DoctorsService {
     doctor_id?: string;
     service_id: string;
     specialty_id: string;
+    patient_id: string;
     insurance_id: string;
     minRating?: number;
     maxRating?: number;

@@ -20,13 +20,13 @@ export async function getDoctorsFromElastic(filters: {
   service_id: string;
   specialty_id: string;
   insurance_id: string;
+  patient_id: string;
   minRating?: number;
   doctor_id?: string;
   maxRating?: number;
   isPopular?: boolean;
 }) {
   try {
-    console.log("🔍 Filters:", JSON.stringify(filters, null, 2));
 
     const must: any[] = [];
 
@@ -38,6 +38,9 @@ export async function getDoctorsFromElastic(filters: {
     }
     if (filters.specialty_id) {
       must.push({ term: { specialty_id: filters.specialty_id } });
+    }
+    if (filters.patient_id) {
+      must.push({ term: { patient_id: filters.patient_id } });
     }
     if (filters.service_id) {
       must.push({ term: { service_ids: filters.service_id } });
@@ -70,7 +73,6 @@ export async function getDoctorsFromElastic(filters: {
 
     const query = must.length > 0 ? { bool: { must } } : { match_all: {} };
 
-    console.log("🧐 ES Query:", JSON.stringify(query, null, 2));
 
     const response = await esClient.search({
       index: "doctors",

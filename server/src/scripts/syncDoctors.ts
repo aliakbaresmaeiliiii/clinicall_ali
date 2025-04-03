@@ -58,7 +58,6 @@ export async function syncDoctorsToElasticsearch() {
       GROUP BY d.id
     `);
     // WHERE d.updated_at >= NOW() - INTERVAL 1 DAY
-    console.log("❤️❤️❤️❤️❤️❤️❤️", rows);
 
     if (rows.length === 0) {
       console.log("❌ No doctors found in MySQL");
