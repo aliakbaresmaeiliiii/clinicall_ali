@@ -9,7 +9,6 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { ElasticSearchService } from '../../services/elastic-search.service';
 
 @Component({
   selector: 'app-chatbot',
@@ -43,7 +42,6 @@ import { ElasticSearchService } from '../../services/elastic-search.service';
 })
 export class ChatbotComponent {
   chatBotService = inject(ChatbotService);
-  elasticSearchService = inject(ElasticSearchService);
   isChatbotOpen = false;
   userMessage: string = '';
   chatHistory: { role: string; content: string }[] = [];
@@ -56,11 +54,9 @@ export class ChatbotComponent {
 
     this.chatHistory.push({ role: 'user', content: this.userMessage });
 
-    this.elasticSearchService.searchDoctors(this.userMessage).subscribe({
+    this.chatBotService.sendMessageToBot(this.userMessage).subscribe({
       next: res => {
-        console.log('👌👌👌👌👌',res);
-        
-        // this.chatHistory.push({ role: 'bot', content: res.reply });
+        this.chatHistory.push({ role: 'bot', content: res.reply });
       },
       error: error => {
         console.error('Error:', error);
