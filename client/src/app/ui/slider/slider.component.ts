@@ -7,6 +7,7 @@ import {
 } from '@angular/animations';
 import {
   Component,
+  computed,
   ElementRef,
   HostListener,
   inject,
@@ -18,7 +19,6 @@ import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import AOS from 'aos';
 import {
-  BehaviorSubject,
   catchError,
   debounceTime,
   distinctUntilChanged,
@@ -88,16 +88,35 @@ export class SliderComponent implements OnInit {
   // }>({ doctors: [], clinics: [], specializations: [] });
 
   filterDataSignal = signal<{
-    doctors: any[];
     clinics: any[];
+    services: any[];
     specializations: any[];
-  }>({ doctors: [], clinics: [], specializations: [] });
+  }>({ clinics: [], services: [], specializations: [] });
 
-  // filterData$: Observable<{
-  //   doctors: any[];
-  //   clinics: any[];
-  //   specializations: any[];
-  // }> = this.filterDataSubject.asObservable();
+  // readonly uniqServicesClinics = computed(() => {
+  //   const clinics = this.filterDataSignal().clinics;
+  //   const unique = clinics.filter(
+  //     (service: any, index: number, self: any) =>
+  //       index === self.findIndex((s: any) => s.id === service.id)
+  //   );
+  //   return unique;
+  // });
+  readonly uniqServiceService = computed(() => {
+    const services = this.filterDataSignal().services;
+    const unique = services?.filter(
+      (service: any, index: number, self: any) =>
+        index === self.findIndex((s: any) => s.id === service.id)
+    );
+    return unique;
+  });
+  readonly uniqSpecializations = computed(() => {
+    const specializations = this.filterDataSignal().specializations;
+    const unique = specializations?.filter(
+      (service: any, index: number, self: any) =>
+        index === self.findIndex((s: any) => s.id === service.id)
+    );
+    return unique;
+  });
 
   constructor(private ngZone: NgZone) {
     setTimeout(() => {
@@ -141,39 +160,70 @@ export class SliderComponent implements OnInit {
         debounceTime(300),
         distinctUntilChanged(),
         switchMap((query: any) => {
-          if (!query.trim()) {
-            this.filterDataSignal.set({
+          const trimedQuery = query?.trim().toLowerCase();
+          if (!trimedQuery.trim()) {
+            const emptyResult = {
               doctors: [],
               clinics: [],
+              services: [],
               specializations: [],
-            });
-            return of({ doctors: [], clinics: [], specializations: [] });
+            };
+            this.filterDataSignal.set(emptyResult);
+            return of(emptyResult);
             // this.filterDataSubject.next([]);
             // return of([]);
           }
           this.isLoading = true;
-          return this.elasticSearchService.searchDoctors(query).pipe(
+          return this.elasticSearchService.searchDoctors(trimedQuery).pipe(
             finalize(() => (this.isLoading = false)),
             catchError(() =>
-              of({ doctors: [], clinics: [], specializations: [] })
+              of({
+                doctors: [],
+                clinics: [],
+                services: [],
+                specializations: [],
+              })
             )
           );
         })
       )
       .subscribe((res: any) => {
         if (res) {
-          console.log('this.res',res);
-
-          res.doctors =
-            res.doctors?.map((doctor: any) => ({
+          const doctors =
+            res._source?.map((doctor: any) => ({
               ...doctor,
               profile_img: doctor.details.profile_img
                 ? `${environment.urlProfileImg}${doctor.details.profile_img}`
                 : '../../../assets/images/default-profile.png',
             })) || [];
+          console.log('doctors', doctors);
 
-          this.filterDataSignal.set(res);
-          console.log('this.filterDataSubject', this.filterDataSignal());
+          const services = res.data.find((s: any) => s.services);
+          debugger;
+          this.filterDataSignal.set(services);
+          // const clinics =
+          //   res.clinics?.map((clinic: any) => ({
+          //     ...clinic.details,
+          //     doctorCount: clinic.count,
+          //   })) || [];
+
+          // const services =
+          //   res.services?.map((services: any) => ({
+          //     ...services.details,
+          //     doctorCount: services.count,
+          //   })) || [];
+          // const specializations =
+          //   res.services?.map((spec: any) => ({
+          //     ...spec.details,
+          //     doctorCount: spec.count,
+          //   })) || [];
+
+          // this.filterDataSignal.set({
+          //   clinics,
+          //   services,
+          //   specializations,
+          // });
+          console.log('🔍 Filtered Data:', this.filterDataSignal());
         }
       });
   }
