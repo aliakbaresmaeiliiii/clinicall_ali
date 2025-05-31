@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+import { Client } from "@elastic/elasticsearch";
 import compression from "compression";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -14,11 +15,8 @@ import { ExpressAutoHandleTransaction } from "./middlewares/express_auto_handle_
 import { ExpressErrorResponse } from "./middlewares/express_error_response";
 import { ExpressErrorYup } from "./middlewares/express_error_yup";
 import { routes } from "./routes/index";
-import { checkIndexExists, createDoctorsIndex } from "./scripts/create-index";
-import { Client } from "@elastic/elasticsearch";
-import { config } from "./config/base_url";
-import { syncDoctorsToElasticsearch } from "./scripts/syncDoctors";
-import openai from "openai";
+import { checkIndexExists, createClinicIndex, createDoctorIndex } from "./scripts/create-index";
+import {  syncClinicsToElasticsearch, syncDoctorsToElasticsearch } from "./scripts/syncDoctors";
 
 // TODO: change to .ts
 const optCors: cors.CorsOptions = {
@@ -29,11 +27,12 @@ const optCors: cors.CorsOptions = {
 const app = express();
 
 
+
 export const esClient = new Client({
   node: "http://localhost:9200",
   auth: {
     username: "elastic",
-    password: "Ali0011914505", // اینجا مطمئن شو که پسورد درسته
+    password: "Ali0011914505",
   },
 });
 
@@ -45,21 +44,40 @@ esClient.ping()
 
 async function startServer() {
   try {
-    const indexExists = await checkIndexExists();
-    if (!indexExists) {
-      await createDoctorsIndex();
-      console.log("✅ Doctors index created successfully.");
+    const doctorsIndexExists = await checkIndexExists('doctors');
+    const clinicsIndexExists = await checkIndexExists('clinics');
+
+
+    if (!clinicsIndexExists) {
+      createClinicIndex();
+      console.log("✅ 'clinics' index created successfully.");
     }
+    if (!doctorsIndexExists) {
+      createDoctorIndex();
+      console.log("✅ 'doctors' index created successfully.");
+    }
+
     await syncDoctorsToElasticsearch();
-    console.log("🚀 Doctors data synced with Elasticsearch!");
+    await syncClinicsToElasticsearch();
+
+    console.log("🚀 Elasticsearch data synced successfully!");
     console.log("🚀 Server is ready!");
   } catch (error) {
-    await syncDoctorsToElasticsearch(); // ساخت ایندکس در شروع برنامه
     console.error("❌ Error during server startup:", error);
+
+    try {
+      await syncDoctorsToElasticsearch();
+      await syncClinicsToElasticsearch();
+      console.log("🚀 Retried syncing Elasticsearch data.");
+    } catch (syncError) {
+      console.error("❌ Error during syncing after startup failure:", syncError);
+    }
   }
 }
-
 startServer();
+
+
+
 // view engine setup
 app.set("views", path.join(`${__dirname}/../`, "views"));
 // app.set('view engine', 'pug')

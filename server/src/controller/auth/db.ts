@@ -4,7 +4,7 @@ import { ResponseError } from "../../modules/error/response_error";
 export async function checkIfClinicExists(email: string): Promise<boolean> {
   const result = await query<RowDataPacket[]>(
     `
-    SELECT 1 FROM ${coreSchema}.clinic WHERE email = ? 
+    SELECT 1 FROM ${coreSchema}.clinics WHERE email = ? 
   `,
     {
       values: [email],
@@ -84,7 +84,7 @@ export async function getClinicByPassword(
       // LEFT JOIN ${coreSchema}.role_permissions rp ON r.id = rp.role_id
       // LEFT JOIN ${coreSchema}.permissions p ON rp.permission_id  = p.id
       ` SELECT *
-      FROM ${coreSchema}.clinic 
+      FROM ${coreSchema}.clinics
       WHERE email = ?`,
       {
         values: [email],
@@ -164,7 +164,7 @@ export async function getClinicVerificationCode(clinicData: {
 
   // Update the signup_status
   await query(
-    `UPDATE ${coreSchema}.clinic SET signup_status = 1 WHERE email = ?`,
+    `UPDATE ${coreSchema}.clinics SET signup_status = 1 WHERE email = ?`,
     { values: [clinicData.email] }
   );
 

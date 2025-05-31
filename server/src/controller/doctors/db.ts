@@ -6,28 +6,25 @@ import {
   CommentsDTO,
   DoctorsDTO,
   likeDTO,
-  ReviewsDTO
+  ReviewsDTO,
 } from "../../models/doctors";
 import { ResponseError } from "../../modules/error/response_error";
 import { doctorSchema } from "./schema";
-
-// const esClient = new Client({ node: process.env.ELASTICSEARCH_URL });
 
 
 export async function getDoctorsFromElastic(filters: {
   name?: string;
   city_id?: string;
-  service_id: string;
-  specialty_id: string;
-  insurance_id: string;
-  patient_id: string;
+  service_id?: string;
+  specialty_id?: string;
+  insurance_id?: string;
+  patient_id?: string;
   minRating?: number;
   doctor_id?: string;
   maxRating?: number;
   isPopular?: boolean;
 }) {
   try {
-
     const must: any[] = [];
 
     if (filters.name) {
@@ -73,15 +70,12 @@ export async function getDoctorsFromElastic(filters: {
 
     const query = must.length > 0 ? { bool: { must } } : { match_all: {} };
 
-
     const response = await esClient.search({
-      index: "doctors",
+      index: "elasticsearch",
       body: {
         query,
       },
     });
-
-    console.log("📊 Response:", JSON.stringify(response, null, 2));
 
     if (!response.hits || !response.hits.hits.length) {
       return [];
@@ -89,11 +83,9 @@ export async function getDoctorsFromElastic(filters: {
 
     return response.hits.hits.map((hit: any) => hit._source);
   } catch (error: any) {
-    console.log("❌ Elasticsearch error:", JSON.stringify(error.meta?.body || error, null, 2));
     return [];
   }
 }
-
 
 export async function addDoctor(data: DoctorsDTO) {
   const { password } = data.password;
@@ -332,13 +324,37 @@ export async function addComment(comment: CommentsDTO) {
   return result;
 }
 
-export async function getSpecialties() {
-  const result = await query<RowDataPacket[]>(
-    `SELECT *
-       FROM ${coreSchema}.specialties`
-  );
+export async function getSubSpecialtiesBySpecialtyName(specialtyName: string) {
+  const sql = `
+     SELECT ss.*
+     FROM clinic_db.sub_specialties ss
+     JOIN clinic_db.specialties s ON ss.specialty_id = s.id
+    WHERE s.name LIKE ?
+  `;
+  const result = await query(sql, [`%${specialtyName}%`]);
   return result;
 }
+
+export async function getSpecialties(searchTerm?: string) {
+  try {
+    let sql = `SELECT * FROM ${coreSchema}.specialties`;
+    const params: any[] = [];
+
+    if (searchTerm) {
+      sql += ` WHERE name LIKE ?`;
+      params.push(`%${searchTerm}%`);
+    }
+
+    const result = await query<RowDataPacket[]>(sql, params);
+    console.log(result);
+
+    return result;
+  } catch (error) {
+    console.error("Error fetching specialties:", error);
+    throw error; // or handle as you prefer
+  }
+}
+
 export async function getSubSpecialtiesById(specialtyId: number) {
   try {
     const limit = 20; // Default limit
