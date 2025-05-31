@@ -64,7 +64,7 @@
             <span class="material-symbols-outlined"> mic </span>
           </button>
         </div>
-        @if (filterDataSignal().doctors.length) {
+        @if (filterDataSignal().clinics) {
         <div class="text-gray-600 text-sm mt-1">
           <strong>{{ filterDataSignal() }}</strong> results found
         </div>
@@ -72,8 +72,33 @@
         <app-loader />
         }
         <mat-autocomplete #auto="matAutocomplete">
+          <div class="mb-4">
+            <h2 class="text-lg font-bold mb-2">🦷Suggestion Services</h2>
+            <mat-optgroup label="According to specialty">
+              @for (spec of uniqSpecializations(); track spec.id) {
+              <mat-option [value]="spec.id">
+                <li>{{ spec.name }}</li>
+              </mat-option>
+              }
+            </mat-optgroup>
+            <!-- <mat-optgroup label="Clinics">
+              @for (clinic of uniqServicesClinics(); track clinic.id) {
+                  <mat-option [value]="clinic.id">
+                        <li>{{ clinic.name }}</li>
+                  </mat-option>
+              }
+            </mat-optgroup> -->
+            <mat-optgroup label="Services">
+              @for (service of uniqServiceService(); track service.id) {
+              <mat-option [value]="service.id">
+                <li>{{ service.name }}</li>
+              </mat-option>
+              }
+            </mat-optgroup>
+          </div>
+
           <!-- دکترها -->
-          <mat-optgroup label="Doctors">
+          <!-- <mat-optgroup label="Doctors">
             <mat-option
               *ngFor="let data of filterDataSignal().doctors"
               [value]="data.name"
@@ -120,38 +145,11 @@
                   </div>
                 </div>
               </div>
-
-              <!-- <div class="flex">
-                <div
-                  class="relative flex items-center justify-center"
-                  [ngStyle]="{ width: 40 + 'px', height: 40 + 'px' }">
-                  <div
-                    class="absolute inset-0 bg-gradient-to-r rounded-full p-1 from-blue-400 via-blue-500 to-blue-600">
-                    <img
-                      [src]="doctor.profile_img"
-                      crossorigin="anonymous"
-                      class="w-full h-full object-cover object-[0_15%] rounded-full border-2 border-white shadow-lg"
-                      alt="Profile Image" />
-                  </div>
-                </div>
-                👨‍⚕️ {{ doctor.details.name }} -
-                {{ doctor.details.specialty_name }}
-              </div>
-
-              <div class="flex gap-2 text-yellow-400 ">
-                <ngx-stars
-                  [readonly]="false"
-                  [size]="2"
-                  [maxStars]="5"
-                  [wholeStars]="false"
-                  [color]="'#FFD700'"
-                  [customStarIcons]="urlIcon"></ngx-stars>
-              </div> -->
             </mat-option>
-          </mat-optgroup>
+          </mat-optgroup> -->
 
           <!-- کلینیک‌ها -->
-          <mat-optgroup
+          <!-- <mat-optgroup
             *ngIf="filterDataSignal()?.clinics?.length"
             label="Clinics">
             <mat-option
@@ -159,10 +157,10 @@
               [value]="clinic.name">
               🏥 {{ clinic.details.name }} - {{ clinic.details.city }}
             </mat-option>
-          </mat-optgroup>
+          </mat-optgroup> -->
 
           <!-- تخصص‌ها -->
-          <mat-optgroup
+          <!-- <mat-optgroup
             *ngIf="filterDataSignal()?.specializations?.length"
             label="Specializations">
             <mat-option
@@ -170,20 +168,17 @@
               [value]="specialization.name">
               🔬 {{ specialization?.details?.name }}
             </mat-option>
-          </mat-optgroup>
-          @if (filterDataSignal().doctors.length === 0 && !isLoading) {
+          </mat-optgroup> -->
+          <!-- @if (filterDataSignal().specializations.length === 0 && !isLoading) {
           <mat-option disabled>
             <div class="flex items-center justify-center p-4">
-              <!-- No Data Icon -->
               <span class="material-symbols-outlined"> search_off </span>
-
-              <!-- Message -->
               <span class="text-gray-500 italic text-sm mt-2">
                 No results found. Try searching for something else.
               </span>
             </div>
           </mat-option>
-          }
+          } -->
         </mat-autocomplete>
       </mat-form-field>
     </div>
