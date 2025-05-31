@@ -1,8 +1,7 @@
-import { Client } from "@elastic/elasticsearch";
 import { asyncHandler } from "../../helper/async-handler";
-import { router } from "../../routes/public";
 import { BuildResponse } from "../../modules/response/app_response";
-import { searchDoctors } from "../../scripts/syncDoctors";
+import { router } from "../../routes/public";
+import { searchEntities } from "../../scripts/syncDoctors";
 
 
 
@@ -16,7 +15,7 @@ router.get(
     if (!query) {
       return res.status(400).json({ message: "Query is required" });
     }
-    const doctors = await searchDoctors(query);
+    const doctors = await searchEntities(query);
     const buildResponse = BuildResponse.get(doctors);
     res.status(buildResponse.code).json(buildResponse);
 

@@ -3,14 +3,32 @@ import { coreSchema, query, RowDataPacket } from "../bin/mysql";
 
 export async function syncDoctorsToElasticsearch() {
   try {
-    const rows = await query<RowDataPacket[]>(`
+    const clinicRows = await query<RowDataPacket[]>(
+      `SELECT * FROM ${coreSchema}.doctors`
+    );
+    if (clinicRows.length === 0) {
+      console.log("❌ No clinics found in MySQL");
+      return;
+    }
+
+    const doctorRows = await query<RowDataPacket[]>(`
       SELECT 
         d.id, d.first_name, d.last_name, d.profile_img, d.email, d.phone, 
         CONCAT(d.first_name, ' ', d.last_name) AS name,
         d.specialty_id, d.insurance_id, d.click_count, d.medical_code,
         sp.name AS specialty_name,
-        JSON_ARRAYAGG(ss.id) AS service_ids,
-        JSON_ARRAYAGG(ci.id) AS cities_ids,
+        JSON_ARRAYAGG(
+          JSON_OBJECT(
+            'id', ss.id,
+            'name', ss.name
+          )
+        ) AS services,
+        JSON_ARRAYAGG(
+          JSON_OBJECT(
+            'name', ci.name,
+            'state', ci.state
+          )
+        ) AS cities,
         i.name AS insurance_name,  
         COUNT(r.id) AS total_reviews,
         COALESCE(AVG(r.rating), 0) AS average_rating,
@@ -24,11 +42,7 @@ export async function syncDoctorsToElasticsearch() {
           WHEN EXISTS (SELECT 1 FROM ${coreSchema}.doctor_likes dl WHERE dl.doctor_id = d.id) 
           THEN 1 ELSE 0
         END AS isLiked,
-
-        COALESCE(ROUND((SUM(CASE WHEN r.recommendations = 1 THEN 1 ELSE 0 END) / COUNT(r.id)) * 100, 2), 0) 
-        AS user_suggestion_percentage,
-
-        -- Properly formatted JSON array of addresses
+        COALESCE(ROUND((SUM(CASE WHEN r.recommendations = 1 THEN 1 ELSE 0 END) / COUNT(r.id)) * 100, 2), 0) AS user_suggestion_percentage,
         JSON_ARRAYAGG(
           JSON_OBJECT(
             'city_id', ci.id,
@@ -42,8 +56,7 @@ export async function syncDoctorsToElasticsearch() {
             'state', ci.state
           )
         ) AS addresses,
-         MAX(ci.id) AS city_id 
-
+        MAX(ci.id) AS city_id 
       FROM 
         ${coreSchema}.doctors d
       LEFT JOIN ${coreSchema}.doctor_locations ld ON d.id = ld.doctor_id
@@ -53,19 +66,17 @@ export async function syncDoctorsToElasticsearch() {
       LEFT JOIN ${coreSchema}.insurances i ON d.insurance_id = i.id
       LEFT JOIN ${coreSchema}.cities ci ON ld.city_id = ci.id
       LEFT JOIN ${coreSchema}.doctor_likes dk ON d.id = dk.doctor_id
-    
-
       GROUP BY d.id
     `);
-    // WHERE d.updated_at >= NOW() - INTERVAL 1 DAY
 
-    if (rows.length === 0) {
+    if (doctorRows.length === 0) {
       console.log("❌ No doctors found in MySQL");
       return;
     }
 
-    const body = rows.flatMap((doc: any) => [
-      { index: { _id: doc.id } },
+    // تبدیل داده‌ها به فرمت bulk API
+    const body = doctorRows.flatMap((doc: any) => [
+      { index: { _index: "doctors", _id: doc.id } },
       {
         id: doc.id,
         name: doc.name,
@@ -87,20 +98,20 @@ export async function syncDoctorsToElasticsearch() {
         avg_clinic_condition: doc.avg_clinic_condition,
         isLiked: doc.isLiked,
         user_suggestion_percentage: doc.user_suggestion_percentage,
-        service_ids:
-          doc.service_id && typeof doc.service_ids === "string"
-            ? JSON.parse(doc.service_ids)
-            : Array.isArray(doc.service_ids)
-            ? doc.service_ids
+        services:
+          typeof doc.services === "string"
+            ? JSON.parse(doc.services)
+            : Array.isArray(doc.services)
+            ? doc.services
             : [],
-        cities_ids:
-          doc.city_id && typeof doc.cities_ids === "string"
-            ? JSON.parse(doc.cities_ids)
-            : Array.isArray(doc.cities_ids)
-            ? doc.cities_ids
+        cities:
+          typeof doc.cities === "string"
+            ? JSON.parse(doc.cities)
+            : Array.isArray(doc.cities)
+            ? doc.cities
             : [],
         addresses:
-          doc.addresses && typeof doc.addresses === "string"
+          typeof doc.addresses === "string"
             ? JSON.parse(doc.addresses)
             : Array.isArray(doc.addresses)
             ? doc.addresses
@@ -108,111 +119,329 @@ export async function syncDoctorsToElasticsearch() {
       },
     ]);
 
-    const chunkSize = 1000;
-    for (let i = 0; i < body.length; i += chunkSize) {
-      const chunk = body.slice(i, i + chunkSize);
-      const response = await esClient.bulk({ index: "doctors", body: chunk });
+    const chunkSize = 500; // 500 * 2 = 1000 items (index+doc)
+    for (let i = 0; i < body.length; i += chunkSize * 2) {
+      const chunk = body.slice(i, i + chunkSize * 2);
+      const response = await esClient.bulk({
+        refresh: false,
+        body: chunk,
+      });
 
       if (response.errors) {
         const erroredDocuments = response.items.filter(
           (item: any) => item.index && item.index.error
         );
         console.error(
-          `❌ ${erroredDocuments.length} errors occurred in bulk insert`,
+          `❌ ${erroredDocuments.length} errors in bulk insert`,
           erroredDocuments
         );
-      } else {
-        console.log("✅ Doctors synced successfully");
-      }
-    }
 
-    const response = await esClient.bulk({ index: "doctors", body });
-    if (response.errors) {
-      const failedDocs = [];
-      response.items.forEach((item, index) => {
-        if (item.index && item.index.error) {
-          failedDocs.push(body[index * 2 + 1]); // گرفتن داکیومنت‌های مشکل‌دار
+        // تلاش مجدد فقط روی اسناد خطادار
+        const failedDocs: any[] = [];
+        response.items.forEach((item, idx) => {
+          if (item.index && item.index.error) {
+            // هر سند شامل دو آیتم (action و document)
+            failedDocs.push(chunk[idx * 2 + 1]);
+          }
+        });
+
+        if (failedDocs.length > 0) {
+          console.warn(`🔁 Retrying ${failedDocs.length} failed documents...`);
+          const retryBody = failedDocs.flatMap((doc) => [
+            { index: { _index: "doctors", _id: doc.id } },
+            doc,
+          ]);
+          await esClient.bulk({ refresh: false, body: retryBody });
         }
-      });
-
-      if (failedDocs.length > 0) {
-        console.warn(`🔁 Retrying ${failedDocs.length} failed documents...`);
-        await esClient.bulk({ index: "doctors", body: [] });
+      } else {
+        console.log(`✅ Batch of ${chunkSize} doctors synced successfully`);
       }
     }
-
-    // const response = await esClient.bulk({ index: "doctors", body });
-    // console.log(JSON.stringify(response, null, 2));
 
     await esClient.indices.refresh({ index: "doctors" });
+    console.log("✅ All doctors synced and index refreshed");
   } catch (error) {
     console.error("❌ Sync failed:", error);
   }
 }
 
-export async function searchDoctors(query: string) {
+export async function syncClinicsToElasticsearch() {
   try {
-    const response = await esClient.search({
+    const clinicRows = await query<RowDataPacket[]>(`
+           SELECT 
+        c.id,
+        c.name,
+        JSON_ARRAYAGG(JSON_OBJECT(
+          'id', sp.id,
+          'name', sp.name
+        )) AS specialties,
+        JSON_ARRAYAGG(JSON_OBJECT(
+          'city', ci.name,
+          'state', ci.state
+        )) AS cities,
+        JSON_ARRAYAGG(JSON_OBJECT(
+          'latitude', cl.latitude,
+          'longitude', cl.longitude,
+          'address_line1', cl.address_line1,
+          'zipcode', cl.zipcode
+        )) AS locations
+      FROM ${coreSchema}.clinics c
+      LEFT JOIN ${coreSchema}.clinic_location cl ON c.id = cl.clinic_id
+      LEFT JOIN ${coreSchema}.cities ci ON cl.clinic_id = ci.id
+      LEFT JOIN ${coreSchema}.clinic_service cs ON c.id = cs.clinic_id
+      LEFT JOIN ${coreSchema}.specialties sp ON cs.specialty_id = sp.id
+      GROUP BY c.id
+    `);
+
+    if (clinicRows.length === 0) {
+      console.log("❌ No clinics found in MySQL");
+      return;
+    }
+
+    // const specialties =
+    //   typeof clinic.specialties === "string"
+    //     ? JSON.parse(clinic.specialties)
+    //     : [];
+    const body: any[] = [];
+
+    const specialtyNames = clinicRows[0].specialties
+      .map((sp: any) => sp.name)
+      .join(", ")
+      .toLowerCase();
+    const cities =
+      typeof clinicRows[0].cities === "string"
+        ? JSON.parse(clinicRows[0].cities)
+        : [];
+    const locations =
+      typeof clinicRows[0].locations === "string"
+        ? JSON.parse(clinicRows[0].locations)
+        : [];
+
+    const addresses = [];
+
+    for (let i = 0; i < Math.min(cities.length, locations.length); i++) {
+      if (!locations[i].latitude || !locations[i].longitude) continue;
+
+      addresses.push({
+        city: cities[i].city || cities[i].name,
+        state: cities[i].state,
+        zip: locations[i].zipcode,
+        location: {
+          lat: locations[i].latitude,
+          lon: locations[i].longitude,
+        },
+      });
+    }
+
+    body.push(
+      { index: { _index: "clinics", _id: clinicRows[0].id } },
+      {
+        id: clinicRows[0].id,
+        name: clinicRows[0].name,
+        specialty_name: specialtyNames,
+        addresses,
+      }
+    );
+    // clinicRows[0].forEach((clinic: any) => {
+    //   console.log(`Processing clinic: ${clinic.specialties})`);
+    //   console.log(`clinic: ${clinic.specialties})`);
+    //   console.log(`clinicRows: ${  clinicRows[0]})`);
+    //   const specialties = clinic.specialties
+    //     ? JSON.parse(clinic.specialties)
+    //     : [];
+
+    // });
+
+    const chunkSize = 500;
+    for (let i = 0; i < body.length; i += chunkSize * 2) {
+      const chunk = body.slice(i, i + chunkSize * 2);
+      const response = await esClient.bulk({
+        refresh: false,
+        body: chunk,
+      });
+
+      if (response.errors) {
+        const erroredDocuments = response.items.filter(
+          (item: any) => item.index && item.index.error
+        );
+        console.error(
+          `❌ ${erroredDocuments} errors occurred in clinic bulk insert`,
+          erroredDocuments
+        );
+      } else {
+        console.log(`✅ Batch of ${chunkSize} clinics synced successfully`);
+      }
+    }
+
+    await esClient.indices.refresh({ index: "clinics" });
+    console.log("✅ All clinics synced and index refreshed");
+  } catch (error) {
+    console.error("❌ Sync clinics failed:", error);
+  }
+}
+
+function mapBucket(
+  bucket: any[],
+  keyPath: string[],
+  namePath: string[],
+  countPath = "doc_count"
+) {
+  return bucket.map((bucket) => {
+    const doc = bucket.details.hits.hits[0]?._source;
+    const id = bucket.key;
+    const name = namePath.reduce((obj, key) => obj?.[key], doc) || null;
+    return {
+      id,
+      name,
+      count: bucket[countPath],
+    };
+  });
+}
+
+function buildFilters(aggregations: any) {
+  const services = mapBucket(
+    aggregations.services?.bucket ?? [],
+    ["services", "id"],
+    ["services", "name"]
+  );
+  const clinics = (aggregations?.clinics?.buckets ?? []).map((bucket: any) => {
+    const doc = bucket.details.hits.hits[0]?._source;
+    const clinic = doc?.clinics?.find((c: any) => c.id === bucket.key);
+    return {
+      id: bucket.key,
+      name: clinic?.name || null,
+      count: bucket.doc_count,
+    };
+  });
+  const doctors = (aggregations?.doctors?.buckets ?? []).map((bucket: any) => {
+    const doc = bucket.details.hits.hits[0]?._source;
+    const doctor = doc?.doctors?.find((d: any) => d.doctor_id === bucket.key);
+    return {
+      id: bucket.key,
+      name: doctor?.name || null,
+      count: bucket.doc_count,
+    };
+  });
+  const specializations = (aggregations?.specializations?.buckets ?? []).map(
+    (bucket: any) => {
+      const doc = bucket.details.hits.hits[0]?._source;
+      return {
+        id: bucket.key,
+        name: doc?.specialty_name || null,
+        count: bucket.doc_count,
+      };
+    }
+  );
+  return {
+    services,
+    clinics,
+    doctors,
+    specialties: specializations,
+  };
+}
+
+export async function searchEntities(query: string) {
+  try {
+    const searchQueries = [
+      { match: { name: query } },
+      { term: { speciality_id: query } },
+      { match_phrase_prefix: { specialty_name: query } },
+    ];
+
+    const doctorsResponse = await esClient.search({
       index: "doctors",
-      size: 20,
+      size: 50,
       query: {
         bool: {
-          should: [
-            { match: { specialty_name: query } }, // دکترهایی که تخصص مرتبط دارند
-            { match: { clinic_services: query } }, // کلینیک‌هایی که این سرویس را دارند
-            { match_phrase_prefix: { specialty_name: query } },
-            { match_phrase_prefix: { clinic_services: query } },
-          ],
+          should: searchQueries,
           minimum_should_match: 1,
         },
       },
-      sort: [{ average_rating: "desc" }],
       aggs: {
-        doctors: {
-          terms: { field: "id" },
+        by_clinic: {
+          terms: { field: "clinic_id.keyword" },
           aggs: {
-            details: { top_hits: { size: 1 } },
+            doctor_count: { cardinality: { field: "doctor_id.keyword" } },
+            top_doctor: { top_hits: { size: 1 } },
           },
         },
-        clinics: {
-          terms: { field: "id" },
-          aggs: {
-            details: { top_hits: { size: 1 } },
-          },
+        by_specialty: {
+          terms: { field: "specialty_name.keyword" },
         },
-        specializations: {
-          terms: { field: "id" },
+        by_city: {
+          nested: {
+            path: "addresses",
+          },
           aggs: {
-            details: { top_hits: { size: 1 } },
+            city_names: {
+              terms: { field: "addresses.city.keyword" },
+            },
           },
         },
       },
     });
 
-    const doctors =
-      (response.aggregations as any)?.doctors?.buckets.map((bucket: any) => ({
-        id: bucket.key,
-        count: bucket.doc_count,
-        details: bucket.details.hits.hits[0]?._source || null,
-      })) ?? [];
-    const clinics =
-      (response.aggregations as any)?.clinics?.buckets.map((bucket: any) => ({
-        id: bucket.key,
-        count: bucket.doc_count,
-        details: bucket.details.hits.hits[0]?._source || null,
-      })) ?? [];
-    const specializations =
-      (response.aggregations as any)?.specializations?.buckets.map(
-        (bucket: any) => ({
-          id: bucket.key,
-          count: bucket.doc_count,
-        })
-      ) ?? [];
+    const clinicsResponse = await esClient.search({
+      index: "clinics",
+      size: 50,
+      query: {
+        bool: {
+          should: searchQueries,
+          minimum_should_match: 1,
+        },
+      },
+      aggs: {
+        by_specialty: {
+          terms: { field: "specialty_name.keyword" },
+        },
+        by_city: {
+          nested: {
+            path: "addresses",
+          },
+          aggs: {
+            city_names: {
+              terms: { field: "addresses.city.keyword" },
+            },
+          },
+        },
+      },
+    });
 
-    return { doctors, clinics, specializations };
+    const doctors = doctorsResponse.hits.hits.map((hit) => hit._source);
+    const clinics = clinicsResponse.hits.hits.map((hit) => hit._source);
+
+    const doctorAggregations = doctorsResponse.aggregations;
+    const clinicAggregations = clinicsResponse.aggregations;
+
+    return {
+      code: 200,
+      message: "data received",
+      data: {
+        doctors,
+        clinics,
+        filters: {
+          doctors: {
+            by_clinic: (doctorAggregations?.by_clinic as any).buckets,
+            by_specialty: (doctorAggregations?.by_specialty as any).buckets,
+            by_city: (doctorAggregations?.by_city as any).city_names.buckets,
+          },
+          clinics: {
+            by_city: (clinicAggregations?.by_city as any).buckets,
+            by_specialty: (clinicAggregations?.by_specialty as any).buckets,
+          },
+        },
+      },
+    };
   } catch (error) {
-    console.error("❌ Error searching doctors:", error);
-    return { doctors: [], clinics: [], specializations: [] };
+    console.error("❌ Search failed:", error);
+    return {
+      code: 500,
+      message: "Search failed",
+      data: {
+        doctors: [],
+        clinics: [],
+      },
+    };
   }
 }
 
@@ -226,7 +455,7 @@ export async function removeDeleteDoctorsFromElasticSeach() {
       return;
     }
     const body = deletedDoctors.flatMap((doc: any) => [
-      { delete: { _index: "doctors", _id: doc.id } },
+      { delete: { _index: "elasticsearch", _id: doc.id } },
     ]);
     const response = await esClient.bulk({ body });
 

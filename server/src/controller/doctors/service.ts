@@ -29,6 +29,8 @@ import {
 const moment = require("moment");
 
 export class DoctorsService {
+
+  
   public static async getDoctors(filters: {
     name?: string;
     id?: string;
@@ -51,14 +53,6 @@ export class DoctorsService {
     }
   }
 
-  // public static async getMostPopularDoctors() {
-  //   const data = await getMostPopularDoctors();
-  //   if (data) {
-  //     return { message: "ok", data };
-  //   } else {
-  //     return null;
-  //   }
-  // }
   public static async checkDoctorPhoneNumberExists(
     mobile: string
   ): Promise<boolean> {

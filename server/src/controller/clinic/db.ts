@@ -7,7 +7,7 @@ import { IClinic } from "./Iclinic";
 export async function checkExistClinic(email: string): Promise<boolean> {
   try {
     const queryResult = await query<RowDataPacket[]>(
-      `SELECT 1 FROM ${coreSchema}.clinic WHERE email = ? LIMIT 1`,
+      `SELECT 1 FROM ${coreSchema}.clinics WHERE email = ? LIMIT 1`,
       { values: [email] }
     );
 
@@ -29,7 +29,7 @@ export async function registerClinic(data: IClinic): Promise<IClinic> {
   const newId = uuidv4();
   try {
     const result = await query<RowDataPacket>(
-      `INSERT INTO ${coreSchema}.clinic
+      `INSERT INTO ${coreSchema}.clinics
         (id,name,owner_name,email,password,token_verify,verify_code,phone,city,state,zip_code,country,created_at,updated_at)
         VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
       {
@@ -61,7 +61,7 @@ export async function registerClinic(data: IClinic): Promise<IClinic> {
 export async function findClinicByEmail(email: string): Promise<boolean> {
   try {
     const result = await query<RowDataPacket>(
-      `SELECT email FROM ${coreSchema}.clinic WHERE email ? LIMIT 1`,
+      `SELECT email FROM ${coreSchema}.clinics WHERE email ? LIMIT 1`,
       {
         values: [email],
       }

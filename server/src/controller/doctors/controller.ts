@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { asyncHandler } from "../../helper/async-handler";
-import { Authorization } from "../../middlewares/authorization";
 import { BuildResponse } from "../../modules/response/app_response";
 import { router } from "../../routes/public";
 import { DoctorsService } from "./service";
