@@ -136,7 +136,7 @@ export async function createClinicIndex() {
             tokenizer: {
               autocomplete_tokenizer: {
                 type: "edge_ngram",
-                min_gram: 1,  
+                min_gram: 1,
                 max_gram: 20,
                 token_chars: ["letter", "digit"],
               },
@@ -185,6 +185,12 @@ export async function createClinicIndex() {
   } catch (error) {
     console.error("❌ Error creating clinic index:", error);
   }
+}
+
+export async function createSpecialtyIndex() {
+  try {
+    const exists = await esClient.indices.exists({ index: "specialty" });
+  } catch (error) {}
 }
 
 export async function createClinicServiceIndex() {

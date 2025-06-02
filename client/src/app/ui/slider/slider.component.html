@@ -64,44 +64,20 @@
             <span class="material-symbols-outlined"> mic </span>
           </button>
         </div>
-        @if (filterDataSignal().clinics) {
+        @if (filterDataSignal()) {
         <div class="text-gray-600 text-sm mt-1">
-          <strong>{{ filterDataSignal() }}</strong> results found
+          <strong>{{ doctorDataSignal().length === 0 }}</strong> results found
         </div>
         } @if (isLoading) {
         <app-loader />
         }
-        <mat-autocomplete #auto="matAutocomplete">
-          <div class="mb-4">
-            <h2 class="text-lg font-bold mb-2">🦷Suggestion Services</h2>
-            <mat-optgroup label="According to specialty">
-              @for (spec of uniqSpecializations(); track spec.id) {
-              <mat-option [value]="spec.id">
-                <li>{{ spec.name }}</li>
-              </mat-option>
-              }
-            </mat-optgroup>
-            <!-- <mat-optgroup label="Clinics">
-              @for (clinic of uniqServicesClinics(); track clinic.id) {
-                  <mat-option [value]="clinic.id">
-                        <li>{{ clinic.name }}</li>
-                  </mat-option>
-              }
-            </mat-optgroup> -->
-            <mat-optgroup label="Services">
-              @for (service of uniqServiceService(); track service.id) {
-              <mat-option [value]="service.id">
-                <li>{{ service.name }}</li>
-              </mat-option>
-              }
-            </mat-optgroup>
-          </div>
 
+        <mat-autocomplete #auto="matAutocomplete">
           <!-- دکترها -->
-          <!-- <mat-optgroup label="Doctors">
+          <mat-optgroup [label]="'Top Doctors'">
+            @for (data of doctorDataSignal(); track $index) {
             <mat-option
-              *ngFor="let data of filterDataSignal().doctors"
-              [value]="data.name"
+              [value]="data.id"
               (onSelectionChange)="navigateToDetial(data)">
               <div class="flex justify-between items-center">
                 <div class="flex space-x-4">
@@ -120,13 +96,13 @@
 
                   <div>
                     <div class="flex justify-between">
-                      <div class="flex flex-col gap-4 text-lg font-bold">
-                        <span> {{ data.details.name }} </span>
+                      <div class="flex flex-col gap-4 text-base">
+                        <span> {{ data.name }} </span>
                         <div
-                          class="flex justify-between w-[26rem] bg-slate-600 rounded-3xl">
+                          class="flex justify-between w-[26rem] bg-slate-400 rounded-3xl">
                           <div>
                             <span class="text-white pl-2">
-                              {{ data.details.specialty_name }}
+                              {{ data.specialty_name }}
                             </span>
                           </div>
                           <div class="flex gap-2 text-yellow-400 pr-2">
@@ -146,18 +122,52 @@
                 </div>
               </div>
             </mat-option>
-          </mat-optgroup> -->
+
+            } @if(doctorDataSignal().length){
+            <mat-option>
+              <div class="flex justify-between items-center w-[30rem]">
+                <span class="font-semibold"
+                  ><strong class="text-blue-700"
+                    >+{{ doctorDataSignal().length }}</strong
+                  ><strong class="text-gray-400"> Doctors</strong>
+                </span>
+                <div class="flex items-center">
+                  <span class="text-sm text-gray-400">See more</span>
+                  <span class="material-symbols-outlined text-blue-600">
+                    arrow_forward_ios
+                  </span>
+                </div>
+              </div>
+            </mat-option>
+            }
+          </mat-optgroup>
 
           <!-- کلینیک‌ها -->
-          <!-- <mat-optgroup
-            *ngIf="filterDataSignal()?.clinics?.length"
-            label="Clinics">
-            <mat-option
-              *ngFor="let clinic of filterDataSignal()?.clinics"
-              [value]="clinic.name">
-              🏥 {{ clinic.details.name }} - {{ clinic.details.city }}
+          <mat-optgroup
+            label="Top Clinics">
+            @for (clinic of clinicdataSignal(); track $index) {
+
+            <mat-option [value]="clinic.id">
+              🏥 {{ clinic.name }} - {{ clinic.city }}
             </mat-option>
-          </mat-optgroup> -->
+            } @if(clinicdataSignal().length){
+            <mat-option>
+              <div class="flex justify-between items-center w-[30rem]">
+                <span class="font-semibold"
+                  ><strong class="text-blue-700"
+                    >+{{ clinicdataSignal().length }}</strong
+                  ><strong class="text-gray-400"> Clinics</strong>
+                </span>
+                <div class="flex items-center">
+                  <span class="text-sm text-gray-400">See more</span>
+                  <span class="material-symbols-outlined text-blue-600">
+                    arrow_forward_ios
+                  </span>
+                </div>
+              </div>
+            </mat-option>
+            }
+          </mat-optgroup>
 
           <!-- تخصص‌ها -->
           <!-- <mat-optgroup

@@ -116,6 +116,7 @@ export async function syncDoctorsToElasticsearch() {
             : Array.isArray(doc.addresses)
             ? doc.addresses
             : [],
+            count:doc.length
       },
     ]);
 
@@ -240,6 +241,7 @@ export async function syncClinicsToElasticsearch() {
         name: clinicRows[0].name,
         specialty_name: specialtyNames,
         addresses,
+        count:clinicRows.length
       }
     );
     // clinicRows[0].forEach((clinic: any) => {
