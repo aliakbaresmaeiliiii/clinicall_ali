@@ -32,6 +32,7 @@ import {
 import { environment } from '../../environments/environment';
 import { DoctorsService } from '../../modules/doctors/services/doctors.service';
 import { ElasticSearchService } from '../../shared/services/elastic-search.service';
+import { DoctorsDTO } from '../../modules/doctors/models/doctors';
 
 const style1 = style({
   opacity: 1,
@@ -76,6 +77,7 @@ export class SliderComponent implements OnInit {
   elasticSearchService = inject(ElasticSearchService);
   searchControl = new FormControl('');
   selectedStore = signal<any>('');
+  doctorResultLabel = signal<any>(0);
   recognition: any;
   isLoading = false;
   isListening = false;
@@ -86,6 +88,9 @@ export class SliderComponent implements OnInit {
   //   clinics: any[];
   //   specializations: any[];
   // }>({ doctors: [], clinics: [], specializations: [] });
+
+  doctorDataSignal = signal<DoctorsDTO[]>([]);
+  clinicdataSignal = signal<any[]>([]);
 
   filterDataSignal = signal<{
     clinics: any[];
@@ -192,38 +197,17 @@ export class SliderComponent implements OnInit {
           const doctors =
             res._source?.map((doctor: any) => ({
               ...doctor,
-              profile_img: doctor.details.profile_img
-                ? `${environment.urlProfileImg}${doctor.details.profile_img}`
+              profile_img: doctor.data.profile_img
+                ? `${environment.urlProfileImg}${doctor.data.profile_img}`
                 : '../../../assets/images/default-profile.png',
             })) || [];
-          console.log('doctors', doctors);
 
-          const services = res.data.find((s: any) => s.services);
-          debugger;
-          this.filterDataSignal.set(services);
-          // const clinics =
-          //   res.clinics?.map((clinic: any) => ({
-          //     ...clinic.details,
-          //     doctorCount: clinic.count,
-          //   })) || [];
-
-          // const services =
-          //   res.services?.map((services: any) => ({
-          //     ...services.details,
-          //     doctorCount: services.count,
-          //   })) || [];
-          // const specializations =
-          //   res.services?.map((spec: any) => ({
-          //     ...spec.details,
-          //     doctorCount: spec.count,
-          //   })) || [];
-
-          // this.filterDataSignal.set({
-          //   clinics,
-          //   services,
-          //   specializations,
-          // });
-          console.log('🔍 Filtered Data:', this.filterDataSignal());
+          this.filterDataSignal.set(res.data);
+          this.doctorDataSignal.set(doctors);
+          this.clinicdataSignal.set(res.data.clinics);
+          this.doctorResultLabel.set(
+            `+${this.doctorDataSignal().length} - Doctor`
+          );
         }
       });
   }
