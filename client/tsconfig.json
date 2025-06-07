@@ -17,10 +17,10 @@
     "sourceMap": true,
     "declaration": false,
     "experimentalDecorators": true,
-    "moduleResolution": "node", // Changed to "node" for better compatibility
+    "moduleResolution": "bundler",
     "importHelpers": true,
-    "target": "ES2022", // Adjust based on compatibility needs
-    "module": "ES2022", // Adjust based on compatibility needs
+    "target": "ES2022",
+    "module": "ES2022",
     "useDefineForClassFields": false,
     "lib": [
       "ES2022",
