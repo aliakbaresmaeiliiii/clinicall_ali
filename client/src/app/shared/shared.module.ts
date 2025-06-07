@@ -4,7 +4,7 @@ import {
   CdkDropListGroup,
   DragDropModule,
 } from '@angular/cdk/drag-drop';
-import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
+import { AsyncPipe, CommonModule, DatePipe, NgOptimizedImage } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
@@ -90,6 +90,7 @@ const COMMON_MODULES = [
   ReactiveFormsModule,
   FormsModule,
   AsyncPipe,
+  NgOptimizedImage
 ];
 const SHARED_COMPONENT = [
   SearchBarComponent,

@@ -45,7 +45,6 @@ export async function createDoctorIndex() {
         mappings: {
           properties: {
             id: { type: "keyword" },
-
             name: {
               type: "text",
               analyzer: "autocomplete",
@@ -54,7 +53,6 @@ export async function createDoctorIndex() {
                 keyword: { type: "keyword" },
               },
             },
-
             specialty_name: {
               type: "text",
               fields: {
@@ -102,14 +100,12 @@ export async function createDoctorIndex() {
         },
       },
     });
-
     await esClient.indices.refresh({ index: "doctors" });
     console.log("✅ Doctor index created successfully.");
   } catch (error) {
     console.error("❌ Error creating doctor index:", error);
   }
 }
-
 export async function createClinicIndex() {
   try {
     const exists = await esClient.indices.exists({ index: "clinics" });
@@ -186,10 +182,52 @@ export async function createClinicIndex() {
     console.error("❌ Error creating clinic index:", error);
   }
 }
-
 export async function createSpecialtyIndex() {
   try {
     const exists = await esClient.indices.exists({ index: "specialty" });
+    if (exists) {
+      console.log("⚠️ Index 'doctors' already exists. Skipping creation.");
+      return;
+    }
+    esClient.indices.create({
+      index: "specilty",
+      body: {
+        settings: {
+          number_of_shards: 1,
+          number_of_replicas: 1,
+          analysis: {
+            analyzer: {
+              autocomplete: {
+                type: "custom",
+                tokenizer: "autocomplete_tokenizer",
+                filter: ["lowercase"],
+              },
+            },
+            tokenizer: {
+              autocomplete_tokenizer: {
+                type: "edge_ngram",
+                min_gram: 1,
+                max_gram: 20,
+                token_chars: ["letter", "digit"],
+              },
+            },
+          },
+        },
+        mappings: {
+          properties: {
+            id: { type: "keyword" },
+            name: {
+              type: "text",
+              analyzer: "autocomplete",
+              search_analyzer: "standard",
+              fields: {
+                keywoard: { type: "keyword" },
+              },
+            },
+          },
+        },
+      },
+    });
   } catch (error) {}
 }
 

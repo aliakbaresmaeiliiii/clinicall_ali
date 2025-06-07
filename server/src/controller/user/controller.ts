@@ -96,6 +96,6 @@ router.post(
       filename: req.file.filename,
     });
     const imagePath = req.file.path;
-    res.json({ imagePath });
+    return imagePath;
   }
 );

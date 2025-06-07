@@ -22,7 +22,37 @@ export class FeatureSectionComponent implements OnInit, AfterViewInit {
   fileUrls: string[] = [];
   imageUrl: any;
  
+ cartInfo = [
+    {
+      title: 'Online medical & hospital consultation',
+      image: '/assets/images/hospital.jpg',
+      subtitle: '',
+      description: 'Rapidiously reinvent long-term impact collaboration',
+      paragraph: '180 Doctors',
+    },
+    {
+      title: 'In-person doctor visit',
+      image: '/assets/images/online.jpg',
 
+      subtitle: '',
+      description: 'Seamlessly schedule appointments with nearby doctors.',
+      paragraph: '120 Clinics Available',
+    },
+    {
+      title: 'Order prescription medicines',
+      image: '/assets/images/ui/fragile-x-drug-combination.jpg',
+      subtitle: '',
+      description: 'Get your medicines delivered right to your doorstep.',
+      paragraph: '500+ Medications Available',
+    },
+    {
+      title: 'Health check-up packages',
+      image: '/assets/images/ui/discount.jpg',
+      subtitle: '',
+      description: 'Comprehensive health check-up plans for your wellbeing.',
+      paragraph: '40% Discount on Packages',
+    },
+  ];
 
 
   ngOnInit() {

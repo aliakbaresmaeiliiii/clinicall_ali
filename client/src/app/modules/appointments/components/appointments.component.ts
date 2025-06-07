@@ -4,9 +4,8 @@ import { Component } from '@angular/core';
   selector: 'app-appointments',
   imports: [],
   templateUrl: './appointments.component.html',
-  styleUrl: './appointments.component.scss'
+  styleUrl: './appointments.component.scss',
 })
 export class AppointmentsComponent {
-constructor(){
-}
+  constructor() {}
 }

@@ -73,6 +73,16 @@
         }
 
         <mat-autocomplete #auto="matAutocomplete">
+          <div class="pt2 pl-2">The most important expertise</div>
+          <div class="flex gap-1 p-3 flex-wrap">
+            @for (item of specializationsSignal(); track $index) {
+            <span
+              class="border-2 p-1 border-gray-600 rounded-xl text-xs hover:bg-blue-500 hover:text-white hover:border-blue-500 duration-200 cursor-pointer">
+              {{ item }}
+            </span>
+            }
+          </div>
+          <div></div>
           <!-- دکترها -->
           <mat-optgroup [label]="'Top Doctors'">
             @for (data of doctorDataSignal(); track $index) {
@@ -143,8 +153,7 @@
           </mat-optgroup>
 
           <!-- کلینیک‌ها -->
-          <mat-optgroup
-            label="Top Clinics">
+          <mat-optgroup label="Top Clinics">
             @for (clinic of clinicdataSignal(); track $index) {
 
             <mat-option [value]="clinic.id">

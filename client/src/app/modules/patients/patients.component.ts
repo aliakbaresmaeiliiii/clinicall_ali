@@ -14,10 +14,10 @@ import { PatientDTO } from './model/patients.model';
 import { PatientsService } from './services/patients.service';
 
 @Component({
-    selector: 'app-patients',
-    templateUrl: './patients.component.html',
-    styleUrl: './patients.component.scss',
-    standalone: false
+  selector: 'app-patients',
+  templateUrl: './patients.component.html',
+  styleUrl: './patients.component.scss',
+  standalone: false,
 })
 export class PatientsComponent extends BaseComponent {
   service = inject(PatientsService);
@@ -40,9 +40,7 @@ export class PatientsComponent extends BaseComponent {
     'action',
   ];
   dataSource = new MatTableDataSource<PatientDTO>();
-  readonly paginator = viewChild.required(MatPaginator);
-  readonly sort = viewChild.required(MatSort);
-  readonly title = input.required<string>();
+  title = input<string>();
   selection = new SelectionModel<any>(true, []);
   imgPatient: any;
   imgTest: any;
@@ -53,8 +51,8 @@ export class PatientsComponent extends BaseComponent {
     this.getData();
   }
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator();
-    this.dataSource.sort = this.sort();
+    // this.dataSource.paginator = this.paginator();
+    // this.dataSource.sort = this.sort();
   }
   getData() {
     this.service.getPatients().subscribe((response: any) => {
@@ -65,8 +63,8 @@ export class PatientsComponent extends BaseComponent {
         return patient;
       });
       this.dataSource = new MatTableDataSource(newData);
-      this.dataSource.paginator = this.paginator();
-      this.dataSource.sort = this.sort();
+      // this.dataSource.paginator = this.paginator();
+      // this.dataSource.sort = this.sort();
     });
   }
 

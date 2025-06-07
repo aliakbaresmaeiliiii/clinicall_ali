@@ -18,7 +18,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive, RouterModule } from '@angular/router';
 import { groupBy } from 'lodash-es';
 import { Observable, Subject, map, shareReplay } from 'rxjs';
 import { BaseComponent } from '../../../shared/components/base/base.component';
@@ -51,6 +51,7 @@ import { MenuIconComponent } from './menu-icon/menu-icon.component';
     LoaderComponent,
     BreadCrumbComponent,
     MenuIconComponent,
+    RouterModule
   ],
   templateUrl: './side-bar.component.html',
   styleUrl: './side-bar.component.scss',
