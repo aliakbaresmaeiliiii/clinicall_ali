@@ -7,7 +7,7 @@ import { IPatient } from "./IPatient";
 export async function checkExistPatient(email: string): Promise<boolean> {
   try {
     const queryResult = await query<RowDataPacket[]>(
-      `SELECT 1 FROM ${coreSchema}.patient WHERE email = ? LIMIT 1`,
+      `SELECT 1 FROM ${coreSchema}.patients WHERE email = ? LIMIT 1`,
       { values: [email] }
     );
 
@@ -29,7 +29,7 @@ export async function registerPatient(data: IPatient): Promise<IPatient> {
   const newId = uuidv4();
   try {
     const result = await query<RowDataPacket>(
-      `INSERT INTO ${coreSchema}.patient
+      `INSERT INTO ${coreSchema}.patients
           (first_name,last_name,email,password,token_verify,verify_code,phone,city,state,country,created_at,updated_at)
           VALUES(?,?,?,?,?,?,?,?,?,?,?,?)`,
       {
@@ -74,7 +74,7 @@ export async function addFavorite(patient_id: number, doctor_id: number) {
         }
       );
       await query<RowDataPacket>(
-        `UPDATE ${coreSchema}.patient SET favorite_id = NULL WHERE id = ?`,
+        `UPDATE ${coreSchema}.patients SET favorite_id = NULL WHERE id = ?`,
         [patient_id]
       );
 
@@ -89,7 +89,7 @@ export async function addFavorite(patient_id: number, doctor_id: number) {
       );
       const favorite_id = (favoriteResult as any).insertId;
       await query<RowDataPacket>(
-        `UPDATE ${coreSchema}.patient SET favorite_id = ? WHERE id = ?`,
+        `UPDATE ${coreSchema}.patients SET favorite_id = ? WHERE id = ?`,
         [favorite_id, patient_id]
       );
       return { favorite_id };

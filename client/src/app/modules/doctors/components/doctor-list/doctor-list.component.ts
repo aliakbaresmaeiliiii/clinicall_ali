@@ -23,8 +23,8 @@ export class DoctorListComponent {
   customers: Customers[] = [];
   displayedColumns: string[] = ['position', 'doctorName', 'status'];
   dataSource = new MatTableDataSource();
-  readonly paginator = viewChild.required(MatPaginator);
-  readonly sort = viewChild.required(MatSort);
+  // readonly paginator = viewChild.required(MatPaginator);
+  // readonly sort = viewChild.required(MatSort);
   readonly title = input.required<string>();
 
 
@@ -35,8 +35,8 @@ export class DoctorListComponent {
   }
 
   ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator();
-    this.dataSource.sort = this.sort();
+    // this.dataSource.paginator = this.paginator();
+    // this.dataSource.sort = this.sort();
   }
 
   /**

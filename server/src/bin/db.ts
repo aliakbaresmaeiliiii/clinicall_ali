@@ -71,8 +71,8 @@ export async function getNavItems() {
   try {
     const getManu = await query<RowDataPacket[]>(
       `SELECT 
-      m.id AS menu_id, m.name AS menu_name, m.icon AS menu_icon, m.route AS menu_path,
-      s.id AS submenu_id, s.name AS submenu_name, s.route AS submenu_url
+      m.id AS menu_id, m.name AS menu_name, m.icon AS menu_icon, m.url AS menu_path,
+      s.id AS submenu_id, s.name AS submenu_name, s.url AS submenu_url
       FROM ${coreSchema}.menu m
       LEFT JOIN ${coreSchema}.submenu s ON m.id = s.menu_id
     ORDER BY m.id, s.id`

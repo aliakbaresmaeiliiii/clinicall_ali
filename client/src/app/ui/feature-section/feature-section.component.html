@@ -1,5 +1,16 @@
 <app-slider />
 <div class="mx-auto desktop:w-11/12">
+  <div
+    class="desktop:flex desktop:flex-row desktop:gap-10 mobile:flex mobile:flex-col mobile:gap-3 justify-center mt-6">
+    @for (item of cartInfo; track $index) {
+    <app-card-info
+      [title]="item.title"
+      [subtitle]="item.subtitle"
+      [description]="item.description"
+      [paragraph]="item.paragraph"
+      [image]="item.image" />
+    }
+  </div>
   <!---------------- What service do you need?  --------------->
   <section><app-suggustions-service /></section>
 

@@ -106,7 +106,7 @@ export async function getDoctorByPassword(
     // LEFT JOIN ${coreSchema}.role_permissions rp ON r.id = rp.role_id
     // LEFT JOIN ${coreSchema}.permissions p ON rp.permission_id  = p.id
     ` SELECT *
-    FROM ${coreSchema}.patient 
+    FROM ${coreSchema}.patients
     WHERE email = ?`,
     {
       values: [email],
@@ -178,7 +178,7 @@ export async function getPatientVerificationCode(patientData: {
 }): Promise<any> {
   // Fetch the patient data
   const [rows] = await query<RowDataPacket[]>(
-    `SELECT email,verify_code FROM ${coreSchema}.patient WHERE email = ? LIMIT 1`,
+    `SELECT email,verify_code FROM ${coreSchema}.patients WHERE email = ? LIMIT 1`,
     {
       values: [patientData.email],
     }
@@ -201,7 +201,7 @@ export async function getPatientVerificationCode(patientData: {
 
   // Update the signup_status
   await query(
-    `UPDATE ${coreSchema}.patient SET signup_status = 1 WHERE email = ?`,
+    `UPDATE ${coreSchema}.patients SET signup_status = 1 WHERE email = ?`,
     { values: [patientData.email] }
   );
 

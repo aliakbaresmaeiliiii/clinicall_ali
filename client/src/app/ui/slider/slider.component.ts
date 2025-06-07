@@ -91,6 +91,20 @@ export class SliderComponent implements OnInit {
 
   doctorDataSignal = signal<DoctorsDTO[]>([]);
   clinicdataSignal = signal<any[]>([]);
+  specializationsSignal = signal<string[]>([
+    'Orthopedics',
+    'Endocrinology',
+    'Gynecology',
+    'Pediatrics',
+    'ENT (Ear, Nose, Throat)',
+    'Ophthalmology',
+    'Dermatology',
+    'Gastroenterology',
+    'Internal Medicine',
+    'Radiology',
+    'Urology',
+    'General Medicine',
+  ]);
 
   filterDataSignal = signal<{
     clinics: any[];
@@ -106,22 +120,6 @@ export class SliderComponent implements OnInit {
   //   );
   //   return unique;
   // });
-  readonly uniqServiceService = computed(() => {
-    const services = this.filterDataSignal().services;
-    const unique = services?.filter(
-      (service: any, index: number, self: any) =>
-        index === self.findIndex((s: any) => s.id === service.id)
-    );
-    return unique;
-  });
-  readonly uniqSpecializations = computed(() => {
-    const specializations = this.filterDataSignal().specializations;
-    const unique = specializations?.filter(
-      (service: any, index: number, self: any) =>
-        index === self.findIndex((s: any) => s.id === service.id)
-    );
-    return unique;
-  });
 
   constructor(private ngZone: NgZone) {
     setTimeout(() => {
@@ -157,6 +155,7 @@ export class SliderComponent implements OnInit {
     });
     AOS.refresh();
     this.initializeSearch();
+    this.specializationsSignal();
   }
 
   initializeSearch() {
@@ -195,13 +194,12 @@ export class SliderComponent implements OnInit {
       .subscribe((res: any) => {
         if (res) {
           const doctors =
-            res._source?.map((doctor: any) => ({
+            res.data.doctors?.map((doctor: any) => ({
               ...doctor,
-              profile_img: doctor.data.profile_img
-                ? `${environment.urlProfileImg}${doctor.data.profile_img}`
+              profile_img: doctor.profile_img
+                ? `${environment.urlProfileImg}${doctor.profile_img}`
                 : '../../../assets/images/default-profile.png',
             })) || [];
-
           this.filterDataSignal.set(res.data);
           this.doctorDataSignal.set(doctors);
           this.clinicdataSignal.set(res.data.clinics);

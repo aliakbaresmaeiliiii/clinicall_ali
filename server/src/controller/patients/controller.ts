@@ -42,18 +42,18 @@ router.get(
 );
 
 // **** add-patient
-// router.post(
-//   `/admin/add-patient`,
-//   asyncHandler(async function addPatient(req: Request, res: Response) {
-//     const formData = req.body;
-//     const data = await PatientService.registerPatient(formData);
-//     const buildResponse = BuildResponse.get(data);
-//     if (buildResponse) {
-//       return res.status(200).json(buildResponse);
-//     }
-//     return formData;
-//   })
-// );
+router.post(
+  `/admin/add-patient`,
+  asyncHandler(async function addPatient(req: Request, res: Response) {
+    const formData = req.body;
+    const data = await PatientService.registerPatient(formData);
+    const buildResponse = BuildResponse.get(data);
+    if (buildResponse) {
+      return res.status(200).json(buildResponse);
+    }
+    return formData;
+  })
+);
 
 // **** GetPatientDetial
 router.get(

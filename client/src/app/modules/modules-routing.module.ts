@@ -14,6 +14,7 @@ const routes: Routes = [
         redirectTo: 'dashboard',
         pathMatch: 'full',
       },
+
       {
         path: '',
         loadComponent: () =>
@@ -23,16 +24,23 @@ const routes: Routes = [
         title: 'Dashboard',
         data: { breadcrumb: 'dashboard', icon: 'space_dashboard' },
       },
+      {
+        path: 'patients',
+        loadChildren: () =>
+          import('./patients/patients.module').then(p => p.PatientsModule),
+        data: { breadcrumb: 'patients' },
+      },
       // children: [
-      //   {
-      //     path: '',
-      //     loadComponent: () =>
-      //       import('./dashboard/dashboard.component').then(
-      //         d => d.DashboardComponent
-      //       ),
-      //     title: 'Dashboard',
-      //     data: { breadcrumb: 'dashboard', icon: 'space_dashboard' },
-      //   },
+      //   // {
+      //   //   path: '',
+      //   //   loadComponent: () =>
+      //   //     import('./dashboard/dashboard.component').then(
+      //   //       d => d.DashboardComponent
+      //   //     ),
+      //   //   title: 'Dashboard',
+      //   //   data: { breadcrumb: 'dashboard', icon: 'space_dashboard' },
+      //   // },
+
       //   {
       //     path: 'dashboard/doctor-dashboard',
       //     loadComponent: () =>
@@ -54,9 +62,7 @@ const routes: Routes = [
       //   {
       //     path: 'schedule',
       //     loadChildren: () =>
-      //       import('./calendar/calendar.module').then(
-      //         d => d.CalendarModule
-      //       ),
+      //       import('./calendar/calendar.module').then(d => d.CalendarModule),
       //     title: 'Schedule',
       //     data: { breadcrumb: 'dashboard', icon: 'calendar_today' },
       //   },
@@ -69,12 +75,7 @@ const routes: Routes = [
       //       ),
       //     data: { breadcrumb: 'settings' },
       //   },
-      //   {
-      //     path: 'patients',
-      //     loadChildren: () =>
-      //       import('./patients/patients.module').then(p => p.PatientsModule),
-      //     data: { breadcrumb: 'patients' },
-      //   },
+
       //   {
       //     path: 'doctors',
       //     loadChildren: () =>
@@ -89,20 +90,20 @@ const routes: Routes = [
       //       ),
       //     data: { breadcrumb: 'doctors' },
       //   },
-      //   // {
-      //   //   path: 'appointments',
-      //   //   loadChildren: () =>
-      //   //     import('./appointments/appointments.module').then(
-      //   //       p => p.AppointmentsModule
-      //   //     ),
-      //   //   data: { breadcrumb: 'appointments' },
-      //   // },
+      //   {
+      //     path: 'appointments',
+      //     loadChildren: () =>
+      //       import('./appointments/appointments.module').then(
+      //         p => p.AppointmentsModule
+      //       ),
+      //     data: { breadcrumb: 'appointments' },
+      //   },
 
-      //   // },
       //   {
       //     path: '**',
       //     redirectTo: 'dashboard',
       //   },
+      // ],
     ],
   },
 ];
