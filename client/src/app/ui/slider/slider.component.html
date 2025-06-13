@@ -1,8 +1,8 @@
-<div class="bg-slider w-full desktop:mt-24">
-  <div class="mx-auto slider-content w-full desktop:w-[37%]">
-    <div class="flex pt-52 gap-2 mobile:justify-center">
+<div class="bg-slider w-full lg:mt-24">
+  <div class="mx-auto slider-content w-full lg:w-[37%]">
+    <div class="flex justify-center items-center pt-52 gap-2">
       <div class="flex">
-        <h1 class="uppercase text-white desktop:!text-8xl mobile:!text-2xl">
+        <h1 class="uppercase text-white lg:!text-8xl md:!text-2xl">
           Healthcare
         </h1>
       </div>
@@ -16,20 +16,21 @@
       </div>
     </div>
     <div
-      class="relative z-1 flex items-center justify-center gap-9 uppercase text-white font-semibold mobile:pt-2">
+      class="relative z-1 flex justify-center items-center gap-9 uppercase text-white font-semibold md:pt-2">
       <span
-        class="flex items-center gap-2 py-2 desktop:px-10 rounded-full bg-[rgba(255, 255, 255, 0.2)] text-lg font-semibold desktop:backdrop-blur-lg mobile:backdrop-blur-sm">
+        class="flex items-center gap-2 py-2 lg:px-10 rounded-full bg-[rgba(255, 255, 255, 0.2)] text-lg font-semibold lg:backdrop-blur-lg md:backdrop-blur-sm">
         <img src="../../../assets/images/ui/slider/team-img.png" alt="" />
         memeber
       </span>
-      <span class="font-semibold desktop:!text-8xl mobile:!text-xl">
+      <span class="font-semibold lg:!text-8xl md:!text-xl">
         Doctor
       </span>
     </div>
     <!-- ***** Elastic Search Section -->
-    <div
-      class="flex items-center justify-center relative gap-3 z-50 bg-slate-200 rounded-2xl w-[42rem] ml-6">
-      <mat-form-field appearance="outline" class="pt-4 w-[34rem]">
+    <div class="mx-auto relative z-50 bg-slate-200 rounded-2xl w-[42rem]">
+      <mat-form-field
+        appearance="outline"
+        class="!flex !justify-center pt-4 px-2 py-2">
         <div class="flex">
           <input
             type="text"
@@ -203,47 +204,49 @@
     </div>
     <!-- ***** Elastic Search Section -->
 
-    <div class="absolute top-6 mobile:hidden desktop:block opacity-25">
+    <div
+      class="absolute top-6 md:hidden lg:block opacity-25 flex justify-center items-center w-full h-full">
       <img
+        class="w-full h-full object-contain"
         src="../../../assets/images/ui/slider/hero-img.png"
-        alt="doctor"
-        width="100%"
-        height="100%" />
+        alt="doctor" />
     </div>
   </div>
 
   <div
-    class="desktop:flex justify-between items-center desktop:w-3/4 mobile:pl-4 mx-auto mobile:pt-24">
+    class="lg:flex justify-between items-center lg:w-3/4 md:pl-4 mx-auto md:pt-24">
     <div class="mediic-hero-content">
-      <div class="flex gap-4">
+      <div class="flex gap-4 items-center">
         <img src="../../../assets/images/ui/slider/tick.png" alt="icon" />
-        <h4>Best Medical</h4>
+        <h4 class="text-white font-semibold">Best Medical</h4>
       </div>
-      <p class="text-white pl-14 relative z-10 w-96">
+      <p class="text-white pl-4 lg:pl-14 relative z-10 w-full max-w-md">
         Rapidiously reinvent long-term impact collaboration
       </p>
     </div>
-    <div>
-      <button dfButton appearance="solid" class="flex">
-        Free Consultaions
+
+    <div class="mt-6 lg:mt-0">
+      <button dfButton appearance="solid" class="flex items-center gap-2">
+        Free Consultations
         <i class="fa-solid fa-arrow-trend-up text-2xl"></i>
       </button>
     </div>
-    <div class="hero-cnct-nmbr cursor-scale small desktop:block mobile:hidden">
-      <h4>+980 123 (4567) 890</h4>
+
+    <div class="hero-cnct-nmbr hidden lg:block">
+      <h4 class="text-white font-semibold">+980 123 (4567) 890</h4>
     </div>
-    <div
-      class="hero-socail-icon cursor-scale small desktop:block mobile:hidden">
+
+    <div class="hero-socail-icon flex gap-4 hidden lg:flex">
       <a aria-label="Facebook">
         <i class="fa-brands fa-facebook-f hover:text-blue-600 text-white"></i>
       </a>
-      <a>
+      <a aria-label="LinkedIn">
         <i class="fa-brands fa-linkedin-in hover:text-blue-600 text-white"></i>
       </a>
-      <a>
+      <a aria-label="Twitter">
         <i class="fa-brands fa-twitter hover:text-blue-600 text-white"></i>
       </a>
-      <a>
+      <a aria-label="Instagram">
         <i class="fa-brands fa-instagram hover:text-red-600 text-white"></i>
       </a>
     </div>
@@ -251,39 +254,39 @@
 </div>
 
 <div
-  class="bg-blue-600 desktop:ml-6 desktop:mr-6 desktop:flex text-center justify-around items-center pt-9 pb-8">
+  class="bg-blue-600 lg:ml-6 lg:mr-6 lg:flex text-center justify-around items-center pt-9 pb-8">
   <div
-    class="desktop:flex items-center text-center gap-4 mobile:pl-2 mobile:pr-2"
+    class="lg:flex items-center text-center gap-4 md:pl-2 md:pr-2"
     data-aos="fade-up"
     data-aos-duration="1000">
     <div>
       <img
-        class="mobile:pl-2 mobile:pr-2 mx-auto"
+        class="md:pl-2 md:pr-2 mx-auto"
         width="100%"
         src="../../../assets/images/ui/counter-img.png"
         alt="" />
     </div>
-    <div class="flex flex-col mobile:pt-4">
-      <div class="text-white desktop:text-base mobile:text-lg font-semibold">
+    <div class="flex flex-col md:pt-4">
+      <div class="text-white lg:text-base md:text-lg font-semibold">
         With Doctor To, you can receive medical services with the highest
         quality and affordable prices
       </div>
-      <div class="text-white desktop:text-base mobile:text-lg font-semibold">
+      <div class="text-white lg:text-base md:text-lg font-semibold">
         You can receive high-quality medical services from clinics and
         specialist doctors across the country
       </div>
     </div>
   </div>
   <div
-    class="flex justify-between items-center gap-20 mobile:pt-4"
+    class="flex justify-between items-center gap-20 md:pt-4"
     data-aos="fade-down"
     data-aos-duration="1000">
-    <div class="mobile:pl-4">
+    <div class="md:pl-4">
       <p class="text-white text-5xl font-bold counter">{{ counter }}+</p>
       <hr class="text-white" />
       <p class="text-white text-xl font-medium">Satisfied Patients</p>
     </div>
-    <div class="mobile:pr-4">
+    <div class="md:pr-4">
       <p class="text-white text-5xl font-bold">100%</p>
       <hr class="text-white" />
       <p class="text-white text-xl font-medium">Satisfaction Rates</p>

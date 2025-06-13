@@ -71,6 +71,7 @@ router.post(
     return res.status(buildResponse.code).json(buildResponse);
   })
 );
+
 router.post(
   "/auth/verify-patient-email",
   asyncHandler(async function verifyEmail(

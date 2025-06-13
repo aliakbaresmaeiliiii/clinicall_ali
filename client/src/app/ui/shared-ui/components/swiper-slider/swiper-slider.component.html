@@ -1,5 +1,5 @@
 <app-service-section [title]="title()">
-  <div class="mobile:w-full desktop:w-11/12 mx-auto">
+  <div class="md:w-full lg:w-11/12 mx-auto">
     <div class="keen-slider" #sliderRef>
       @for (data of swiperData(); track $index) {
       <div class="keen-slider__slide" (click)="navigateToURl(data)">

@@ -4,6 +4,7 @@ import { Request, Response } from "express";
 import { PatientService } from "./services";
 import { BuildResponse } from "../../modules/response/app_response";
 import multer from "multer";
+var Kavenegar = require("kavenegar");
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -46,6 +47,9 @@ router.post(
   `/admin/add-patient`,
   asyncHandler(async function addPatient(req: Request, res: Response) {
     const formData = req.body;
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    sendOTP(formData.mobile, code);
+    res.json({ message: "OTP sent successfully" });
     const data = await PatientService.registerPatient(formData);
     const buildResponse = BuildResponse.get(data);
     if (buildResponse) {
@@ -54,6 +58,19 @@ router.post(
     return formData;
   })
 );
+
+
+function sendOTP(mobile: string, code: string) {
+  var api = Kavenegar.KavenegarApi({
+    apikey:
+      "47396E712B536F5359544A2F4B664F445078716A55353775785252724741372B4D563669614F686D424F383D",
+  });
+  api.Send({
+    message: code,
+    sender: "2000660110",
+    receptor: mobile,
+  });
+}
 
 // **** GetPatientDetial
 router.get(
@@ -106,14 +123,12 @@ router.delete(
 );
 
 router.post(
-  '/admin/add_favorite',
+  "/admin/add_favorite",
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const { patient_id, doctor_id } = req.body;
-    const formData = {patient_id,doctor_id}
+    const formData = { patient_id, doctor_id };
     const data = await PatientService.addFavorite(formData);
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
   })
-
-  
 );

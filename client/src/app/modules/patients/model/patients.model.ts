@@ -24,4 +24,13 @@ export interface PatientDTO {
   diseases?: any;
   diseaseSubcategories?: any;
   severity?: any;
+  blood_group?: string | null;
+  blood_pressure?: number | null;
+  heart_beat?: number | null;
+  sugar_level?: string | null;
+  injury_condition?: string | null;
+}
+
+export interface PatientMedicalRecord {
+
 }

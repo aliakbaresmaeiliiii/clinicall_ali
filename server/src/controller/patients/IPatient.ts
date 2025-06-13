@@ -37,3 +37,20 @@ interface Password {
     confirmPassword: string;
     password: string;
   }
+
+
+
+export interface PatientMedicalRecord {
+  id: number;
+  patient_id: number;
+  blood_group?: string | null;
+  blood_pressure?: string | null;
+  heart_beat?: string | null;
+  sugar_level?: string | null;
+  injury_condition?: string | null;
+  haemoglobin?: number | null;
+  treatment?: string | null;
+  charges?: number | null;
+  description?: string | null;
+  created_at?: string; // or Date if you parse it
+}

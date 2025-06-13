@@ -5,16 +5,17 @@ import { debounceTime, switchMap } from 'rxjs';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { banWords } from '../../../shared/validators/ban-words.validators';
 import { UniqueNicknameValidator } from '../../../shared/validators/unique-nickname.validators';
-import { PatientDTO } from '../model/patients.model';
+import { PatientDTO, PatientMedicalRecord } from '../model/patients.model';
 import { PatientsService } from '../services/patients.service';
 import { ShareService } from '../../../shared/services/share.service';
 import { AgePipe } from '../../../shared/pipes/age.pipe';
+import { CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input';
 
 @Component({
-    selector: 'app-add-patient',
-    templateUrl: './add-patient.component.html',
-    styleUrl: './add-patient.component.scss',
-    standalone: false
+  selector: 'app-add-patient',
+  templateUrl: './add-patient.component.html',
+  styleUrl: './add-patient.component.scss',
+  standalone: false,
 })
 export class AddPatientComponent extends BaseComponent implements OnInit {
   uniqueNickname = inject(UniqueNicknameValidator);
@@ -34,7 +35,12 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
   phoneExists: boolean | null = null;
   maxDate!: Date;
   minDate!: Date;
-
+  preferredCountries: CountryISO[] = [
+    CountryISO.UnitedStates,
+    CountryISO.UnitedKingdom,
+  ];
+  CountryISO = CountryISO;
+  PhoneNumberFormat = PhoneNumberFormat;
   form = this.fb.group({
     patientName: [
       '',
@@ -47,13 +53,13 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
     gender: ['Man'],
     mobile: ['', Validators.required],
     dateOfBirth: ['', Validators.required],
-    age: [null],
+    age: [null as any | null, { disable: true }],
     email: ['a@gmail.com', [Validators.required, Validators.email]],
     maritalStatus: ['Single'],
     address: [''],
     bloodGroup: [''],
-    bloodPressure: [''],
-    heartBeat: [''],
+    bloodPressure: [null],
+    heartBeat: [null],
     haemoglobin: [''],
     doctor: [''],
     treatment: [''],
@@ -61,6 +67,7 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
     charges: [''],
     description: [''],
     injury: [''],
+    password: [''],
   });
 
   onTouch!: () => void;
@@ -74,6 +81,26 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
       this.profileImg = res;
     });
     this.validationAge();
+
+    this.dateOfBirth?.valueChanges.subscribe(dob => {
+      if (dob) {
+        const age = this.calculateAge(new Date(dob));
+        this.age?.patchValue(age);
+      }
+    });
+    this.age?.disable();
+  }
+
+  calculateAge(dob: Date): number {
+    const today = new Date();
+    let age = today.getFullYear() - dob.getFullYear();
+    const m = today.getMonth() - dob.getMonth();
+
+    if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) {
+      age--;
+    }
+
+    return age;
   }
 
   validationAge() {
@@ -126,17 +153,17 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
         email: this.form.value.email,
         age: this.form.value.age,
         maritalStatus: this.form.value.maritalStatus,
-        bloodGroup: this.form.value.bloodGroup,
-        bloodPressure: this.form.value.bloodPressure,
-        heartBeat: this.form.value.heartBeat,
-        haemoglobin: this.form.value.haemoglobin,
         doctor: this.form.value.doctor,
-        charges: this.form.value.charges,
-        sugarLevel: this.form.value.sugarLevel,
-        treatment: this.form.value.treatment,
-        description: this.form.value.description,
-        injury: this.form.value.injury,
         profile_img: imgProfile.name,
+        blood_group: this.form.value.bloodGroup,
+        blood_pressure: this.form.value.bloodPressure,
+        heart_beat: this.form.value.heartBeat,
+        sugar_level: this.form.value.sugarLevel,
+        injury_condition: this.form.value.injury,
+        haemoglobin: this.form.value.haemoglobin,
+        treatment: this.form.value.treatment,
+        charges: this.form.value.charges,
+        description: this.form.value.description,
       };
       this.service.addPatient(payload).subscribe((res: any) => {
         if (res.code === 200) {
@@ -195,5 +222,9 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
 
   get dateOfBirth() {
     return this.form.get('dateOfBirth');
+  }
+
+  get clininPassword() {
+    return this.form.get('password');
   }
 }

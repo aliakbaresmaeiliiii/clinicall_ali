@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import { coreSchema, query, RowDataPacket } from "../../bin/mysql";
 import { ResponseError } from "../../modules/error/response_error";
-import { IPatient } from "./IPatient";
+import { IPatient, PatientMedicalRecord } from "./IPatient";
 
 export async function checkExistPatient(email: string): Promise<boolean> {
   try {
@@ -56,6 +56,17 @@ export async function registerPatient(data: IPatient): Promise<IPatient> {
   }
 }
 
+export async function patientMedical(data: PatientMedicalRecord) {
+  try {
+  const result =  await query<RowDataPacket[]>(
+    `INSERT INTO ${coreSchema}.patient_medical_records`
+  )
+  } catch (error) {
+    
+  }
+
+}
+
 export async function addFavorite(patient_id: number, doctor_id: number) {
   try {
     const existingFavorite = await query<RowDataPacket[]>(
@@ -99,5 +110,3 @@ export async function addFavorite(patient_id: number, doctor_id: number) {
     throw new ResponseError.InternalServer("Failed to add favorite.");
   }
 }
-
-

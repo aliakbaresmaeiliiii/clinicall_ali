@@ -1,8 +1,8 @@
 <!-- @defer {
-<div class="desktop:flex desktop:justify-between">
+<div class="lg:flex lg:justify-between">
   @for (post of posts; track $index) {
   <div
-    class="flex desktop:w-96 mobile:ml-4 mr-4 flex-col bg-clip-border text-gray-700 shadow-md m-auto rounded-[1em] relative group p-2 z-0">
+    class="flex lg:w-96 md:ml-4 mr-4 flex-col bg-clip-border text-gray-700 shadow-md m-auto rounded-[1em] relative group p-2 z-0">
     <div
       class="bg-gray-100 m-auto rounded-[1em] relative group p-2 z-0 overflow-hidden">
       <div
@@ -52,11 +52,11 @@
 
 
 @defer {
-  <div class="desktop:flex desktop:justify-between">
+  <div class="lg:flex lg:justify-between">
     <!-- Loop through posts -->
     <div
       *ngFor="let post of posts; let index = index; "
-      class="flex desktop:w-96 mobile:ml-4 mr-4 flex-col bg-clip-border text-gray-700 shadow-md m-auto rounded-[1em] relative group p-2 z-0"
+      class="flex lg:w-96 md:ml-4 mr-4 flex-col bg-clip-border text-gray-700 shadow-md m-auto rounded-[1em] relative group p-2 z-0"
       [ngClass]="{ 'animate-pulse': isLoading }">
       
       <!-- Card Content -->

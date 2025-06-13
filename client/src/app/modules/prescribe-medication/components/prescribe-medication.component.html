@@ -12,7 +12,7 @@
         <mat-tab label="PatientInfo" [tabIndex]="0">
           <div formArrayName="patientInfo" class="p-5">
             <h2 class="text-3xl font-medium">{{ title() }}</h2>
-            <div class="desktop:grid grid-cols-4 gap-3">
+            <div class="lg:grid grid-cols-4 gap-3">
               <!-- *****Patient Name***** -->
               <mat-form-field appearance="outline" class="w-full">
                 <mat-select
@@ -85,17 +85,17 @@
                   formControlName="haemoglobin" />
               </mat-form-field>
 
-              <!-- *****mobile***** -->
+              <!-- *****md***** -->
               <mat-form-field
                 data-testing="department"
                 appearance="outline"
                 class="w-full">
-                <mat-label>mobile</mat-label>
+                <mat-label>md</mat-label>
                 <input
                   type="text"
                   matInput
                   [errorStateMatcher]="matcher"
-                  formControlName="mobile" />
+                  formControlName="md" />
               </mat-form-field>
 
               <!-- *****sugarLevel***** -->
@@ -118,7 +118,7 @@
               </button>
               <button
                 [disabled]="!form.controls.patientInfo.valid"
-                class="desktop:m-0 tablet:mt-2 mobile:mt-2"
+                class="lg:m-0 tablet:mt-2 md:mt-2"
                 mat-flat-button
                 data-testid="login-button"
                 type="button"
@@ -133,7 +133,7 @@
         <mat-tab label="Disease" [tabIndex]="1">
           <div
             formArrayName="diseases"
-            class="desktop:grid grid-cols-4 gap-3 p-5">
+            class="lg:grid grid-cols-4 gap-3 p-5">
             <!-- *****Diseases***** -->
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Selected Diseases...</mat-label>
@@ -192,7 +192,7 @@
             </button>
             <button
               [disabled]="!form.controls.patientInfo.valid"
-              class="desktop:m-0 tablet:mt-2 mobile:mt-2"
+              class="lg:m-0 tablet:mt-2 md:mt-2"
               mat-flat-button
               data-testid="login-button"
               type="button"
@@ -207,7 +207,7 @@
           <div formArrayName="medication">
             <div class="mt-4">
               <h2 class="text-3xl font-medium">Precription Medicine</h2>
-              <div class="desktop:grid grid-cols-4 gap-3 pt-4 p-5">
+              <div class="lg:grid grid-cols-4 gap-3 pt-4 p-5">
                 <!-- *****Medicine***** -->
                 <ali-select
                   label="Pick the Medicine"
@@ -315,7 +315,7 @@
               <!-- *****Next***** -->
               <button
                 [disabled]="!form.controls.medication.valid"
-                class="desktop:m-0 tablet:mt-2 mobile:mt-2"
+                class="lg:m-0 tablet:mt-2 md:mt-2"
                 mat-flat-button
                 data-testid="login-button"
                 type="button"
@@ -346,8 +346,8 @@
                   <span class="pl-1">{{ item.sugarLevel }}</span>
                 </div>
                 <div>
-                  <span class="opacity-55">Mobile:</span>
-                  <span class="pl-1">{{ item.mobile }}</span>
+                  <span class="opacity-55">md:</span>
+                  <span class="pl-1">{{ item.md }}</span>
                 </div>
                 <div>
                   <span class="opacity-55">Haemoglobin:</span>
@@ -422,7 +422,7 @@
             </ng-container>
           </div>
 
-          <div class="desktop:grid grid-cols-2 gap-3 desktop:mt-10 mb-2">
+          <div class="lg:grid grid-cols-2 gap-3 lg:mt-10 mb-2">
             <!-- *****CancelBTN***** -->
             <button mat-stroked-button type="button" (click)="form.reset()">
               Cancel
@@ -430,7 +430,7 @@
             <!-- *****SaveBTN***** -->
             <button
               [disabled]="!form.valid"
-              class="desktop:m-0 tablet:mt-2 mobile:mt-2"
+              class="lg:m-0 tablet:mt-2 md:mt-2"
               mat-flat-button
               data-testid="login-button"
               type="submit">

@@ -1,7 +1,7 @@
 <app-slider />
-<div class="mx-auto desktop:w-11/12">
+<div class="mx-auto lg:w-11/12">
   <div
-    class="desktop:flex desktop:flex-row desktop:gap-10 mobile:flex mobile:flex-col mobile:gap-3 justify-center mt-6">
+    class="lg:flex lg:flex-row lg:gap-10 md:flex md:flex-col md:gap-3 justify-center mt-6">
     @for (item of cartInfo; track $index) {
     <app-card-info
       [title]="item.title"
@@ -85,7 +85,7 @@
     [subtitle]="'professional DR'" />
 
   <hr class="text-blue-950 m-auto w-9/12" />
-  <div class="mx-auto desktop:w-11/12 w-full desktop:pt-12">
+  <div class="mx-auto lg:w-11/12 w-full lg:pt-12">
     <app-best-doctors />
   </div>
 
@@ -100,8 +100,8 @@
     [title]="'Read Our Latest Blog'"
     [subtitle]="'Our blogs'" />
 
-  <hr class="text-blue-950 mx-auto desktop:w-9/12" />
-  <div class="mx-auto desktop:w-9/12 pt-12 pb-7">
+  <hr class="text-blue-950 mx-auto lg:w-9/12" />
+  <div class="mx-auto lg:w-9/12 pt-12 pb-7">
     <app-blog />
   </div>
 </div>

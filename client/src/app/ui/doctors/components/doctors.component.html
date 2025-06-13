@@ -1,8 +1,8 @@
-<div class="desktop:pt-4">
-  <div class="breatcome-section desktop:mt-28">
+<div class="lg:pt-4">
+  <div class="breatcome-section lg:mt-28">
     <div class="container mx-auto">
       <div
-        class="font-semibold text-white flex justify-center items-center desktop:pt-36 mobile:text-3xl mobile:pt-32 uppercase">
+        class="font-semibold text-white flex justify-center items-center lg:pt-36 md:text-3xl md:pt-32 uppercase">
         mediic Doctors
       </div>
       <div class="text-white flex justify-center items-center uppercase">
@@ -12,9 +12,9 @@
   </div>
   <!-- team-section -->
   <div
-    class="desktop:container desktop:m-auto flex justify-center flex-wrap gap-6 desktop:pt-24 desktop:pr-0 desktop:pb-32 mobile:pt-6 mobile:mx-4">
+    class="lg:container lg:m-auto flex justify-center flex-wrap gap-6 lg:pt-24 lg:pr-0 lg:pb-32 md:pt-6 md:mx-4">
      @for (image of images; track $index) {
-    <div class="flex-col mobile:w-full desktop:w-1/4">
+    <div class="flex-col md:w-full lg:w-1/4">
       <div class="team-content">
         <div
           class="flex justify-center items-center text-blueDark font-semibold text-3xl">
@@ -38,7 +38,7 @@
               <i class="fa-brands fa-instagram text-2xl"></i>
             </span>
           </div>
-          <img [src]="image.src" class="mobile:w-full" />
+          <img [src]="image.src" class="md:w-full" />
         </div>
       </div>
     </div>
@@ -47,17 +47,17 @@
 
 <!---------------- start Blog section ---------------------->
 <div
-  class="desktop:flex desktop:items-center desktop:justify-between pt-12 m-auto gap-20 desktop:w-9/12 border-b-2 border-gray-300 pl-4">
+  class="lg:flex lg:items-center lg:justify-between pt-12 m-auto gap-20 lg:w-9/12 border-b-2 border-gray-300 pl-4">
   <div class="flex items-center gap-4" data-aos="zoom-out">
-    <div class="desktop:text-4xl mobile:text-2xl text-blue-950 desktop:pt-4">
+    <div class="lg:text-4xl md:text-2xl text-blue-950 lg:pt-4">
       Read Our Latest Blog
     </div>
     <span class="animate-spin">
       <i
-        class="fa-solid fa-star-of-life desktop:text-4xl mobile:text-2xl text-blue-700 rotate"></i>
+        class="fa-solid fa-star-of-life lg:text-4xl md:text-2xl text-blue-700 rotate"></i>
     </span>
   </div>
-  <div class="desktop:w-48 mobile:py-4 mobile:gap-4">
+  <div class="lg:w-48 md:py-4 md:gap-4">
     <span class="text-blue-950 flex items-cente" data-aos="zoom-out">
       <span class="font-bold text-4xl flex items-center">
         38<i class="fa-solid fa-plus text-1xl text-blue-950"></i>
@@ -66,8 +66,8 @@
     </span>
   </div>
 </div>
-<hr class="text-blue-950 mx-auto desktop:w-9/12" />
-<div class="mx-auto desktop:w-9/12 pt-12 pb-7">
+<hr class="text-blue-950 mx-auto lg:w-9/12" />
+<div class="mx-auto lg:w-9/12 pt-12 pb-7">
   <app-blog />
 </div>
 

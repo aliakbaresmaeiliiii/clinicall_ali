@@ -78,6 +78,7 @@ export class PatientService {
     // Send verification email
     
     const clinicData = await registerPatient(formData);
+    
     if (!clinicData) {
       throw new ResponseError.BadRequest("Failed to register clinic.");
     }

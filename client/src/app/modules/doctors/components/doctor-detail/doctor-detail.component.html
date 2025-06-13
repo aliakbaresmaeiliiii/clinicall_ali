@@ -1,6 +1,6 @@
 @for (doctor of doctorInfo; track $index) {
 <div
-  class="desktop:grid desktop:grid-cols-6 mobile:flex justify-center flex-col gap-4">
+  class="lg:grid lg:grid-cols-6 md:flex justify-center flex-col gap-4">
   <div class="col-span-2">
     <mat-card appearance="outlined" class="mt-4">
       <mat-card-content>
@@ -108,14 +108,14 @@
       </mat-card-content>
     </mat-card>
   </div>
-  <section class="col-span-4 mobile:flex mobile:flex-col mobile:gap-4">
+  <section class="col-span-4 md:flex md:flex-col md:gap-4">
     <mat-card appearance="outlined">
       <mat-card-content>
         <h2 class="">
           <strong>Education</strong>
         </h2>
 
-        <div class="grid desktop:grid-cols-4 auto-rows-[minmax(0,_2fr)]">
+        <div class="grid lg:grid-cols-4 auto-rows-[minmax(0,_2fr)]">
           <div>
             <strong>Full Name</strong>
             <p class="opacity-55 text-xs pt-2">{{ doctor.name }}</p>

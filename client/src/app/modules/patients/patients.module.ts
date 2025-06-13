@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
@@ -11,6 +11,7 @@ import { EditPatientDialogComponent } from './edit-patient-dialog/edit-patient-d
 import { PatientDetailComponent } from './patient-detail/patient-detail.component';
 import { PatientProfileComponent } from './patient-profile/patient-profile.component';
 import { PatientsComponent } from './patients.component';
+import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 
 export const routes: Routes = [
   {
@@ -47,9 +48,14 @@ export const routes: Routes = [
     RouterModule.forChild(routes),
     FormsModule,
     LoaderComponent,
+    NgxIntlTelInputModule,
     SharedModule,
   ],
-  exports: [PatientsComponent],
+  exports: [PatientsComponent,
+    NgxIntlTelInputModule
+
+  ],
   providers: [AgePipe],
+  schemas:[CUSTOM_ELEMENTS_SCHEMA]
 })
 export class PatientsModule {}

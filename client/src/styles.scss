@@ -8,10 +8,11 @@
 // @use '@angular/material-experimental' as matx;
 
 @use '@angular/material' as mat;
+@use "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@custom-variant dark (&:where(.dark, .dark *));
+
+
 
 :root {
   @include mat.dialog-overrides((
