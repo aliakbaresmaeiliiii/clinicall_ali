@@ -28,6 +28,7 @@ export const routes: Routes = [
     component: PatientProfileComponent,
     data: { breadcrumb: 'patient-profile' },
   },
+  
   {
     path: 'patient-detail/:id',
     component: PatientDetailComponent,

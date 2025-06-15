@@ -81,24 +81,24 @@ export async function getNavItems() {
     const menuMap = new Map<number, Menu>();
 
     const iconMap: { [key: string]: string } = {
-      "Appointments": "appointment-icon",
-      "Dashboard": "dashboard-icon",
-      "Doctors": "doctor-icon",
-      "Services": "services-icon",
-      "Patients": "patient-icon",
-      "Prescriptions": "prescriptions-icon",
+      Appointments: "appointment-icon",
+      Dashboard: "dashboard-icon",
+      Doctors: "doctor-icon",
+      Services: "services-icon",
+      Patients: "patient-icon",
+      Prescriptions: "prescriptions-icon",
       "Billing & Payments": "billing-icon",
       "Reports & Analytics": "report-icon",
-      "Settings": "settings-icon",
+      Settings: "settings-icon",
       "Staff Management": "staff-icon",
-      "Inventory": "inventory-icon",
+      Inventory: "inventory-icon",
     };
     getManu.forEach((row) => {
       const menuId = row.menu_id;
       if (!menuMap.has(menuId)) {
         menuMap.set(menuId, {
           id: row.menu_id,
-          icon: iconMap[row.menu_name] || 'default-icon',
+          icon: iconMap[row.menu_name] || "default-icon",
           name: row.menu_name,
           path: row.menu_path,
           submenus: [],
@@ -117,15 +117,11 @@ export async function getNavItems() {
     return Array.from(menuMap.values());
   } catch (e) {
     console.log(e);
-    throw new ResponseError.InternalServer("An unexpected error occurred.")
+    throw new ResponseError.InternalServer("An unexpected error occurred.");
   }
 }
 
-
-
-export async function updateAppointment(
-  data: IAppointment
-) {
+export async function updateAppointment(data: IAppointment) {
   // const result = await query<RowDataPacket[]>(
   //   `UPDATE ${coreSchema}.appointments
   //   SET date = ?, updated_at = ?
@@ -150,22 +146,35 @@ export async function deleteAppointment(event_id: string) {
   return result;
 }
 // ****** Patients ******
-export async function getPatients() {
+export async function getPatients(patient_id:number) {
   const patients = await query<RowDataPacket[]>(`
-  SELECT p.first_name,p.last_name,p.first_name,p.email,p.date_of_birth,p.user_name,
+  SELECT p.first_name,p.last_name,p.first_name,p.email,p.date_of_birth,p.user_name,p.id,
          p.phone,p.gender,p.address,p.first_name,p.national_code
      FROM ${coreSchema}.patients p
   `);
+
+  patientMedicalRecords(patient_id);
   return patients;
 }
-export async function patientDetail(id: number): Promise<any> {
-  const result = await query<RowDataPacket>(
-    `SELECT * FROM ${coreSchema}.patients
-    WHERE id=?`,
-    { values: [id] }
+
+async function patientMedicalRecords(patient_id: number) {
+  const result = await query<RowDataPacket[]>(
+    `SELECT * From ${coreSchema}.patient_medical_records WHERE patient_id =?`,
+    {
+      values: [patient_id],
+    }
   );
   return result;
 }
+
+// export async function patientDetail(id: number): Promise<any> {
+//   const result = await query<RowDataPacket>(
+//     `SELECT * FROM ${coreSchema}.patients
+//     WHERE id=?`,
+//     { values: [id] }
+//   );
+//   return result;
+// }
 export async function checkPhoneNumberExists(mobile: string) {
   const result = await query<RowDataPacket>(
     `

@@ -112,9 +112,9 @@
             matInput
             [errorStateMatcher]="matcher"
             formControlName="age"
-            placeholder="age" 
+            placeholder="age"
             [disabled]="true"
-             [readonly]="true"/>
+            [readonly]="true" />
           <!-- Error handling -->
           <mat-error *ngIf="age?.hasError('age') && !age?.hasError('required')"
             >Please enter a valid age</mat-error
@@ -520,51 +520,55 @@
           >
         </mat-form-field>
       </div>
-      <div class="lg:grid grid-cols-2 gap-3 mb-2 border-dashed">
-        <mat-form-field appearance="outline" class="">
-          <mat-label>Mobile</mat-label>
-          <input
-            matInput
-            type="mobile"
-            formControlName="mobile"
-            [errorStateMatcher]="matcher" />
-          <mat-error *ngIf="mobile?.hasError('required')"
-            >password is <strong>required</strong></mat-error
-          >
-          <mat-error *ngIf="mobile?.hasError('minlength')"
-            >password is too short
-            <strong>{{
-              mobile?.getError('minlength')?.requiredLength
-            }}</strong></mat-error
-          >
-        </mat-form-field>
-        <mat-form-field appearance="outline" class="">
-          <mat-label>Password</mat-label>
-          <input
-            matInput
-            type="password"
-            formControlName="password"
-            [errorStateMatcher]="matcher" />
+      <mat-divider class="opacity-50"/>
+      <div class="grid grid-cols-4 gap-4 mt-4">
+          <mat-form-field appearance="outline" class="w-full">
+            <mat-label>Mobile</mat-label>
+            <input
+              matInput
+              type="mobile"
+              formControlName="mobile"
+              [errorStateMatcher]="matcher" />
+            <mat-error *ngIf="mobile?.hasError('required')"
+              >password is <strong>required</strong></mat-error
+            >
+            <mat-error *ngIf="mobile?.hasError('minlength')"
+              >password is too short
+              <strong>{{
+                mobile?.getError('minlength')?.requiredLength
+              }}</strong></mat-error
+            >
+          </mat-form-field>
+          <button
+            class="w-full lg:m-0 tablet:mt-2 md:mt-2"
+            mat-flat-button
+            data-testid="login-button"
+            color="primary"
+            (click)="sendCode(mobile?.value)"
+            [disabled]="!mobile?.valid">
+            Send Code
+          </button>
+          <div class="col-span-2">
+          <mat-form-field appearance="outline" class="w-full ">
+            <mat-label>Password</mat-label>
+            <input
+              matInput
+              type="password"
+              formControlName="password"
+              [errorStateMatcher]="matcher" />
 
-          <mat-error *ngIf="clininPassword?.hasError('required')"
-            >password is <strong>required</strong></mat-error
-          >
-          <mat-error *ngIf="clininPassword?.hasError('minlength')"
-            >password is too short
-            <strong>{{
-              clininPassword?.getError('minlength')?.requiredLength
-            }}</strong></mat-error
-          >
-        </mat-form-field>
+            <mat-error *ngIf="clininPassword?.hasError('required')"
+              >password is <strong>required</strong></mat-error
+            >
+            <mat-error *ngIf="clininPassword?.hasError('minlength')"
+              >password is too short
+              <strong>{{
+                clininPassword?.getError('minlength')?.requiredLength
+              }}</strong></mat-error
+            >
+          </mat-form-field>
+          </div>
 
-
-        <!-- <mat-hint>e.g. {{ phone.selectedCountry.placeHolder }}</mat-hint> -->
-        <!-- <mat-error *ngIf="form.controls['phone']?.errors?.required"
-          >Required Field</mat-error
-        >
-        <mat-error *ngIf="form.controls['phone']?.errors?.validatePhoneNumber"
-          >Invalid Number</mat-error
-        > -->
       </div>
 
       <div class="lg:flex lg:justify-end w-full gap-3">

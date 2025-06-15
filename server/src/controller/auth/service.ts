@@ -59,7 +59,7 @@ export class AuthService {
       const token = jwt.sign(
         { id: userData[0].id, email: userData[0].email }, // Payload (user info)
         JWT_SECRET_ACCESS_TOKEN, // Secret key
-        { expiresIn: 60 } // Expiry time
+        { expiresIn: JWT_ACCESS_TOKEN_EXPIRED } // Expiry time
       );
       const clinicData = {
         id: userData[0].id,

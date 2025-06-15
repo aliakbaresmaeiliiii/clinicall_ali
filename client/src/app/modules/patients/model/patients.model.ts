@@ -29,8 +29,12 @@ export interface PatientDTO {
   heart_beat?: number | null;
   sugar_level?: string | null;
   injury_condition?: string | null;
+  date_of_birth?: string;
+  first_name?: string;
+  last_name?: string;
+  national_code?: string;
+  phone?: string;
+  user_name?: string;
 }
 
-export interface PatientMedicalRecord {
-
-}
+export interface PatientMedicalRecord {}

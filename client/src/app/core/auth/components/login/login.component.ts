@@ -151,6 +151,7 @@ export class LoginComponent implements OnInit {
               // this.permissionService.setPermissions(res.data.permissions);
               this.storeDataUser = res;
               const dataJson = JSON.stringify(this.storeDataUser);
+              console.log(res);
               localStorage.setItem('userData', dataJson);
               if (res.code === 200) {
                 this.toast.success('login is successfully');

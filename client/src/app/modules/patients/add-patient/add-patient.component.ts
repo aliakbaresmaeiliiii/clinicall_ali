@@ -19,7 +19,7 @@ import { CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input';
 })
 export class AddPatientComponent extends BaseComponent implements OnInit {
   uniqueNickname = inject(UniqueNicknameValidator);
-  service = inject(PatientsService);
+  patientsService = inject(PatientsService);
   shareService = inject(ShareService);
   agePipe = inject(AgePipe);
   labelUserName: string = 'UserName';
@@ -128,7 +128,7 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
     this.mobile?.valueChanges
       .pipe(
         debounceTime(300),
-        switchMap(value => this.service.checkPhoneNumberExists(value))
+        switchMap(value => this.patientsService.checkPhoneNumberExists(value))
       )
       .subscribe(exist => {
         this.phoneExists = exist;
@@ -139,6 +139,12 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
   toggleDirection() {
     // Example method to toggle text direction
     this.textDirection = this.textDirection === 'ltr' ? 'rtl' : 'ltr';
+  }
+
+  sendCode(mobile:any){
+    this.patientsService.sendCode(mobile).subscribe((res)=>{
+      console.log(res);
+    })
   }
 
   onSubmit() {
@@ -165,7 +171,7 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
         charges: this.form.value.charges,
         description: this.form.value.description,
       };
-      this.service.addPatient(payload).subscribe((res: any) => {
+      this.patientsService.addPatient(payload).subscribe((res: any) => {
         if (res.code === 200) {
           this.form.reset();
           this.toastrService.success('pateint add successfully');

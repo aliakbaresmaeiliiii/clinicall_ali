@@ -3,6 +3,7 @@ import {
   Component,
   inject,
   OnInit,
+  signal,
   Signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -23,7 +24,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 export class PatientDetailComponent extends BaseComponent implements OnInit {
   service = inject(PatientsService);
   breakPointObserver = inject(BreakpointObserver);
-  patientId!: number;
+  patient_id = signal<Object>({});
   patientData!: PatientDTO[];
   dataSource = new MatTableDataSource<PatientDTO>();
   config = environment.urlProfileImg;
@@ -39,8 +40,8 @@ export class PatientDetailComponent extends BaseComponent implements OnInit {
   constructor() {
     super();
     this.activatedRoute.params.subscribe((param: any) => {
-      this.patientId = +param.id;
-      this.getData(this.patientId);
+      this.patient_id.set(param.id) 
+      this.getData(param.id);
     });
   }
 
@@ -51,11 +52,11 @@ export class PatientDetailComponent extends BaseComponent implements OnInit {
     })
   }
 
-  getData(patientId: number) {
-    // this.patientDetailSignal = toSignal(this.service.patientDetial(patientId), {
+  getData(patient_id: {id:number}) {
+    // this.patientDetailSignal = toSignal(this.service.patientDetial(patient_id), {
     //   initialValue: [],
     // });
-    this.service.patientDetial(patientId).subscribe((response: any) => {
+    this.service.getPatients(patient_id).subscribe((response: any) => {
       const newData = response.map((patient: any) => {
         patient.profileImage = patient.profileImage
           ? `${environment.urlProfileImg}${patient.profileImage}`

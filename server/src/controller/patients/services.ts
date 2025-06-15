@@ -1,19 +1,17 @@
+import jwt from "jsonwebtoken";
+import ms from "ms";
 import {
-  addPatient,
   checkPhoneNumberExists,
   deletePatient,
   getPatients,
-  patientDetail,
-  updatePatient,
+  updatePatient
 } from "../../bin/db";
-import { PatientDTO } from "../../models/patients";
-import jwt from "jsonwebtoken";
-import ms from "ms";
-import { addFavorite, checkExistPatient, registerPatient } from "./patients.db";
-import { ResponseError } from "../../modules/error/response_error";
+import { EmailProvider } from "../../config/email";
 import { getUniqueCodev3 } from "../../helper/common";
 import SendMail from "../../helper/send_email";
-import { EmailProvider } from "../../config/email";
+import { PatientDTO } from "../../models/patients";
+import { ResponseError } from "../../modules/error/response_error";
+import { addFavorite, checkExistPatient, registerPatient } from "./patients.db";
 
 const JWT_ACCESS_TOKEN_EXPIRED = process.env.JWT_ACCESS_TOKEN_EXPIRED || "1d"; // Default 1 day
 const JWT_SECRET_ACCESS_TOKEN = process.env.JWT_SECRET_ACCESS_TOKEN || "your-secret-key";
@@ -28,22 +26,22 @@ const expiresIn =
 
     
 export class PatientService {
-  public static async getPatients() {
-    const data = await getPatients();
+  public static async getPatients(query:any) {
+    const data = await getPatients(query);
     if (data) {
       return { message: `ok`, data };
     }
     return null;
   }
 
-  public static async patientDetial(id: number) {
-    const data = await patientDetail(id);
-    if (data) {
-      return { message: "ok", data };
-    } else {
-      return null;
-    }
-  }
+  // public static async patientDetial(id: number) {
+  //   const data = await patientDetail(id);
+  //   if (data) {
+  //     return { message: "ok", data };
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   public static async checkExistMobile(mobile: string): Promise<boolean> {
     const data = await checkPhoneNumberExists(mobile);

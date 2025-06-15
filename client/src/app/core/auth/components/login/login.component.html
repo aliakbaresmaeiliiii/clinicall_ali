@@ -100,23 +100,23 @@
         </a>
       </div>
 
-      <div class="flex justify-center items-center mb-2">
+      <!-- <div class="flex justify-center items-center mb-2">
         <re-captcha
           #captchaElem
           (resolved)="resolved($event)"
           siteKey="6Lfts_AqAAAAAI5rGBtpQG2cNM7vV5ykXK3jLbNC"></re-captcha>
-      </div>
+      </div> -->
 
       <button
         class="login-button ease-in-out duration-300 w-full lg:m-0 tablet:mt-2 md:mt-2"
         mat-flat-button
-        [disabled]="!form.valid || !successCaptcha()"
+        [disabled]="!form.valid"
         data-testid="login-button"
         color="primary"
         type="submit">
         Login
       </button>
-
+<!-- || !successCaptcha() -->
       <h2 class="social-login-title">OR</h2>
       <div class="flex justify-center items-center gap-3">
         <div id="google-btn"></div>

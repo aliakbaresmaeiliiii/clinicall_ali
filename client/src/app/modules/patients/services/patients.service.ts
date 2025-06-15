@@ -11,7 +11,6 @@ export class PatientsService {
   #http = inject(HttpClient);
   config = environment.apiEndPoint;
 
-
   upload(file: File): Observable<HttpEvent<any>> {
     const formData: FormData = new FormData();
 
@@ -31,11 +30,14 @@ export class PatientsService {
   // getDataByEmail(email: string): Observable<string> {
   //   return this.#http.post<string>(`${this.config}getPatientInfo`, email);
   // }
-  getPatients(): Observable<PatientDTO[]> {
-    return this.#http.get<PatientDTO[]>(
-      `${environment.apiEndPoint}api/patients`
-    );
-  }
+getPatients(params?: { id?: number }): Observable<PatientDTO[]> {
+  const url = params?.id
+    ? `${environment.apiEndPoint}api/patients/${params.id}`
+    : `${environment.apiEndPoint}api/patients`;
+
+  return this.#http.get<PatientDTO[]>(url);
+}
+
   patientDetial(id: number) {
     return this.#http
       .get<{ data: PatientDTO[] }>(`${this.config}admin/patient-detial/${id}`)
@@ -44,6 +46,10 @@ export class PatientsService {
   }
   checkPhoneNumberExists(phone: string | unknown): Observable<boolean> {
     return this.#http.get<boolean>(`${this.config}check-phone/${phone}`);
+  }
+
+  sendCode(mobile: number) {
+    return this.#http.post<number>(`${this.config}/send-code`, mobile);
   }
   addPatient(formData: PatientDTO): Observable<PatientDTO[]> {
     return this.#http.post<PatientDTO[]>(

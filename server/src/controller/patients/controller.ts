@@ -21,13 +21,15 @@ const uploadImgProfile = multer({ storage });
 router.get(
   "/api/patients",
   asyncHandler(async function getNavItems(req: any, res: any) {
-    const data = await PatientService.getPatients();
+    const patient_id = +req.params.patient_id;
+    const data = await PatientService.getPatients(patient_id);
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
   })
 );
 
 // **** checkPhoneNumberExists
+
 router.get(
   "/admin/check-phone/:phone",
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
@@ -41,24 +43,41 @@ router.get(
     }
   })
 );
+const otpStore = new Map<string, { code: string; expiresAt: number }>();
 
 // **** add-patient
 router.post(
   `/admin/add-patient`,
   asyncHandler(async function addPatient(req: Request, res: Response) {
     const formData = req.body;
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
-    sendOTP(formData.mobile, code);
-    res.json({ message: "OTP sent successfully" });
-    const data = await PatientService.registerPatient(formData);
-    const buildResponse = BuildResponse.get(data);
-    if (buildResponse) {
-      return res.status(200).json(buildResponse);
+    const stored = otpStore.get(formData.mobile);
+    if (
+      stored &&
+      Date.now() < stored.expiresAt &&
+      formData.code === stored.code
+    ) {
+      const data = await PatientService.registerPatient(formData);
+      const buildResponse = BuildResponse.get(data);
+      if (buildResponse) {
+        return res.status(200).json(buildResponse);
+      }
+      return formData;
+    } else {
+      return res.status(400).json({ error: "The code is wrong" });
     }
-    return formData;
   })
 );
 
+router.post("/send-code", (req, res) => {
+  const { mobile } = req.body;
+  const code = Math.floor(100000 + Math.random() * 900000).toString();
+  otpStore.set(mobile, {
+    code,
+    expiresAt: Date.now() + 5 * 60 * 1000,
+  });
+  sendOTP(mobile, code);
+  res.json({ message: "OTP sent successfully" });
+});
 
 function sendOTP(mobile: string, code: string) {
   var api = Kavenegar.KavenegarApi({
@@ -67,21 +86,21 @@ function sendOTP(mobile: string, code: string) {
   });
   api.Send({
     message: code,
-    sender: "2000660110",
+    sender: "DoctorAli",
     receptor: mobile,
   });
 }
 
 // **** GetPatientDetial
-router.get(
-  `/admin/patient-detial/:patientId`,
-  asyncHandler(async (req: Request, res: Response): Promise<any> => {
-    const patientId = +req.params.patientId;
-    const data = await PatientService.patientDetial(patientId);
-    const buildResponse = BuildResponse.get(data);
-    return res.status(buildResponse.code).json(buildResponse);
-  })
-);
+// router.get(
+//   `/admin/patient-detial/:patientId`,
+//   asyncHandler(async (req: Request, res: Response): Promise<any> => {
+//     const patientId = +req.params.patientId;
+//     const data = await PatientService.patientDetial(patientId);
+//     const buildResponse = BuildResponse.get(data);
+//     return res.status(buildResponse.code).json(buildResponse);
+//   })
+// );
 // **** uploadImage
 // routes.post(
 //   "/admin/uploadImage",

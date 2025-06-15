@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { Component, inject, input, viewChild } from '@angular/core';
+import { Component, inject, input, signal, viewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -47,6 +47,10 @@ export class PatientsComponent extends BaseComponent {
   wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
   fileName: string = 'SheetJS.xlsx';
 
+  patient_id = signal<Object>({});
+
+
+
   ngOnInit(): void {
     this.getData();
   }
@@ -54,8 +58,8 @@ export class PatientsComponent extends BaseComponent {
     // this.dataSource.paginator = this.paginator();
     // this.dataSource.sort = this.sort();
   }
-  getData() {
-    this.service.getPatients().subscribe((response: any) => {
+  getData(patient_id?:{id:number}) {
+    this.service.getPatients(patient_id).subscribe((response: any) => {
       const newData = response.data.map((patient: any) => {
         patient.profileImage = patient.profileImage
           ? `${environment.urlProfileImg}${patient.profileImage}`
@@ -114,7 +118,9 @@ export class PatientsComponent extends BaseComponent {
   }
 
   patientDetial(patient_id: number) {
-    this.router.navigate(['aliakbar/patients/patient-detail', patient_id]);
+    debugger;
+    this.patient_id.set(patient_id)
+    this.router.navigate(['dashboard/patients/patient-detail', patient_id]);
   }
 
   refreshGrid() {
