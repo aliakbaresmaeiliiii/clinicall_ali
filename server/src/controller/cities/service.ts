@@ -1,8 +1,8 @@
-import { getAllCitiesByFilter, GetNeighborhoods } from "./db";
+import { getAllCities, GetNeighborhoods } from "./db";
 
 export class citiesService {
-  public static async getAllCities(getAllCities:any) {
-    const data = await getAllCitiesByFilter(getAllCities);
+  public static async getAllCities() {
+    const data = await getAllCities();
     if (data) {
       return { message: "ok", data };
     } else {

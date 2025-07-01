@@ -1,21 +1,6 @@
 import { coreSchema, query, RowDataPacket } from "../../bin/mysql";
 
-export async function getAllCitiesByFilter(filter: any) {
-  let queryStr = `SELECT * FROM ${coreSchema}.cities`;
-  const parmas: any[] = [];
-  const conditions: string[] = [];
-
-  if (filter.countryId) {
-    conditions.push(`country_id =?`);
-    parmas.push(filter.countryId);
-  }
-
-  if(filter.name){
-    conditions.push(`LOWER(name) LIKE ?`)
-    parmas.push(``)
-
-  }
-
+export async function getAllCities() {
   const result = await query<RowDataPacket[]>(
     `SELECT * FROM ${coreSchema}.cities`
   );
