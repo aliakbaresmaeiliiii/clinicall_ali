@@ -1,4 +1,9 @@
-import { HttpClient, HttpEvent, HttpRequest } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpEvent,
+  HttpParams,
+  HttpRequest,
+} from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -30,17 +35,18 @@ export class PatientsService {
   // getDataByEmail(email: string): Observable<string> {
   //   return this.#http.post<string>(`${this.config}getPatientInfo`, email);
   // }
-getPatients(params?: { id?: number }): Observable<PatientDTO[]> {
-  const url = params?.id
-    ? `${environment.apiEndPoint}api/patients/${params.id}`
-    : `${environment.apiEndPoint}api/patients`;
+  getPatients(queryParmas:any): Observable<PatientDTO[]> {
+    let params = new HttpParams();
+    params = params.set('patient_id', queryParmas);
+    const url = `${environment.apiEndPoint}api/patients`;
+    return this.#http.get<PatientDTO[]>(url, {
+      params,
+    });
+  }
 
-  return this.#http.get<PatientDTO[]>(url);
-}
-
-  patientDetial(id: number) {
+  patientDetial(patient_id: string) {
     return this.#http
-      .get<{ data: PatientDTO[] }>(`${this.config}admin/patient-detial/${id}`)
+      .get<{ data: PatientDTO[] }>(`${this.config}api/patient_detail/${patient_id}`)
       .pipe(map(response => response.data));
     // Extract the array from the response
   }

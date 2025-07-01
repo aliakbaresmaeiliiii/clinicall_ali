@@ -2,7 +2,7 @@ import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import { createSchema } from "../controller/user/schema";
 import { AdminDTO } from "../models/admin";
-import { PatientDTO } from "../models/patients";
+import { PatientDTO, patientMedicalRecordsDTO } from "../models/patients";
 import { PrescriptionMedicine } from "../models/prescription_medicine";
 import { IAppointment } from "../types/appointment.interface";
 import { Menu, Submenu } from "../types/navItem";
@@ -146,35 +146,53 @@ export async function deleteAppointment(event_id: string) {
   return result;
 }
 // ****** Patients ******
-export async function getPatients(patient_id:number) {
-  const patients = await query<RowDataPacket[]>(`
-  SELECT p.first_name,p.last_name,p.first_name,p.email,p.date_of_birth,p.user_name,p.id,
-         p.phone,p.gender,p.address,p.first_name,p.national_code
+export async function getPatients(patient_id: string, queryString: string) {
+  const patients = await query<RowDataPacket[]>(
+    `
+  SELECT p.first_name,p.last_name,p.email,p.date_of_birth,p.user_name,p.id,
+         p.phone,p.gender,p.address,p.first_name,p.national_code,
+         M.*,
+         VH.*
      FROM ${coreSchema}.patients p
-  `);
+     LEFT JOIN ${coreSchema}.patient_medical_records M ON M.patient_id = p.id
+     LEFT JOIN ${coreSchema}.visit_history VH ON VH.patient_id = p.id
+  `
+  );
 
-  patientMedicalRecords(patient_id);
   return patients;
 }
 
-async function patientMedicalRecords(patient_id: number) {
-  const result = await query<RowDataPacket[]>(
-    `SELECT * From ${coreSchema}.patient_medical_records WHERE patient_id =?`,
+export async function getPatientDetail(patient_id: number) {
+  const patientInfo = await query<RowDataPacket[]>(
+    `
+    SELECT p.*,
+    M.*,
+    VH.*
+  FROM ${coreSchema}.patients p
+     LEFT JOIN ${coreSchema}.patient_medical_records M ON M.patient_id = p.id
+     LEFT JOIN ${coreSchema}.visit_history VH ON VH.patient_id = p.id
+    WHERE p.id = ?
+    `,
     {
       values: [patient_id],
+    }
+  );
+  return patientInfo;
+}
+
+export async function getDoctorInfo(doctor_id: any) {
+  const result = await query<RowDataPacket[]>(
+    `
+    SELECT * FROM ${coreSchema}.doctors 
+    WHERE id =?
+    `,
+    {
+      values: [doctor_id],
     }
   );
   return result;
 }
 
-// export async function patientDetail(id: number): Promise<any> {
-//   const result = await query<RowDataPacket>(
-//     `SELECT * FROM ${coreSchema}.patients
-//     WHERE id=?`,
-//     { values: [id] }
-//   );
-//   return result;
-// }
 export async function checkPhoneNumberExists(mobile: string) {
   const result = await query<RowDataPacket>(
     `
@@ -237,35 +255,43 @@ export async function updatePatient(patientData: PatientDTO): Promise<any> {
   const result = await query<RowDataPacket>(
     `
       UPDATE ${coreSchema}.patients
-      SET patientName = ?,
-          gender = ?,
-          mobile = ?,
-          dateOfBirth = ?,
-          age = ?,
+      SET first_name = ?,
+          last_name = ?,
+          date_of_birth = ?,
           email = ?,
-          bloodPressure = ?,
-          injury = ?,
-          bloodGroup = ?,
           address = ?
       WHERE id = ?
       `,
     {
       values: [
-        patientData.patientName,
-        patientData.gender,
-        patientData.mobile,
-        patientData.dateOfBirth,
-        patientData.age,
+        patientData.first_name,
+        patientData.last_name,
+        patientData.date_of_birth,
         patientData.email,
-        patientData.bloodPressure,
-        patientData.injury,
-        patientData.bloodGroup,
         patientData.address,
-        patientData.id,
+        patientData.patient_id,
       ],
     }
   );
-  return result;
+
+  const updateMedicalPatient = await query<RowDataPacket>(
+    `
+     UPDATE ${coreSchema}.patient_medical_records
+          SET  blood_pressure = ?,
+          injury_condition = ?,
+          blood_group = ?
+      WHERE patient_id = ?
+    `,
+    {
+      values: [
+        patientData.blood_pressure,
+        patientData.injury_condition,
+        patientData.blood_group,
+        patientData.patient_id,
+      ],
+    }
+  );
+  return { result, updateMedicalPatient };
 }
 
 export async function getMedicine() {

@@ -11,6 +11,7 @@ import { DoctorDetailComponent } from './components/doctor-detail/doctor-detail.
 import { DoctorListComponent } from './components/doctor-list/doctor-list.component';
 import { EditDoctorComponent } from './components/edit-doctor/edit-doctor.component';
 import { DoctorsComponent } from './components/doctors.component';
+import { DeleteDoctorDialogComponent } from './components/delete-doctor-dialog/delete-doctor-dialog.component';
 
 const routes: Routes = [
   {
@@ -38,6 +39,7 @@ const routes: Routes = [
     DoctorListComponent,
     EditDoctorComponent,
     AddDoctorComponent,
+    DeleteDoctorDialogComponent
 
   ],
   imports: [

@@ -16,7 +16,7 @@ export class DoctorDetailComponent extends BaseComponent {
   doctorInfo: DoctorsDTO[] = [];
   service = inject(DoctorsService);
   breakPointObserver = inject(BreakpointObserver);
-  doctorId!: number;
+  doctorId!: string;
   coordinates: { lat: number; lng: number }[] = [];
   DATA_KEY = makeStateKey<any>('doctorInfo');
   transferState = inject(TransferState);
@@ -24,7 +24,7 @@ export class DoctorDetailComponent extends BaseComponent {
   constructor() {
     super();
     this.activatedRoute.params.subscribe((param: any) => {
-      this.doctorId = +param.id;
+      this.doctorId = param.id;
       
     });
   }
@@ -33,19 +33,21 @@ export class DoctorDetailComponent extends BaseComponent {
     this.breakPointObserver.observe([Breakpoints.Handset]).subscribe(result => {
       this.isMobile = result.matches;
     });
-    this.fetchData({ doctor_id: this.doctorId });
+    this.fetchData({ id: this.doctorId });
 
   }
-  fetchData(filter:{doctor_id:number}) {
+  fetchData(filter:{id:string}) {
     this.transferState.remove(this.DATA_KEY);
     const storedData = this.transferState.get(this.DATA_KEY, null);
     if (!storedData) {
-      this.service.getDoctors(filter).subscribe({
-        next: (response: any) => {
-          if (response && response.length > 0) {
-            const newData = response.map((patient: any) => {
-              patient.profileImage = patient.profileImage
-                ? `${environment.urlProfileImg}${patient.profileImage}`
+      debugger
+      this.service.getDoctorsDetailClinic(filter.id).subscribe({
+        next: (response: any) => {          
+          if (response.data && response.data.length > 0) {
+            debugger;
+            const newData = response.data.map((patient: any) => {
+              patient.profile_img = patient.profile_img
+                ? `${environment.urlProfileImg}${patient.profile_img}`
                 : '../../../assets/images/bg-01.png';
               return patient;
             });

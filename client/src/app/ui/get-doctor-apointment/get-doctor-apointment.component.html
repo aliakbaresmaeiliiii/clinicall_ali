@@ -21,7 +21,7 @@
 
           <div>
             <div class="text-lg font-bold dark:text-white">
-              {{ doctor.name }}
+              {{ doctor.first_name }}{{doctor.last_name}}
             </div>
             <div class="text-sm text-gray-500 dark:text-gray-200">
               {{ doctor.specialty_name }}
@@ -190,7 +190,7 @@
 
     <mat-card appearance="outlined" class="w-full">
       <mat-card-content>
-        <h2 class="pt-2 font-bold">About {{ doctor.name }}</h2>
+        <h2 class="pt-2 font-bold">About {{ doctor.first_name }}{{doctor.last_name}}</h2>
         <div class="flex flex-col gap-1 pt-2">
           {{ doctor.description }}
         </div>
@@ -199,16 +199,16 @@
 
     <mat-card appearance="outlined" class="w-full">
       <mat-card-content>
-        <h2 class="pt-2 font-bold">Address Clinic Dr.{{ doctor.name }}</h2>
+        <h2 class="pt-2 font-bold">Address Clinic Dr.{{ doctor.first_name }}{{doctor.last_name}}</h2>
         <div
           class="border-2 border-gray-400 rounded-lg border-opacity-30 p-4 mt-4 bg-slate-100">
-          <h2 class="font-bold">{{ doctor.addresses[0].city }}</h2>
+          <h2 class="font-bold">{{ doctor.addresses.city }}</h2>
           <div class="flex gap-1 pt-2">
             <i class="fa-solid fa-location-dot text-blue-600 text-lg"></i>
-            <div class="flex gap-1" *ngIf="doctor.addresses[0]">
+            <div class="flex gap-1" *ngIf="doctor.addresses">
               <strong>Address:</strong>
               <p>
-                <ng-container *ngIf="doctor.addresses[0] as addr">
+                <ng-container *ngIf="doctor.addresses as addr">
                   {{ addr.zipcode ? addr.zipcode + ', ' : '' }}
                   {{ addr.address_line1 ? addr.address_line1 + ', ' : '' }}
                   {{ addr.city ? addr.city + ', ' : '' }}
@@ -237,7 +237,7 @@
     </mat-card>
     <mat-card appearance="outlined" class="w-full">
       <mat-card-content>
-        <h2 class="pt-2 font-bold">Services Dr.{{ doctor.name }}:</h2>
+        <h2 class="pt-2 font-bold">Services Dr.{{ doctor.first_name }}{{doctor.last_name}}:</h2>
         <div class="flex items-center justify-center gap-3 mt-4">
           <span class="bg-slate-300 rounded-2xl text-xs p-2"
             >{{ doctor.specialty_name }}
@@ -248,7 +248,7 @@
 
     <mat-card appearance="outlined" class="w-full">
       <mat-card-content>
-        <h2 class="pt-2 font-bold">Reviewes about Dr{{ doctor.name }}</h2>
+        <h2 class="pt-2 font-bold">Reviewes about Dr{{ doctor.first_name }}{{doctor.last_name}}</h2>
         <div
           class="flex items-center flex-row-reverse justify-center gap-3 mt-4">
           <div class="flex flex-col gap-1">
@@ -370,7 +370,7 @@
     <mat-card appearance="outlined" class="w-full">
       <mat-card-content>
         <h2 class="font-bold !text-sm">
-          Frequently Asked Questions about Dr.{{ doctor.name }}
+          Frequently Asked Questions about Dr.{{ doctor.first_name }}{{ doctor.last_name }}
         </h2>
 
         <div class="dropdown w-full mt-4">
@@ -384,7 +384,7 @@
             aria-label="dropdown scrollbar"
             for="state-dropdown"
             class="trigger"
-            >How can we book an appointment with Dr.{{ doctor.name }}
+            >How can we book an appointment with Dr.{{ doctor.first_name }}{{doctor.last_name}}
           </label>
 
           <ul class="list webkit-scrollbar" role="list" dir="auto">
@@ -401,18 +401,18 @@
     <mat-card appearance="outlined" class="w-full">
       <mat-card-content>
         <h2 class="font-bold !text-base">
-          Appointment guide from Dr.{{ doctor.name }}{{ doctor.name }}
+          Appointment guide from Dr.{{ doctor.first_name }}{{ doctor.last_name }}
         </h2>
         <article class="pt-7">
           <h2 class="font-bold !text-sm !text-gray-500">
-            Biography and Introduction of Dr.{{ doctor.name }}{{ doctor.name }}
+            Biography and Introduction of Dr.{{ doctor.first_name }}{{ doctor.last_name }}
           </h2>
           <p class="text-xs text-gray-500">
             Welcome to the online appointment booking platform for Dr.{{
-              doctor.name
-            }}{{ doctor.name }}
+              doctor.first_name
+            }}{{ doctor.last_name }}
             In this section, we will provide a detailed biography of Dr.
-            {{ doctor.name }}{{ doctor.name }}, including information about his
+            {{ doctor.first_name }}{{ doctor.last_name }}, including information about his
             specialties, cities where he practices, the diseases and symptoms he
             treats, as well as details about the medical centers he operates in
             (clinic address, phone number). Let me know if you'd like me to add
@@ -421,28 +421,28 @@
         </article>
         <article class="pt-7">
           <h2 class="font-bold !text-sm !text-gray-500">
-            What are Dr. {{ doctor.name }}{{ doctor.name }}'s areas of expertise
+            What are Dr. {{ doctor.first_name }}{{ doctor.last_name }}'s areas of expertise
             and the cities where he practices?
           </h2>
           <p class="text-xs text-gray-500">
-            Dr. {{ doctor.name }}{{ doctor.name }} specializes in 1 field and
+            Dr. {{ doctor.first_name }}{{ doctor.last_name }} specializes in 1 field and
             practices in 1 city: Pediatrician in Tehran
           </p>
         </article>
         <article class="pt-7">
           <h2 class="font-bold !text-sm !text-gray-500">
             For which diseases and symptoms can one visit Dr.
-            {{ doctor.name }}{{ doctor.name }}?
+            {{ doctor.first_name }}{{doctor.last_name}}{{ doctor.first_name }}{{doctor.last_name}}?
           </h2>
 
           <p class="text-xs text-gray-500">
-            Dr. {{ doctor.name }}{{ doctor.name }} specializes in 1 field and
+            Dr. {{ doctor.first_name }}{{doctor.last_name}}{{ doctor.first_name }}{{doctor.last_name}} specializes in 1 field and
             practices in 1 city: Pediatrician in Tehran
           </p>
         </article>
         <article class="pt-7">
           <h2 class="font-bold !text-sm !text-gray-500">
-            Dr. {{ doctor.name }}{{ doctor.name }} specializes in diagnosing and
+            Dr. {{ doctor.first_name }}{{doctor.last_name}}{{ doctor.first_name }}{{doctor.last_name}} specializes in diagnosing and
             treating the following symptoms and diseases:"
           </h2>
           <ol class="text-xs">
@@ -497,7 +497,7 @@
           class="border-2 border-gray-400 rounded-lg border-opacity-30 p-4 mt-4 bg-slate-100">
           <div class="flex items-center gap-1">
             <i class="fa-solid fa-location-dot text-blue-600 text-lg"></i>
-            <h2 class="font-bold">{{ doctor.addresses[0].city }}</h2>
+            <h2 class="font-bold">{{ doctor.addresses.city }}</h2>
           </div>
           <div
             class="border-2 opacity-40 border-dashed border-gray-500 my-3"></div>

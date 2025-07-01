@@ -149,7 +149,7 @@ export class UserFavoritesComponent {
   }
 
   shareInfo(docotoInfo: DoctorsDTO) {
-    const doctorLink = `localhost:4200/doctor/${docotoInfo.name}/${docotoInfo.id}`; // Generate the doctor's link
+    const doctorLink = `localhost:4200/doctor/${docotoInfo.first_name}${docotoInfo.last_name}/${docotoInfo.id}`; // Generate the doctor's link
     this.dialogService.openDialog(CopyLinkDialogComponent, {
       data: { link: doctorLink },
     });

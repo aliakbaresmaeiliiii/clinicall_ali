@@ -21,8 +21,18 @@ const uploadImgProfile = multer({ storage });
 router.get(
   "/api/patients",
   asyncHandler(async function getNavItems(req: any, res: any) {
-    const patient_id = +req.params.patient_id;
-    const data = await PatientService.getPatients(patient_id);
+    const queryParams = req.query;
+    const data = await PatientService.getPatients(queryParams);
+    const buildResponse = BuildResponse.get(data);
+    return res.status(buildResponse.code).json(buildResponse);
+  })
+);
+
+router.get(
+  "/api/patient_detail/:patient_id",
+  asyncHandler(async function getPatientDetail(req: any, res: any) {
+    const query = +req.params.patient_id;
+    const data = await PatientService.getPatientDetial(query);
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
   })
@@ -91,16 +101,7 @@ function sendOTP(mobile: string, code: string) {
   });
 }
 
-// **** GetPatientDetial
-// router.get(
-//   `/admin/patient-detial/:patientId`,
-//   asyncHandler(async (req: Request, res: Response): Promise<any> => {
-//     const patientId = +req.params.patientId;
-//     const data = await PatientService.patientDetial(patientId);
-//     const buildResponse = BuildResponse.get(data);
-//     return res.status(buildResponse.code).json(buildResponse);
-//   })
-// );
+
 // **** uploadImage
 // routes.post(
 //   "/admin/uploadImage",

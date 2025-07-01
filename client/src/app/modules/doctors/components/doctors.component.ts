@@ -1,4 +1,4 @@
-import { Component, inject, input, viewChild } from '@angular/core';
+import { Component, inject, input, signal, viewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -10,13 +10,13 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { DoctorsDTO } from '../models/doctors';
 import { DoctorsService } from '../services/doctors.service';
 import { EditDoctorComponent } from './edit-doctor/edit-doctor.component';
-
+import { DeleteDoctorDialogComponent } from './delete-doctor-dialog/delete-doctor-dialog.component';
 
 @Component({
-    selector: 'app-doctors',
-    templateUrl: './doctors.component.html',
-    styleUrl: './doctors.component.scss',
-    standalone: false
+  selector: 'app-doctors',
+  templateUrl: './doctors.component.html',
+  styleUrl: './doctors.component.scss',
+  standalone: false,
 })
 export class DoctorsComponent extends BaseComponent {
   service = inject(DoctorsService);
@@ -25,10 +25,10 @@ export class DoctorsComponent extends BaseComponent {
     'select',
     'id',
     'profileImage',
-    'name',
+    'first_name',
+    'last_name',
     'gender',
     'mobile',
-    'age',
     'email',
     // 'maritalStatus',
     // 'bloodGroup',
@@ -51,6 +51,8 @@ export class DoctorsComponent extends BaseComponent {
   permissions: string[] = [];
   permissionService = inject(PermissionService);
   tooltipVisibility = 'View Detail';
+  loading = signal<boolean>(true);
+  searchValue: string = '';
 
   ngOnInit(): void {
     this.fetchData();
@@ -59,7 +61,7 @@ export class DoctorsComponent extends BaseComponent {
       'edit',
       'delete',
     ]);
-  
+
     // const userDataString = localStorage.getItem('userData');
     // if (userDataString) {
     //   const data = JSON.parse(userDataString).data;
@@ -74,7 +76,8 @@ export class DoctorsComponent extends BaseComponent {
     this.dataSource.sort = this.sort();
   }
   fetchData() {
-    this.service.getDoctors().subscribe((response: any) => {
+    this.loading.set(true);
+    this.service.getDoctorsClinic().subscribe((response: any) => {
       const newData = response.data.map((doctor: any) => {
         doctor.profile_img = doctor.profile_img
           ? `${environment.urlProfileImg}${doctor.profile_img}`
@@ -84,6 +87,7 @@ export class DoctorsComponent extends BaseComponent {
       this.dataSource = new MatTableDataSource(newData);
       this.dataSource.paginator = this.paginator();
       this.dataSource.sort = this.sort();
+      this.loading.set(false);
     });
   }
 
@@ -154,7 +158,7 @@ export class DoctorsComponent extends BaseComponent {
     //     item.firstName + ' ' + item.lastName,
     //     item.gender,
     //     item.mobile,
-    //     item.dateOfBirth,
+    //     item.date_of_birth,
     //     item.age,
     //     item.email,
     //     item.address,
@@ -169,7 +173,7 @@ export class DoctorsComponent extends BaseComponent {
   }
 
   doctorDetial(id: number) {
-    this.router.navigate(['aliakbar/doctors/doctor-detail', id]);
+    this.router.navigate(['dashboard/doctors/doctor-detail', id]);
   }
 
   editDoctor(
@@ -192,15 +196,15 @@ export class DoctorsComponent extends BaseComponent {
     enterAnimationDuration: string,
     exitAnimationDuration: string
   ) {
-    // const dialogRef = this.dialog.open(DeletePatientDialogComponent, {
-    //   width: '250px',
-    //   enterAnimationDuration,
-    //   exitAnimationDuration,
-    //   data: row,
-    // });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   this.fetchData();
-    // });
+    const dialogRef = this.dialog.open(DeleteDoctorDialogComponent, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data: row,
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.fetchData();
+    });
   }
   ngOnDestroy(): void {}
 }

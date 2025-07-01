@@ -28,7 +28,7 @@ export class PatientsComponent extends BaseComponent {
     'patientName',
     'gender',
     'mobile',
-    'dateOfBirth',
+    'date_of_birth',
     'age',
     'email',
     // 'maritalStatus',
@@ -52,13 +52,13 @@ export class PatientsComponent extends BaseComponent {
 
 
   ngOnInit(): void {
-    this.getData();
+    this.getData('');
   }
   ngAfterViewInit() {
     // this.dataSource.paginator = this.paginator();
     // this.dataSource.sort = this.sort();
   }
-  getData(patient_id?:{id:number}) {
+  getData(patient_id:string) {
     this.service.getPatients(patient_id).subscribe((response: any) => {
       const newData = response.data.map((patient: any) => {
         patient.profileImage = patient.profileImage
@@ -113,18 +113,18 @@ export class PatientsComponent extends BaseComponent {
       exitAnimationDuration,
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.getData();
+      this.getData('');
     });
   }
 
   patientDetial(patient_id: number) {
-    debugger;
+  
     this.patient_id.set(patient_id)
     this.router.navigate(['dashboard/patients/patient-detail', patient_id]);
   }
 
   refreshGrid() {
-    this.getData();
+    this.getData('');
   }
 
   export() {
@@ -135,17 +135,17 @@ export class PatientsComponent extends BaseComponent {
         'patientName',
         'Gender',
         'Mobile',
-        'dateOfBirth',
+        'date_of_birth',
         'Age',
         'Email',
         'Address',
       ],
       ...data.map(item => [
         item.patient_id,
-        item.patientName,
+        item.first_name,
         item.gender,
         item.mobile,
-        item.dateOfBirth,
+        item.date_of_birth,
         item.age,
         item.email,
         item.address,
@@ -171,7 +171,7 @@ export class PatientsComponent extends BaseComponent {
       data: row,
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.getData();
+      this.getData('');
     });
   }
 
@@ -187,7 +187,7 @@ export class PatientsComponent extends BaseComponent {
       data: row,
     });
     dialogRef.afterClosed().subscribe(result => {
-      this.getData();
+      this.getData('');
     });
   }
   ngOnDestroy(): void {}

@@ -3,8 +3,10 @@ import ms from "ms";
 import {
   checkPhoneNumberExists,
   deletePatient,
+  getDoctorInfo,
+  getPatientDetail,
   getPatients,
-  updatePatient
+  updatePatient,
 } from "../../bin/db";
 import { EmailProvider } from "../../config/email";
 import { getUniqueCodev3 } from "../../helper/common";
@@ -14,7 +16,8 @@ import { ResponseError } from "../../modules/error/response_error";
 import { addFavorite, checkExistPatient, registerPatient } from "./patients.db";
 
 const JWT_ACCESS_TOKEN_EXPIRED = process.env.JWT_ACCESS_TOKEN_EXPIRED || "1d"; // Default 1 day
-const JWT_SECRET_ACCESS_TOKEN = process.env.JWT_SECRET_ACCESS_TOKEN || "your-secret-key";
+const JWT_SECRET_ACCESS_TOKEN =
+  process.env.JWT_SECRET_ACCESS_TOKEN || "your-secret-key";
 
 // Check if expiration needs conversion
 const expiresIn =
@@ -23,25 +26,33 @@ const expiresIn =
     ? Math.floor(ms(JWT_ACCESS_TOKEN_EXPIRED) / 1000)
     : JWT_ACCESS_TOKEN_EXPIRED;
 
-
-    
 export class PatientService {
-  public static async getPatients(query:any) {
-    const data = await getPatients(query);
+  public static async getPatients(queryParams: any) {
+    const { patient_id, queryString } = queryParams;
+    const data = await getPatients(patient_id, queryString);
+
     if (data) {
       return { message: `ok`, data };
     }
     return null;
   }
 
-  // public static async patientDetial(id: number) {
-  //   const data = await patientDetail(id);
-  //   if (data) {
-  //     return { message: "ok", data };
-  //   } else {
-  //     return null;
-  //   }
-  // }
+  public static async getPatientDetial(query: number) {
+    const patient_id = query;
+    const data = await getPatientDetail(patient_id);
+    const doctor_id = data[0].doctor_id
+    // const doctorDetail = data.find((item:any) => item.doctor_id);
+
+    if(doctor_id){
+      const doctorInfo =await getDoctorInfo(doctor_id);
+
+      const doctorDetail = {
+
+      }
+      return { message: `ok`, data ,...doctorInfo};
+    }
+    return null;
+  }
 
   public static async checkExistMobile(mobile: string): Promise<boolean> {
     const data = await checkPhoneNumberExists(mobile);
@@ -51,7 +62,6 @@ export class PatientService {
       return false;
     }
   }
-
 
   // ****
   public static async registerPatient(formData: any) {
@@ -63,10 +73,10 @@ export class PatientService {
       );
       throw new ResponseError.BadRequest(`${formData.email} is already exist.`);
     }
-    
+
     const verificationCode = getUniqueCodev3();
     formData.verify_code = verificationCode;
-    
+
     const tokenVerify = jwt.sign(
       { email: formData.email },
       JWT_SECRET_ACCESS_TOKEN,
@@ -74,9 +84,9 @@ export class PatientService {
     );
     formData.token_verify = tokenVerify;
     // Send verification email
-    
+
     const clinicData = await registerPatient(formData);
-    
+
     if (!clinicData) {
       throw new ResponseError.BadRequest("Failed to register clinic.");
     }
@@ -123,4 +133,3 @@ export class PatientService {
     }
   }
 }
-

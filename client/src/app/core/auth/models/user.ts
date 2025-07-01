@@ -25,7 +25,7 @@ export interface Register {
   patientName: string;
   nickName: string;
   email: string;
-  gender: string;
+  gender?: "male" | "female";
   birthDay: string;
   phoneNumber: string;
   password: string;

@@ -12,6 +12,20 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+.star-rating::after {
+  content: '⭐⭐⭐⭐⭐';
+   --rating-percent: calc(var(--rating) / 5 * 100%);
+  background: linear-gradient(
+    90deg,
+   gold var(--rating-percent),
+    lightgray var(--rating-percent)
+  );
+  background-clip: text;
+  -webkit-background-clip: text; /* For Safari */
+  white-space: nowrap;
+  color: transparent;
+  display: inline-block;
+}
 
 
 :root {

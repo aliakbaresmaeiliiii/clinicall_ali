@@ -29,9 +29,7 @@ export class PatientProfileComponent {
   }
 
   fetchPatients() {
-    this.patientService.getPatients().subscribe((res: any) => {
-      console.log('👌👌👌', res);
-
+    this.patientService.getPatients('').subscribe((res: any) => {
       this.patientDetial.set(res.data);
     });
   }

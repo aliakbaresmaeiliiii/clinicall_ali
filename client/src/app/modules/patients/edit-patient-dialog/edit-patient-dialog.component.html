@@ -1,130 +1,102 @@
-<div mat-dialog-title >
-    <img
-      crossorigin="anonymous"
-      [src]="patientData.profile_img"
-      class="rounded-full"
-      width="50"
-      height="50"
-      [alt]="" />
+<div mat-dialog-title>
+  <img
+    crossorigin="anonymous"
+    [src]="patientData.profile_img"
+    class="rounded-full"
+    width="50"
+    height="50"
+    [alt]="" />
   <div class="text-sm font-medium flex items-center">
-    {{ patientData.patientName }}
+    {{ patientData.first_name }}
   </div>
 </div>
-<mat-dialog-content class="mat-typography ">
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" >
-    <div class="lg:grid grid-cols-2 gap-3 mt-4">
-      <!-- *****patientName***** -->
+<mat-dialog-content class="mat-typography">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="mt-4">
+      <!-- *****first_name***** -->
       <mat-form-field
-        data-testing="patientName"
+        data-testing="first_name"
         appearance="outline"
         class="w-full">
-        <mat-label>patientName</mat-label>
+        <mat-label>first_name</mat-label>
         <input
           type="text"
           matInput
           [errorStateMatcher]="matcher"
-          formControlName="patientName"
-          placeholder="patientName" />
+          formControlName="first_name"
+          placeholder="first_name" />
         <!-- Error handling -->
         <mat-error
           *ngIf="
-            patientName?.hasError('patientName') &&
-            !patientName?.hasError('required')
+            first_name?.hasError('first_name') &&
+            !first_name?.hasError('required')
           "
-          >Please enter a valid patientName</mat-error
+          >Please enter a valid first_name</mat-error
         >
-        <mat-error *ngIf="patientName?.hasError('required')"
-          >patientName is <strong>required</strong></mat-error
+        <mat-error *ngIf="first_name?.hasError('required')"
+          >first_name is <strong>required</strong></mat-error
         >
-        <mat-error *ngIf="form.controls.patientName.hasError('minlength')"
-          >patientName is too short
+        <mat-error *ngIf="form.controls.first_name.hasError('minlength')"
+          >first_name is too short
           <strong>{{
-            form.controls.patientName.getError('minlength')?.requiredLength
+            form.controls.first_name.getError('minlength')?.requiredLength
           }}</strong></mat-error
         >
-        <mat-error *ngIf="patientName?.hasError('banWords')"
+        <mat-error *ngIf="first_name?.hasError('banWords')"
           >The value
-          <strong>{{ patientName?.getError('banWords').bannedWord }} </strong>is
+          <strong>{{ first_name?.getError('banWords').bannedWord }} </strong>is
           banned</mat-error
         >
       </mat-form-field>
-      <mat-radio-group aria-label="Select an option">
-        <label for="item">Gender :</label>
-        @for (item of genders; track $index) {
-        <mat-radio-button [value]="item" [checked]="item">{{
-          item
-        }}</mat-radio-button>
-        }
-      </mat-radio-group>
-    </div>
-    <div class="lg:grid grid-cols-2 gap-3">
-      <!-- *****gender***** -->
 
-      <!-- *****Mobile***** -->
-      <!-- <mat-form-field
-        data-testing="phoneNumber"
+      <!-- *****last_name***** -->
+      <mat-form-field
+        data-testing="last_name"
         appearance="outline"
         class="w-full">
-        <mat-label>Mobile</mat-label>
-        <ngx-mat-intl-tel-input
-          [preferredCountries]="['my']"
-          [enablePlaceholder]="true"
-          [enableSearch]="true"
-          name="mobile"
-          formControlName="mobile"></ngx-mat-intl-tel-input> 
+        <mat-label>last_name</mat-label>
+        <input
+          type="text"
+          matInput
+          [errorStateMatcher]="matcher"
+          formControlName="last_name"
+          placeholder="last_name" />
+        <!-- Error handling -->
         <mat-error
-          *ngIf="mobile?.hasError('mobile') && !mobile?.hasError('required')"
-          >Please enter a valid mobile</mat-error
+          *ngIf="
+            last_name?.hasError('last_name') && !last_name?.hasError('required')
+          "
+          >Please enter a valid last_name</mat-error
         >
-        <mat-error *ngIf="mobile?.hasError('required')"
-          >mobile is <strong>required</strong></mat-error
+        <mat-error *ngIf="last_name?.hasError('required')"
+          >last_name is <strong>required</strong></mat-error
         >
-      </mat-form-field> -->
-    </div>
-    <div class="lg:grid grid-cols-2 gap-3">
+        <mat-error *ngIf="form.controls.last_name.hasError('minlength')"
+          >last_name is too short
+          <strong>{{
+            form.controls.last_name.getError('minlength')?.requiredLength
+          }}</strong></mat-error
+        >
+        <mat-error *ngIf="last_name?.hasError('banWords')"
+          >The value
+          <strong>{{ last_name?.getError('banWords').bannedWord }} </strong>is
+          banned</mat-error
+        >
+      </mat-form-field>
+
       <!-- *****Year of birth***** -->
       <mat-form-field appearance="outline" class="w-full mb-1">
         <mat-label>Choose a date</mat-label>
         <input
           matInput
           [matDatepicker]="picker"
-          formControlName="dateOfBirth" />
+          formControlName="date_of_birth" />
         <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
         <mat-datepicker-toggle matIconSuffix [for]="picker">
           <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
         </mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
-      <!-- *****Age***** -->
-      <mat-form-field data-testing="Age" appearance="outline" class="w-full">
-        <mat-label>Age</mat-label>
-        <input
-          type="text"
-          matInput
-          [errorStateMatcher]="matcher"
-          formControlName="age"
-          placeholder="age" />
-        <!-- Error handling -->
-        <mat-error *ngIf="age?.hasError('age') && !age?.hasError('required')"
-          >Please enter a valid age</mat-error
-        >
-        <mat-error *ngIf="age?.hasError('required')"
-          >age is <strong>required</strong></mat-error
-        >
-        <mat-error *ngIf="form.controls.age.hasError('minlength')"
-          >age is too short
-          <strong>{{
-            form.controls.age.getError('minlength')?.requiredLength
-          }}</strong></mat-error
-        >
-        <mat-error *ngIf="age?.hasError('banWords')"
-          >The value
-          <strong>{{ age?.getError('banWords').bannedWord }} </strong>is
-          banned</mat-error
-        >
-      </mat-form-field>
-    </div>
-    <div class="lg:grid grid-cols-2 gap-3">
       <!-- *****email***** -->
       <mat-form-field data-testing="email" appearance="outline" class="w-full">
         <mat-label>Email</mat-label>
@@ -134,7 +106,8 @@
           [errorStateMatcher]="matcher"
           formControlName="email"
           placeholder="email"
-          class="w-full" />
+          class="w-full"
+          readonly />
         <!-- Error handling -->
         <mat-error
           *ngIf="email?.hasError('email') && !email?.hasError('required')"
@@ -154,7 +127,7 @@
           type="text"
           matInput
           [errorStateMatcher]="matcher"
-          formControlName="bloodPressure"
+          formControlName="blood_pressure"
           placeholder="BloodPressure" />
         <!-- Error handling -->
         <mat-error
@@ -167,10 +140,10 @@
         <mat-error *ngIf="bloodPressure?.hasError('required')"
           >bloodPressure is <strong>required</strong></mat-error
         >
-        <mat-error *ngIf="form.controls.bloodPressure.hasError('minlength')"
+        <mat-error *ngIf="form.controls.blood_pressure.hasError('minlength')"
           >bloodPressure is too short
           <strong>{{
-            form.controls.bloodPressure.getError('minlength')?.requiredLength
+            form.controls.blood_pressure.getError('minlength')?.requiredLength
           }}</strong></mat-error
         >
         <mat-error *ngIf="bloodPressure?.hasError('banWords')"
@@ -186,26 +159,30 @@
           type="text"
           matInput
           [errorStateMatcher]="matcher"
-          formControlName="injury"
+          formControlName="injury_condition"
           placeholder="Injury/Condition" />
         <!-- Error handling -->
         <mat-error
-          *ngIf="injury?.hasError('injury') && !injury?.hasError('required')"
+          *ngIf="
+            injury_condition?.hasError('injury_condition') &&
+            !injury_condition?.hasError('required')
+          "
           >Please enter a valid injury</mat-error
         >
-        <mat-error *ngIf="injury?.hasError('required')"
+        <mat-error *ngIf="injury_condition?.hasError('required')"
           >injury is <strong>required</strong></mat-error
         >
-        <mat-error *ngIf="form.controls.injury.hasError('minlength')"
+        <mat-error *ngIf="form.controls.injury_condition.hasError('minlength')"
           >injury is too short
           <strong>{{
-            form.controls.injury.getError('minlength')?.requiredLength
+            form.controls.injury_condition.getError('minlength')?.requiredLength
           }}</strong></mat-error
         >
-        <mat-error *ngIf="injury?.hasError('banWords')"
+        <mat-error *ngIf="injury_condition?.hasError('banWords')"
           >The value
-          <strong>{{ injury?.getError('banWords').bannedWord }} </strong>is
-          banned</mat-error
+          <strong
+            >{{ injury_condition?.getError('banWords').bannedWord }} </strong
+          >is banned</mat-error
         >
       </mat-form-field>
       <!-- *****BloodGroup***** -->
@@ -214,16 +191,18 @@
         appearance="outline"
         class="w-full">
         <mat-label>BloodGroup</mat-label>
-        <mat-select formControlName="bloodGroup" name="g">
+        <mat-select
+          formControlName="blood_group"
+          name="g"
+          [(value)]="defaultValueBloodGroup"
+         >
           <mat-option
-            *ngFor="let b of bloodGroups; trackBy: trackByFn"
-            [value]="b"
-            >{{ b }}</mat-option
+            *ngFor="let blood of bloodGroups; trackBy: trackByFn"
+            [value]="blood.id"
+            >{{ blood.value }}</mat-option
           >
         </mat-select>
       </mat-form-field>
-    </div>
-    <div class="lg:grid grid-cols-1">
       <!-- *****Address***** -->
       <mat-form-field
         data-testing="Address"
@@ -256,13 +235,13 @@
           banned</mat-error
         >
       </mat-form-field>
-    </div>
 
-    <mat-dialog-actions>
-      <button mat-button mat-dialog-close>Cancel</button>
-      <button mat-button mat-dialog-close cdkFocusInitial type="submit">
-        Update
-      </button>
-    </mat-dialog-actions>
+      <mat-dialog-actions>
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-button mat-dialog-close cdkFocusInitial type="submit">
+          Update
+        </button>
+      </mat-dialog-actions>
+    </div>
   </form>
 </mat-dialog-content>

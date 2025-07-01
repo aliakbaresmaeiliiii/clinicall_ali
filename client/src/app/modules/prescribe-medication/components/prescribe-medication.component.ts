@@ -180,13 +180,13 @@ export class PrescribeMedicationComponent
     const filterValue =
       this.form.get('patientInfo.patientName')?.value?.toLowerCase() || '';
     this.filteredPatient = this.patientInfo.filter(p =>
-      p.patientName?.toLowerCase().includes(filterValue)
+      p.first_name?.toLowerCase().includes(filterValue)
     );
   }
   fetchPatients() {
     const cachedData = this.transferState.get(this.DATA_KEY_PATIENT, null);
     if (!cachedData) {
-      this.service.getPatients().subscribe((response: any) => {
+      this.service.getPatients('').subscribe((response: any) => {
         if (response && response.data) {
           this.filteredPatient = [...response.data];
           this.transferState.set(this.DATA_KEY_PATIENT, response.data);
@@ -278,12 +278,12 @@ export class PrescribeMedicationComponent
   }
   onSelectedChange(patienData: PatientDTO) {
     this.patientId = patienData.patient_id;
-    const formattedDate = new Date(patienData.dateOfBirth)
+    const formattedDate = new Date(patienData.date_of_birth)
       .toISOString()
       .split('T')[0];
     this.dateOfBirth?.setValue(formattedDate);
-    this.bloodGroup?.setValue(patienData.bloodGroup);
-    this.bloodPressure?.setValue(patienData.bloodPressure);
+    this.bloodGroup?.setValue(patienData.blood_group);
+    this.bloodPressure?.setValue(patienData.blood_pressure);
     this.haemoglobin?.setValue(patienData.haemoglobin);
     this.mobile?.setValue(patienData.mobile);
     this.sugarLevel?.setValue(patienData.sugarLevel);

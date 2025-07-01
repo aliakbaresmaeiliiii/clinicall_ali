@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { BehaviorSubject, map, Observable } from 'rxjs';
+import { BehaviorSubject, map, Observable, ObservedValueOf } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
   DoctorScheduleAvailability,
@@ -46,8 +46,12 @@ export class DoctorsService {
     // .pipe(map(response => response));
   }
 
- 
-
+  getDoctorsClinic(queryParamas?:any): Observable<any> {
+    return this.#http.get(`${this.config}clinic/doctors`);
+  }
+  getDoctorsDetailClinic(id:string):Observable<any>{
+   return this.#http.get(`${this.config}clinic/doctors-detail/${id}`)
+  }
   addDoctor(formData: any): Observable<DoctorsDTO[]> {
     return this.#http.post<DoctorsDTO[]>(
       `${this.config}admin/add-doctor`,
@@ -80,7 +84,7 @@ export class DoctorsService {
 
   updateDoctor(formData: any): Observable<DoctorsDTO[]> {
     return this.#http.put<DoctorsDTO[]>(
-      `${this.config}admin/updateDoctor`,
+      `${this.config}admin/updateDoctor/${formData.id}`,
       formData
     );
   }
@@ -142,5 +146,11 @@ export class DoctorsService {
 
   getAllInsurances(): Observable<InsurancesDTO> {
     return this.#http.get<InsurancesDTO>(`${this.config}getAllInsurances`);
+  }
+
+  deleteDoctor(doctor_id: string) {
+    return this.#http.delete(
+      `${this.config}doctors/delete-doctor/${doctor_id}`
+    );
   }
 }

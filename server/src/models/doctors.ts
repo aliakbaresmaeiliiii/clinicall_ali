@@ -9,6 +9,7 @@ export interface DoctorsDTO {
   password: Password;
   token_verify: string;
   verify_code: string;
+  address: AddressDTO;
   phone: string;
   service_id: number;
   visit_history_id: number;
@@ -62,4 +63,19 @@ export interface SubSpecialty {
   sub_specialty_id: number | null; // Nullable in case no sub-specialties exist
   sub_specialty_name: string | null;
   sub_specialty_image: string | null;
+}
+
+export interface AddressDTO {
+  id: number;
+  address_line1: string;
+  address_line2: string;
+  city_id: number;
+  zipcode: string;
+  country: string;
+  latitude: string;
+  longitude: string;
+  is_primary: Boolean;
+  created_at: Date;
+  updated_at: Date;
+  doctor_id: number;
 }

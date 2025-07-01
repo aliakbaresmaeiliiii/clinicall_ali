@@ -270,7 +270,7 @@ export class FilterLayoutComponent implements OnInit {
   }
 
   shareInfo(docotoInfo: DoctorsDTO) {
-    const doctorLink = `localhost:4200/doctor/${docotoInfo.name}/${docotoInfo.id}`; // Generate the doctor's link
+    const doctorLink = `localhost:4200/doctor/${docotoInfo.first_name}${docotoInfo.last_name}/${docotoInfo.id}`; // Generate the doctor's link
     this.dialog.open(CopyLinkDialogComponent, {
       data: { link: doctorLink },
     });

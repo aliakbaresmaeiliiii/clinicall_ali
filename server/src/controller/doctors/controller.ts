@@ -29,6 +29,24 @@ router.get(
   })
 );
 
+router.get(
+  "/clinic/doctors",
+   asyncHandler(async (req: Request, res: Response): Promise<any> => {
+    const doctos = await DoctorsService.getClinicDoctors();
+    const buildResponse = BuildResponse.get(doctos);
+    return res.status(buildResponse.code).json(buildResponse);
+  })
+);
+router.get(
+  "/clinic/doctors-detail/:id",
+   asyncHandler(async (req: Request, res: Response): Promise<any> => {
+     const id = +req.params.id;
+    const doctos = await DoctorsService.getDoctorDetailClinic(id);
+    const buildResponse = BuildResponse.get(doctos);
+    return res.status(buildResponse.code).json(buildResponse);
+  })
+);
+
 // router.get(
 //   "/getMostPopularDoctor",
 //   asyncHandler(async (req: any, res: any) => {
@@ -69,10 +87,11 @@ router.post(
 // );
 
 router.put(
-  "/admin/updateDoctor",
+  "/admin/updateDoctor/:id",
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
+    const id = +req.params.id;
     const formData = req.body;
-    const data = await DoctorsService.updateDoctor(formData);
+    const data = await DoctorsService.updateDoctor(formData,id);
     const buildResponse = BuildResponse.updated(data);
     return res.status(buildResponse.code).json(buildResponse);
   })
@@ -232,6 +251,16 @@ router.get(
   `/doctors/services`,
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const data = await DoctorsService.fetchServices();
+    const buildResponse = BuildResponse.get(data);
+    return res.status(buildResponse.code).json(buildResponse);
+  })
+);
+
+router.delete(
+  `/doctors/delete-doctor/:doctor_id`,
+  asyncHandler(async (req: Request, res: Response): Promise<any> => {
+    const id = +req.params.doctor_id;
+    const data = await DoctorsService.removeDoctor(id);
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
   })

@@ -10,7 +10,7 @@ import {
 } from '../auth/models/user';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import { IPatient } from '../auth/models/IPatient';
+import { PatientDTO } from '../../modules/patients/model/patients.model';
 
 @Injectable({
   providedIn: 'root',
@@ -66,7 +66,7 @@ export class AuthService {
   doctorSignIn(userData: any): Observable<any> {
     return this.#http.post<any>(`${this.config}auth/doctor-sign-in`, userData);
   }
-  patientSignIn(userData: IPatient): Observable<User> {
+  patientSignIn(userData: PatientDTO): Observable<User> {
     return this.#http.post<User>(
       `${this.config}auth/patient-sign-in`,
       userData

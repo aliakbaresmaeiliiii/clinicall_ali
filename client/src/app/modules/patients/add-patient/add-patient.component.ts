@@ -1,15 +1,15 @@
 import { Component, HostListener, inject, OnInit } from '@angular/core';
 import { Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input';
 import { debounceTime, switchMap } from 'rxjs';
 import { BaseComponent } from '../../../shared/components/base/base.component';
+import { AgePipe } from '../../../shared/pipes/age.pipe';
+import { ShareService } from '../../../shared/services/share.service';
 import { banWords } from '../../../shared/validators/ban-words.validators';
 import { UniqueNicknameValidator } from '../../../shared/validators/unique-nickname.validators';
-import { PatientDTO, PatientMedicalRecord } from '../model/patients.model';
+import { PatientDTO } from '../model/patients.model';
 import { PatientsService } from '../services/patients.service';
-import { ShareService } from '../../../shared/services/share.service';
-import { AgePipe } from '../../../shared/pipes/age.pipe';
-import { CountryISO, PhoneNumberFormat } from 'ngx-intl-tel-input';
 
 @Component({
   selector: 'app-add-patient',
@@ -42,7 +42,7 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
   CountryISO = CountryISO;
   PhoneNumberFormat = PhoneNumberFormat;
   form = this.fb.group({
-    patientName: [
+    first_name: [
       '',
       [
         Validators.required,
@@ -52,7 +52,7 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
     ],
     gender: ['Man'],
     mobile: ['', Validators.required],
-    dateOfBirth: ['', Validators.required],
+    date_of_birth: ['', Validators.required],
     age: [null as any | null, { disable: true }],
     email: ['a@gmail.com', [Validators.required, Validators.email]],
     maritalStatus: ['Single'],
@@ -82,7 +82,7 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
     });
     this.validationAge();
 
-    this.dateOfBirth?.valueChanges.subscribe(dob => {
+    this.date_of_birth?.valueChanges.subscribe(dob => {
       if (dob) {
         const age = this.calculateAge(new Date(dob));
         this.age?.patchValue(age);
@@ -106,7 +106,7 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
   validationAge() {
     this.minDate = new Date(1940, 1, 1);
     this.maxDate = new Date(2024, 11, 31);
-    this.dateOfBirth?.valueChanges.subscribe(date => {
+    this.date_of_birth?.valueChanges.subscribe(date => {
       if (date) {
         const age = this.agePipe.transform(date);
         if (age < 30) {
@@ -151,10 +151,10 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
     if (this.profileImg) {
       const imgProfile = this.profileImg;
       const payload: PatientDTO = {
-        patientName: this.form.value.patientName,
+        first_name: this.form.value.first_name,
         gender: this.form.value.gender,
         mobile: this.form.value.mobile,
-        dateOfBirth: this.form.value.dateOfBirth as String,
+        date_of_birth: this.form.value.date_of_birth,
         address: this.form.value.address,
         email: this.form.value.email,
         age: this.form.value.age,
@@ -182,8 +182,8 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
     }
   }
   trackByFn() {}
-  get patientName() {
-    return this.form.get('patientName');
+  get first_name() {
+    return this.form.get('first_name');
   }
 
   get age() {
@@ -226,8 +226,8 @@ export class AddPatientComponent extends BaseComponent implements OnInit {
     return this.form.get('description');
   }
 
-  get dateOfBirth() {
-    return this.form.get('dateOfBirth');
+  get date_of_birth() {
+    return this.form.get('date_of_birth');
   }
 
   get clininPassword() {

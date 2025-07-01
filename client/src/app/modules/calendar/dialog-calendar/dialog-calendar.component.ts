@@ -114,7 +114,7 @@ export class DialogCalendarComponent {
   fetchPatients() {
     const cachedData = this.transferState.get(this.DATA_KEY_PATIENT, null);
     if (!cachedData) {
-      this.service.getPatients().subscribe((response: any) => {
+      this.service.getPatients('').subscribe((response: any) => {
         if (response && response.data) {
           this.filteredPatient = [...response.data];
           this.transferState.set(this.DATA_KEY_PATIENT, response.data);

@@ -1,28 +1,27 @@
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import {
   ChangeDetectionStrategy,
   Component,
   inject,
   OnInit,
-  signal,
-  Signal,
+  signal
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { MatTableDataSource } from '@angular/material/table';
 import { environment } from '../../../environments/environment';
 import { BaseComponent } from '../../../shared/components/base/base.component';
 import { PatientDTO } from '../model/patients.model';
 import { PatientsService } from '../services/patients.service';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { EditPatientDialogComponent } from '../edit-patient-dialog/edit-patient-dialog.component';
 
 @Component({
-    selector: 'app-patient-detail',
-    templateUrl: './patient-detail.component.html',
-    styleUrl: './patient-detail.component.scss',
-    changeDetection: ChangeDetectionStrategy.Default,
-    standalone: false
+  selector: 'app-patient-detail',
+  templateUrl: './patient-detail.component.html',
+  styleUrl: './patient-detail.component.scss',
+  changeDetection: ChangeDetectionStrategy.Default,
+  standalone: false,
 })
 export class PatientDetailComponent extends BaseComponent implements OnInit {
-  service = inject(PatientsService);
+  patientsService = inject(PatientsService);
   breakPointObserver = inject(BreakpointObserver);
   patient_id = signal<Object>({});
   patientData!: PatientDTO[];
@@ -30,7 +29,7 @@ export class PatientDetailComponent extends BaseComponent implements OnInit {
   config = environment.urlProfileImg;
   isMobile: boolean = false;
   displayedColumns: string[] = [
-    'Date',
+    'visit_date',
     'Doctor',
     'Treatment',
     'Charges',
@@ -40,23 +39,22 @@ export class PatientDetailComponent extends BaseComponent implements OnInit {
   constructor() {
     super();
     this.activatedRoute.params.subscribe((param: any) => {
-      this.patient_id.set(param.id) 
+      this.patient_id.set(param);
       this.getData(param.id);
     });
   }
 
   ngOnInit(): void {
-    this.breakPointObserver.observe([Breakpoints.Handset])
-    .subscribe(result=>{
-      this.isMobile = result.matches
-    })
+    this.breakPointObserver.observe([Breakpoints.Handset]).subscribe(result => {
+      this.isMobile = result.matches;
+    });
   }
 
-  getData(patient_id: {id:number}) {
-    // this.patientDetailSignal = toSignal(this.service.patientDetial(patient_id), {
-    //   initialValue: [],
-    // });
-    this.service.getPatients(patient_id).subscribe((response: any) => {
+  applyFilter(inputValue: any) {
+    const query = inputValue.target.value as String;
+  }
+  getData(patient_id: string) {
+    this.patientsService.patientDetial(patient_id).subscribe((response: any) => {
       const newData = response.map((patient: any) => {
         patient.profileImage = patient.profileImage
           ? `${environment.urlProfileImg}${patient.profileImage}`
@@ -66,7 +64,7 @@ export class PatientDetailComponent extends BaseComponent implements OnInit {
       this.dataSource = new MatTableDataSource(newData);
       this.patientData = newData;
     });
-  }
+  } 
 
   getProfileImageUrl(profileImage: string): string {
     return profileImage
@@ -78,7 +76,11 @@ export class PatientDetailComponent extends BaseComponent implements OnInit {
     row: PatientDTO,
     enterAnimationDuration: string,
     exitAnimationDuration: string
-  ) {}
+  ) {
+    this.dialog.open(EditPatientDialogComponent,{
+      data:row
+    })
+  }
   deletePatient(
     row: PatientDTO,
     enterAnimationDuration: string,

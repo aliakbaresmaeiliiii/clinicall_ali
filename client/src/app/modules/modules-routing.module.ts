@@ -30,6 +30,12 @@ const routes: Routes = [
           import('./patients/patients.module').then(p => p.PatientsModule),
         data: { breadcrumb: 'patients' },
       },
+      {
+        path: 'doctors',
+        loadChildren: () =>
+          import('./doctors/doctors.module').then(d => d.DoctorsModule),
+        data: { breadcrumb: 'doctors' },
+      },
       // children: [
       //   // {
       //   //   path: '',

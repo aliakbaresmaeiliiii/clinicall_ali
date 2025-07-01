@@ -4,38 +4,38 @@
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-4">
       <div class="lg:grid grid-cols-2 gap-3">
-        <!-- *****patientName***** -->
+        <!-- *****first_name***** -->
         <mat-form-field
-          data-testing="patientName"
+          data-testing="first_name"
           appearance="outline"
           class="w-full">
-          <mat-label>patientName</mat-label>
+          <mat-label>first_name</mat-label>
           <input
             type="text"
             matInput
             [errorStateMatcher]="matcher"
-            formControlName="patientName"
-            placeholder="patientName" />
+            formControlName="first_name"
+            placeholder="first_name" />
           <!-- Error handling -->
           <mat-error
             *ngIf="
-              patientName?.hasError('patientName') &&
-              !patientName?.hasError('required')
+              first_name?.hasError('first_name') &&
+              !first_name?.hasError('required')
             "
-            >Please enter a valid patientName</mat-error
+            >Please enter a valid first_name</mat-error
           >
-          <mat-error *ngIf="patientName?.hasError('required')"
-            >patientName is <strong>required</strong></mat-error
+          <mat-error *ngIf="first_name?.hasError('required')"
+            >first_name is <strong>required</strong></mat-error
           >
-          <mat-error *ngIf="form.controls.patientName.hasError('minlength')"
-            >patientName is too short
+          <mat-error *ngIf="form.controls.first_name.hasError('minlength')"
+            >first_name is too short
             <strong>{{
-              form.controls.patientName.getError('minlength')?.requiredLength
+              form.controls.first_name.getError('minlength')?.requiredLength
             }}</strong></mat-error
           >
-          <mat-error *ngIf="patientName?.hasError('banWords')"
+          <mat-error *ngIf="first_name?.hasError('banWords')"
             >The value
-            <strong>{{ patientName?.getError('banWords').bannedWord }} </strong
+            <strong>{{ first_name?.getError('banWords').bannedWord }} </strong
             >is banned</mat-error
           >
         </mat-form-field>
@@ -97,7 +97,7 @@
             [min]="minDate"
             matInput
             [matDatepicker]="picker"
-            formControlName="dateOfBirth" />
+            formControlName="date_of_birth " />
           <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
           <mat-datepicker-toggle matIconSuffix [for]="picker">
             <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>

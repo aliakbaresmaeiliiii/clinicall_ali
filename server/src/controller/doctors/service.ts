@@ -10,12 +10,15 @@ import {
   addDoctor,
   booked,
   checkDoctorPhoneNumberExists,
+  deleteDoctor,
   doctorSchadules,
   doctorScheduleTimeAvailability,
   existingFeedback,
   filterServicesById,
   filterSpecialtyById,
   getDoctoLike,
+  getDoctorsClinic,
+  getDoctorsDetailClinic,
   getDoctorsFromElastic,
   getReviews,
   getServices,
@@ -29,10 +32,9 @@ import {
 const moment = require("moment");
 
 export class DoctorsService {
-
-  
   public static async getDoctors(filters: {
-    name?: string;
+    first_name?: string;
+    last_name?: string;
     id?: string;
     city_id?: string;
     doctor_id?: string;
@@ -44,8 +46,24 @@ export class DoctorsService {
     maxRating?: number;
     isPopular?: boolean;
   }) {
-    const data = await 
-    getDoctorsFromElastic(filters);
+    const data = await getDoctorsFromElastic(filters);
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
+  }
+
+  public static async getClinicDoctors() {
+    const data = await getDoctorsClinic();
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
+  }
+  public static async getDoctorDetailClinic(id:number) {
+    const data = await getDoctorsDetailClinic(id);
     if (data) {
       return { message: "ok", data };
     } else {
@@ -79,8 +97,8 @@ export class DoctorsService {
   //     return null;
   //   }
   // }
-  public static async updateDoctor(formData: DoctorsDTO) {
-    const data = await updateDoctor(formData);
+  public static async updateDoctor(formData: DoctorsDTO,id:number) {
+    const data = await updateDoctor(formData,id);
     if (data) {
       return { message: "ok", data };
     } else {
@@ -216,6 +234,14 @@ export class DoctorsService {
   }
   public static async getDcotorLike(patient_id: number) {
     const data = await getDoctoLike(patient_id);
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
+  }
+  public static async removeDoctor(patient_id: number) {
+    const data = await deleteDoctor(patient_id);
     if (data) {
       return { message: "ok", data };
     } else {
