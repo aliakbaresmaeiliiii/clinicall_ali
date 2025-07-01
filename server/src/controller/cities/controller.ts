@@ -6,10 +6,10 @@ import { citiesService } from "./service";
 router.get(
   "/getAllCities",
   asyncHandler(async (req: any, res: any) => {
-    const data = await citiesService.getAllCities();
+    const filters = req.query; 
+    const data = await citiesService.getAllCities(filters);
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
-
   })
 );
 router.get(
