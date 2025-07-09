@@ -12,6 +12,7 @@ import { banWords } from '../../../shared/validators/ban-words.validators';
 import { PatientDTO } from '../../patients/model/patients.model';
 import { PatientsService } from '../../patients/services/patients.service';
 import { Colors } from '../enum/enum-color';
+import { CalendarService } from '../services/calendar.service';
 
 const today = new Date();
 const month = today.getMonth();
@@ -38,6 +39,8 @@ export class DialogCalendarComponent {
   DATA_KEY_PATIENT = makeStateKey<any>('pateintInfo');
   service = inject(PatientsService);
   selectedPatient: string = '';
+  k = inject(CalendarService);
+
   isShowTime = false;
   foods: any[] = [
     { value: 'steak-0', viewValue: 'Steak' },
@@ -49,6 +52,8 @@ export class DialogCalendarComponent {
   defaultTime: string = '';
   firstSelectedTime: string = '';
   secondSelectedTime: string = '';
+  dataContextMenu: any;
+  calendarService: any;
 
   constructor(
     public dialogRef: MatDialogRef<DialogCalendarComponent>,
@@ -107,7 +112,7 @@ export class DialogCalendarComponent {
     const filterValue =
       this.form.get('patientInfo.patientName')?.value?.toLowerCase() || '';
     this.filteredPatient = this.patientInfo.filter(p =>
-      p.patientName?.toLowerCase().includes(filterValue)
+      p.first_name?.toLowerCase().includes(filterValue)
     );
   }
 
@@ -198,5 +203,14 @@ export class DialogCalendarComponent {
     const secondIndex = firstIndex;
     this.secondSelectedTime =
       this.timeSlots[secondIndex] || this.timeSlots[firstIndex];
+  }
+
+  deleteAppointment() {
+    const getEventId = this.dataContextMenu.dataList[0].event_id;
+    this.calendarService.deleteAppointment(getEventId).subscribe((res: any) => {
+      if (res) {
+        this.ngOnInit();
+      }
+    });
   }
 }

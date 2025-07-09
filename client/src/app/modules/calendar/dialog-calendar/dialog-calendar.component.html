@@ -62,7 +62,10 @@
               matStartDate
               placeholder="Start date"
               formControlName="start_date" />
-            <input matEndDate placeholder="End date" formControlName="end_date" />
+            <input
+              matEndDate
+              placeholder="End date"
+              formControlName="end_date" />
           </mat-date-range-input>
           <mat-datepicker-toggle
             matIconSuffix
@@ -91,7 +94,9 @@
 
           <!-- Second Time Picker -->
           <mat-form-field appearance="outline" class="w-36">
-            <mat-select [(value)]="secondSelectedTime" formControlName="end_time">
+            <mat-select
+              [(value)]="secondSelectedTime"
+              formControlName="end_time">
               @for (time of timeSlots; track $index) {
               <mat-option
                 [value]="time"
@@ -141,13 +146,18 @@
     </button>
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button mat-button mat-dialog-close type="button">Cancel</button>
+    <button matButton="outlined" mat-dialog-close type="button">Cancel</button>
     <button
-      mat-button
+      matButton="outlined"
       [mat-dialog-close]="true"
       type="submit"
       [disabled]="!form.valid">
       Save
+    </button>
+
+    <button mat-raised-button color="warn" (click)="deleteAppointment()">
+      <mat-icon>delete</mat-icon>
+      Delete
     </button>
   </mat-dialog-actions>
 </form>

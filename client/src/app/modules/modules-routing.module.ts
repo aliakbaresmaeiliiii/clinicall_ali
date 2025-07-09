@@ -65,13 +65,13 @@ const routes: Routes = [
       //     title: 'Users',
       //     data: { breadcrumb: 'dashboard', icon: 'people' },
       //   },
-      //   {
-      //     path: 'schedule',
-      //     loadChildren: () =>
-      //       import('./calendar/calendar.module').then(d => d.CalendarModule),
-      //     title: 'Schedule',
-      //     data: { breadcrumb: 'dashboard', icon: 'calendar_today' },
-      //   },
+        {
+          path: 'schedule',
+          loadChildren: () =>
+            import('./calendar/calendar.module').then(d => d.CalendarModule),
+          title: 'Schedule',
+          data: { breadcrumb: 'dashboard', icon: 'calendar_today' },
+        },
 
       //   {
       //     path: 'settings',

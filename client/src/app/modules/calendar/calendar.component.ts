@@ -1,5 +1,5 @@
 import { CdkDragDrop, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CalendarDay } from './classes/calnder-day';
 import { DialogCalendarComponent } from './dialog-calendar/dialog-calendar.component';
@@ -42,6 +42,7 @@ export class CalendarComponent {
     'Saturday',
   ];
   displayMonth!: string;
+  displayDay = new Date().getDate();
   private monthIndex: number = 0;
   day!: Date;
   isSelected!: boolean;
@@ -49,10 +50,9 @@ export class CalendarComponent {
   dataCalendar: ICalendar[] = []; //
   dateToAdd: any;
   private intervalId: any;
-  constructor(
-    private matDialog: MatDialog,
-    private calendarService: CalendarService
-  ) {}
+
+  matDialog = inject(MatDialog);
+  calendarService = inject(CalendarService);
 
   ngOnInit(): void {
     this.generateCalendarDays(this.monthIndex);
