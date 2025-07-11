@@ -2,7 +2,11 @@ import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import { createSchema } from "../controller/user/schema";
 import { AdminDTO } from "../models/admin";
+<<<<<<< HEAD
 import { PatientDTO, patientMedicalRecordsDTO } from "../models/patients";
+=======
+import { PatientDTO } from "../models/patients";
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 import { PrescriptionMedicine } from "../models/prescription_medicine";
 import { IAppointment } from "../types/appointment.interface";
 import { Menu, Submenu } from "../types/navItem";
@@ -81,6 +85,7 @@ export async function getNavItems() {
     const menuMap = new Map<number, Menu>();
 
     const iconMap: { [key: string]: string } = {
+<<<<<<< HEAD
       Appointments: "appointment-icon",
       Dashboard: "dashboard-icon",
       Doctors: "doctor-icon",
@@ -92,13 +97,30 @@ export async function getNavItems() {
       Settings: "settings-icon",
       "Staff Management": "staff-icon",
       Inventory: "inventory-icon",
+=======
+      "Appointments": "appointment-icon",
+      "Dashboard": "dashboard-icon",
+      "Doctors": "doctor-icon",
+      "Services": "services-icon",
+      "Patients": "patient-icon",
+      "Prescriptions": "prescriptions-icon",
+      "Billing & Payments": "billing-icon",
+      "Reports & Analytics": "report-icon",
+      "Settings": "settings-icon",
+      "Staff Management": "staff-icon",
+      "Inventory": "inventory-icon",
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     };
     getManu.forEach((row) => {
       const menuId = row.menu_id;
       if (!menuMap.has(menuId)) {
         menuMap.set(menuId, {
           id: row.menu_id,
+<<<<<<< HEAD
           icon: iconMap[row.menu_name] || "default-icon",
+=======
+          icon: iconMap[row.menu_name] || 'default-icon',
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
           name: row.menu_name,
           path: row.menu_path,
           submenus: [],
@@ -117,11 +139,23 @@ export async function getNavItems() {
     return Array.from(menuMap.values());
   } catch (e) {
     console.log(e);
+<<<<<<< HEAD
     throw new ResponseError.InternalServer("An unexpected error occurred.");
   }
 }
 
 export async function updateAppointment(data: IAppointment) {
+=======
+    throw new ResponseError.InternalServer("An unexpected error occurred.")
+  }
+}
+
+
+
+export async function updateAppointment(
+  data: IAppointment
+) {
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
   // const result = await query<RowDataPacket[]>(
   //   `UPDATE ${coreSchema}.appointments
   //   SET date = ?, updated_at = ?
@@ -146,6 +180,7 @@ export async function deleteAppointment(event_id: string) {
   return result;
 }
 // ****** Patients ******
+<<<<<<< HEAD
 export async function getPatients(patient_id: string, queryString: string) {
   const patients = await query<RowDataPacket[]>(
     `
@@ -193,6 +228,24 @@ export async function getDoctorInfo(doctor_id: any) {
   return result;
 }
 
+=======
+export async function getPatients() {
+  const patients = await query<RowDataPacket[]>(`
+  SELECT p.first_name,p.last_name,p.first_name,p.email,p.date_of_birth,p.user_name,
+         p.phone,p.gender,p.address,p.first_name,p.national_code
+     FROM ${coreSchema}.patients p
+  `);
+  return patients;
+}
+export async function patientDetail(id: number): Promise<any> {
+  const result = await query<RowDataPacket>(
+    `SELECT * FROM ${coreSchema}.patients
+    WHERE id=?`,
+    { values: [id] }
+  );
+  return result;
+}
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 export async function checkPhoneNumberExists(mobile: string) {
   const result = await query<RowDataPacket>(
     `
@@ -255,15 +308,28 @@ export async function updatePatient(patientData: PatientDTO): Promise<any> {
   const result = await query<RowDataPacket>(
     `
       UPDATE ${coreSchema}.patients
+<<<<<<< HEAD
       SET first_name = ?,
           last_name = ?,
           date_of_birth = ?,
           email = ?,
+=======
+      SET patientName = ?,
+          gender = ?,
+          mobile = ?,
+          dateOfBirth = ?,
+          age = ?,
+          email = ?,
+          bloodPressure = ?,
+          injury = ?,
+          bloodGroup = ?,
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
           address = ?
       WHERE id = ?
       `,
     {
       values: [
+<<<<<<< HEAD
         patientData.first_name,
         patientData.last_name,
         patientData.date_of_birth,
@@ -292,6 +358,23 @@ export async function updatePatient(patientData: PatientDTO): Promise<any> {
     }
   );
   return { result, updateMedicalPatient };
+=======
+        patientData.patientName,
+        patientData.gender,
+        patientData.mobile,
+        patientData.dateOfBirth,
+        patientData.age,
+        patientData.email,
+        patientData.bloodPressure,
+        patientData.injury,
+        patientData.bloodGroup,
+        patientData.address,
+        patientData.id,
+      ],
+    }
+  );
+  return result;
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 }
 
 export async function getMedicine() {

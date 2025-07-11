@@ -29,6 +29,7 @@ router.get(
   })
 );
 
+<<<<<<< HEAD
 router.get(
   "/clinic/doctors",
    asyncHandler(async (req: Request, res: Response): Promise<any> => {
@@ -47,6 +48,8 @@ router.get(
   })
 );
 
+=======
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 // router.get(
 //   "/getMostPopularDoctor",
 //   asyncHandler(async (req: any, res: any) => {
@@ -87,11 +90,18 @@ router.post(
 // );
 
 router.put(
+<<<<<<< HEAD
   "/admin/updateDoctor/:id",
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const id = +req.params.id;
     const formData = req.body;
     const data = await DoctorsService.updateDoctor(formData,id);
+=======
+  "/admin/updateDoctor",
+  asyncHandler(async (req: Request, res: Response): Promise<any> => {
+    const formData = req.body;
+    const data = await DoctorsService.updateDoctor(formData);
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     const buildResponse = BuildResponse.updated(data);
     return res.status(buildResponse.code).json(buildResponse);
   })
@@ -255,6 +265,7 @@ router.get(
     return res.status(buildResponse.code).json(buildResponse);
   })
 );
+<<<<<<< HEAD
 
 router.delete(
   `/doctors/delete-doctor/:doctor_id`,
@@ -265,3 +276,5 @@ router.delete(
     return res.status(buildResponse.code).json(buildResponse);
   })
 );
+=======
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4

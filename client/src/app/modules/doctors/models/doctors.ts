@@ -4,9 +4,14 @@ export interface DoctorsDTO {
   position?: number | any;
   id?: any;
   doctor_id?: any;
+<<<<<<< HEAD
   first_name: string;
   last_name: string;
   addresses: doctorAddressesDTO;
+=======
+  name: string;
+  addresses: IDoctorAddresses[];
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
   phone?: string | undefined | null;
   specialty_name: string | null | undefined;
   dateOfBirth?: string | undefined | any;
@@ -17,7 +22,11 @@ export interface DoctorsDTO {
   age?: string | undefined | null;
   profile_img?: string | undefined | any;
   joingin_date?: Date;
+<<<<<<< HEAD
   gender?: "male" | "female";
+=======
+  gender?: string | null | undefined;
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
   location?: string | null | undefined;
   average_rating: number;
   medical_code: string;
@@ -70,7 +79,11 @@ export enum BookingStatus {
   is_available = 0,
 }
 
+<<<<<<< HEAD
 export interface doctorAddressesDTO {
+=======
+export interface IDoctorAddresses {
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
   address_line1: string;
   address_line2: string;
   city: string;
@@ -80,4 +93,7 @@ export interface doctorAddressesDTO {
   state: string;
   zipcode: string;
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4

@@ -9,7 +9,10 @@ export interface DoctorsDTO {
   password: Password;
   token_verify: string;
   verify_code: string;
+<<<<<<< HEAD
   address: AddressDTO;
+=======
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
   phone: string;
   service_id: number;
   visit_history_id: number;
@@ -64,6 +67,7 @@ export interface SubSpecialty {
   sub_specialty_name: string | null;
   sub_specialty_image: string | null;
 }
+<<<<<<< HEAD
 
 export interface AddressDTO {
   id: number;
@@ -79,3 +83,5 @@ export interface AddressDTO {
   updated_at: Date;
   doctor_id: number;
 }
+=======
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4

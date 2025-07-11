@@ -71,7 +71,10 @@ router.post(
     return res.status(buildResponse.code).json(buildResponse);
   })
 );
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 router.post(
   "/auth/verify-patient-email",
   asyncHandler(async function verifyEmail(

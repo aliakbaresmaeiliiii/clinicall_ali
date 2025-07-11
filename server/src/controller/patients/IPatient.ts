@@ -36,6 +36,7 @@ export interface IPatient {
 interface Password {
     confirmPassword: string;
     password: string;
+<<<<<<< HEAD
   }
 
 
@@ -54,3 +55,6 @@ export interface PatientMedicalRecord {
   description?: string | null;
   created_at?: string; // or Date if you parse it
 }
+=======
+  }
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4

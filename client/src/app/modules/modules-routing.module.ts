@@ -30,12 +30,15 @@ const routes: Routes = [
           import('./patients/patients.module').then(p => p.PatientsModule),
         data: { breadcrumb: 'patients' },
       },
+<<<<<<< HEAD
       {
         path: 'doctors',
         loadChildren: () =>
           import('./doctors/doctors.module').then(d => d.DoctorsModule),
         data: { breadcrumb: 'doctors' },
       },
+=======
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
       // children: [
       //   // {
       //   //   path: '',
@@ -65,6 +68,7 @@ const routes: Routes = [
       //     title: 'Users',
       //     data: { breadcrumb: 'dashboard', icon: 'people' },
       //   },
+<<<<<<< HEAD
         {
           path: 'schedule',
           loadChildren: () =>
@@ -72,6 +76,15 @@ const routes: Routes = [
           title: 'Schedule',
           data: { breadcrumb: 'dashboard', icon: 'calendar_today' },
         },
+=======
+      //   {
+      //     path: 'schedule',
+      //     loadChildren: () =>
+      //       import('./calendar/calendar.module').then(d => d.CalendarModule),
+      //     title: 'Schedule',
+      //     data: { breadcrumb: 'dashboard', icon: 'calendar_today' },
+      //   },
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 
       //   {
       //     path: 'settings',

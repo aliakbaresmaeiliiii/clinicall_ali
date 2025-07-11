@@ -99,7 +99,11 @@ export class SuggestionReplacedDoctorComponent
   takeTurn() {}
 
   shareInfo(docotoInfo: DoctorsDTO) {
+<<<<<<< HEAD
     const doctorLink = `localhost:4200/doctor/${docotoInfo.first_name}${docotoInfo.last_name}/${docotoInfo.id}`; // Generate the doctor's link
+=======
+    const doctorLink = `localhost:4200/doctor/${docotoInfo.name}/${docotoInfo.id}`; // Generate the doctor's link
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     this.dialog.open(CopyLinkDialogComponent, {
       data: { link: doctorLink },
     });
@@ -162,7 +166,11 @@ export class SuggestionReplacedDoctorComponent
   //   this.router.navigate([`/doctor/${doctorName}/${doctorId}`]);
   // }
   getAppointment(data: DoctorsDTO) {
+<<<<<<< HEAD
     const doctorName = `${data.first_name}${data.last_name}` ;
+=======
+    const doctorName = data.name;
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     const doctorId = data.id;
     this.countDoctorClick(doctorId).subscribe({
         next: () => {

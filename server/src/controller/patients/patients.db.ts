@@ -2,7 +2,11 @@ import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
 import { coreSchema, query, RowDataPacket } from "../../bin/mysql";
 import { ResponseError } from "../../modules/error/response_error";
+<<<<<<< HEAD
 import { IPatient, PatientMedicalRecord } from "./IPatient";
+=======
+import { IPatient } from "./IPatient";
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 
 export async function checkExistPatient(email: string): Promise<boolean> {
   try {
@@ -56,6 +60,7 @@ export async function registerPatient(data: IPatient): Promise<IPatient> {
   }
 }
 
+<<<<<<< HEAD
 export async function patientMedical(data: PatientMedicalRecord) {
   try {
   const result =  await query<RowDataPacket[]>(
@@ -67,6 +72,8 @@ export async function patientMedical(data: PatientMedicalRecord) {
 
 }
 
+=======
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 export async function addFavorite(patient_id: number, doctor_id: number) {
   try {
     const existingFavorite = await query<RowDataPacket[]>(
@@ -110,3 +117,8 @@ export async function addFavorite(patient_id: number, doctor_id: number) {
     throw new ResponseError.InternalServer("Failed to add favorite.");
   }
 }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4

@@ -12,7 +12,11 @@
         <mat-tab label="PatientInfo" [tabIndex]="0">
           <div formArrayName="patientInfo" class="p-5">
             <h2 class="text-3xl font-medium">{{ title() }}</h2>
+<<<<<<< HEAD
             <div class="lg:grid grid-cols-4 gap-3">
+=======
+            <div class="desktop:grid grid-cols-4 gap-3">
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
               <!-- *****Patient Name***** -->
               <mat-form-field appearance="outline" class="w-full">
                 <mat-select
@@ -85,17 +89,29 @@
                   formControlName="haemoglobin" />
               </mat-form-field>
 
+<<<<<<< HEAD
               <!-- *****md***** -->
+=======
+              <!-- *****mobile***** -->
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
               <mat-form-field
                 data-testing="department"
                 appearance="outline"
                 class="w-full">
+<<<<<<< HEAD
                 <mat-label>md</mat-label>
+=======
+                <mat-label>mobile</mat-label>
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
                 <input
                   type="text"
                   matInput
                   [errorStateMatcher]="matcher"
+<<<<<<< HEAD
                   formControlName="md" />
+=======
+                  formControlName="mobile" />
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
               </mat-form-field>
 
               <!-- *****sugarLevel***** -->
@@ -118,7 +134,11 @@
               </button>
               <button
                 [disabled]="!form.controls.patientInfo.valid"
+<<<<<<< HEAD
                 class="lg:m-0 tablet:mt-2 md:mt-2"
+=======
+                class="desktop:m-0 tablet:mt-2 mobile:mt-2"
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
                 mat-flat-button
                 data-testid="login-button"
                 type="button"
@@ -133,7 +153,11 @@
         <mat-tab label="Disease" [tabIndex]="1">
           <div
             formArrayName="diseases"
+<<<<<<< HEAD
             class="lg:grid grid-cols-4 gap-3 p-5">
+=======
+            class="desktop:grid grid-cols-4 gap-3 p-5">
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
             <!-- *****Diseases***** -->
             <mat-form-field appearance="outline" class="w-full">
               <mat-label>Selected Diseases...</mat-label>
@@ -192,7 +216,11 @@
             </button>
             <button
               [disabled]="!form.controls.patientInfo.valid"
+<<<<<<< HEAD
               class="lg:m-0 tablet:mt-2 md:mt-2"
+=======
+              class="desktop:m-0 tablet:mt-2 mobile:mt-2"
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
               mat-flat-button
               data-testid="login-button"
               type="button"
@@ -207,7 +235,11 @@
           <div formArrayName="medication">
             <div class="mt-4">
               <h2 class="text-3xl font-medium">Precription Medicine</h2>
+<<<<<<< HEAD
               <div class="lg:grid grid-cols-4 gap-3 pt-4 p-5">
+=======
+              <div class="desktop:grid grid-cols-4 gap-3 pt-4 p-5">
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
                 <!-- *****Medicine***** -->
                 <ali-select
                   label="Pick the Medicine"
@@ -315,7 +347,11 @@
               <!-- *****Next***** -->
               <button
                 [disabled]="!form.controls.medication.valid"
+<<<<<<< HEAD
                 class="lg:m-0 tablet:mt-2 md:mt-2"
+=======
+                class="desktop:m-0 tablet:mt-2 mobile:mt-2"
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
                 mat-flat-button
                 data-testid="login-button"
                 type="button"
@@ -346,8 +382,13 @@
                   <span class="pl-1">{{ item.sugarLevel }}</span>
                 </div>
                 <div>
+<<<<<<< HEAD
                   <span class="opacity-55">md:</span>
                   <span class="pl-1">{{ item.md }}</span>
+=======
+                  <span class="opacity-55">Mobile:</span>
+                  <span class="pl-1">{{ item.mobile }}</span>
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
                 </div>
                 <div>
                   <span class="opacity-55">Haemoglobin:</span>
@@ -355,7 +396,11 @@
                 </div>
                 <div>
                   <span class="opacity-55">Date of Birth:</span>
+<<<<<<< HEAD
                   <span class="pl-1">{{ item.date_of_birth }}</span>
+=======
+                  <span class="pl-1">{{ item.dateOfBirth }}</span>
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
                 </div>
                 <div>
                   <span class="opacity-55">Blood Pressure:</span>
@@ -422,7 +467,11 @@
             </ng-container>
           </div>
 
+<<<<<<< HEAD
           <div class="lg:grid grid-cols-2 gap-3 lg:mt-10 mb-2">
+=======
+          <div class="desktop:grid grid-cols-2 gap-3 desktop:mt-10 mb-2">
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
             <!-- *****CancelBTN***** -->
             <button mat-stroked-button type="button" (click)="form.reset()">
               Cancel
@@ -430,7 +479,11 @@
             <!-- *****SaveBTN***** -->
             <button
               [disabled]="!form.valid"
+<<<<<<< HEAD
               class="lg:m-0 tablet:mt-2 md:mt-2"
+=======
+              class="desktop:m-0 tablet:mt-2 mobile:mt-2"
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
               mat-flat-button
               data-testid="login-button"
               type="submit">

@@ -3,6 +3,7 @@
     <h2 class="text-xs font-medium">{{ title }}</h2>
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-4">
+<<<<<<< HEAD
       <div class="lg:grid grid-cols-2 gap-3">
         <!-- *****first_name***** -->
         <mat-form-field
@@ -10,10 +11,20 @@
           appearance="outline"
           class="w-full">
           <mat-label>first_name</mat-label>
+=======
+      <div class="desktop:grid grid-cols-2 gap-3">
+        <!-- *****patientName***** -->
+        <mat-form-field
+          data-testing="patientName"
+          appearance="outline"
+          class="w-full">
+          <mat-label>patientName</mat-label>
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
           <input
             type="text"
             matInput
             [errorStateMatcher]="matcher"
+<<<<<<< HEAD
             formControlName="first_name"
             placeholder="first_name" />
           <!-- Error handling -->
@@ -41,6 +52,36 @@
         </mat-form-field>
       </div>
       <div class="lg:grid grid-cols-2 gap-3">
+=======
+            formControlName="patientName"
+            placeholder="patientName" />
+          <!-- Error handling -->
+          <mat-error
+            *ngIf="
+              patientName?.hasError('patientName') &&
+              !patientName?.hasError('required')
+            "
+            >Please enter a valid patientName</mat-error
+          >
+          <mat-error *ngIf="patientName?.hasError('required')"
+            >patientName is <strong>required</strong></mat-error
+          >
+          <mat-error *ngIf="form.controls.patientName.hasError('minlength')"
+            >patientName is too short
+            <strong>{{
+              form.controls.patientName.getError('minlength')?.requiredLength
+            }}</strong></mat-error
+          >
+          <mat-error *ngIf="patientName?.hasError('banWords')"
+            >The value
+            <strong>{{ patientName?.getError('banWords').bannedWord }} </strong>is
+            banned</mat-error
+          >
+        </mat-form-field>
+  
+      </div>
+      <div class="desktop:grid grid-cols-2 gap-3">
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
         <!-- *****gender***** -->
         <mat-form-field
           data-testing="gender"
@@ -88,7 +129,11 @@
           </mat-error>
         </mat-form-field> -->
       </div>
+<<<<<<< HEAD
       <div class="lg:grid grid-cols-2 gap-3">
+=======
+      <div class="desktop:grid grid-cols-2 gap-3">
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
         <!-- *****Year of birth***** -->
         <mat-form-field appearance="outline" class="w-full mb-1">
           <mat-label>Choose a date</mat-label>
@@ -97,7 +142,11 @@
             [min]="minDate"
             matInput
             [matDatepicker]="picker"
+<<<<<<< HEAD
             formControlName="date_of_birth " />
+=======
+            formControlName="dateOfBirth" />
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
           <!-- <mat-hint>MM/DD/YYYY</mat-hint> -->
           <mat-datepicker-toggle matIconSuffix [for]="picker">
             <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
@@ -112,9 +161,13 @@
             matInput
             [errorStateMatcher]="matcher"
             formControlName="age"
+<<<<<<< HEAD
             placeholder="age"
             [disabled]="true"
             [readonly]="true" />
+=======
+            placeholder="age" />
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
           <!-- Error handling -->
           <mat-error *ngIf="age?.hasError('age') && !age?.hasError('required')"
             >Please enter a valid age</mat-error
@@ -135,7 +188,11 @@
           >
         </mat-form-field>
       </div>
+<<<<<<< HEAD
       <div class="lg:grid grid-cols-2 gap-3">
+=======
+      <div class="desktop:grid grid-cols-2 gap-3">
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
         <!-- *****email***** -->
         <mat-form-field
           data-testing="email"
@@ -173,7 +230,11 @@
           </mat-select>
         </mat-form-field>
       </div>
+<<<<<<< HEAD
       <div class="lg:grid grid-cols-1 gap-3">
+=======
+      <div class="desktop:grid grid-cols-1 gap-3">
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
         <!-- *****Address***** -->
         <mat-form-field
           data-testing="Address"
@@ -209,7 +270,11 @@
           >
         </mat-form-field>
       </div>
+<<<<<<< HEAD
       <div class="lg:grid grid-cols-3 gap-3">
+=======
+      <div class="desktop:grid grid-cols-3 gap-3">
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
         <!-- *****BloodGroup***** -->
         <mat-form-field
           data-testing="gender"
@@ -296,7 +361,11 @@
           >
         </mat-form-field>
       </div>
+<<<<<<< HEAD
       <div class="lg:grid grid-cols-3 gap-3">
+=======
+      <div class="desktop:grid grid-cols-3 gap-3">
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
         <!-- *****SugarLevel***** -->
         <mat-form-field
           data-testing="gender"
@@ -379,7 +448,11 @@
           >
         </mat-form-field>
       </div>
+<<<<<<< HEAD
       <div class="lg:grid grid-cols-3 gap-3">
+=======
+      <div class="desktop:grid grid-cols-3 gap-3">
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
         <!-- *****Doctor***** -->
         <mat-form-field
           data-testing="Doctor"
@@ -482,7 +555,11 @@
           >
         </mat-form-field>
       </div>
+<<<<<<< HEAD
       <div class="lg:grid grid-cols-2 gap-3 mb-2 border-dashed">
+=======
+      <div class="desktop:grid grid-cols-2 gap-3 mb-2 border-dashed">
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
         <app-img-uploader></app-img-uploader>
         <!-- *****description***** -->
         <mat-form-field
@@ -520,6 +597,7 @@
           >
         </mat-form-field>
       </div>
+<<<<<<< HEAD
       <mat-divider class="opacity-50"/>
       <div class="grid grid-cols-4 gap-4 mt-4">
           <mat-form-field appearance="outline" class="w-full">
@@ -572,16 +650,27 @@
       </div>
 
       <div class="lg:flex lg:justify-end w-full gap-3">
+=======
+      <div class="desktop:flex desktop:justify-end w-full gap-3">
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
         <!-- *****CancelBTN***** -->
         <button mat-stroked-button type="button" class="w-full">Cancel</button>
         <!-- *****SaveBTN***** -->
         <button
+<<<<<<< HEAD
           class="w-full lg:m-0 tablet:mt-2 md:mt-2"
           mat-flat-button
           data-testid="login-button"
           color="primary"
           type="submit"
           [disabled]="!form.valid">
+=======
+          class="w-full desktop:m-0 tablet:mt-2 mobile:mt-2"
+          mat-flat-button
+          data-testid="login-button"
+          color="primary"
+          type="submit">
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
           Add Patient
         </button>
       </div>

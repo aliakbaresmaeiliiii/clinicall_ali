@@ -2,14 +2,23 @@
 
 <ul class="font-light text-sm m-auto">
   <li>
+<<<<<<< HEAD
     <p><strong>Patient Name :</strong> {{ patientData.first_name }}</p>
     <p><strong>Gender :</strong> {{ patientData.gender }}</p>
+=======
+    <p>
+      <strong>Patient Name :</strong> {{ patientData.patientName
+      }}
+    </p>
+    <p ><strong>Gender :</strong> {{ patientData.gender }}</p>
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     <p><strong>Blood Group :</strong> {{ patientData.bloodGroup }}</p>
     <p><strong>Mobile :</strong> {{ patientData.mobile }}</p>
   </li>
 </ul>
 <mat-dialog-actions>
   <button mat-button mat-dialog-close>Cancel</button>
+<<<<<<< HEAD
   <button
     mat-button
     mat-dialog-close
@@ -17,4 +26,7 @@
     (click)="deletePatient(patientData.patient_id)">
     Delete
   </button>
+=======
+  <button mat-button mat-dialog-close cdkFocusInitial (click)="deletePatient(patientData.patient_id)">Delete</button>
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 </mat-dialog-actions>

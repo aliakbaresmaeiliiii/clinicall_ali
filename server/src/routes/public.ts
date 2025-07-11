@@ -19,4 +19,7 @@ require("../controller/insurance/controller");
 require("../controller/clinic/controller");
 require("../controller/elastic-search/controller");
 require("../controller/AI/controller");
+<<<<<<< HEAD
 require("../controller/countries/controller");
+=======
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4

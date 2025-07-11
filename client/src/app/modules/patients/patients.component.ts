@@ -1,5 +1,9 @@
 import { SelectionModel } from '@angular/cdk/collections';
+<<<<<<< HEAD
 import { Component, inject, input, signal, viewChild } from '@angular/core';
+=======
+import { Component, inject, input, viewChild } from '@angular/core';
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -28,7 +32,11 @@ export class PatientsComponent extends BaseComponent {
     'patientName',
     'gender',
     'mobile',
+<<<<<<< HEAD
     'date_of_birth',
+=======
+    'dateOfBirth',
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     'age',
     'email',
     // 'maritalStatus',
@@ -47,19 +55,29 @@ export class PatientsComponent extends BaseComponent {
   wopts: XLSX.WritingOptions = { bookType: 'xlsx', type: 'array' };
   fileName: string = 'SheetJS.xlsx';
 
+<<<<<<< HEAD
   patient_id = signal<Object>({});
 
 
 
   ngOnInit(): void {
     this.getData('');
+=======
+  ngOnInit(): void {
+    this.getData();
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
   }
   ngAfterViewInit() {
     // this.dataSource.paginator = this.paginator();
     // this.dataSource.sort = this.sort();
   }
+<<<<<<< HEAD
   getData(patient_id:string) {
     this.service.getPatients(patient_id).subscribe((response: any) => {
+=======
+  getData() {
+    this.service.getPatients().subscribe((response: any) => {
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
       const newData = response.data.map((patient: any) => {
         patient.profileImage = patient.profileImage
           ? `${environment.urlProfileImg}${patient.profileImage}`
@@ -113,11 +131,16 @@ export class PatientsComponent extends BaseComponent {
       exitAnimationDuration,
     });
     dialogRef.afterClosed().subscribe(result => {
+<<<<<<< HEAD
       this.getData('');
+=======
+      this.getData();
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     });
   }
 
   patientDetial(patient_id: number) {
+<<<<<<< HEAD
   
     this.patient_id.set(patient_id)
     this.router.navigate(['dashboard/patients/patient-detail', patient_id]);
@@ -125,6 +148,13 @@ export class PatientsComponent extends BaseComponent {
 
   refreshGrid() {
     this.getData('');
+=======
+    this.router.navigate(['aliakbar/patients/patient-detail', patient_id]);
+  }
+
+  refreshGrid() {
+    this.getData();
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
   }
 
   export() {
@@ -135,17 +165,28 @@ export class PatientsComponent extends BaseComponent {
         'patientName',
         'Gender',
         'Mobile',
+<<<<<<< HEAD
         'date_of_birth',
+=======
+        'dateOfBirth',
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
         'Age',
         'Email',
         'Address',
       ],
       ...data.map(item => [
         item.patient_id,
+<<<<<<< HEAD
         item.first_name,
         item.gender,
         item.mobile,
         item.date_of_birth,
+=======
+        item.patientName,
+        item.gender,
+        item.mobile,
+        item.dateOfBirth,
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
         item.age,
         item.email,
         item.address,
@@ -171,7 +212,11 @@ export class PatientsComponent extends BaseComponent {
       data: row,
     });
     dialogRef.afterClosed().subscribe(result => {
+<<<<<<< HEAD
       this.getData('');
+=======
+      this.getData();
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     });
   }
 
@@ -187,7 +232,11 @@ export class PatientsComponent extends BaseComponent {
       data: row,
     });
     dialogRef.afterClosed().subscribe(result => {
+<<<<<<< HEAD
       this.getData('');
+=======
+      this.getData();
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     });
   }
   ngOnDestroy(): void {}

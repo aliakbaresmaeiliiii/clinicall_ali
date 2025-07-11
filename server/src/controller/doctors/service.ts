@@ -10,15 +10,21 @@ import {
   addDoctor,
   booked,
   checkDoctorPhoneNumberExists,
+<<<<<<< HEAD
   deleteDoctor,
+=======
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
   doctorSchadules,
   doctorScheduleTimeAvailability,
   existingFeedback,
   filterServicesById,
   filterSpecialtyById,
   getDoctoLike,
+<<<<<<< HEAD
   getDoctorsClinic,
   getDoctorsDetailClinic,
+=======
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
   getDoctorsFromElastic,
   getReviews,
   getServices,
@@ -32,9 +38,16 @@ import {
 const moment = require("moment");
 
 export class DoctorsService {
+<<<<<<< HEAD
   public static async getDoctors(filters: {
     first_name?: string;
     last_name?: string;
+=======
+
+  
+  public static async getDoctors(filters: {
+    name?: string;
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     id?: string;
     city_id?: string;
     doctor_id?: string;
@@ -46,6 +59,7 @@ export class DoctorsService {
     maxRating?: number;
     isPopular?: boolean;
   }) {
+<<<<<<< HEAD
     const data = await getDoctorsFromElastic(filters);
     if (data) {
       return { message: "ok", data };
@@ -64,6 +78,10 @@ export class DoctorsService {
   }
   public static async getDoctorDetailClinic(id:number) {
     const data = await getDoctorsDetailClinic(id);
+=======
+    const data = await 
+    getDoctorsFromElastic(filters);
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     if (data) {
       return { message: "ok", data };
     } else {
@@ -97,8 +115,13 @@ export class DoctorsService {
   //     return null;
   //   }
   // }
+<<<<<<< HEAD
   public static async updateDoctor(formData: DoctorsDTO,id:number) {
     const data = await updateDoctor(formData,id);
+=======
+  public static async updateDoctor(formData: DoctorsDTO) {
+    const data = await updateDoctor(formData);
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     if (data) {
       return { message: "ok", data };
     } else {
@@ -240,6 +263,7 @@ export class DoctorsService {
       return null;
     }
   }
+<<<<<<< HEAD
   public static async removeDoctor(patient_id: number) {
     const data = await deleteDoctor(patient_id);
     if (data) {
@@ -248,4 +272,6 @@ export class DoctorsService {
       return null;
     }
   }
+=======
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 }

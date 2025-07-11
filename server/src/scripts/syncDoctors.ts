@@ -3,17 +3,28 @@ import { coreSchema, query, RowDataPacket } from "../bin/mysql";
 
 export async function syncDoctorsToElasticsearch() {
   try {
+<<<<<<< HEAD
     const doctorRow = await query<RowDataPacket[]>(
       `SELECT * FROM ${coreSchema}.doctors`
     );
     if (doctorRow.length === 0) {
+=======
+    const clinicRows = await query<RowDataPacket[]>(
+      `SELECT * FROM ${coreSchema}.doctors`
+    );
+    if (clinicRows.length === 0) {
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
       console.log("❌ No clinics found in MySQL");
       return;
     }
 
     const doctorRows = await query<RowDataPacket[]>(`
       SELECT 
+<<<<<<< HEAD
         d.id, d.first_name, d.last_name, d.profile_img, d.email, d.phone,d.gender,
+=======
+        d.id, d.first_name, d.last_name, d.profile_img, d.email, d.phone, 
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
         CONCAT(d.first_name, ' ', d.last_name) AS name,
         d.specialty_id, d.insurance_id, d.click_count, d.medical_code,
         sp.name AS specialty_name,
@@ -79,9 +90,13 @@ export async function syncDoctorsToElasticsearch() {
       { index: { _index: "doctors", _id: doc.id } },
       {
         id: doc.id,
+<<<<<<< HEAD
         first_name: doc.first_name,
         last_name: doc.last_name,
         gender: doc.gender,
+=======
+        name: doc.name,
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
         profile_img: doc.profile_img,
         email: doc.email,
         phone: doc.phone,
@@ -322,8 +337,12 @@ function buildFilters(aggregations: any) {
     const doctor = doc?.doctors?.find((d: any) => d.doctor_id === bucket.key);
     return {
       id: bucket.key,
+<<<<<<< HEAD
       first_name: doctor?.first_name || null,
       last_name: doctor?.last_name || null,
+=======
+      name: doctor?.name || null,
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
       count: bucket.doc_count,
     };
   });

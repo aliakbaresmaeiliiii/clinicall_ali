@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import jwt from "jsonwebtoken";
 import ms from "ms";
 import {
@@ -18,6 +19,27 @@ import { addFavorite, checkExistPatient, registerPatient } from "./patients.db";
 const JWT_ACCESS_TOKEN_EXPIRED = process.env.JWT_ACCESS_TOKEN_EXPIRED || "1d"; // Default 1 day
 const JWT_SECRET_ACCESS_TOKEN =
   process.env.JWT_SECRET_ACCESS_TOKEN || "your-secret-key";
+=======
+import {
+  addPatient,
+  checkPhoneNumberExists,
+  deletePatient,
+  getPatients,
+  patientDetail,
+  updatePatient,
+} from "../../bin/db";
+import { PatientDTO } from "../../models/patients";
+import jwt from "jsonwebtoken";
+import ms from "ms";
+import { addFavorite, checkExistPatient, registerPatient } from "./patients.db";
+import { ResponseError } from "../../modules/error/response_error";
+import { getUniqueCodev3 } from "../../helper/common";
+import SendMail from "../../helper/send_email";
+import { EmailProvider } from "../../config/email";
+
+const JWT_ACCESS_TOKEN_EXPIRED = process.env.JWT_ACCESS_TOKEN_EXPIRED || "1d"; // Default 1 day
+const JWT_SECRET_ACCESS_TOKEN = process.env.JWT_SECRET_ACCESS_TOKEN || "your-secret-key";
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 
 // Check if expiration needs conversion
 const expiresIn =
@@ -26,17 +48,26 @@ const expiresIn =
     ? Math.floor(ms(JWT_ACCESS_TOKEN_EXPIRED) / 1000)
     : JWT_ACCESS_TOKEN_EXPIRED;
 
+<<<<<<< HEAD
 export class PatientService {
   public static async getPatients(queryParams: any) {
     const { patient_id, queryString } = queryParams;
     const data = await getPatients(patient_id, queryString);
 
+=======
+
+    
+export class PatientService {
+  public static async getPatients() {
+    const data = await getPatients();
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     if (data) {
       return { message: `ok`, data };
     }
     return null;
   }
 
+<<<<<<< HEAD
   public static async getPatientDetial(query: number) {
     const patient_id = query;
     const data = await getPatientDetail(patient_id);
@@ -52,6 +83,15 @@ export class PatientService {
       return { message: `ok`, data ,...doctorInfo};
     }
     return null;
+=======
+  public static async patientDetial(id: number) {
+    const data = await patientDetail(id);
+    if (data) {
+      return { message: "ok", data };
+    } else {
+      return null;
+    }
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
   }
 
   public static async checkExistMobile(mobile: string): Promise<boolean> {
@@ -63,6 +103,10 @@ export class PatientService {
     }
   }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
   // ****
   public static async registerPatient(formData: any) {
     const emailExists = await checkExistPatient(formData.email);
@@ -73,10 +117,17 @@ export class PatientService {
       );
       throw new ResponseError.BadRequest(`${formData.email} is already exist.`);
     }
+<<<<<<< HEAD
 
     const verificationCode = getUniqueCodev3();
     formData.verify_code = verificationCode;
 
+=======
+    
+    const verificationCode = getUniqueCodev3();
+    formData.verify_code = verificationCode;
+    
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     const tokenVerify = jwt.sign(
       { email: formData.email },
       JWT_SECRET_ACCESS_TOKEN,
@@ -84,9 +135,14 @@ export class PatientService {
     );
     formData.token_verify = tokenVerify;
     // Send verification email
+<<<<<<< HEAD
 
     const clinicData = await registerPatient(formData);
 
+=======
+    
+    const clinicData = await registerPatient(formData);
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     if (!clinicData) {
       throw new ResponseError.BadRequest("Failed to register clinic.");
     }
@@ -133,3 +189,7 @@ export class PatientService {
     }
   }
 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
