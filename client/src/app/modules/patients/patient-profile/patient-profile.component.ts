@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import { Component, inject, signal } from '@angular/core';
 import { PatientsService } from '../services/patients.service';
 import { PatientDTO } from '../model/patients.model';
@@ -41,16 +40,4 @@ export class PatientProfileComponent {
   onMouseLeave() {
     this.isHovered = false;
   }
-=======
-import { Component } from '@angular/core';
-
-@Component({
-    selector: 'app-patient-profile',
-    templateUrl: './patient-profile.component.html',
-    styleUrl: './patient-profile.component.scss',
-    standalone: false
-})
-export class PatientProfileComponent {
-
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 }

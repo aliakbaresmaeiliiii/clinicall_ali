@@ -10,11 +10,7 @@ import {
 } from '../auth/models/user';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-<<<<<<< HEAD
 import { PatientDTO } from '../../modules/patients/model/patients.model';
-=======
-import { IPatient } from '../auth/models/IPatient';
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 
 @Injectable({
   providedIn: 'root',
@@ -70,11 +66,7 @@ export class AuthService {
   doctorSignIn(userData: any): Observable<any> {
     return this.#http.post<any>(`${this.config}auth/doctor-sign-in`, userData);
   }
-<<<<<<< HEAD
   patientSignIn(userData: PatientDTO): Observable<User> {
-=======
-  patientSignIn(userData: IPatient): Observable<User> {
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     return this.#http.post<User>(
       `${this.config}auth/patient-sign-in`,
       userData

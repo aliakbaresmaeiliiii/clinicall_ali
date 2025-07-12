@@ -16,11 +16,7 @@ export class DoctorDetailComponent extends BaseComponent {
   doctorInfo: DoctorsDTO[] = [];
   service = inject(DoctorsService);
   breakPointObserver = inject(BreakpointObserver);
-<<<<<<< HEAD
   doctorId!: string;
-=======
-  doctorId!: number;
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
   coordinates: { lat: number; lng: number }[] = [];
   DATA_KEY = makeStateKey<any>('doctorInfo');
   transferState = inject(TransferState);
@@ -28,11 +24,7 @@ export class DoctorDetailComponent extends BaseComponent {
   constructor() {
     super();
     this.activatedRoute.params.subscribe((param: any) => {
-<<<<<<< HEAD
       this.doctorId = param.id;
-=======
-      this.doctorId = +param.id;
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
       
     });
   }
@@ -41,7 +33,6 @@ export class DoctorDetailComponent extends BaseComponent {
     this.breakPointObserver.observe([Breakpoints.Handset]).subscribe(result => {
       this.isMobile = result.matches;
     });
-<<<<<<< HEAD
     this.fetchData({ id: this.doctorId });
 
   }
@@ -57,21 +48,6 @@ export class DoctorDetailComponent extends BaseComponent {
             const newData = response.data.map((patient: any) => {
               patient.profile_img = patient.profile_img
                 ? `${environment.urlProfileImg}${patient.profile_img}`
-=======
-    this.fetchData({ doctor_id: this.doctorId });
-
-  }
-  fetchData(filter:{doctor_id:number}) {
-    this.transferState.remove(this.DATA_KEY);
-    const storedData = this.transferState.get(this.DATA_KEY, null);
-    if (!storedData) {
-      this.service.getDoctors(filter).subscribe({
-        next: (response: any) => {
-          if (response && response.length > 0) {
-            const newData = response.map((patient: any) => {
-              patient.profileImage = patient.profileImage
-                ? `${environment.urlProfileImg}${patient.profileImage}`
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
                 : '../../../assets/images/bg-01.png';
               return patient;
             });

@@ -9,10 +9,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
-<<<<<<< HEAD
 import { MatIconModule } from '@angular/material/icon';
-=======
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
@@ -20,7 +17,6 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
-<<<<<<< HEAD
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule, RouterOutlet, Routes } from '@angular/router';
 import { RecaptchaModule } from "ng-recaptcha";
@@ -29,23 +25,13 @@ import { environment } from '../environments/environment';
 import { PatientProfileComponent } from '../modules/patients/patient-profile/patient-profile.component';
 import { ButtonComponent } from '../shared/components/button/button.component';
 import { ChatbotComponent } from '../shared/components/chatbot/chatbot.component';
-=======
-import { RouterModule, RouterOutlet, Routes } from '@angular/router';
-import { NgxStarsModule } from 'ngx-stars';
-import { environment } from '../environments/environment';
-import { ButtonComponent } from '../shared/components/button/button.component';
-import { CustomTabComponent } from './shared-ui/components/custom-tab/custom-tab.component';
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 import { GoogleMapComponent } from '../shared/components/google-map/google-map.component';
 import { LoaderComponent } from '../shared/components/loader/loader.component';
 import { SocialMediaIconComponent } from '../shared/components/social-media-icon/social-media-icon.component';
 import { CounterDirective } from '../shared/directives/counter-number/counter.directive';
 import { FloorPipe } from '../shared/pipes/floor.pipe';
-<<<<<<< HEAD
 import { ToBooleanPipe } from '../shared/pipes/to-boolean.pipe';
 import { SharedModule } from '../shared/shared.module';
-=======
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 import { AboutUsComponent } from './about-us/about-us.component';
 import { BestDoctorsComponent } from './best-doctors/best-doctors.component';
 import { BlogComponent } from './blog/blog.component';
@@ -60,13 +46,9 @@ import { DoctorRequestComponent } from './doctors/components/doctor-request/doct
 import { DoctorsComponent } from './doctors/components/doctors.component';
 import { DrProjectsComponent } from './dr-projects/dr-projects.component';
 import { FeatureSectionComponent } from './feature-section/feature-section.component';
-<<<<<<< HEAD
 import { ChoosingAppointmentComponent } from './filter-layout/choosing-appointment/choosing-appointment.component';
 import { FilterLayoutComponent } from './filter-layout/filter-layout.component';
 import { OnlineConsultaionDialogComponent } from './filter-layout/online-consultaion-dialog/online-consultaion-dialog.component';
-=======
-import { FilterLayoutComponent } from './filter-layout/filter-layout.component';
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 import { FooterComponent } from './footer/footer.component';
 import { DialogLocationDrComponent } from './get-doctor-apointment/dialog-location-dr/dialog-location-dr.component';
 import { DilogDotorAppointmentComponent } from './get-doctor-apointment/dilog-dotor-appointment/dilog-dotor-appointment.component';
@@ -76,10 +58,6 @@ import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { MediicAppointmentComponent } from './mediic-appointment/mediic-appointment.component';
 import { MenuComponent } from './mobile/menu/menu.component';
-<<<<<<< HEAD
-=======
-import { ProfilePatientComponent } from './profile-patient/profile-patient.component';
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 import { ServicesDoctorComponent } from './services-doctor/services-doctor.component';
 import { CardInfoComponent } from './shared-ui/components/card-info/card-info.component';
 import { SharedUiModule } from './shared-ui/shared-ui.module';
@@ -97,18 +75,7 @@ import { SuggestionsComponent } from './suggestions/suggestions.component';
 import { SuggustionsServiceComponent } from './suggustions-service/suggustions-service.component';
 import { UserReviewsOfClinicAliComponent } from './user-reviews-of-clinic-ali/user-reviews-of-clinic-ali.component';
 import { YoursDoctorComponent } from './yours-doctor/yours-doctor.component';
-<<<<<<< HEAD
 import { PatientDetailComponent } from '../modules/patients/patient-detail/patient-detail.component';
-=======
-import { MatIconModule } from '@angular/material/icon';
-import { OnlineConsultaionDialogComponent } from './filter-layout/online-consultaion-dialog/online-consultaion-dialog.component';
-import { ChoosingAppointmentComponent } from './filter-layout/choosing-appointment/choosing-appointment.component';
-import { ToBooleanPipe } from '../shared/pipes/to-boolean.pipe';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { SharedModule } from '../shared/shared.module';
-import { RecaptchaModule } from "ng-recaptcha";
-import { ChatbotComponent } from '../shared/components/chatbot/chatbot.component';
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 
 const routes: Routes = [
   {
@@ -141,10 +108,6 @@ const routes: Routes = [
       { path: 'about-us', component: AboutUsComponent },
       { path: 'dr-projects', component: DrProjectsComponent },
       { path: 'detail-dr-project', component: DetailDrProjectComponent },
-<<<<<<< HEAD
-=======
-      { path: 'profile-pateint', component: ProfilePatientComponent },
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
       { path: 'speciality', component: SpecialityComponent },
       {
         path: 'doctor/:name/:id',

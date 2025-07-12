@@ -58,11 +58,7 @@ export class ProfileComponent extends BaseComponent implements OnInit {
 
 
   fetchPatients() {
-<<<<<<< HEAD
     this.patientService.getPatients('').subscribe((res: any) => {
-=======
-    this.patientService.getPatients().subscribe((res: any) => {
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
       this.patientData.set(res.data);
       this.pathValueForm();
 

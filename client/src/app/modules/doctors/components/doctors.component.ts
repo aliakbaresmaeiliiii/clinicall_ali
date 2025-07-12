@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 import { Component, inject, input, signal, viewChild } from '@angular/core';
-=======
-import { Component, inject, input, viewChild } from '@angular/core';
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -14,7 +10,6 @@ import { BaseComponent } from '../../../shared/components/base/base.component';
 import { DoctorsDTO } from '../models/doctors';
 import { DoctorsService } from '../services/doctors.service';
 import { EditDoctorComponent } from './edit-doctor/edit-doctor.component';
-<<<<<<< HEAD
 import { DeleteDoctorDialogComponent } from './delete-doctor-dialog/delete-doctor-dialog.component';
 
 @Component({
@@ -22,15 +17,6 @@ import { DeleteDoctorDialogComponent } from './delete-doctor-dialog/delete-docto
   templateUrl: './doctors.component.html',
   styleUrl: './doctors.component.scss',
   standalone: false,
-=======
-
-
-@Component({
-    selector: 'app-doctors',
-    templateUrl: './doctors.component.html',
-    styleUrl: './doctors.component.scss',
-    standalone: false
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 })
 export class DoctorsComponent extends BaseComponent {
   service = inject(DoctorsService);
@@ -39,17 +25,10 @@ export class DoctorsComponent extends BaseComponent {
     'select',
     'id',
     'profileImage',
-<<<<<<< HEAD
     'first_name',
     'last_name',
     'gender',
     'mobile',
-=======
-    'name',
-    'gender',
-    'mobile',
-    'age',
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     'email',
     // 'maritalStatus',
     // 'bloodGroup',
@@ -72,11 +51,8 @@ export class DoctorsComponent extends BaseComponent {
   permissions: string[] = [];
   permissionService = inject(PermissionService);
   tooltipVisibility = 'View Detail';
-<<<<<<< HEAD
   loading = signal<boolean>(true);
   searchValue: string = '';
-=======
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 
   ngOnInit(): void {
     this.fetchData();
@@ -85,11 +61,6 @@ export class DoctorsComponent extends BaseComponent {
       'edit',
       'delete',
     ]);
-<<<<<<< HEAD
-
-=======
-  
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     // const userDataString = localStorage.getItem('userData');
     // if (userDataString) {
     //   const data = JSON.parse(userDataString).data;
@@ -104,12 +75,8 @@ export class DoctorsComponent extends BaseComponent {
     this.dataSource.sort = this.sort();
   }
   fetchData() {
-<<<<<<< HEAD
     this.loading.set(true);
     this.service.getDoctorsClinic().subscribe((response: any) => {
-=======
-    this.service.getDoctors().subscribe((response: any) => {
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
       const newData = response.data.map((doctor: any) => {
         doctor.profile_img = doctor.profile_img
           ? `${environment.urlProfileImg}${doctor.profile_img}`
@@ -119,10 +86,7 @@ export class DoctorsComponent extends BaseComponent {
       this.dataSource = new MatTableDataSource(newData);
       this.dataSource.paginator = this.paginator();
       this.dataSource.sort = this.sort();
-<<<<<<< HEAD
       this.loading.set(false);
-=======
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     });
   }
 
@@ -193,11 +157,7 @@ export class DoctorsComponent extends BaseComponent {
     //     item.firstName + ' ' + item.lastName,
     //     item.gender,
     //     item.mobile,
-<<<<<<< HEAD
     //     item.date_of_birth,
-=======
-    //     item.dateOfBirth,
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     //     item.age,
     //     item.email,
     //     item.address,
@@ -212,11 +172,7 @@ export class DoctorsComponent extends BaseComponent {
   }
 
   doctorDetial(id: number) {
-<<<<<<< HEAD
     this.router.navigate(['dashboard/doctors/doctor-detail', id]);
-=======
-    this.router.navigate(['aliakbar/doctors/doctor-detail', id]);
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
   }
 
   editDoctor(
@@ -239,7 +195,6 @@ export class DoctorsComponent extends BaseComponent {
     enterAnimationDuration: string,
     exitAnimationDuration: string
   ) {
-<<<<<<< HEAD
     const dialogRef = this.dialog.open(DeleteDoctorDialogComponent, {
       width: '250px',
       enterAnimationDuration,
@@ -249,17 +204,6 @@ export class DoctorsComponent extends BaseComponent {
     dialogRef.afterClosed().subscribe(result => {
       this.fetchData();
     });
-=======
-    // const dialogRef = this.dialog.open(DeletePatientDialogComponent, {
-    //   width: '250px',
-    //   enterAnimationDuration,
-    //   exitAnimationDuration,
-    //   data: row,
-    // });
-    // dialogRef.afterClosed().subscribe(result => {
-    //   this.fetchData();
-    // });
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
   }
   ngOnDestroy(): void {}
 }

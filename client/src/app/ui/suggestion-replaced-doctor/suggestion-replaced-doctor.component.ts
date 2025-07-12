@@ -1,25 +1,24 @@
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   inject,
   makeStateKey,
   OnInit,
-  TransferState,
+  TransferState
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { catchError, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { DoctorsDTO } from '../../modules/doctors/models/doctors';
 import { DoctorsService } from '../../modules/doctors/services/doctors.service';
 import { CopyLinkDialogComponent } from '../../shared/components/copy-link-dialog/copy-link-dialog.component';
 import { ISpecialization } from '../get-doctor-apointment/models/specializtion.model';
-import { LikesService } from '../shared-ui/services/likes.service';
-import { ToastrService } from 'ngx-toastr';
-import { PatientFavoritesService } from '../shared-ui/services/patient-favorites.service';
 import { likeDTO } from '../shared-ui/models/like';
-import { catchError, throwError } from 'rxjs';
+import { LikesService } from '../shared-ui/services/likes.service';
+import { PatientFavoritesService } from '../shared-ui/services/patient-favorites.service';
 
 @Component({
   selector: 'app-suggestion-replaced-doctor',
@@ -99,11 +98,7 @@ export class SuggestionReplacedDoctorComponent
   takeTurn() {}
 
   shareInfo(docotoInfo: DoctorsDTO) {
-<<<<<<< HEAD
     const doctorLink = `localhost:4200/doctor/${docotoInfo.first_name}${docotoInfo.last_name}/${docotoInfo.id}`; // Generate the doctor's link
-=======
-    const doctorLink = `localhost:4200/doctor/${docotoInfo.name}/${docotoInfo.id}`; // Generate the doctor's link
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     this.dialog.open(CopyLinkDialogComponent, {
       data: { link: doctorLink },
     });
@@ -166,11 +161,7 @@ export class SuggestionReplacedDoctorComponent
   //   this.router.navigate([`/doctor/${doctorName}/${doctorId}`]);
   // }
   getAppointment(data: DoctorsDTO) {
-<<<<<<< HEAD
     const doctorName = `${data.first_name}${data.last_name}` ;
-=======
-    const doctorName = data.name;
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     const doctorId = data.id;
     this.countDoctorClick(doctorId).subscribe({
         next: () => {

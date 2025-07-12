@@ -1,116 +1,95 @@
-<<<<<<< HEAD
-  <div class="lg:relative mx-auto lg:pl-32 lg:pr-32 lg:pb-10">
-=======
-  <div class="desktop:relative mx-auto desktop:pl-32 desktop:pr-32 desktop:pb-10">
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
-
-    <!-- Form inside the image -->
-    <div
-      data-aos="fade-up"
-<<<<<<< HEAD
-      class="lg:absolute top-0  h-full lg:flex lg:items-center lg:justify-end md:w-full lg:w-2/6">
-=======
-      class="desktop:absolute top-0  h-full desktop:flex desktop:items-center desktop:justify-end mobile:w-full desktop:w-2/6">
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
+<div class="lg:relative mx-auto lg:pl-32 lg:pr-32 lg:pb-10">
+  <!-- Form inside the image -->
+  <div
+    data-aos="fade-up"
+    class="lg:absolute top-0 h-full lg:flex lg:items-center lg:justify-end md:w-full lg:w-2/6">
+    <div>
       <div>
-        <div>
-          <p class="uppercase text-blue-600">Online Appintment</p>
+        <p class="uppercase text-blue-600">Online Appintment</p>
+      </div>
+      <div class="lg:text-3xl md:text-xl font-normal text-blue-950 pb-6">
+        Make an Online Appoinemnt Booking For Treatment Patients
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <div class="lg:flex gap-5">
+          <!-- *****Name***** -->
+          <mat-form-field
+            data-testing="Name"
+            appearance="outline"
+            class="w-full">
+            <mat-label class="text-blue-950">Your Name</mat-label>
+            <input
+              type="text"
+              matInput
+              [errorStateMatcher]="matcher"
+              formControlName="name"
+              placeholder="Your Name" />
+            <!-- Error handling -->
+            <mat-error
+              *ngIf="name?.hasError('name') && !name?.hasError('required')"
+              >Please enter a valid name</mat-error
+            >
+            <mat-error *ngIf="name?.hasError('required')"
+              >name is <strong>required</strong></mat-error
+            >
+            <mat-error *ngIf="form.controls.name.hasError('minlength')"
+              >name is too short
+              <strong>{{
+                form.controls.name.getError('minlength')?.requiredLength
+              }}</strong></mat-error
+            >
+            <mat-error *ngIf="name?.hasError('banWords')"
+              >The value
+              <strong>{{ name?.getError('banWords').bannedWord }} </strong>is
+              banned</mat-error
+            >
+          </mat-form-field>
+          <!-- *****email***** -->
+          <mat-form-field
+            data-testing="email"
+            appearance="outline"
+            class="w-full">
+            <mat-label class="text-blue-950">Email</mat-label>
+            <input
+              type="email"
+              matInput
+              [errorStateMatcher]="matcher"
+              formControlName="email"
+              placeholder="You E-Mail"
+              class="w-full" />
+            <!-- Error handling -->
+            <mat-error
+              *ngIf="email?.hasError('email') && !email?.hasError('required')"
+              >Please enter a valid email address</mat-error
+            >
+            <mat-error *ngIf="email?.hasError('required')"
+              >email is <strong>required</strong></mat-error
+            >
+          </mat-form-field>
         </div>
-<<<<<<< HEAD
-        <div class="lg:text-3xl md:text-xl font-normal text-blue-950 pb-6">
-=======
-        <div class="desktop:text-3xl mobile:text-xl font-normal text-blue-950 pb-6">
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
-          Make an Online Appoinemnt Booking For Treatment Patients
-        </div>
+        <div class="lg:flex gap-5">
+          <!-- *****Subject***** -->
+          <mat-form-field
+            data-testing="Subject"
+            appearance="outline"
+            class="w-full">
+            <mat-label class="text-blue-950">Subject</mat-label>
+            <input
+              type="text"
+              matInput
+              [errorStateMatcher]="matcher"
+              formControlName="subject"
+              placeholder="Subject" />
+            <!-- Error handling -->
 
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
-<<<<<<< HEAD
-          <div class="lg:flex gap-5">
-=======
-          <div class="desktop:flex gap-5">
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
-            <!-- *****Name***** -->
-            <mat-form-field
-              data-testing="Name"
-              appearance="outline"
-              class="w-full">
-              <mat-label class="text-blue-950">Your Name</mat-label>
-              <input
-                type="text"
-                matInput
-                [errorStateMatcher]="matcher"
-                formControlName="name"
-                placeholder="Your Name" />
-              <!-- Error handling -->
-              <mat-error
-                *ngIf="name?.hasError('name') && !name?.hasError('required')"
-                >Please enter a valid name</mat-error
-              >
-              <mat-error *ngIf="name?.hasError('required')"
-                >name is <strong>required</strong></mat-error
-              >
-              <mat-error *ngIf="form.controls.name.hasError('minlength')"
-                >name is too short
-                <strong>{{
-                  form.controls.name.getError('minlength')?.requiredLength
-                }}</strong></mat-error
-              >
-              <mat-error *ngIf="name?.hasError('banWords')"
-                >The value
-                <strong>{{ name?.getError('banWords').bannedWord }} </strong>is
-                banned</mat-error
-              >
-            </mat-form-field>
-            <!-- *****email***** -->
-            <mat-form-field
-              data-testing="email"
-              appearance="outline"
-              class="w-full">
-              <mat-label class="text-blue-950">Email</mat-label>
-              <input
-                type="email"
-                matInput
-                [errorStateMatcher]="matcher"
-                formControlName="email"
-                placeholder="You E-Mail"
-                class="w-full" />
-              <!-- Error handling -->
-              <mat-error
-                *ngIf="email?.hasError('email') && !email?.hasError('required')"
-                >Please enter a valid email address</mat-error
-              >
-              <mat-error *ngIf="email?.hasError('required')"
-                >email is <strong>required</strong></mat-error
-              >
-            </mat-form-field>
-          </div>
-<<<<<<< HEAD
-          <div class="lg:flex gap-5">
-=======
-          <div class="desktop:flex gap-5">
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
-            <!-- *****Subject***** -->
-            <mat-form-field
-              data-testing="Subject"
-              appearance="outline"
-              class="w-full">
-              <mat-label class="text-blue-950">Subject</mat-label>
-              <input
-                type="text"
-                matInput
-                [errorStateMatcher]="matcher"
-                formControlName="subject"
-                placeholder="Subject" />
-              <!-- Error handling -->
+            <mat-error *ngIf="name?.hasError('required')"
+              >name is <strong>required</strong></mat-error
+            >
+          </mat-form-field>
 
-              <mat-error *ngIf="name?.hasError('required')"
-                >name is <strong>required</strong></mat-error
-              >
-            </mat-form-field>
-
-            <!-- *****Phone***** -->
-            <!-- <mat-form-field
+          <!-- *****Phone***** -->
+          <!-- <mat-form-field
               data-testing="Phone"
               appearance="outline"
               class="w-full">
@@ -141,21 +120,21 @@
                 This phone number is available.
               </mat-error>
             </mat-form-field> -->
-          </div>
+        </div>
 
-          <!-- *****Message***** -->
-          <mat-form-field appearance="outline" class="w-full">
-            <mat-label class="text-blue-950">Leave a comment</mat-label>
-            <textarea
-              matInput
-              placeholder="Ex. It makes me feel..."
-              formControlName="message"></textarea>
-          </mat-form-field>
-          <button dfButton >
-            Send Now
-            <i class="fa-solid fa-arrow-trend-up text-2xl"></i>
-          </button>
-        </form>
-      </div>
+        <!-- *****Message***** -->
+        <mat-form-field appearance="outline" class="w-full">
+          <mat-label class="text-blue-950">Leave a comment</mat-label>
+          <textarea
+            matInput
+            placeholder="Ex. It makes me feel..."
+            formControlName="message"></textarea>
+        </mat-form-field>
+        <button dfButton>
+          Send Now
+          <i class="fa-solid fa-arrow-trend-up text-2xl"></i>
+        </button>
+      </form>
     </div>
   </div>
+</div>

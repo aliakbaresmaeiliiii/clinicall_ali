@@ -1,9 +1,5 @@
 import { CommonModule } from '@angular/common';
-<<<<<<< HEAD
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-=======
-import { NgModule } from '@angular/core';
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 import { FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { LoaderComponent } from '../../shared/components/loader/loader.component';
@@ -15,10 +11,7 @@ import { EditPatientDialogComponent } from './edit-patient-dialog/edit-patient-d
 import { PatientDetailComponent } from './patient-detail/patient-detail.component';
 import { PatientProfileComponent } from './patient-profile/patient-profile.component';
 import { PatientsComponent } from './patients.component';
-<<<<<<< HEAD
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
-=======
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 
 export const routes: Routes = [
   {
@@ -35,10 +28,7 @@ export const routes: Routes = [
     component: PatientProfileComponent,
     data: { breadcrumb: 'patient-profile' },
   },
-<<<<<<< HEAD
   
-=======
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
   {
     path: 'patient-detail/:id',
     component: PatientDetailComponent,
@@ -59,7 +49,6 @@ export const routes: Routes = [
     RouterModule.forChild(routes),
     FormsModule,
     LoaderComponent,
-<<<<<<< HEAD
     NgxIntlTelInputModule,
     SharedModule,
   ],
@@ -69,11 +58,5 @@ export const routes: Routes = [
   ],
   providers: [AgePipe],
   schemas:[CUSTOM_ELEMENTS_SCHEMA]
-=======
-    SharedModule,
-  ],
-  exports: [PatientsComponent],
-  providers: [AgePipe],
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 })
 export class PatientsModule {}

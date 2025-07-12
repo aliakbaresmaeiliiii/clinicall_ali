@@ -39,10 +39,7 @@ import { AgeValidatorDirective } from './directives/age-validator/age-validator.
 import { ChunkPipe } from './pipes/chunk/chunk.pipe';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 import { ProfileImageComponent } from './components/profile-image/profile-image.component';
-<<<<<<< HEAD
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
-=======
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 
 const ANGULR_MATERIAL_MODULES = [
   MatAutocompleteModule,
@@ -88,21 +85,14 @@ const ANGULR_MATERIAL_MODULES = [
   RatingPickerPageComponent,
   MatNativeDateModule,
   CopyLinkDialogComponent,
-<<<<<<< HEAD
   
-=======
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 ];
 const COMMON_MODULES = [
   CommonModule,
   ReactiveFormsModule,
   FormsModule,
   AsyncPipe,
-<<<<<<< HEAD
   NgOptimizedImage,
-=======
-  NgOptimizedImage
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 ];
 const SHARED_COMPONENT = [
   SearchBarComponent,

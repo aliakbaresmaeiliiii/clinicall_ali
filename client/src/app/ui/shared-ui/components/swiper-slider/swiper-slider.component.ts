@@ -1,6 +1,5 @@
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -8,10 +7,9 @@ import {
   input,
   OnInit,
   output,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import KeenSlider, { KeenSliderInstance } from 'keen-slider';
-import { SwiperData } from '../../models/swiper-slider';
 
 @Component({
   selector: 'app-swiper-slider',

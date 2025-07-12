@@ -1,5 +1,4 @@
 <div class="btn_calendar">
-<<<<<<< HEAD
   <div
     class="w-full p-2   border-1 rounded-lg shadow-md flex items-center justify-between">
     <button
@@ -32,37 +31,6 @@
 </div>
 <div cdkDropListGroup >
   <table class="calendar-table mt-4">
-=======
-  <button
-    mat-flat-button
-    class="btn-today"
-    color="primary"
-    (click)="setCurrentMonth()">
-    Today
-  </button>
-  <strong class="displayMonth">
-    {{ displayMonth }}
-  </strong>
-  <div class="example-button-container flex gap-4">
-    <button
-      mat-mini-fab
-      color="primary"
-      aria-label=""
-      (click)="decreaseMonth()">
-      <i class="fa-solid fa-arrow-left"></i>
-    </button>
-    <button
-      mat-mini-fab
-      color="primary"
-      aria-label=""
-      (click)="increaseMonth()">
-      <i class="fa-solid fa-arrow-right"></i>
-    </button>
-  </div>
-</div>
-<div cdkDropListGroup>
-  <table class="calendar-table">
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     <thead>
       <tr>
         @for (weekDay of weekDayNames; track $index) {
@@ -101,7 +69,6 @@
               cdkDrag
               class="body-event">
               <span
-<<<<<<< HEAD
                 [ngClass]="{
                   'priority-circle': true,
                   'priority-high': event.priority === 'Red' && blinking,
@@ -120,29 +87,6 @@
               </div> -->
               <p
                 class="event_title flex items-center gap-3 bg-blue-600 rounded-2xl whitespace-nowrap overflow-hidden text-ellipsis text-sm max-w-64 p-1">
-=======
-                  [ngClass]="{
-                    'priority-circle': true,
-                    'priority-high': event.priority === 'Red' && blinking,
-                    'priority-medium': event.priority === 'Green' && blinking,
-                    'priority-normal': event.priority === 'Purple' && blinking,
-                    'priority-low': event.priority === 'Blue' && blinking,
-                    'priority-mid': event.priority === 'Yellow' && blinking
-                  }">
-                </span>
-              <!-- this is for event right click() -->
-              <!-- (contextmenu)="onRightClick($event, c)" -->
-
-              <div class="uiverse">
-                <span class="tooltip">uiverse.io</span>
-                <span>
-                    Tooltip
-                </span>
-            </div>
-              <p
-                class="event_title flex items-center gap-3 bg-blue-600 rounded-2xl whitespace-nowrap overflow-hidden text-ellipsis text-sm max-w-64 p-1">
-                
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
                 <strong class="text-white">{{ event.event_title }}</strong
                 ><br />
                 <small class="text-white">{{ event.event_description }}</small

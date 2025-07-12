@@ -1,24 +1,13 @@
 export interface PatientDTO {
   position?: any;
   patient_id?: string | null | any;
-<<<<<<< HEAD
   gender?: string | undefined | null;
   mobile?: any;
-=======
-  patientName?: string | null | undefined;
-  gender?: string | undefined | null;
-  mobile?: any;
-  dateOfBirth?: any;
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
   age?: string | undefined | null;
   email?: string | null | undefined;
   maritalStatus?: string | undefined | null;
   address?: string | undefined | null;
   bloodGroup?: any;
-<<<<<<< HEAD
-=======
-  bloodPressure?: any;
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
   heartBeat?: string | undefined | null;
   haemoglobin?: any;
   doctor?: string | undefined | null;
@@ -32,7 +21,6 @@ export interface PatientDTO {
   diseases?: any;
   diseaseSubcategories?: any;
   severity?: any;
-<<<<<<< HEAD
   blood_group?: any;
   blood_pressure?: any;
   heart_beat?: number | null;
@@ -47,6 +35,3 @@ export interface PatientDTO {
 }
 
 export interface PatientMedicalRecord {}
-=======
-}
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4

@@ -4,10 +4,7 @@ import { Request, Response } from "express";
 import { PatientService } from "./services";
 import { BuildResponse } from "../../modules/response/app_response";
 import multer from "multer";
-<<<<<<< HEAD
 var Kavenegar = require("kavenegar");
-=======
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -24,7 +21,6 @@ const uploadImgProfile = multer({ storage });
 router.get(
   "/api/patients",
   asyncHandler(async function getNavItems(req: any, res: any) {
-<<<<<<< HEAD
     const queryParams = req.query;
     const data = await PatientService.getPatients(queryParams);
     const buildResponse = BuildResponse.get(data);
@@ -37,19 +33,12 @@ router.get(
   asyncHandler(async function getPatientDetail(req: any, res: any) {
     const query = +req.params.patient_id;
     const data = await PatientService.getPatientDetial(query);
-=======
-    const data = await PatientService.getPatients();
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
   })
 );
 
 // **** checkPhoneNumberExists
-<<<<<<< HEAD
-
-=======
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 router.get(
   "/admin/check-phone/:phone",
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
@@ -63,17 +52,13 @@ router.get(
     }
   })
 );
-<<<<<<< HEAD
 const otpStore = new Map<string, { code: string; expiresAt: number }>();
-=======
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 
 // **** add-patient
 router.post(
   `/admin/add-patient`,
   asyncHandler(async function addPatient(req: Request, res: Response) {
     const formData = req.body;
-<<<<<<< HEAD
     const stored = otpStore.get(formData.mobile);
     if (
       stored &&
@@ -116,27 +101,6 @@ function sendOTP(mobile: string, code: string) {
 }
 
 
-=======
-    const data = await PatientService.registerPatient(formData);
-    const buildResponse = BuildResponse.get(data);
-    if (buildResponse) {
-      return res.status(200).json(buildResponse);
-    }
-    return formData;
-  })
-);
-
-// **** GetPatientDetial
-router.get(
-  `/admin/patient-detial/:patientId`,
-  asyncHandler(async (req: Request, res: Response): Promise<any> => {
-    const patientId = +req.params.patientId;
-    const data = await PatientService.patientDetial(patientId);
-    const buildResponse = BuildResponse.get(data);
-    return res.status(buildResponse.code).json(buildResponse);
-  })
-);
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 // **** uploadImage
 // routes.post(
 //   "/admin/uploadImage",
@@ -178,24 +142,12 @@ router.delete(
 );
 
 router.post(
-<<<<<<< HEAD
   "/admin/add_favorite",
   asyncHandler(async (req: Request, res: Response): Promise<any> => {
     const { patient_id, doctor_id } = req.body;
     const formData = { patient_id, doctor_id };
-=======
-  '/admin/add_favorite',
-  asyncHandler(async (req: Request, res: Response): Promise<any> => {
-    const { patient_id, doctor_id } = req.body;
-    const formData = {patient_id,doctor_id}
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     const data = await PatientService.addFavorite(formData);
     const buildResponse = BuildResponse.get(data);
     return res.status(buildResponse.code).json(buildResponse);
   })
-<<<<<<< HEAD
-=======
-
-  
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 );

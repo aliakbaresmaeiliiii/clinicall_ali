@@ -1,12 +1,8 @@
 <app-service-section [title]="'Clinic Information'">
-<<<<<<< HEAD
-  <div class="lg:flex lg:flex-row lg:gap-10 md:flex md:flex-col md:gap-3 justify-center mt-6">
-=======
-  <div class="desktop:flex desktop:flex-row desktop:gap-10 mobile:flex mobile:flex-col mobile:gap-3 justify-center mt-6">
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
+  <div
+    class="lg:flex lg:flex-row lg:gap-10 md:flex md:flex-col md:gap-3 justify-center mt-6">
     @for (item of cartInfo; track $index) {
     <app-card-info
-      
       [title]="item.title"
       [subtitle]="item.subtitle"
       [description]="item.description"

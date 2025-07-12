@@ -1,16 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-<<<<<<< HEAD
-import { BehaviorSubject, map, Observable, ObservedValueOf } from 'rxjs';
-=======
-import { BehaviorSubject, map, Observable } from 'rxjs';
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
+import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import {
-  DoctorScheduleAvailability,
-  DoctorsDTO,
-  ReviewsDTO,
-} from '../models/doctors';
+import { DoctorsDTO, ReviewsDTO } from '../models/doctors';
 import { InsurancesDTO } from '../models/insureances';
 
 @Injectable({
@@ -50,17 +42,12 @@ export class DoctorsService {
     // .pipe(map(response => response));
   }
 
-<<<<<<< HEAD
-  getDoctorsClinic(queryParamas?:any): Observable<any> {
+  getDoctorsClinic(queryParamas?: any): Observable<any> {
     return this.#http.get(`${this.config}clinic/doctors`);
   }
-  getDoctorsDetailClinic(id:string):Observable<any>{
-   return this.#http.get(`${this.config}clinic/doctors-detail/${id}`)
+  getDoctorsDetailClinic(id: string): Observable<any> {
+    return this.#http.get(`${this.config}clinic/doctors-detail/${id}`);
   }
-=======
- 
-
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
   addDoctor(formData: any): Observable<DoctorsDTO[]> {
     return this.#http.post<DoctorsDTO[]>(
       `${this.config}admin/add-doctor`,
@@ -93,11 +80,7 @@ export class DoctorsService {
 
   updateDoctor(formData: any): Observable<DoctorsDTO[]> {
     return this.#http.put<DoctorsDTO[]>(
-<<<<<<< HEAD
       `${this.config}admin/updateDoctor/${formData.id}`,
-=======
-      `${this.config}admin/updateDoctor`,
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
       formData
     );
   }
@@ -160,13 +143,10 @@ export class DoctorsService {
   getAllInsurances(): Observable<InsurancesDTO> {
     return this.#http.get<InsurancesDTO>(`${this.config}getAllInsurances`);
   }
-<<<<<<< HEAD
 
   deleteDoctor(doctor_id: string) {
     return this.#http.delete(
       `${this.config}doctors/delete-doctor/${doctor_id}`
     );
   }
-=======
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 }

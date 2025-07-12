@@ -12,10 +12,7 @@ import { banWords } from '../../../shared/validators/ban-words.validators';
 import { PatientDTO } from '../../patients/model/patients.model';
 import { PatientsService } from '../../patients/services/patients.service';
 import { Colors } from '../enum/enum-color';
-<<<<<<< HEAD
 import { CalendarService } from '../services/calendar.service';
-=======
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 
 const today = new Date();
 const month = today.getMonth();
@@ -42,11 +39,8 @@ export class DialogCalendarComponent {
   DATA_KEY_PATIENT = makeStateKey<any>('pateintInfo');
   service = inject(PatientsService);
   selectedPatient: string = '';
-<<<<<<< HEAD
   k = inject(CalendarService);
 
-=======
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
   isShowTime = false;
   foods: any[] = [
     { value: 'steak-0', viewValue: 'Steak' },
@@ -58,11 +52,8 @@ export class DialogCalendarComponent {
   defaultTime: string = '';
   firstSelectedTime: string = '';
   secondSelectedTime: string = '';
-<<<<<<< HEAD
   dataContextMenu: any;
   calendarService: any;
-=======
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 
   constructor(
     public dialogRef: MatDialogRef<DialogCalendarComponent>,
@@ -121,22 +112,14 @@ export class DialogCalendarComponent {
     const filterValue =
       this.form.get('patientInfo.patientName')?.value?.toLowerCase() || '';
     this.filteredPatient = this.patientInfo.filter(p =>
-<<<<<<< HEAD
       p.first_name?.toLowerCase().includes(filterValue)
-=======
-      p.patientName?.toLowerCase().includes(filterValue)
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     );
   }
 
   fetchPatients() {
     const cachedData = this.transferState.get(this.DATA_KEY_PATIENT, null);
     if (!cachedData) {
-<<<<<<< HEAD
       this.service.getPatients('').subscribe((response: any) => {
-=======
-      this.service.getPatients().subscribe((response: any) => {
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
         if (response && response.data) {
           this.filteredPatient = [...response.data];
           this.transferState.set(this.DATA_KEY_PATIENT, response.data);
@@ -221,7 +204,6 @@ export class DialogCalendarComponent {
     this.secondSelectedTime =
       this.timeSlots[secondIndex] || this.timeSlots[firstIndex];
   }
-<<<<<<< HEAD
 
   deleteAppointment() {
     const getEventId = this.dataContextMenu.dataList[0].event_id;
@@ -231,6 +213,4 @@ export class DialogCalendarComponent {
       }
     });
   }
-=======
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 }

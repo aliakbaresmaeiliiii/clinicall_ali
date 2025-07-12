@@ -11,10 +11,7 @@ import { DoctorDetailComponent } from './components/doctor-detail/doctor-detail.
 import { DoctorListComponent } from './components/doctor-list/doctor-list.component';
 import { EditDoctorComponent } from './components/edit-doctor/edit-doctor.component';
 import { DoctorsComponent } from './components/doctors.component';
-<<<<<<< HEAD
 import { DeleteDoctorDialogComponent } from './components/delete-doctor-dialog/delete-doctor-dialog.component';
-=======
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 
 const routes: Routes = [
   {
@@ -42,10 +39,7 @@ const routes: Routes = [
     DoctorListComponent,
     EditDoctorComponent,
     AddDoctorComponent,
-<<<<<<< HEAD
     DeleteDoctorDialogComponent
-=======
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 
   ],
   imports: [
