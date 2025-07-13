@@ -17,7 +17,6 @@ import {
   filterServicesById,
   filterSpecialtyById,
   getDoctoLike,
-  getDoctorsClinic,
   getDoctorsDetailClinic,
   getDoctorsFromElastic,
   getReviews,
@@ -29,6 +28,9 @@ import {
   recordDoctorProfileView,
   updateDoctor,
 } from "./db";
+
+import { fetchDoctors } from "./db";
+
 const moment = require("moment");
 
 export class DoctorsService {
@@ -55,14 +57,24 @@ export class DoctorsService {
   }
 
   public static async getClinicDoctors() {
-    const data = await getDoctorsClinic();
+    const data = await fetchDoctors();
     if (data) {
       return { message: "ok", data };
-    } else {
-      return null;
+    }else{
+      return null
     }
   }
-  public static async getDoctorDetailClinic(id:number) {
+
+  // public static async getClinicDoctors() {
+  //   const data = await fetchDoctors();
+  //   if (data) {
+  //     return { message: "ok", data };
+  //   } else {
+  //     return null;
+  //   }
+
+  // }
+  public static async getDoctorDetailClinic(id: number) {
     const data = await getDoctorsDetailClinic(id);
     if (data) {
       return { message: "ok", data };
@@ -97,8 +109,8 @@ export class DoctorsService {
   //     return null;
   //   }
   // }
-  public static async updateDoctor(formData: DoctorsDTO,id:number) {
-    const data = await updateDoctor(formData,id);
+  public static async updateDoctor(formData: DoctorsDTO, id: number) {
+    const data = await updateDoctor(formData, id);
     if (data) {
       return { message: "ok", data };
     } else {

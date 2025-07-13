@@ -10,18 +10,11 @@ import {
 } from "../../models/doctors";
 import { ResponseError } from "../../modules/error/response_error";
 import { doctorSchema } from "./schema";
-<<<<<<< HEAD
 import { OkPacket } from "mysql2";
 
 export async function getDoctorsFromElastic(filters: {
   first_name?: string;
   last_name?: string;
-=======
-
-
-export async function getDoctorsFromElastic(filters: {
-  name?: string;
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
   city_id?: string;
   service_id?: string;
   specialty_id?: string;
@@ -35,16 +28,11 @@ export async function getDoctorsFromElastic(filters: {
   try {
     const must: any[] = [];
 
-<<<<<<< HEAD
     if (filters.first_name) {
       must.push({ match: { first_name: filters.first_name } });
     }
     if (filters.last_name) {
       must.push({ match: { last_name: filters.last_name } });
-=======
-    if (filters.name) {
-      must.push({ match: { name: filters.name } });
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
     }
     if (filters.doctor_id) {
       must.push({ term: { id: filters.doctor_id } });
@@ -102,14 +90,13 @@ export async function getDoctorsFromElastic(filters: {
     return [];
   }
 }
-
-<<<<<<< HEAD
-export async function getDoctorsClinic() {
+export async function fetchDoctors(){  
   const result = await query<RowDataPacket[]>(
     `SELECT * FROM ${coreSchema}.doctors`
   );
   return result;
 }
+
 export async function getDoctorsDetailClinic(id: number) {
   const result = await query<RowDataPacket[]>(
     `SELECT * FROM ${coreSchema}.doctors
@@ -121,8 +108,6 @@ export async function getDoctorsDetailClinic(id: number) {
   return result;
 }
 
-=======
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 export async function addDoctor(data: DoctorsDTO) {
   const { password } = data.password;
   const { confirmPassword } = data.password;
@@ -315,7 +300,6 @@ export async function checkDoctorPhoneNumberExists(
   return result;
 }
 
-<<<<<<< HEAD
 export async function updateDoctor(
   doctorData: DoctorsDTO,
   id: number
@@ -358,20 +342,6 @@ export async function updateDoctor(
     (0 && updateDoctorAddress.affectedRows) ||
     0
   );
-=======
-export async function updateDoctor(doctorData: DoctorsDTO): Promise<any> {
-  const result = await query<RowDataPacket>(
-    `
-        UPDATE ${coreSchema}.doctors
-        SET name = ?
-        WHERE id = ?
-      `,
-    {
-      values: [doctorData.first_name, doctorData.id],
-    }
-  );
-  return result;
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
 }
 
 export async function recordDoctorProfileView(id: any) {
@@ -687,7 +657,6 @@ export async function booked(
     console.log("final");
   }
 }
-<<<<<<< HEAD
 
 // export async function deleteDoctor(id: number) {
 //     const result = await query<RowDataPacket>(
@@ -710,5 +679,3 @@ export async function deleteDoctor(id: number) {
   );
   return result;
 }
-=======
->>>>>>> 0ea4f870e175dddffe86ebd4de99f9738212b6d4
