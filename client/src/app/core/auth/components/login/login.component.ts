@@ -6,7 +6,9 @@ import {
   Renderer2,
   signal
 } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import { Router } from '@angular/router';
 import { ThemeManagerService } from '../../../../shared/client-services/theme-manager.service';
 import { AuthService } from '../../../services/auth.service';
 
@@ -16,11 +18,10 @@ import {
   SocialAuthServiceConfig,
   SocialUser,
 } from '@abacritt/angularx-social-login';
+import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { PermissionService } from '../../../services/permission.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 // Client ID
 // 302618903274-6bfd6agmkoanb474m3e1ii3oc1phjl40.apps.googleusercontent.com
 
@@ -31,6 +32,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   standalone: false,
   providers: [
+    ReCaptchaV3Service,
     SocialAuthService,
     {
       provide: 'SocialAuthServiceConfig',
@@ -58,7 +60,7 @@ export class LoginComponent implements OnInit {
   #authService = inject(AuthService);
   permissionService = inject(PermissionService);
   toast = inject(ToastrService);
-  // recaptchaV3Service = inject(ReCaptchaV3Service);
+  recaptchaV3Service = inject(ReCaptchaV3Service);
   renderer = inject(Renderer2);
   matcher = new ErrorStateMatcher();
   private themeManager = inject(ThemeManagerService);
