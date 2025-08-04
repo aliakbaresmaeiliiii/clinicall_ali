@@ -24,16 +24,13 @@
   width: 14.2%;
 }
 
-.calendar-table td,
-.calendar-table th {
-  border: 1px solid #dee2e6;
-}
 
 .calendar-table td,
 .calendar-table th {
   padding: 0.75rem;
   vertical-align: top;
   border-top: 1px solid #dee2e6;
+  border: 1px solid #dee2e6;
 }
 
 .calendar-day {
@@ -80,26 +77,12 @@ p {
 }
 
 
-
-.event_title:hover {
-  // color: white;
-}
-
 .body-event {
   margin-top: 1rem;
   display: flex;
   gap: 11px;
 
 }
-
-// .body-event:hover {
-//   // background-color: #DCCBF2;
-//   // border: 1px solid lightgray;
-//   transition: 0.2s;
-//   padding: 5px;
-//   border-radius: 5px;
-// }
-
 
 
 .context-menu {
@@ -142,15 +125,10 @@ p {
 
 .priority-circle {
   width: 10px;
-  /* Size of the circle */
   height: 10px;
-  /* Size of the circle */
   border-radius: 50%;
-  /* Make the element circular */
   display: inline-block;
-  /* Align the circle with text */
   margin-right: 8px;
-  /* Space between the circle and the text */
 }
 
 .priority-high {
@@ -179,12 +157,6 @@ p {
   background-color: yellow;
   transition: background-color 0.8s ease;
 }
-
-
-
-
-
-/* From Uiverse.io by mrhyddenn */ 
 .uiverse {
   position: relative;
   background: #ffffff;

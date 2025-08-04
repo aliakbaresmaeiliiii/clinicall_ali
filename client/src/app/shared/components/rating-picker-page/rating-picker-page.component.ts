@@ -1,8 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  inject
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RatingOptions } from 'ali';
 
@@ -14,13 +10,10 @@ interface Rating {
   selector: 'app-rating-picker-page',
   templateUrl: './rating-picker-page.component.html',
   styleUrl: './rating-picker-page.component.scss',
-  standalone:true,
-  imports:[FormsModule,ReactiveFormsModule],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
 })
 export class RatingPickerPageComponent {
   fb = inject(FormBuilder);
-
 
   form = this.fb.group<Rating>({
     reviewText: '',

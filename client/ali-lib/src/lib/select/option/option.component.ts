@@ -4,25 +4,25 @@ import {
   HostListener,
   OnInit,
   input,
-  output
-} from '@angular/core';
+  output,
+} from "@angular/core";
 
 @Component({
-  selector: 'lib-option',
+  selector: "lib-option",
   standalone: false,
-  templateUrl: './option.component.html',
-  styleUrl: './option.component.scss',
+  templateUrl: "./option.component.html",
+  styleUrl: "./option.component.scss",
 })
 export class OptionComponent implements OnInit {
   readonly value = input<string | null>(null);
-  readonly disableReason = input('');
+  readonly disableReason = input("");
 
-  @HostBinding('class.disabled')
-readonly disabled = input(false);
+  @HostBinding("class.disabled")
+  readonly disabled = input(false);
 
   readonly selected = output<OptionComponent>();
 
-  @HostListener('click')
+  @HostListener("click")
   protected select() {
     if (!this.disabled()) {
       this.highlightAsSelected();
@@ -30,7 +30,7 @@ readonly disabled = input(false);
     }
   }
 
-  @HostBinding('class.selected')
+  @HostBinding("class.selected")
   protected isSelected = false;
 
   ngOnInit(): void {}

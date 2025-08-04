@@ -1,12 +1,8 @@
 import {
-  CdkDrag,
-  CdkDropList,
-  CdkDropListGroup,
-  DragDropModule,
+  DragDropModule
 } from '@angular/cdk/drag-drop';
-import { AsyncPipe, CommonModule, DatePipe, NgOptimizedImage } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -29,23 +25,23 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
-import { NumberOnlyDirective } from 'ali';
 import { CopyLinkDialogComponent } from './components/copy-link-dialog/copy-link-dialog.component';
 import { LocationAppDialogComponent } from './components/google-map/location-app-dialog/location-app-dialog.component';
 import { ImgUploaderComponent } from './components/img-uploader/img-uploader.component';
+import { ProfileImageComponent } from './components/profile-image/profile-image.component';
 import { RangePickerComponent } from './components/range-picker/range-picker.component';
 import { RatingPickerPageComponent } from './components/rating-picker-page/rating-picker-page.component';
 import { AgeValidatorDirective } from './directives/age-validator/age-validator.directive';
 import { ChunkPipe } from './pipes/chunk/chunk.pipe';
 import { SearchBarComponent } from './search-bar/search-bar.component';
-import { ProfileImageComponent } from './components/profile-image/profile-image.component';
-import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-const ANGULR_MATERIAL_MODULES = [
+
+
+const ANGULAR_MATERIAL_MODULES = [
   MatAutocompleteModule,
   MatInputModule,
   MatFormFieldModule,
-  MatButtonModule,
   MatIconModule,
   MatSidenavModule,
   MatCardModule,
@@ -53,27 +49,9 @@ const ANGULR_MATERIAL_MODULES = [
   MatProgressBarModule,
   MatDialogModule,
   MatToolbarModule,
-  MatAutocompleteModule,
-  MatSelectModule,
-  MatButtonModule,
-  CdkDropListGroup,
-  CdkDropList,
-  CdkDrag,
-  DragDropModule,
-  MatMenuModule,
-  MatFormFieldModule,
-  MatInputModule,
-  FormsModule,
   MatTooltipModule,
   MatButtonModule,
-  MatDialogModule,
-  ReactiveFormsModule,
-  DatePipe,
-  MatIconModule,
   MatSelectModule,
-  MatMenuModule,
-  AgeValidatorDirective,
-  NumberOnlyDirective,
   MatCheckboxModule,
   MatListModule,
   MatTabsModule,
@@ -81,35 +59,51 @@ const ANGULR_MATERIAL_MODULES = [
   MatTableModule,
   MatRadioModule,
   MatDatepickerModule,
-  ImgUploaderComponent,
-  RatingPickerPageComponent,
   MatNativeDateModule,
-  CopyLinkDialogComponent,
-  
+  MatMenuModule,
 ];
+
+const CDK_MODULES = [DragDropModule];
+
 const COMMON_MODULES = [
-  CommonModule,
+CommonModule,
   ReactiveFormsModule,
   FormsModule,
-  AsyncPipe,
   NgOptimizedImage,
 ];
-const SHARED_COMPONENT = [
+
+const SHARED_DIRECTIVES = [AgeValidatorDirective];
+
+const SHARED_COMPONENTS = [
   SearchBarComponent,
   RangePickerComponent,
   LocationAppDialogComponent,
-  ProfileImageComponent
+  ProfileImageComponent,
+  ImgUploaderComponent,
+  RatingPickerPageComponent,
+  CopyLinkDialogComponent,
 ];
 
 const SHARED_PIPES = [ChunkPipe];
+
 @NgModule({
-  declarations: [SHARED_COMPONENT, SHARED_PIPES],
-  imports: [...COMMON_MODULES, ...ANGULR_MATERIAL_MODULES],
-  exports: [
-    ...ANGULR_MATERIAL_MODULES,
-    ...COMMON_MODULES,
-    ...SHARED_COMPONENT,
+  declarations: [
+    ...SHARED_COMPONENTS,
     ...SHARED_PIPES,
+    ...SHARED_DIRECTIVES,
+  ],
+  imports: [
+    ...COMMON_MODULES,
+    ...ANGULAR_MATERIAL_MODULES,
+    ...CDK_MODULES,
+  ],
+  exports: [
+    ...COMMON_MODULES,
+    ...ANGULAR_MATERIAL_MODULES,
+    ...CDK_MODULES,
+    ...SHARED_COMPONENTS,
+    ...SHARED_PIPES,
+    ...SHARED_DIRECTIVES,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })

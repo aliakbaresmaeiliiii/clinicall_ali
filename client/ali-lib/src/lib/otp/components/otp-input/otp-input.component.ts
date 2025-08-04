@@ -5,10 +5,9 @@ import {
   input,
   output
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
 import { Config } from '../../models/config';
 import { KeysPipe } from '../../pipes/keys.pipe';
-import { isPlatformBrowser } from '@angular/common';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
     selector: 'app-otp-input',

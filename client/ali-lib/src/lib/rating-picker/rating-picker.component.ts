@@ -16,6 +16,7 @@ export type RatingOptions = "great" | "good" | "neutral" | "bad" | null;
 
 @Component({
   selector: "lib-rating-picker",
+  standalone:true,
   imports: [CommonModule],
   templateUrl: "./rating-picker.component.html",
   styleUrl: "./rating-picker.component.scss",

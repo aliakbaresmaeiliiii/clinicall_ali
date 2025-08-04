@@ -5,24 +5,23 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
+import { SelectionModel } from '@angular/cdk/collections';
 import {
   AfterContentInit,
   Component,
   HostListener,
   Input,
-  OnInit,
+  contentChildren,
   input,
-  output,
-  contentChildren
+  output
 } from '@angular/core';
-import { OptionComponent } from './option/option.component';
-import { SelectionModel } from '@angular/cdk/collections';
+import { OptionComponent } from 'ali';
 
 @Component({
   selector: 'lib-select',
-  standalone: false,
   templateUrl: './select.component.html',
   styleUrl: './select.component.scss',
+  standalone:false,
   animations: [
     trigger('dropDown', [
       state('void', style({ transform: 'scaleY(0)', opacity: 0 })),
@@ -81,11 +80,11 @@ export class SelectComponent implements AfterContentInit {
   }
 
   private highlightSelectedOptions(value: string | null) {
-    this.findOptionsByValue(value)?.highlightAsSelected;
+    this.findOptionsByValue(value)?.highlightAsSelected();
   }
 
   private findOptionsByValue(value: string | null) {
     const options = this.options();
-    return options && options.find((o) => o.value() === value);
+    return options && options.find((o:any) => o.value() === value);
   }
 }

@@ -14,6 +14,7 @@ import { ShareService } from '../../services/share.service';
     selector: 'app-img-uploader',
     templateUrl: './img-uploader.component.html',
     styleUrl: './img-uploader.component.scss',
+    standalone:false,
     providers: [NgxImageCompressService],
 })
 export class ImgUploaderComponent {

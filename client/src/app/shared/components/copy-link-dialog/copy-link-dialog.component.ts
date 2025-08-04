@@ -1,20 +1,15 @@
 import {
   Component,
-  ElementRef,
   inject,
   Inject,
-  input,
-  output,
-  viewChild,
+  output
 } from '@angular/core';
-import { MatButtonModule } from '@angular/material/button';
-import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
-import { MatToolbarModule } from '@angular/material/toolbar';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-copy-link-dialog',
-  imports: [MatDialogModule, MatButtonModule, MatToolbarModule],
+  standalone:false,
   templateUrl: './copy-link-dialog.component.html',
   styleUrl: './copy-link-dialog.component.scss',
 })

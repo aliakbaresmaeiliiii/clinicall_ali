@@ -1,11 +1,10 @@
-import { Component, inject, model } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, inject } from '@angular/core';
 import {
   MAT_DIALOG_DATA,
-  MatDialogModule,
-  MatDialogRef,
+  MatDialogRef
 } from '@angular/material/dialog';
 import { GoogleMapComponent } from '../google-map.component';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-location-app-dialog',

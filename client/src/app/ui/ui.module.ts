@@ -3,29 +3,16 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireFunctionsModule } from '@angular/fire/compat/functions';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatRadioModule } from '@angular/material/radio';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule, RouterOutlet, Routes } from '@angular/router';
-import { RecaptchaModule } from "ng-recaptcha";
 import { NgxStarsModule } from 'ngx-stars';
 import { environment } from '../environments/environment';
-import { PatientProfileComponent } from '../modules/patients/patient-profile/patient-profile.component';
 import { ButtonComponent } from '../shared/components/button/button.component';
 import { ChatbotComponent } from '../shared/components/chatbot/chatbot.component';
-import { GoogleMapComponent } from '../shared/components/google-map/google-map.component';
 import { LoaderComponent } from '../shared/components/loader/loader.component';
 import { SocialMediaIconComponent } from '../shared/components/social-media-icon/social-media-icon.component';
 import { CounterDirective } from '../shared/directives/counter-number/counter.directive';
@@ -75,7 +62,6 @@ import { SuggestionsComponent } from './suggestions/suggestions.component';
 import { SuggustionsServiceComponent } from './suggustions-service/suggustions-service.component';
 import { UserReviewsOfClinicAliComponent } from './user-reviews-of-clinic-ali/user-reviews-of-clinic-ali.component';
 import { YoursDoctorComponent } from './yours-doctor/yours-doctor.component';
-import { PatientDetailComponent } from '../modules/patients/patient-detail/patient-detail.component';
 
 const routes: Routes = [
   {
@@ -165,40 +151,20 @@ const routes: Routes = [
     ChoosingAppointmentComponent,
   ],
   imports: [
-    CommonModule,
     RouterOutlet,
     RouterModule.forChild(routes),
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFireFunctionsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatMenuModule,
     ButtonComponent,
     SocialMediaIconComponent,
-    MatListModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatCheckboxModule,
-    MatButtonModule,
-    MatCardModule,
-    GoogleMapComponent,
     AppScrollProgressBarComponent,
     CounterDirective,
-    MatSidenavModule,
-    MatRadioModule,
-    MatExpansionModule,
-    MatDialogModule,
     SharedUiModule,
     LoaderComponent,
     FloorPipe,
-    MatTabsModule,
     NgxStarsModule,
-    MatToolbarModule,
-    MatIconModule,
     ToBooleanPipe,
-    MatTooltipModule,
     SharedModule,
-    RecaptchaModule,
     ChatbotComponent,
   ],
   exports: [BlogComponent, MatToolbarModule],

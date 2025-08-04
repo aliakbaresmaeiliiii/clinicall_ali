@@ -1,10 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
-import { MatFormField } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NgxStarsModule } from 'ngx-stars';
@@ -20,8 +18,8 @@ import { SwiperSliderCardComponent } from './components/swiper-slider-card/swipe
 import { SwiperSliderComponent } from './components/swiper-slider/swiper-slider.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-
-
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const COMPOENTN = [
   ServiceSectionComponent,
@@ -41,22 +39,22 @@ const COMMON_MODULES = [
   ButtonComponent,
   ReactiveFormsModule,
   FormsModule,
-  MatDialogModule
 ];
 
 const MATERIAL_MODULE = [
   MatTabsModule,
   MatDividerModule,
-  MatFormField,
   MatInputModule,
   MatAutocompleteModule,
+  MatFormFieldModule,
   MatCardModule,
-  MatButtonModule 
+  MatButtonModule,
+  MatDialogModule,
 ];
 @NgModule({
-  declarations: [COMPOENTN],
-  imports: [COMMON_MODULES, ...MATERIAL_MODULE],
-  exports: [COMPOENTN, COMMON_MODULES, MATERIAL_MODULE],
+  declarations: [...COMPOENTN],
+  imports: [...COMMON_MODULES, ...MATERIAL_MODULE],
+  exports: [...COMPOENTN, ...COMMON_MODULES, ...MATERIAL_MODULE],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class SharedUiModule {}

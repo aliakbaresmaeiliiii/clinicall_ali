@@ -4,7 +4,7 @@ import { AgePipe } from '../../pipes/age.pipe';
 
 @Directive({
   selector: '[appAgeValidator]',
-  standalone: true,
+  standalone: false,
 })
 export class AgeValidatorDirective implements OnInit {
   // @Input('appAgeValidator') formGroup!: FormGroup;

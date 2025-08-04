@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 
 const today = new Date();
@@ -10,8 +10,10 @@ const year = today.getFullYear();
   templateUrl: './range-picker.component.html',
   styleUrl: './range-picker.component.scss',
   standalone: false,
+  changeDetection:ChangeDetectionStrategy.OnPush
 })
 export class RangePickerComponent {
+
 
   @Input() campaignOneStart: Date = new Date();
   @Input() campaignOneEnd: Date = new Date();

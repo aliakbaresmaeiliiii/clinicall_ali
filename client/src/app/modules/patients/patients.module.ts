@@ -45,7 +45,6 @@ export const routes: Routes = [
     PatientDetailComponent,
   ],
   imports: [
-    CommonModule,
     RouterModule.forChild(routes),
     FormsModule,
     LoaderComponent,

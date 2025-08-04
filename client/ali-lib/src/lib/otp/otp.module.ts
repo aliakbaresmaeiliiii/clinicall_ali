@@ -1,19 +1,12 @@
 import { NgModule } from "@angular/core";
 import { KeysPipe } from "./pipes/keys.pipe";
-import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { NumberOnlyDirective, OtpInputComponent } from "../../public-api";
-import { CountdownComponent } from "ngx-countdown";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    CountdownComponent,
-    NumberOnlyDirective,
-  ],
-  declarations: [OtpInputComponent, KeysPipe],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, ],
+  declarations: [OtpInputComponent, NumberOnlyDirective, KeysPipe],
   exports: [OtpInputComponent],
   providers: [KeysPipe],
 })
