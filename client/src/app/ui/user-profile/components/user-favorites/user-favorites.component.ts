@@ -139,7 +139,7 @@ export class UserFavoritesComponent {
     const payload: likeDTO = {
       isLike: this.tabData()[id].isLiked,
       patient_id: user_id,
-      doctor_id: data.id, // Ensure correct doctor ID
+      id: data.id, // Ensure correct doctor ID
     };
 
     this.likeService.addLike(payload).subscribe({

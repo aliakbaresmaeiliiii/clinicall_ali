@@ -196,6 +196,8 @@ export class FilterLayoutComponent implements OnInit {
         return doctor;
       });
       this.tabData.set(newData);
+      console.log('👌👌👌',this.tabData());
+      
     });
   }
 
@@ -260,7 +262,7 @@ export class FilterLayoutComponent implements OnInit {
     const payload: likeDTO = {
       isLike: this.tabData()[id].isLiked,
       patient_id: user_id,
-      doctor_id: data.id, // Ensure correct doctor ID
+      id: data.id, // Ensure correct doctor ID
     };
 
     this.likeService.addLike(payload).subscribe({

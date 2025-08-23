@@ -1,6 +1,8 @@
 <mat-card appearance="outlined" class="w-full mt-4">
   <mat-card-content>
-    <h2>Other users have replaced the following doctors:</h2>
+    <h2 class="text-gray-900">
+      Other users have replaced the following doctors:
+    </h2>
     @for (data of doctors; track $index ; let i = $index) {
     <div
       class="w-full min-w-96 bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden mt-5">
@@ -20,10 +22,8 @@
           </div>
 
           <div class="flex justify-between min-w-96 text-white">
-            <div class="flex flex-col text-lg font-bold">
-              <span>
-                {{ data.first_name}}{{ data.last_name}}
-              </span>
+            <div class="flex text-gray-900 flex-col text-lg font-bold">
+              <span class> {{ data.first_name }}{{ data.last_name }} </span>
               <span class="opacity-75">
                 {{ data.specialty_name }}
               </span>
@@ -42,7 +42,7 @@
       </div>
 
       <div class="flex items-center gap-4 text-xs text-gray-200 pt-4 pl-6">
-        <span class="flex items-center gap-1">
+        <span class="flex items-center gap-1 text-gray-900">
           <p>
             <strong>({{ data.click_count }}&nbsp;review)</strong>
           </p>
@@ -65,7 +65,7 @@
           </svg>
           }
         </span>
-        <span class="flex items-center gap-1">
+        <span class="flex items-center text-gray-900 gap-1">
           <span> 96% User suggestion </span>
           <span>
             <svg
@@ -84,7 +84,7 @@
             </svg>
           </span>
         </span>
-        <span class="flex items-center gap-1">
+        <span class="flex items-center gap-1 text-gray-900">
           <span> 56235 Successful turn in yourDoctor </span>
           <span>
             <img
@@ -104,7 +104,7 @@
         <button
           type="button"
           (click)="getAppointment(data)"
-          class="flex justify-start gap-2 shadow-xl text-base bg-gray-50 backdrop-blur-md lg:font-semibold isolation-auto border-gray-50 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-blue-800 hover:text-gray-50 before:-z-10 before:aspect-square before:hover:scale-150 before:hover:duration-700 relative z-10 px-3 py-1 overflow-hidden border-2 rounded-full group">
+          class="flex justify-start gap-2 shadow-xl text-base bg-gray-50 backdrop-blur-md lg:font-semibold isolation-auto border-gray-50 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-blue-800 cursor-pointer hover:text-gray-600 before:-z-10 before:aspect-square before:hover:scale-150 before:hover:duration-700 relative z-10 px-3 py-1 overflow-hidden border-2 rounded-full group">
           Appointment
           <svg
             class="w-8 h-8 justify-end group-hover:rotate-90 group-hover:bg-gray-50 text-gray-50 ease-linear duration-300 rounded-full border border-gray-700 group-hover:border-none p-2 rotate-45"

@@ -24,7 +24,7 @@
           </div>
 
           <div>
-            <div class="flex justify-between max-w-96 min-w-96 text-white">
+            <div class="flex justify-between max-w-96 min-w-96 ">
               <div class="flex flex-col gap-4 text-lg font-bold">
                 <span> {{ data.first_name }}{{ data.last_name }} </span>
                 <span class="opacity-75">
@@ -33,7 +33,7 @@
               </div>
               <div
                 (click)="visitProfile(data)"
-                class="cursor-pointer flex items-center group border border-transparent hover:border-gray-400 rounded-lg p-2 transition-all duration-300 ease-in-out">
+                class="cursor-pointer border-2 border-gray-100 flex items-center group  hover:border-gray-400 rounded-lg p-2 transition-all duration-300 ease-in-out">
                 Visit Profile
                 <mat-icon
                   class="menu-button ml-2 transform -translate-x-4 opacity-0 transition-all duration-300 ease-in-out group-hover:translate-x-0 group-hover:opacity-100">
@@ -47,7 +47,7 @@
 
       <div class="flex items-center gap-4 text-xs text-gray-200 pl-6">
         <span class="flex items-center gap-1">
-          <p>
+          <p class="text-gray-900 dark:text-gray-200">
             <strong>({{ data.click_count }}&nbsp;review)</strong>
           </p>
 
@@ -68,7 +68,7 @@
        
           } -->
         </span>
-        <span class="flex items-center gap-1">
+        <span class="flex items-center gap-1 text-gray-900">
           <span *ngIf="data.user_suggestion_percentage">
             {{ data.user_suggestion_percentage | number : '1.0-1' }}%
             Recommended
@@ -93,7 +93,7 @@
             </svg>
           </span>
         </span>
-        <span class="flex items-center gap-1">
+        <span class="flex items-center gap-1 text-gray-900">
           <span> 56235 Successful turn in yourDoctor </span>
           <span>
             <img
@@ -117,7 +117,7 @@
         <button
           type="button"
           (click)="onlineConsultationDialog(data, '400ms', '300ms')"
-          class="flex justify-start text-sm gap-2 shadow-xl bg-gray-50 backdrop-blur-md lg:font-semibold isolation-auto border-gray-50 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-blue-800 hover:text-gray-50 before:-z-10 before:aspect-square before:hover:scale-150 before:hover:duration-700 relative z-10 px-3 py-1 overflow-hidden border-2 rounded-full group">
+          class="flex justify-start text-sm gap-2 shadow-xl bg-gray-50 backdrop-blur-md lg:font-semibold isolation-auto border-gray-50 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-blue-800 hover:text-gray-600 before:-z-10 before:aspect-square before:hover:scale-150 before:hover:duration-700 relative z-10 px-3 py-1 overflow-hidden border-2 rounded-full group">
           <span class="pt-1"> Online Consultation </span>
           <svg
             class="w-8 h-8 justify-end group-hover:rotate-90 group-hover:bg-gray-50 text-gray-50 ease-linear duration-300 rounded-full border border-gray-700 group-hover:border-none p-2 rotate-45"

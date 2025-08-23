@@ -124,7 +124,7 @@ export class SuggestionReplacedDoctorComponent
     const payload: likeDTO = {
       isLike: this.doctors[id].isLiked,
       patient_id: user_id,
-      doctor_id: data.id, // Ensure correct doctor ID
+      id: data.id, // Ensure correct doctor ID
     };
 
     this.likeService.addLike(payload).subscribe({

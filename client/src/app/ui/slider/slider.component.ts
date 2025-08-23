@@ -32,7 +32,8 @@ import {
 import { environment } from '../../environments/environment';
 import { DoctorsService } from '../../modules/doctors/services/doctors.service';
 import { ElasticSearchService } from '../../shared/services/elastic-search.service';
-import { DoctorsDTO } from '../../modules/doctors/models/doctors';
+import { DoctorsDTO, ReviewsDTO } from '../../modules/doctors/models/doctors';
+import { User } from '../../core/auth/models/user';
 
 const style1 = style({
   opacity: 1,
@@ -82,6 +83,7 @@ export class SliderComponent implements OnInit {
   isLoading = false;
   isListening = false;
   recognizedText = '';
+  userData = signal<any>(null);
 
   // filterDataSubject = new BehaviorSubject<{
   //   doctors: any[];
@@ -147,6 +149,10 @@ export class SliderComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const getUserData = localStorage.getItem('userData');
+    if (getUserData) {
+      this.userData.set(JSON.parse(getUserData));
+    }
     this.incrementCounter();
     AOS.init({
       duration: 1000,
@@ -210,11 +216,21 @@ export class SliderComponent implements OnInit {
       });
   }
 
-  navigateToDetial(selectedDoctor: any) {
+  navigateToDetail(selectedDoctor: any): void {
     if (!selectedDoctor) return;
-    const doctorName = selectedDoctor.name;
+    debugger;
+
+    const payload = {
+      id: selectedDoctor.id,
+      // user_id: this.userData().id,
+    };
+    // this.doctorService.insertReviews(payload).subscribe(res => {});
+    const doctorName =
+      `${selectedDoctor.first_name}-${selectedDoctor.last_name}`
+        .toLowerCase()
+        .replace(/\s+/g, '-');
     const id = selectedDoctor.id;
-    this.router.navigate([`/doctor/${doctorName}/${id}`]);
+    this.router.navigate(['/doctor', doctorName, id]);
   }
 
   highlightText(text: string): string {

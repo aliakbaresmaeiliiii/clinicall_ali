@@ -1,5 +1,5 @@
 export interface likeDTO {
   isLike: boolean;
-  doctor_id: number;
+  id: number;
   patient_id: number;
 }

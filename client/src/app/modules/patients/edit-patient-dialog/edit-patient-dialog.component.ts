@@ -87,7 +87,6 @@ export class EditPatientDialogComponent
     const patient_id = this.data.patient_id;
     this.getData(patient_id);
     // this.defaultValueBloodGroup = +this.data.blood_group;
-    debugger;
   }
 
   getData(patient_id: string) {

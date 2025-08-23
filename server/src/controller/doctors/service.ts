@@ -39,7 +39,7 @@ export class DoctorsService {
     last_name?: string;
     id?: string;
     city_id?: string;
-    doctor_id?: string;
+    doctor_id?: number;
     service_id: string;
     specialty_id: string;
     patient_id: string;

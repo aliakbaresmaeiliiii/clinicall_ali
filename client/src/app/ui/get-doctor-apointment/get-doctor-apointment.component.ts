@@ -104,6 +104,8 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
     if (!storedData) {
       this.doctorService.getDoctors(filter).subscribe({
         next: (response: any) => {
+          console.log('response',response);
+          
           if (response.data) {
             const newData = response.data.map((img: any) => {
               img.profile_img = img.profile_img
@@ -112,6 +114,8 @@ export class GetDoctorApointmentComponent implements OnInit, AfterViewInit {
               return img;
             });
             this.doctorInfo.set(newData);
+            console.log('👍👍👍👍👍',newData);
+            
             // const match = newData[0].address.match(/^Subang Jaya\s*/);
             // this.addressBreifly = match ? match[0] : '';
             this.doctorService.storeDoctorInfo.set(newData);

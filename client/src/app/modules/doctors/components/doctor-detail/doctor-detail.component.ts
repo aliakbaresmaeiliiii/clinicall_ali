@@ -40,11 +40,9 @@ export class DoctorDetailComponent extends BaseComponent {
     this.transferState.remove(this.DATA_KEY);
     const storedData = this.transferState.get(this.DATA_KEY, null);
     if (!storedData) {
-      debugger
       this.service.getDoctorsDetailClinic(filter.id).subscribe({
         next: (response: any) => {          
           if (response.data && response.data.length > 0) {
-            debugger;
             const newData = response.data.map((patient: any) => {
               patient.profile_img = patient.profile_img
                 ? `${environment.urlProfileImg}${patient.profile_img}`

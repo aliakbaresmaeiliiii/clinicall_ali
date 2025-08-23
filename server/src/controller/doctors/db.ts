@@ -21,7 +21,7 @@ export async function getDoctorsFromElastic(filters: {
   insurance_id?: string;
   patient_id?: string;
   minRating?: number;
-  doctor_id?: string;
+  doctor_id?: number;
   maxRating?: number;
   isPopular?: boolean;
 }) {
@@ -35,7 +35,7 @@ export async function getDoctorsFromElastic(filters: {
       must.push({ match: { last_name: filters.last_name } });
     }
     if (filters.doctor_id) {
-      must.push({ term: { id: filters.doctor_id } });
+      must.push({ term: { id: Number(filters.doctor_id) } });
     }
     if (filters.specialty_id) {
       must.push({ term: { specialty_id: filters.specialty_id } });
@@ -75,10 +75,11 @@ export async function getDoctorsFromElastic(filters: {
     const query = must.length > 0 ? { bool: { must } } : { match_all: {} };
 
     const response = await esClient.search({
-      index: "elasticsearch",
+      index: "doctors",
       body: {
         query,
       },
+      size: 20
     });
 
     if (!response.hits || !response.hits.hits.length) {
@@ -87,10 +88,10 @@ export async function getDoctorsFromElastic(filters: {
 
     return response.hits.hits.map((hit: any) => hit._source);
   } catch (error: any) {
-    return [];
+    throw new Error(`error from elastic ${error}`);
   }
 }
-export async function fetchDoctors(){  
+export async function fetchDoctors() {
   const result = await query<RowDataPacket[]>(
     `SELECT * FROM ${coreSchema}.doctors`
   );
@@ -175,7 +176,7 @@ export async function like(data: likeDTO) {
     `SELECT * FROM ${coreSchema}.doctor_likes 
      WHERE doctor_id = ? AND patient_id = ?`,
     {
-      values: [data.doctor_id, data.patient_id],
+      values: [data.id, data.patient_id],
     }
   );
 
@@ -185,41 +186,23 @@ export async function like(data: likeDTO) {
       `DELETE FROM ${coreSchema}.doctor_likes 
        WHERE doctor_id = ? AND patient_id = ?`,
       {
-        values: [data.doctor_id, data.patient_id],
+        values: [data.id, data.patient_id],
       }
     );
+    return { success: true, isLiked: 0 };
   } else {
     // Like the doctor: Insert new like record
     await query<RowDataPacket>(
-      `INSERT INTO ${coreSchema}.doctor_likes (doctor_id, patient_id, isLike) 
-       VALUES (?, ?, ?)`,
+      `INSERT INTO ${coreSchema}.doctor_likes (doctor_id, patient_id, isLike)
+          VALUES (?, ?, 1)
+      `,
       {
-        values: [data.doctor_id, data.patient_id, 1],
+        values: [data.id, data.patient_id],
       }
     );
+    return { success: true, isLiked: 1 };
   }
 
-  // Update the doctor's is_liked status based on the total likes
-  const totalLikes = await query<RowDataPacket>(
-    `SELECT COUNT(*) AS count FROM ${coreSchema}.doctor_likes 
-     WHERE doctor_id = ?`,
-    {
-      values: [data.doctor_id],
-    }
-  );
-
-  const isLiked = totalLikes[0].count > 0 ? 1 : 0;
-
-  await query<RowDataPacket>(
-    `UPDATE ${coreSchema}.doctors 
-     SET is_liked = ? 
-     WHERE id = ?`,
-    {
-      values: [isLiked, data.doctor_id],
-    }
-  );
-
-  return { success: true, isLiked };
 }
 
 export async function getDoctoLike(patient_id: number) {

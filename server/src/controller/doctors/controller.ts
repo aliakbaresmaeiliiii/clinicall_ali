@@ -13,7 +13,7 @@ router.get(
       specialty_id: req.query.specialty_id as string,
       city_id: req.query.city_id as string,
       insurance_id: req.query.insurance_id as string,
-      doctor_id: req.query.doctor_id as string,
+      doctor_id: (+req.query.doctor_id) ,
       patient_id: req.query.patient_id as string,
       isPopular: req.query.isPopular as boolean,
       minRating: req.query.minRating

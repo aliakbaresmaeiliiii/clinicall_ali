@@ -13,12 +13,8 @@ import { ThemeManagerService } from '../../../../shared/client-services/theme-ma
 import { AuthService } from '../../../services/auth.service';
 
 import {
-  GoogleLoginProvider,
-  SocialAuthService,
-  SocialAuthServiceConfig,
-  SocialUser,
+  SocialUser
 } from '@abacritt/angularx-social-login';
-import { ReCaptchaV3Service } from 'ng-recaptcha';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 import { PermissionService } from '../../../services/permission.service';
@@ -31,28 +27,6 @@ import { PermissionService } from '../../../services/permission.service';
   selector: 'app-login',
   templateUrl: './login.component.html',
   standalone: false,
-  providers: [
-    ReCaptchaV3Service,
-    SocialAuthService,
-    {
-      provide: 'SocialAuthServiceConfig',
-      useValue: {
-        autoLogin: false,
-        lang: 'en',
-        providers: [
-          {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(
-              '302618903274-6bfd6agmkoanb474m3e1ii3oc1phjl40.apps.googleusercontent.com'
-            ),
-          },
-        ],
-        onError: (err: any) => {
-          console.error('❌❌❌', err);
-        },
-      } as SocialAuthServiceConfig,
-    },
-  ],
   styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
@@ -60,7 +34,6 @@ export class LoginComponent implements OnInit {
   #authService = inject(AuthService);
   permissionService = inject(PermissionService);
   toast = inject(ToastrService);
-  recaptchaV3Service = inject(ReCaptchaV3Service);
   renderer = inject(Renderer2);
   matcher = new ErrorStateMatcher();
   private themeManager = inject(ThemeManagerService);
@@ -207,12 +180,14 @@ export class LoginComponent implements OnInit {
               const dataJson = JSON.stringify(storeDataUser);
               localStorage.setItem('userData', dataJson);
               if (res.code === 200) {
-                if(this.successCaptcha()){
+                // if (this.successCaptcha()) {
                   this.toast.success('login is successfully');
-                  this.router.navigate(['']);
-                }else{
-                  this.toast.error('Captcha verification failed. Please try again.');
-                }
+                  this.router.navigate(['home']);
+                // } else {
+                  // this.toast.error(
+                    // 'Captcha verification failed. Please try again.'
+                  // );
+                // }
               }
             },
             error: e => {
