@@ -6,9 +6,39 @@ section {
     position: relative;
     width: 100%;
     height: 100vh;
-    background: rgb(2, 0, 36);
-    background: linear-gradient(90deg, rgba(2, 0, 36, 1) 0%, rgba(9, 9, 121, 1) 35%, rgba(0, 212, 255, 1) 100%);
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
     overflow: hidden;
+    
+    // Add animated gradient overlay
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, 
+            rgba(102, 126, 234, 0.1) 0%, 
+            rgba(118, 75, 162, 0.1) 25%, 
+            rgba(240, 147, 251, 0.1) 50%, 
+            rgba(102, 126, 234, 0.1) 75%, 
+            rgba(118, 75, 162, 0.1) 100%);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
+        z-index: 1;
+    }
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 section .air {
@@ -16,60 +46,59 @@ section .air {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 100px;
-    background: url(https://1.bp.blogspot.com/-xQUc-TovqDk/XdxogmMqIRI/AAAAAAAACvI/AizpnE509UMGBcTiLJ58BC6iViPYGYQfQCLcBGAsYHQ/s1600/wave.png);
-    background-size: 1000px 100px
+    height: 120px;
+    background: linear-gradient(90deg, 
+        rgba(255, 255, 255, 0.1) 0%, 
+        rgba(255, 255, 255, 0.05) 50%, 
+        rgba(255, 255, 255, 0.1) 100%);
+    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    z-index: 2;
 }
 
 section .air.air1 {
-    animation: wave 30s linear infinite;
-    z-index: 1000;
-    opacity: 1;
+    animation: waveFloat 20s ease-in-out infinite;
+    opacity: 0.8;
     animation-delay: 0s;
     bottom: 0;
+    height: 100px;
 }
 
 section .air.air2 {
-    animation: wave2 15s linear infinite;
-    z-index: 999;
-    opacity: 0.5;
-    animation-delay: -5s;
-    bottom: 10px;
+    animation: waveFloat 25s ease-in-out infinite;
+    opacity: 0.4;
+    animation-delay: -8s;
+    bottom: 20px;
+    height: 80px;
 }
 
 section .air.air3 {
-    animation: wave 30s linear infinite;
-    z-index: 998;
+    animation: waveFloat 30s ease-in-out infinite;
     opacity: 0.2;
-    animation-delay: -2s;
-    bottom: 15px;
+    animation-delay: -15s;
+    bottom: 40px;
+    height: 60px;
 }
 
 section .air.air4 {
-    animation: wave2 5s linear infinite;
-    z-index: 997;
-    opacity: 0.7;
-    animation-delay: -5s;
-    bottom: 20px;
+    animation: waveFloat 35s ease-in-out infinite;
+    opacity: 0.1;
+    animation-delay: -22s;
+    bottom: 60px;
+    height: 40px;
 }
 
-@keyframes wave {
-    0% {
-        background-position-x: 0px;
+@keyframes waveFloat {
+    0%, 100% {
+        transform: translateX(0) scaleY(1);
     }
-
-    100% {
-        background-position-x: 1000px;
+    25% {
+        transform: translateX(-10px) scaleY(1.1);
     }
-}
-
-@keyframes wave2 {
-    0% {
-        background-position-x: 0px;
+    50% {
+        transform: translateX(0) scaleY(0.9);
     }
-
-    100% {
-        background-position-x: -1000px;
+    75% {
+        transform: translateX(10px) scaleY(1.1);
     }
 }
 
@@ -81,31 +110,44 @@ section .air.air4 {
     position: fixed;
     bottom: 0;
     width: 100%;
-    height: 100vh; /* Full screen height */
+    height: 100vh;
     overflow: hidden;
-    pointer-events: none; /* Prevents interaction issues */
+    pointer-events: none;
+    z-index: 3;
 }
 
 .heart {
     position: absolute;
-    width: 40px; /* Adjust size */
-    height: 40px;
-    background: url('../../../../../assets/images/ui/slider/heart.png') no-repeat center;
-    background-size: contain;
-    opacity: 0.3; /* Lower opacity */
-    animation: waveRise 5s linear infinite;
+    width: 24px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    opacity: 0;
+    animation: floatUp 8s ease-in-out infinite;
+    
+    &::before {
+        content: '❤️';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 16px;
+    }
 }
 
-@keyframes waveRise {
+@keyframes floatUp {
     0% {
-        transform: translateY(100vh) scale(0.8);
+        transform: translateY(100vh) scale(0.5) rotate(0deg);
         opacity: 0;
     }
-    20% {
-        opacity: 0.3; /* Slight fade-in */
+    10% {
+        opacity: 0.6;
+    }
+    90% {
+        opacity: 0.3;
     }
     100% {
-        transform: translateY(-50px) scale(1.2);
+        transform: translateY(-100px) scale(1) rotate(360deg);
         opacity: 0;
     }
 }

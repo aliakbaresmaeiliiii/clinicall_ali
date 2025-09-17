@@ -87,7 +87,7 @@ export const routes: Routes = [
     
 
   ],
-  exports: [],
+  exports: [GoogleMapComponent],
   providers: [AgePipe, UserService, MatDatepickerModule],
 })
 export class SettingsModule {}

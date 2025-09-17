@@ -3,19 +3,18 @@ import {
   ChangeDetectorRef,
   Component,
   inject,
+  input,
   OnInit,
+  output,
   PLATFORM_ID,
   SimpleChanges,
-  input,
-  output,
 } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import * as mapboxGl from 'mapbox-gl';
 import { LngLat } from 'mapbox-gl';
 import { environment } from '../../../environments/environment';
-import { MapService } from './map.service';
-import { MatDialog } from '@angular/material/dialog';
-import { DilogDotorAppointmentComponent } from '../../../ui/get-doctor-apointment/dilog-dotor-appointment/dilog-dotor-appointment.component';
 import { LocationAppDialogComponent } from './location-app-dialog/location-app-dialog.component';
+import { MapService } from './map.service';
 
 @Component({
   selector: 'app-google-map',
@@ -56,6 +55,7 @@ export class GoogleMapComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    debugger
     this.setCurrentLocation();
   }
 
