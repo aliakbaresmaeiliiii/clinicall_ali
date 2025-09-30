@@ -1,0 +1,247 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url = env("DATABASE_URL")
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  firstName String
+  lastName  String
+  createdAt DateTime @default(now())
+
+  @@map("admins")
+}
+
+model Doctor {
+  id             Int      @id @default(autoincrement())
+  firstName      String?
+  lastName       String?
+  gender         String?
+  age            Int?
+  email          String   @unique
+  password       String?
+  tokenVerify    String?
+  verifyCode     String?
+  phone          String?
+  profileImg     String?
+  medicalCode    String?
+  clickCount     Int      @default(0)
+  isLiked        Boolean  @default(false)
+  averageRating  Float    @default(0)
+  totalRatings   Int      @default(0)
+  specialityId   Int?
+  serviceId      Int?
+  visitHistoryId Int?
+  createdAt      DateTime @default(now())
+
+  // Relations
+  addresses      Address[]
+  reviews        Review[]
+  appointments   Appointment[]
+  clinicDoctors  ClinicDoctor[]
+
+  @@map("doctors")
+}
+
+model Patient {
+  id            Int       @id @default(autoincrement())
+  firstName     String?   
+  lastName      String?   
+  phone         String?   
+  patientName   String?   
+  gender        String?   
+  mobile        String?   
+  dateOfBirth   String?   
+  age           Int?      
+  email         String    @unique
+  password      String?   
+  tokenVerify   String?
+  verifyCode    String?
+  maritalStatus String?   
+  address       String?
+  bloodGroup    String?
+  bloodPressure String?
+  sugarLevel    String?
+  injury        String?
+  profileImage  String?
+  heartBeat     String?
+  haemoglobin   String?
+  isVerified    Boolean    @default(false)   
+  doctor        String?
+  treatment     String?
+  charges       String?
+  description   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  appointments   Appointment[]
+  reviews        Review[]
+  medicalRecords MedicalRecord[]
+
+  @@map("patients")
+}
+
+
+model Clinic {
+  id          Int      @id @default(autoincrement())
+  name        String?
+  email       String   @unique
+  password    String?
+  phone       String?
+  address     String?
+  description String?
+  website     String?
+  logo        String?
+  verifyCode  String?
+  isVerified  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  clinicDoctors ClinicDoctor[]
+  appointments  Appointment[]
+
+  @@map("clinics")
+}
+
+model Address {
+  id           Int      @id @default(autoincrement())
+  addressLine1 String
+  addressLine2 String?
+  cityId       Int
+  zipcode      String
+  country      String
+  latitude     String?
+  longitude    String?
+  isPrimary    Boolean  @default(false)
+  doctorId     Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  doctor       Doctor   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  @@map("addresses")
+}
+
+model Review {
+  id                Int      @id @default(autoincrement())
+  doctorId          Int
+  patientId         Int
+  rating            Int
+  comment           String?
+  recommendations   String?
+  professionalDemeanor Int?
+  sufficientTime    Int?
+  skill             Int?
+  staffBehavior     Int?
+  clinicCondition   Int?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  doctor            Doctor   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  patient           Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@map("reviews")
+}
+
+model Appointment {
+  id          Int      @id @default(autoincrement())
+  doctorId    Int
+  patientId   Int
+  clinicId    Int
+  date        DateTime
+  time        String
+  status      String   @default("pending")
+  notes       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  doctor      Doctor   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  patient     Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  clinic      Clinic   @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+
+  @@map("appointments")
+}
+
+model ClinicDoctor {
+  id        Int      @id @default(autoincrement())
+  clinicId  Int
+  doctorId  Int
+  createdAt DateTime @default(now())
+
+  // Relations
+  clinic    Clinic   @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  doctor    Doctor   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+
+  @@unique([clinicId, doctorId])
+  @@map("clinic_doctors")
+}
+
+model MedicalRecord {
+  id            Int      @id @default(autoincrement())
+  patientId     Int
+  bloodGroup    String?
+  bloodPressure String?
+  heartBeat     String?
+  sugarLevel    String?
+  injury        String?
+  haemoglobin   String?
+  treatment     String?
+  charges       String?
+  description   String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  patient       Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+
+  @@map("medical_records")
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  userId    Int
+  userType  String   // 'doctor', 'patient', 'clinic', 'admin'
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@map("refresh_tokens")
+}
+
+model PrescriptionMedicine {
+  id           Int      @id @default(autoincrement())
+  prescription String
+  medicine     String
+  dosage       String?
+  frequency    String?
+  duration     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("prescription_medicines")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  firstName String?
+  lastName  String?
+  email     String   @unique
+  password  String?
+  phone     String?
+  address   String?
+  createdAt DateTime @default(now())
+
+  @@map("users")
+}
