@@ -53,11 +53,11 @@ export class AuthInterceptor implements HttpInterceptor {
           case 500:
             this.errorService.handle500Error(err);
             break;
-          default:
-            this.toast.error('An unexpected error occurred', 'Error');
-            break;
-        }
-        return throwError(() => 'aliakbar');
+        default:
+          this.toast.error('An unexpected error occurred', 'Error');
+          break;
+      }
+      return throwError(() => err);
       })
     );
   }
