@@ -2,8 +2,11 @@ import {
   Component,
   Inject,
   PLATFORM_ID,
-  input,
-  output
+  OnInit,
+  AfterViewInit,
+  Input,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { Config } from '../../models/config';
 import { KeysPipe } from '../../pipes/keys.pipe';
@@ -15,13 +18,13 @@ import { FormControl, FormGroup } from '@angular/forms';
     styleUrl: './otp-input.component.scss',
     standalone: false
 })
-export class OtpInputComponent {
-  readonly config = input<Config>({ length: 4 });
+export class OtpInputComponent implements OnInit, AfterViewInit {
+  @Input() config: Config = { length: 4 };
   // tslint:disable-next-line: no-output-on-prefix
-  readonly onInputChange = output<string>();
-  readonly onCountDown = output<any>();
+  @Output() onInputChange = new EventEmitter<string>();
+  @Output() onCountDown = new EventEmitter<any>();
   otpForm!: any;
-  inputControls: FormControl[] = new Array(this.config().length);
+  inputControls: FormControl[] = [];
   componentKey =
     Math.random().toString(36).substring(2) + new Date().getTime().toString(36);
   inputType!: string;
@@ -34,29 +37,32 @@ export class OtpInputComponent {
   ) {}
 
   ngOnInit() {
+    console.log('OTP Component initialized with config:', this.config);
     this.otpForm = new FormGroup({});
-    for (let index = 0; index < this.config().length; index++) {
-      this.otpForm.addControl(this.getControlName(index), new FormControl());
+    const configLength = this.config.length;
+    this.inputControls = new Array(configLength);
+    for (let index = 0; index < configLength; index++) {
+      const control = new FormControl();
+      this.inputControls[index] = control;
+      this.otpForm.addControl(this.getControlName(index), control);
     }
     this.inputType = this.getInputType();
+    console.log('OTP Form created:', this.otpForm);
   }
   ngAfterViewInit(): void {
-    // if (isPlatformBrowser(this.platformId)) {
-    //   if (!this.config.disableAutoFocus && document) {
-    //     const containerItem = document?.getElementById(
-    //       `c_${this.componentKey}`
-    //     );
-    //     if (containerItem) {
-    //       containerItem.addEventListener('paste', (evt) =>
-    //         // this.handlePaste(evt)
-    //       // );
-    //       const ele: any = containerItem.getElementsByClassName('otp-input')[0];
-    //       if (ele && ele.focus) {
-    //         ele.focus();
-    //       }
-    //     }
-    //   }
-    // }
+    // Auto-focus the first input if not disabled
+    const config = this.config;
+    if (!config.disableAutoFocus && document) {
+      const containerItem = document?.getElementById(
+        `c_${this.componentKey}`
+      );
+      if (containerItem) {
+        const ele: any = containerItem.getElementsByClassName('otp-input')[0];
+        if (ele && ele.focus) {
+          ele.focus();
+        }
+      }
+    }
   }
   private getControlName(idx: any) {
     return `ctrl_${idx}`;
@@ -135,7 +141,7 @@ export class OtpInputComponent {
   ifValidEntry(event: any) {
     const inp = String.fromCharCode(event.keyCode);
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-    const config = this.config();
+    const config = this.config;
     return (
       isMobile ||
       /[a-zA-Z0-9-_]/.test(inp) ||
@@ -154,7 +160,7 @@ export class OtpInputComponent {
 
   // method to set component value
   setValue(value: any) {
-    const config = this.config();
+    const config = this.config;
     if (config.allowNumbersOnly && isNaN(value)) {
       return;
     }
@@ -196,7 +202,7 @@ export class OtpInputComponent {
     this.onInputChange.emit(val);
   }
   getInputType(): string {
-    const config = this.config();
+    const config = this.config;
     return config.isPasswordInput
       ? 'password'
       : config.allowNumbersOnly

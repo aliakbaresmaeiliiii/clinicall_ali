@@ -7,7 +7,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 @NgModule({
   imports: [CommonModule, FormsModule, ReactiveFormsModule, ],
   declarations: [OtpInputComponent, NumberOnlyDirective, KeysPipe],
-  exports: [OtpInputComponent],
+  exports: [OtpInputComponent, NumberOnlyDirective],
   providers: [KeysPipe],
 })
 export class NgOtpInputModule {}

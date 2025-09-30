@@ -1,0 +1,279 @@
+.confirm-email-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.confirm-email-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  max-width: 450px;
+  width: 100%;
+  animation: slideUp 0.6s ease-out;
+}
+
+.confirm-email-header {
+  text-align: center;
+  margin-bottom: 30px;
+
+  .logo-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+
+    mat-icon {
+      font-size: 40px;
+      color: white;
+    }
+  }
+
+  .app-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2d3748;
+    margin: 0 0 10px 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .welcome-text {
+    color: #718096;
+    font-size: 16px;
+    margin: 0;
+    line-height: 1.5;
+  }
+}
+
+.instructions-section {
+  margin-bottom: 30px;
+
+  .instruction-step {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 12px;
+    background: rgba(102, 126, 234, 0.05);
+    border-radius: 12px;
+    border-left: 4px solid #667eea;
+
+    .step-icon {
+      color: #667eea;
+      margin-right: 12px;
+      font-size: 20px;
+    }
+
+    span {
+      color: #4a5568;
+      font-weight: 500;
+    }
+  }
+}
+
+.otp-section {
+  margin-bottom: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+.resend-section {
+  text-align: center;
+  margin-bottom: 20px;
+
+  .resend-text {
+    color: #718096;
+    font-size: 14px;
+    margin: 0 0 10px 0;
+  }
+
+  .resend-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #667eea;
+    font-weight: 500;
+    text-transform: none;
+    
+    mat-icon {
+      font-size: 18px;
+    }
+
+    &:hover {
+      background: rgba(102, 126, 234, 0.1);
+    }
+  }
+}
+
+.back-to-register-section {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+
+  .back-text {
+    color: #718096;
+    font-size: 14px;
+    margin: 0 0 10px 0;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+
+    mat-icon {
+      font-size: 18px;
+    }
+
+    &:hover {
+      background: rgba(102, 126, 234, 0.1);
+      transform: translateX(-2px);
+    }
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive Design
+@media (max-width: 768px) {
+  .confirm-email-container {
+    padding: 15px;
+  }
+
+  .confirm-email-card {
+    padding: 30px 20px;
+    max-width: 100%;
+  }
+
+  .confirm-email-header {
+    .logo-icon {
+      width: 60px;
+      height: 60px;
+
+      mat-icon {
+        font-size: 30px;
+      }
+    }
+
+    .app-title {
+      font-size: 24px;
+    }
+
+    .welcome-text {
+      font-size: 14px;
+    }
+  }
+
+  .instructions-section {
+    .instruction-step {
+      padding: 10px;
+      margin-bottom: 12px;
+
+      .step-icon {
+        font-size: 18px;
+        margin-right: 10px;
+      }
+
+      span {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .confirm-email-card {
+    padding: 25px 15px;
+  }
+
+  .confirm-email-header {
+    margin-bottom: 25px;
+
+    .logo-icon {
+      width: 50px;
+      height: 50px;
+
+      mat-icon {
+        font-size: 25px;
+      }
+    }
+
+    .app-title {
+      font-size: 20px;
+    }
+  }
+
+  .instructions-section {
+    margin-bottom: 25px;
+
+    .instruction-step {
+      padding: 8px;
+      margin-bottom: 10px;
+
+      .step-icon {
+        font-size: 16px;
+        margin-right: 8px;
+      }
+
+      span {
+        font-size: 13px;
+      }
+    }
+  }
+}
+
+// Fallback OTP Input Styles
+.fallback-otp {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  
+  .otp-input-field {
+    width: 200px;
+    
+    .otp-fallback-input {
+      text-align: center;
+      font-size: 24px;
+      letter-spacing: 8px;
+      font-weight: 600;
+    }
+  }
+}
+
+// Debug Section
+.debug-section {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+  
+  .debug-button {
+    font-size: 12px;
+    opacity: 0.7;
+  }
+}

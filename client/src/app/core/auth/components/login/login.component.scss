@@ -31,7 +31,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    background: var(--gradient-blue);
   }
 }
 
@@ -61,20 +61,20 @@
     .logo-icon {
       width: 48px;
       height: 48px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: var(--gradient-blue);
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
       font-size: 24px;
-      box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+      box-shadow: 0 8px 16px rgba(25, 118, 210, 0.3);
     }
 
     .app-title {
       font-size: 28px;
       font-weight: 700;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background: var(--gradient-blue);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -132,17 +132,17 @@
       }
 
       &:hover {
-        border-color: #667eea;
+        border-color: var(--primary-blue);
         transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(102, 126, 234, 0.15);
+        box-shadow: 0 8px 16px rgba(25, 118, 210, 0.15);
       }
 
       &.role-active {
-        border-color: #667eea;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-color: var(--primary-blue);
+        background: var(--gradient-blue);
         color: white;
         transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 8px 16px rgba(25, 118, 210, 0.3);
       }
     }
   }
@@ -198,14 +198,14 @@
     }
 
     .forgot-password-link {
-      color: #667eea;
+      color: var(--primary-blue);
       text-decoration: none;
       font-size: 14px;
       font-weight: 500;
       transition: color 0.3s ease;
 
       &:hover {
-        color: #764ba2;
+        color: var(--primary-blue-dark);
         text-decoration: underline;
       }
     }
@@ -217,7 +217,7 @@
     border-radius: 12px;
     font-size: 16px;
     font-weight: 600;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--gradient-blue);
     border: none;
     color: white;
     display: flex;
@@ -225,11 +225,11 @@
     justify-content: center;
     gap: 8px;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
 
     &:hover:not(:disabled) {
       transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+      box-shadow: 0 8px 20px rgba(25, 118, 210, 0.4);
     }
 
     &:disabled {

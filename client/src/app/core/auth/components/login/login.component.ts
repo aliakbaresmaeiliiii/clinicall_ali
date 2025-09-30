@@ -11,6 +11,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { Router } from '@angular/router';
 import { ThemeManagerService } from '../../../../shared/client-services/theme-manager.service';
 import { AuthService } from '../../../services/auth.service';
+import { ShareAuthService } from '../../../services/share.service';
 
 import {
   SocialUser
@@ -35,14 +36,15 @@ export class LoginComponent implements OnInit {
   permissionService = inject(PermissionService);
   toast = inject(ToastrService);
   renderer = inject(Renderer2);
+  shareService = inject(ShareAuthService);
   matcher = new ErrorStateMatcher();
   private themeManager = inject(ThemeManagerService);
   selectedRole: string = '';
   private destroy$ = new Subject<void>();
   successCaptcha = signal<boolean>(false);
 
-  labelUserName: string = 'UserName';
-  labelPassword: string = 'password';
+  labelUserName: string = 'Email Address';
+  labelPassword: string = 'Password';
   form!: FormGroup;
   role!: string;
   user!: SocialUser;
@@ -65,6 +67,18 @@ export class LoginComponent implements OnInit {
   setRole(role: string) {
     this.selectedRole = role;
     this.title.set(role);
+    
+    // Update password validation based on role
+    const passwordControl = this.form?.get('password');
+    if (passwordControl) {
+      if (role === 'patient') {
+        passwordControl.clearValidators();
+        passwordControl.setValue(''); // Clear password for patients
+      } else {
+        passwordControl.setValidators([Validators.required]);
+      }
+      passwordControl.updateValueAndValidity();
+    }
   }
 
   refreshToken(): void {
@@ -114,84 +128,91 @@ export class LoginComponent implements OnInit {
   login() {
     if (this.form.value) {
       let formValue = this.form.value;
+      
       switch (this.selectedRole) {
         case 'clinic':
-          this.#authService.clinicSignIn(formValue).subscribe({
+          // Clinic login with email and password
+          const clinicLoginData = {
+            username: formValue.email,
+            password: formValue.password,
+            email: formValue.email
+          };
+          this.#authService.clinicSignIn(clinicLoginData).subscribe({
             next: (res: any) => {
-              // this.permissionService.setPermissions(res.data.permissions);
               this.storeDataUser = res;
               const dataJson = JSON.stringify(this.storeDataUser);
-              console.log(res);
               localStorage.setItem('userData', dataJson);
               if (res.code === 200) {
-                this.toast.success('login is successfully');
+                this.toast.success('Login successful');
                 this.router.navigate(['/dashboard']);
               }
             },
             error: e => {
-              if (e) {
+              // Handle unauthorized response - redirect to verify email page
+              if (e.status === 401 || e.status === 403) {
+                this.toast.error('Please verify your email address to continue.');
+                // Store email and role for verify email page
+                this.shareService.setEmail(formValue.email);
+                this.shareService.setSelectedRole('clinic');
                 this.router.navigate(['auth/confirm-email']);
-                this.storeDataUser;
-                const email = localStorage.getItem('emailClinic');
-                if (email) {
-                  this.#authService.fetchConfirmCode(email).subscribe(res => {
-                    if (res) {
-                      this.router.navigate(['/dashboard']);
-                    }
-                  });
-                }
+              } else {
+                this.toast.error('Login failed. Please try again.');
               }
             },
           });
           break;
         case 'doctor':
-          this.#authService.doctorSignIn(formValue).subscribe({
+          // Doctor login with email and password
+          const doctorLoginData = {
+            username: formValue.email,
+            password: formValue.password,
+            email: formValue.email
+          };
+          this.#authService.doctorSignIn(doctorLoginData).subscribe({
             next: (res: any) => {
-              // this.permissionService.setPermissions(res.data.permissions);
               const storeDataUser = res;
               const dataJson = JSON.stringify(storeDataUser);
               localStorage.setItem('userData', dataJson);
               if (res.code === 200) {
-                this.toast.success(`You are now sign in as a ${res.email}`);
+                this.toast.success(`You are now signed in as a ${res.email}`);
                 this.router.navigate(['/dashboard']);
               }
             },
             error: e => {
-              if (e) {
+              // Handle unauthorized response - redirect to verify email page
+              if (e.status === 401 || e.status === 403) {
+                this.toast.error('Please verify your email address to continue.');
+                // Store email and role for verify email page
+                this.shareService.setEmail(formValue.email);
+                this.shareService.setSelectedRole('doctor');
                 this.router.navigate(['auth/confirm-email']);
-                this.storeDataUser;
-                const email = localStorage.getItem('emailClinic');
-                if (email) {
-                  this.#authService.fetchConfirmCode(email).subscribe(res => {
-                    if (res) {
-                      this.router.navigate(['/dashboard']);
-                    }
-                  });
-                }
+              } else {
+                this.toast.error('Login failed. Please try again.');
               }
             },
           });
           break;
         case 'patient':
-          this.#authService.patientSignIn(formValue).subscribe({
+          // Patient login - passwordless (email only)
+          const patientLoginData = {
+            email: formValue.email
+          };
+          this.#authService.patientSignIn(patientLoginData).subscribe({
             next: (res: any) => {
-              // this.permissionService.setPermissions(res.data.permissions);
-              const storeDataUser = res;
-              const dataJson = JSON.stringify(storeDataUser);
-              localStorage.setItem('userData', dataJson);
-              if (res.code === 200) {
-                // if (this.successCaptcha()) {
-                  this.toast.success('login is successfully');
-                  this.router.navigate(['home']);
-                // } else {
-                  // this.toast.error(
-                    // 'Captcha verification failed. Please try again.'
-                  // );
-                // }
-              }
+              this.toast.success('Login link sent to your email! Please check your inbox.');
+              this.router.navigate(['auth/confirm-email']);
             },
             error: e => {
-              // this.toast.error(`${e}`);
+              // Handle unauthorized response - redirect to verify email page
+              if (e.status === 401 || e.status === 403) {
+                this.toast.error('Please verify your email address to continue.');
+                // Store email and role for verify email page
+                this.shareService.setEmail(formValue.email);
+                this.shareService.setSelectedRole('patient');
+                this.router.navigate(['auth/confirm-email']);
+              } else {
+                this.toast.error('Failed to send login link. Please try again.');
+              }
             },
           });
           break;
@@ -222,10 +243,10 @@ export class LoginComponent implements OnInit {
   onPatientRol(data: string) {}
   // Get Value Form For Validation
   get email() {
-    return this.form.get('email');
+    return this.form?.get('email');
   }
   get password() {
-    return this.form.get('password');
+    return this.form?.get('password');
   }
 
   ngOnDestroy(): void {

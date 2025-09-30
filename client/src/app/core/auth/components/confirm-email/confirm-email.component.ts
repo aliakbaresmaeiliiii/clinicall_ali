@@ -27,10 +27,10 @@ export class ConfirmEmailComponent implements OnInit {
   showOtpComponent = true;
   selectedRole: string = '';
   config = {
-    allowNumbersOnly: false,
+    allowNumbersOnly: true,
     length: 4,
     isPasswordInput: false,
-    disableAutoFocus: true,
+    disableAutoFocus: false,
     inputStyles: {
       width: '50px',
       height: '50px',
@@ -38,6 +38,7 @@ export class ConfirmEmailComponent implements OnInit {
   };
 
   ngOnInit(): void {
+    console.log('Confirm Email Component initialized');
     this.form = new FormGroup({
       verify_code: new FormControl('', [
         Validators.required,
@@ -47,13 +48,28 @@ export class ConfirmEmailComponent implements OnInit {
 
     this.userData = this.#shareSerivce.getEmail();
     this.selectedRole = this.#shareSerivce.getSelectedRole();
+    
+    console.log('User data:', this.userData, 'Role:', this.selectedRole);
+    console.log('OTP Config:', this.config);
+    
+    // If user came from login (unauthorized), automatically resend verification code
+    if (this.userData && this.selectedRole) {
+      this.getOtp();
+    }
   }
   onOtpChange(otp: any) {
-    this.otp = otp;
+
+    this.otp = otp.event.value;
+    console.log('OTP changed:', otp);
 
     if (this.otp.length === this.config.length) {
       this.onSubmit();
     }
+  }
+
+  toggleOtpComponent() {
+    this.showOtpComponent = !this.showOtpComponent;
+    console.log('OTP component toggled:', this.showOtpComponent);
   }
 
   loginSuccess() {
@@ -65,7 +81,7 @@ export class ConfirmEmailComponent implements OnInit {
   onSubmit() {
     const payload = {
       email: this.userData,
-      verify_code: this.otp,
+      verifyCode: this.otp,
     };
 
     let confimrEmail$;
@@ -73,10 +89,13 @@ export class ConfirmEmailComponent implements OnInit {
 
     if (this.selectedRole === 'clinic') {
       confimrEmail$ = this.authService.confirmClinicEmail(payload);
-      redirectRoute = '/dashobard';
+      redirectRoute = '/dashboard';
     } else if (this.selectedRole === 'patient') {
       confimrEmail$ = this.authService.confirmPatientEmail(payload);
-      redirectRoute = 'auth/login';
+      redirectRoute = '/home';
+    } else if (this.selectedRole === 'doctor') {
+      confimrEmail$ = this.authService.confirmDoctorEmail(payload);
+      redirectRoute = '/dashboard';
     } else {
       this.#toastrService.error('invalid role selected');
       return;
@@ -86,14 +105,19 @@ export class ConfirmEmailComponent implements OnInit {
       .pipe(
         switchMap((res: any) => {
           if (res) {
-            this.#toastrService.success('login successfull');
+            // Store user data in localStorage
+            const dataJson = JSON.stringify(res);
+            localStorage.setItem('userData', dataJson);
+            localStorage.setItem('isAuthenticated', 'true');
+            
+            this.#toastrService.success('Email verified successfully! Welcome to Clinical Ali.');
             this.#router.navigate([redirectRoute]);
             return of(res);
           }
           throw new Error('Invalid response');
         }),
         catchError(err => {
-          this.#toastrService.error('Login failed. Please try again.');
+          this.#toastrService.error('Email verification failed. Please check your code and try again.');
           return EMPTY; 
         })
       )

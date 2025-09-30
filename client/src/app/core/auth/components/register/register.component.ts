@@ -48,19 +48,19 @@ export class RegisterComponent extends BaseComponent implements OnInit {
   selectedRole: string = 'patient';
 
   patientForm = this.fb.group({
-    first_name: ['', Validators.required],
-    last_name: ['', Validators.required],
+    // first_name: ['', Validators.required],
+    // last_name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    password: this.fb.group(
-      {
-        password: ['', [Validators.required, Validators.minLength(3)]],
-        confirmPassword: '',
-      },
-      {
-        validators: passswordShouldMatch,
-      }
-    ),
-    phone: ['', Validators.required],
+    // password: this.fb.group(
+    //   {
+    //     password: ['', [Validators.required, Validators.minLength(3)]],
+    //     confirmPassword: '',
+    //   },
+    //   {
+    //     validators: passswordShouldMatch,
+    //   }
+    // ),
+    // phone: ['', Validators.required],
   });
 
   doctorForm = this.fb.group({
@@ -154,7 +154,8 @@ export class RegisterComponent extends BaseComponent implements OnInit {
         complete: () => console.log('complete'),
       });
     } else if (payload.role === 'patient') {
-      this.authService.patientRegister(payload).subscribe({
+      const email = { email: payload.email };
+      this.authService.patientRegister(email).subscribe({
         next: (res: any) => {
           if (res.code === 200) {
             this.toastrService.success(
@@ -162,7 +163,23 @@ export class RegisterComponent extends BaseComponent implements OnInit {
             );
             this.shareSerivce.setEmail(res.newUser.email);
             this.shareSerivce.setSelectedRole(payload.role);
-
+            this.router.navigate(['auth/confirm-email']);
+          }
+        },
+        error: () => {
+          console.log('Registration failed. Please try again.');
+        },
+        complete: () => console.log('complete'),
+      });
+    } else if (payload.role === 'doctor') {
+      this.authService.doctorRegister(payload).subscribe({
+        next: (res: any) => {
+          if (res.code === 200) {
+            this.toastrService.success(
+              `Please check your email box to confirm ${res.newUser.email} `
+            );
+            this.shareSerivce.setEmail(res.newUser.email);
+            this.shareSerivce.setSelectedRole(payload.role);
             this.router.navigate(['auth/confirm-email']);
           }
         },
@@ -176,10 +193,10 @@ export class RegisterComponent extends BaseComponent implements OnInit {
   trackByFn() {}
 
   get clinicConfirmPassword() {
-    return this.clinicForm.get('confirmPassword');
+    return this.clinicForm?.get('confirmPassword');
   }
   get clininPassword() {
-    return this.clinicForm.get('password');
+    return this.clinicForm?.get('password');
   }
 }
 

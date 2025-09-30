@@ -63,8 +63,19 @@ export class AuthService {
     );
   }
 
+  confirmDoctorEmail(data: any): Observable<CurrentUser> {
+    return this.#http.post<CurrentUser>(
+      `${this.config}auth/verify-doctor-email`,
+      data
+    );
+  }
+
   doctorSignIn(userData: any): Observable<any> {
     return this.#http.post<any>(`${this.config}auth/doctor-sign-in`, userData);
+  }
+
+  doctorRegister(userData: any): Observable<any> {
+    return this.#http.post<any>(`${this.config}auth/doctor-register`, userData);
   }
   patientSignIn(userData: PatientDTO): Observable<User> {
     return this.#http.post<User>(
@@ -72,6 +83,9 @@ export class AuthService {
       userData
     );
   }
+
+
+  
   fetchConfirmCode(email: string): Observable<any> {
     const param = new HttpParams().set('email', email);
     return this.#http.get<User>(`${this.config}auth/verify-email-code`, {

@@ -9,7 +9,9 @@
           </div>
           <h1 class="app-title">Clinical Ali</h1>
         </div>
-        <p class="welcome-text">Welcome back! Please sign in to your account</p>
+        <p class="welcome-text">
+          {{ selectedRole === 'patient' ? 'Enter your email to receive a secure login link' : 'Welcome back! Please sign in to your account' }}
+        </p>
       </div>
 
       <!-- Role Selection -->
@@ -63,7 +65,8 @@
           </mat-form-field>
         </div>
 
-        <div class="form-group">
+        <!-- Password field - only show for clinic and doctor -->
+        <div class="form-group" *ngIf="selectedRole !== 'patient'">
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>{{ labelPassword }}</mat-label>
             <input
@@ -96,8 +99,8 @@
           [disabled]="!form.valid"
           color="primary"
           type="submit">
-          <mat-icon>login</mat-icon>
-          <span>Sign In</span>
+          <mat-icon>{{ selectedRole === 'patient' ? 'send' : 'login' }}</mat-icon>
+          <span>{{ selectedRole === 'patient' ? 'Send Login Link' : 'Sign In' }}</span>
         </button>
       </form>
 

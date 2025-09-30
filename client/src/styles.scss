@@ -32,6 +32,20 @@
   @include mat.dialog-overrides((
     container-max-width:70rem
   ));
+  
+  // Beautiful Blue Color Palette
+  --primary-blue: #1976d2;
+  --primary-blue-light: #42a5f5;
+  --primary-blue-dark: #1565c0;
+  --secondary-blue: #00bcd4;
+  --secondary-blue-light: #4dd0e1;
+  --secondary-blue-dark: #0097a7;
+  --accent-blue: #2196f3;
+  --accent-blue-light: #64b5f6;
+  --accent-blue-dark: #1976d2;
+  --gradient-blue: linear-gradient(135deg, #1976d2 0%, #00bcd4 50%, #2196f3 100%);
+  --gradient-blue-light: linear-gradient(135deg, #42a5f5 0%, #4dd0e1 50%, #64b5f6 100%);
+  --gradient-blue-dark: linear-gradient(135deg, #1565c0 0%, #0097a7 50%, #1976d2 100%);
 }
 
 
@@ -86,11 +100,12 @@ $theme-map: ();
   }
 }
 
-$violet-dark-theme: mat.define-theme(
+$blue-dark-theme: mat.define-theme(
   (
     color: (
       theme-type: dark,
-      primary: mat.$violet-palette,
+      primary: mat.$blue-palette,
+      tertiary: mat.$cyan-palette,
     ),
     // add density only for default theme config to avoid duplicated theming styles
     density:
@@ -101,11 +116,12 @@ $violet-dark-theme: mat.define-theme(
 );
 
 // default light theme
-$violet-light-theme: mat.define-theme(
+$blue-light-theme: mat.define-theme(
   (
     color: (
       theme-type: light,
-      primary: mat.$violet-palette,
+      primary: mat.$blue-palette,
+      tertiary: mat.$cyan-palette,
     ),
   )
 );
@@ -161,15 +177,15 @@ $violet-light-theme: mat.define-theme(
 }
 
 html {
-  @include mat.all-component-themes($violet-dark-theme);
+  @include mat.all-component-themes($blue-dark-theme);
 
-  &.violet-dark {
-    @include themable-styles($violet-dark-theme);
+  &.blue-dark {
+    @include themable-styles($blue-dark-theme);
   }
 
-  &.violet-light {
-    @include mat.all-component-colors($violet-light-theme);
-    @include themable-styles($violet-light-theme);
+  &.blue-light {
+    @include mat.all-component-colors($blue-light-theme);
+    @include themable-styles($blue-light-theme);
   }
 
 }
@@ -213,21 +229,26 @@ body {
 }
 
 
-// ScrollBar
+// Beautiful Blue ScrollBar
 *::-webkit-scrollbar {
   width: 10px;
 }
 
 *::-webkit-scrollbar-track {
   border-radius: 8px;
-  background-color: #e7e7e7;
-  border: 1px solid #cacaca;
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #e3f2fd;
+  border: 1px solid #bbdefb;
+  box-shadow: inset 0 0 6px rgba(25, 118, 210, 0.3);
 }
 
 *::-webkit-scrollbar-thumb {
   border-radius: 8px;
-  background-color: #363636;
+  background: var(--gradient-blue);
+  transition: all 0.3s ease;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--gradient-blue-dark);
 }
 
 .mdc-text-field--outlined {
