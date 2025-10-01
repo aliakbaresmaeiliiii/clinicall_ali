@@ -1,5 +1,11 @@
-import { Injectable, UnauthorizedException, BadRequestException } from '@nestjs/common';
+import { 
+  Injectable, 
+  UnauthorizedException, 
+  BadRequestException,
+  NotFoundException 
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { EmailService } from '../email/email.service';
 import * as bcrypt from 'bcrypt';
@@ -7,6 +13,7 @@ import { LoginDto } from './dto/login.dto';
 import { RegisterClinicDto } from './dto/register-clinic.dto';
 import { RegisterPatientDto } from './dto/register-patient.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
+import { UpdatePatientProfileDto } from './dto/update-patient-profile.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +21,7 @@ export class AuthService {
     private prisma: PrismaService,
     private jwtService: JwtService,
     private emailService: EmailService,
+    private configService: ConfigService,
   ) {}
 
   async validateClinic(email: string, password: string): Promise<any> {
@@ -25,13 +33,17 @@ export class AuthService {
       throw new UnauthorizedException('Invalid email or password');
     }
 
+    if (!clinic.password) {
+      throw new UnauthorizedException('Password not set');
+    }
+
     const isPasswordValid = await bcrypt.compare(password, clinic.password);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid email or password');
     }
 
     if (!clinic.isVerified) {
-      throw new BadRequestException('Email is not confirmed');
+      throw new BadRequestException('Email is not verified');
     }
 
     const { password: _, ...result } = clinic;
@@ -45,6 +57,10 @@ export class AuthService {
 
     if (!doctor) {
       throw new UnauthorizedException('Invalid email or password');
+    }
+
+    if (!doctor.password) {
+      throw new UnauthorizedException('Password not set');
     }
 
     const isPasswordValid = await bcrypt.compare(password, doctor.password);
@@ -65,6 +81,16 @@ export class AuthService {
       throw new UnauthorizedException('Invalid email or password');
     }
 
+    // Check if patient is verified
+    if (!patient.isVerified) {
+      throw new BadRequestException('Email is not verified');
+    }
+
+    // Check if password is set
+    if (!patient.password) {
+      throw new BadRequestException('Password not set. Please set your password first.');
+    }
+
     const isPasswordValid = await bcrypt.compare(password, patient.password);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid email or password');
@@ -81,14 +107,90 @@ export class AuthService {
       userType: userType 
     };
     
+    const accessToken = this.jwtService.sign(payload, {
+      secret: this.configService.get<string>('JWT_SECRET_ACCESS_TOKEN'),
+      expiresIn: this.configService.get<string>('JWT_ACCESS_TOKEN_EXPIRED') || '1d',
+    });
+
+    const refreshToken = this.jwtService.sign(payload, {
+      secret: this.configService.get<string>('JWT_SECRET_REFRESH_TOKEN'),
+      expiresIn: this.configService.get<string>('JWT_REFRESH_TOKEN_EXPIRED') || '7d',
+    });
+
+    // Store refresh token in database
+    await this.prisma.refreshToken.create({
+      data: {
+        token: refreshToken,
+        userId: user.id,
+        userType: userType,
+        expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000), // 7 days
+      },
+    });
+
     return {
-      access_token: this.jwtService.sign(payload),
+      access_token: accessToken,
+      refresh_token: refreshToken,
       user: {
         id: user.id,
         email: user.email,
         userType: userType,
+        isVerified: user.isVerified,
       },
     };
+  }
+
+  async refreshToken(refreshToken: string) {
+    try {
+      // Verify the refresh token
+      const payload = this.jwtService.verify(refreshToken, {
+        secret: this.configService.get<string>('JWT_SECRET_REFRESH_TOKEN'),
+      });
+
+      // Check if refresh token exists in database
+      const storedToken = await this.prisma.refreshToken.findUnique({
+        where: { token: refreshToken },
+      });
+
+      if (!storedToken) {
+        throw new UnauthorizedException('Invalid refresh token');
+      }
+
+      // Check if token is expired
+      if (storedToken.expiresAt < new Date()) {
+        await this.prisma.refreshToken.delete({
+          where: { token: refreshToken },
+        });
+        throw new UnauthorizedException('Refresh token expired');
+      }
+
+      // Generate new access token
+      const newAccessToken = this.jwtService.sign(
+        { 
+          email: payload.email, 
+          sub: payload.sub, 
+          userType: payload.userType 
+        },
+        {
+          secret: this.configService.get<string>('JWT_SECRET_ACCESS_TOKEN'),
+          expiresIn: this.configService.get<string>('JWT_ACCESS_TOKEN_EXPIRED') || '1d',
+        }
+      );
+
+      return {
+        access_token: newAccessToken,
+      };
+    } catch (error) {
+      throw new UnauthorizedException('Invalid refresh token');
+    }
+  }
+
+  async logout(refreshToken: string) {
+    // Delete the refresh token from database
+    await this.prisma.refreshToken.deleteMany({
+      where: { token: refreshToken },
+    });
+
+    return { message: 'Logged out successfully' };
   }
 
   async registerClinic(registerClinicDto: RegisterClinicDto) {
@@ -106,8 +208,8 @@ export class AuthService {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
     
-    // Generate verification code
-    const verifyCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+    // Generate verification code - 4 characters with numbers and letters
+    const verifyCode = this.generateVerificationCode();
 
     const clinic = await this.prisma.clinic.create({
       data: {
@@ -139,8 +241,8 @@ export class AuthService {
       throw new BadRequestException('Patient with this email already exists');
     }
 
-    // Generate verification code
-    const verifyCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+    // Generate verification code - 4 characters with numbers and letters
+    const verifyCode = this.generateVerificationCode();
 
     const patient = await this.prisma.patient.create({
       data: {
@@ -200,11 +302,52 @@ export class AuthService {
     const updatedPatient = await this.prisma.patient.update({
       where: { email },
       data: { 
+        isVerified: true,
         verifyCode: null,
       },
     });
 
+    return updatedPatient;
+  }
+
+  async updatePatientProfile(patientId: number, updatePatientProfileDto: UpdatePatientProfileDto) {
+    const { password, ...otherData } = updatePatientProfileDto;
+    
+    const updateData: any = { ...otherData };
+
+    // Hash password if provided
+    if (password) {
+      updateData.password = await bcrypt.hash(password, 10);
+    }
+
+    const updatedPatient = await this.prisma.patient.update({
+      where: { id: patientId },
+      data: updateData,
+    });
+
     const { password: _, ...result } = updatedPatient;
+    return result;
+  }
+
+  async getPatientProfile(patientId: number) {
+    const patient = await this.prisma.patient.findUnique({
+      where: { id: patientId },
+    });
+
+    if (!patient) {
+      throw new NotFoundException('Patient not found');
+    }
+
+    const { password, verifyCode, ...result } = patient;
+    return result;
+  }
+
+  private generateVerificationCode(): string {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let result = '';
+    for (let i = 0; i < 4; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
     return result;
   }
 }

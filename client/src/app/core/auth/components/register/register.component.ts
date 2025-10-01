@@ -48,19 +48,7 @@ export class RegisterComponent extends BaseComponent implements OnInit {
   selectedRole: string = 'patient';
 
   patientForm = this.fb.group({
-    // first_name: ['', Validators.required],
-    // last_name: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
-    // password: this.fb.group(
-    //   {
-    //     password: ['', [Validators.required, Validators.minLength(3)]],
-    //     confirmPassword: '',
-    //   },
-    //   {
-    //     validators: passswordShouldMatch,
-    //   }
-    // ),
-    // phone: ['', Validators.required],
   });
 
   doctorForm = this.fb.group({
@@ -130,65 +118,92 @@ export class RegisterComponent extends BaseComponent implements OnInit {
     }
 
     if (formData) {
-      const payload = { ...formData, role: this.selectedRole };
+      // Store role locally, don't send to database
+      const payload = { ...formData };
       this.signUpUser(payload);
     }
-
   }
 
   signUpUser(payload: any) {
-    if (payload.role === 'clinic') {
-      this.authService.clinicRegister(payload).subscribe({
-        next: (res: any) => {
-          if (res.code === 200) {
-            this.toastrService.success(
-              `Please check your email box to confirm ${res.newUser.email} `
-            );
-            this.shareSerivce.setEmail(res.newUser.email);
-            this.shareSerivce.setSelectedRole(payload.role);
-            this.router.navigate(['auth/confirm-email']);
-          }
-        },
-        error: () => {
-        },
-        complete: () => console.log('complete'),
-      });
-    } else if (payload.role === 'patient') {
-      const email = { email: payload.email };
-      this.authService.patientRegister(email).subscribe({
-        next: (res: any) => {
-          if (res.code === 200) {
-            this.toastrService.success(
-              `Please check your email box to confirm ${res.newUser.email} `
-            );
-            this.shareSerivce.setEmail(res.newUser.email);
-            this.shareSerivce.setSelectedRole(payload.role);
-            this.router.navigate(['auth/confirm-email']);
-          }
-        },
-        error: () => {
-          console.log('Registration failed. Please try again.');
-        },
-        complete: () => console.log('complete'),
-      });
-    } else if (payload.role === 'doctor') {
-      this.authService.doctorRegister(payload).subscribe({
-        next: (res: any) => {
-          if (res.code === 200) {
-            this.toastrService.success(
-              `Please check your email box to confirm ${res.newUser.email} `
-            );
-            this.shareSerivce.setEmail(res.newUser.email);
-            this.shareSerivce.setSelectedRole(payload.role);
-            this.router.navigate(['auth/confirm-email']);
-          }
-        },
-        error: () => {
-          console.log('Registration failed. Please try again.');
-        },
-        complete: () => console.log('complete'),
-      });
+    this.handleRoleBasedRegistration(payload);
+  }
+
+  private handleRoleBasedRegistration(payload: any): void {
+    switch (this.selectedRole) {
+      case 'patient':
+        this.handlePatientRegistration(payload);
+        break;
+      case 'clinic':
+        this.handleClinicRegistration(payload);
+        break;
+      case 'doctor':
+        this.handleDoctorRegistration(payload);
+        break;
+      default:
+        this.toastrService.error('Invalid role selected.');
+        break;
     }
+  }
+
+  private handlePatientRegistration(payload: any): void {
+    this.authService.patientRegister(payload).subscribe({
+      next: (res: any) => {
+        if (res.statusCode === 201 || res.code === 201) {
+          this.handleRegistrationSuccess(payload.email, this.selectedRole, res);
+        }
+      },
+      error: (error) => {
+        this.handleRegistrationError(error, 'Patient registration failed');
+      },
+      complete: () => console.log('complete'),
+    });
+  }
+
+  private handleClinicRegistration(payload: any): void {
+    this.authService.clinicRegister(payload).subscribe({
+      next: (res: any) => {
+        if (res.code === 201) {
+          this.handleRegistrationSuccess(res.newUser.email, this.selectedRole, res);
+        }
+      },
+      error: (error) => {
+        this.handleRegistrationError(error, 'Clinic registration failed');
+      },
+      complete: () => console.log('complete'),
+    });
+  }
+
+  private handleDoctorRegistration(payload: any): void {
+    this.authService.doctorRegister(payload).subscribe({
+      next: (res: any) => {
+        if (res.code === 200) {
+          this.handleRegistrationSuccess(res.newUser.email, this.selectedRole, res);
+        }
+      },
+      error: (error) => {
+        this.handleRegistrationError(error, 'Doctor registration failed');
+      },
+      complete: () => console.log('complete'),
+    });
+  }
+
+  private handleRegistrationSuccess(email: string, role: string, response: any): void {
+    this.toastrService.success(
+      `Please check your email box to confirm ${email}`
+    );
+    
+    if (role === 'patient') {
+      localStorage.setItem('patientInfo', JSON.stringify(response));
+    }
+    
+    this.shareSerivce.setEmail(email);
+    this.shareSerivce.setSelectedRole(role);
+    this.router.navigate(['auth/confirm-email']);
+  }
+
+  private handleRegistrationError(error: any, context: string): void {
+    console.error(`${context}:`, error);
+    this.toastrService.error('Registration failed. Please try again.');
   }
   trackByFn() {}
 

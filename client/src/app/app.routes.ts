@@ -3,7 +3,6 @@ import { NotFoundComponent } from './modules/not-found/not-found.component';
 import { AuthGuard } from './core/auth/guards/auth.guard';
 
 export const routes: Routes = [
-
   {
     path: '',
     loadChildren: () => import('./ui/ui.module').then(u => u.UiModule),
@@ -13,7 +12,13 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./core/auth/auth.module').then(a => a.AuthModule),
   },
-
+  {
+    path: 'patient',
+    loadChildren: () =>
+      import('./modules/patients/patients.module').then(p => p.PatientsModule),
+    canActivate: [AuthGuard],
+    data: { breadcrumb: 'patient' },
+  },
   {
     path: 'dashboard',
     loadChildren: () =>
@@ -27,7 +32,10 @@ export const routes: Routes = [
   },
   {
     path: 'home',
-    redirectTo:''
+    redirectTo: ''
+  },
+  {
+    path: '**',
+    redirectTo: 'not-found'
   }
-  
 ];

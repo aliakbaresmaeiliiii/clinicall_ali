@@ -45,14 +45,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
 const jwt_1 = require("@nestjs/jwt");
+const config_1 = require("@nestjs/config");
 const prisma_service_1 = require("../prisma/prisma.service");
 const email_service_1 = require("../email/email.service");
 const bcrypt = __importStar(require("bcrypt"));
 let AuthService = class AuthService {
-    constructor(prisma, jwtService, emailService) {
+    constructor(prisma, jwtService, emailService, configService) {
         this.prisma = prisma;
         this.jwtService = jwtService;
         this.emailService = emailService;
+        this.configService = configService;
     }
     async validateClinic(email, password) {
         const clinic = await this.prisma.clinic.findUnique({
@@ -61,12 +63,15 @@ let AuthService = class AuthService {
         if (!clinic) {
             throw new common_1.UnauthorizedException('Invalid email or password');
         }
+        if (!clinic.password) {
+            throw new common_1.UnauthorizedException('Password not set');
+        }
         const isPasswordValid = await bcrypt.compare(password, clinic.password);
         if (!isPasswordValid) {
             throw new common_1.UnauthorizedException('Invalid email or password');
         }
         if (!clinic.isVerified) {
-            throw new common_1.BadRequestException('Email is not confirmed');
+            throw new common_1.BadRequestException('Email is not verified');
         }
         const { password: _, ...result } = clinic;
         return result;
@@ -77,6 +82,9 @@ let AuthService = class AuthService {
         });
         if (!doctor) {
             throw new common_1.UnauthorizedException('Invalid email or password');
+        }
+        if (!doctor.password) {
+            throw new common_1.UnauthorizedException('Password not set');
         }
         const isPasswordValid = await bcrypt.compare(password, doctor.password);
         if (!isPasswordValid) {
@@ -92,6 +100,12 @@ let AuthService = class AuthService {
         if (!patient) {
             throw new common_1.UnauthorizedException('Invalid email or password');
         }
+        if (!patient.isVerified) {
+            throw new common_1.BadRequestException('Email is not verified');
+        }
+        if (!patient.password) {
+            throw new common_1.BadRequestException('Password not set. Please set your password first.');
+        }
         const isPasswordValid = await bcrypt.compare(password, patient.password);
         if (!isPasswordValid) {
             throw new common_1.UnauthorizedException('Invalid email or password');
@@ -105,14 +119,71 @@ let AuthService = class AuthService {
             sub: user.id,
             userType: userType
         };
+        const accessToken = this.jwtService.sign(payload, {
+            secret: this.configService.get('JWT_SECRET_ACCESS_TOKEN'),
+            expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRED') || '1d',
+        });
+        const refreshToken = this.jwtService.sign(payload, {
+            secret: this.configService.get('JWT_SECRET_REFRESH_TOKEN'),
+            expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRED') || '7d',
+        });
+        await this.prisma.refreshToken.create({
+            data: {
+                token: refreshToken,
+                userId: user.id,
+                userType: userType,
+                expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+            },
+        });
         return {
-            access_token: this.jwtService.sign(payload),
+            access_token: accessToken,
+            refresh_token: refreshToken,
             user: {
                 id: user.id,
                 email: user.email,
                 userType: userType,
+                isVerified: user.isVerified,
             },
         };
+    }
+    async refreshToken(refreshToken) {
+        try {
+            const payload = this.jwtService.verify(refreshToken, {
+                secret: this.configService.get('JWT_SECRET_REFRESH_TOKEN'),
+            });
+            const storedToken = await this.prisma.refreshToken.findUnique({
+                where: { token: refreshToken },
+            });
+            if (!storedToken) {
+                throw new common_1.UnauthorizedException('Invalid refresh token');
+            }
+            if (storedToken.expiresAt < new Date()) {
+                await this.prisma.refreshToken.delete({
+                    where: { token: refreshToken },
+                });
+                throw new common_1.UnauthorizedException('Refresh token expired');
+            }
+            const newAccessToken = this.jwtService.sign({
+                email: payload.email,
+                sub: payload.sub,
+                userType: payload.userType
+            }, {
+                secret: this.configService.get('JWT_SECRET_ACCESS_TOKEN'),
+                expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRED') || '1d',
+            });
+            return {
+                access_token: newAccessToken,
+            };
+        }
+        catch (error) {
+            throw new common_1.UnauthorizedException('Invalid refresh token');
+        }
+    }
+    async logout(refreshToken) {
+        await this.prisma.refreshToken.deleteMany({
+            where: { token: refreshToken },
+        });
+        return { message: 'Logged out successfully' };
     }
     async registerClinic(registerClinicDto) {
         const { email, password, name, phone, address } = registerClinicDto;
@@ -123,7 +194,7 @@ let AuthService = class AuthService {
             throw new common_1.BadRequestException('Clinic with this email already exists');
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const verifyCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+        const verifyCode = this.generateVerificationCode();
         const clinic = await this.prisma.clinic.create({
             data: {
                 email,
@@ -146,7 +217,7 @@ let AuthService = class AuthService {
         if (existingPatient) {
             throw new common_1.BadRequestException('Patient with this email already exists');
         }
-        const verifyCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+        const verifyCode = this.generateVerificationCode();
         const patient = await this.prisma.patient.create({
             data: {
                 email,
@@ -191,10 +262,41 @@ let AuthService = class AuthService {
         const updatedPatient = await this.prisma.patient.update({
             where: { email },
             data: {
+                isVerified: true,
                 verifyCode: null,
             },
         });
+        return updatedPatient;
+    }
+    async updatePatientProfile(patientId, updatePatientProfileDto) {
+        const { password, ...otherData } = updatePatientProfileDto;
+        const updateData = { ...otherData };
+        if (password) {
+            updateData.password = await bcrypt.hash(password, 10);
+        }
+        const updatedPatient = await this.prisma.patient.update({
+            where: { id: patientId },
+            data: updateData,
+        });
         const { password: _, ...result } = updatedPatient;
+        return result;
+    }
+    async getPatientProfile(patientId) {
+        const patient = await this.prisma.patient.findUnique({
+            where: { id: patientId },
+        });
+        if (!patient) {
+            throw new common_1.NotFoundException('Patient not found');
+        }
+        const { password, verifyCode, ...result } = patient;
+        return result;
+    }
+    generateVerificationCode() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let result = '';
+        for (let i = 0; i < 4; i++) {
+            result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
         return result;
     }
 };
@@ -203,6 +305,7 @@ exports.AuthService = AuthService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [prisma_service_1.PrismaService,
         jwt_1.JwtService,
-        email_service_1.EmailService])
+        email_service_1.EmailService,
+        config_1.ConfigService])
 ], AuthService);
 //# sourceMappingURL=auth.service.js.map

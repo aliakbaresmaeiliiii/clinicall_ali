@@ -1,10 +1,22 @@
-import { Body, Controller, Post, Request, UseGuards } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { 
+  Body, 
+  Controller, 
+  Post, 
+  Request, 
+  UseGuards, 
+  Get, 
+  Put,
+  Param,
+  ParseIntPipe 
+} from '@nestjs/common';
+import { ApiOperation, ApiResponse, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { RegisterClinicDto } from './dto/register-clinic.dto';
 import { RegisterPatientDto } from './dto/register-patient.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
+import { UpdatePatientProfileDto } from './dto/update-patient-profile.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @ApiTags('Authentication')
 @Controller('v1/auth')
@@ -16,7 +28,12 @@ export class AuthController {
   @ApiResponse({ status: 201, description: 'Clinic registered successfully' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   async registerClinic(@Body() registerClinicDto: RegisterClinicDto) {
-    return this.authService.registerClinic(registerClinicDto);
+    const result = await this.authService.registerClinic(registerClinicDto);
+    return {
+      statusCode: 201,
+      message: 'Clinic registered successfully',
+      data: result
+    };
   }
 
   @Post('patient/register')
@@ -24,7 +41,12 @@ export class AuthController {
   @ApiResponse({ status: 201, description: 'Patient registered successfully' })
   @ApiResponse({ status: 400, description: 'Bad request' })
   async registerPatient(@Body() registerPatientDto: RegisterPatientDto) {
-    return this.authService.registerPatient(registerPatientDto);
+    const result = await this.authService.registerPatient(registerPatientDto);
+    return {
+      statusCode: 201,
+      message: 'Patient registered successfully',
+      data: result
+    };
   }
 
   @Post('verify-clinic-email')
@@ -70,6 +92,47 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async patientSignIn(@Request() req) {
     return this.authService.login(req.user, 'patient');
+  }
+
+  @Post('refresh-token')
+  @ApiOperation({ summary: 'Refresh access token' })
+  @ApiResponse({ status: 200, description: 'Token refreshed successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async refreshToken(@Body() body: { refresh_token: string }) {
+    return this.authService.refreshToken(body.refresh_token);
+  }
+
+  @Post('logout')
+  @ApiOperation({ summary: 'Logout user' })
+  @ApiResponse({ status: 200, description: 'Logged out successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  async logout(@Body() body: { refresh_token: string }) {
+    return this.authService.logout(body.refresh_token);
+  }
+
+  @Get('patient/profile/:id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get patient profile' })
+  @ApiResponse({ status: 200, description: 'Profile retrieved successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'Patient not found' })
+  async getPatientProfile(@Param('id', ParseIntPipe) patientId: number) {
+    return this.authService.getPatientProfile(patientId);
+  }
+
+  @Put('patient/profile/:id')
+  @UseGuards(JwtAuthGuard)
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Update patient profile' })
+  @ApiResponse({ status: 200, description: 'Profile updated successfully' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
+  @ApiResponse({ status: 404, description: 'Patient not found' })
+  async updatePatientProfile(
+    @Param('id', ParseIntPipe) patientId: number,
+    @Body() updatePatientProfileDto: UpdatePatientProfileDto
+  ) {
+    return this.authService.updatePatientProfile(patientId, updatePatientProfileDto);
   }
 
   @Post('verify-recaptcha')

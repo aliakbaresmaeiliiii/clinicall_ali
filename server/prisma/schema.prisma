@@ -75,7 +75,7 @@ model Patient {
   profileImage  String?
   heartBeat     String?
   haemoglobin   String?
-  isVerified    Boolean    @default(false)   
+  isVerified    Boolean   @default(false)   
   doctor        String?
   treatment     String?
   charges       String?

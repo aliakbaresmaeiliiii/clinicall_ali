@@ -90,7 +90,11 @@ export class UserReviewsOfClinicAliComponent implements OnInit, AfterViewInit {
       },
     });
 
-    this.dotHelper = [...Array(this.slider.track.details.slides?.length).keys()];
+    if (this.slider?.track?.details?.slides) {
+      this.dotHelper = [...Array(this.slider.track.details.slides.length).keys()];
+    } else {
+      this.dotHelper = [];
+    }
   }
 
   ngOnDestroy() {

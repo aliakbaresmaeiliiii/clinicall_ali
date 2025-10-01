@@ -1,7 +1,7 @@
 <app-service-section [title]="title()">
   <div class="md:w-full lg:w-11/12 mx-auto">
     <div class="keen-slider flex" #sliderRef>
-      @for (data of swiperData(); track $index) {
+      @for (data of slides; track $index) {
       <div class="keen-slider__slide flex">
         <div class="single-service-box aos-init aos-animate">
           <app-card
@@ -19,35 +19,32 @@
         </div>
       </div>
       }
+      @if (showLeftArrow) {
       <svg
-        [ngClass]="
-          'arrow arrow--left ' + (currentSlide === 0 ? 'arrow--disabled' : '')
-        "
-        (click)="slider.prev()"
+        [attr.class]="leftArrowClass"
+        (click)="onPrevClick()"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24">
         <path
           d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z" />
       </svg>
+      }
+      @if (showRightArrow) {
       <svg
-        *ngIf="slider"
-        [ngClass]="
-          'arrow arrow--right ' +
-          (slider.track.details.slides.length - 1 === currentSlide
-            ? 'arrow--disabled'
-            : '')
-        "
-        (click)="slider.next()"
+        [attr.class]="rightArrowClass"
+        (click)="onNextClick()"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 24 24">
         <path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z" />
       </svg>
+      }
     </div>
     <div class="dots">
+      @for (slide of dotHelper; track $index; let i = $index) {
       <button
-        (click)="slider.moveToIdx(i)"
-        *ngFor="let slide of dotHelper; let i = index"
-        [class]="'dot ' + (i === currentSlide ? 'active' : '')"></button>
+        (click)="onDotClick(i)"
+        [attr.class]="getDotClass(i)"></button>
+      }
     </div>
   </div>
 </app-service-section>

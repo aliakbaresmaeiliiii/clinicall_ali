@@ -19,16 +19,28 @@ const auth_service_1 = require("./auth.service");
 const register_clinic_dto_1 = require("./dto/register-clinic.dto");
 const register_patient_dto_1 = require("./dto/register-patient.dto");
 const verify_email_dto_1 = require("./dto/verify-email.dto");
+const update_patient_profile_dto_1 = require("./dto/update-patient-profile.dto");
 const local_auth_guard_1 = require("./guards/local-auth.guard");
+const jwt_auth_guard_1 = require("./guards/jwt-auth.guard");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
     }
     async registerClinic(registerClinicDto) {
-        return this.authService.registerClinic(registerClinicDto);
+        const result = await this.authService.registerClinic(registerClinicDto);
+        return {
+            statusCode: 201,
+            message: 'Clinic registered successfully',
+            data: result
+        };
     }
     async registerPatient(registerPatientDto) {
-        return this.authService.registerPatient(registerPatientDto);
+        const result = await this.authService.registerPatient(registerPatientDto);
+        return {
+            statusCode: 201,
+            message: 'Patient registered successfully',
+            data: result
+        };
     }
     async verifyClinicEmail(verifyEmailDto) {
         return this.authService.verifyClinicEmail(verifyEmailDto);
@@ -44,6 +56,18 @@ let AuthController = class AuthController {
     }
     async patientSignIn(req) {
         return this.authService.login(req.user, 'patient');
+    }
+    async refreshToken(body) {
+        return this.authService.refreshToken(body.refresh_token);
+    }
+    async logout(body) {
+        return this.authService.logout(body.refresh_token);
+    }
+    async getPatientProfile(patientId) {
+        return this.authService.getPatientProfile(patientId);
+    }
+    async updatePatientProfile(patientId, updatePatientProfileDto) {
+        return this.authService.updatePatientProfile(patientId, updatePatientProfileDto);
     }
     async verifyRecaptcha(body) {
         return { success: true };
@@ -125,6 +149,53 @@ __decorate([
     __metadata("design:paramtypes", [Object]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "patientSignIn", null);
+__decorate([
+    (0, common_1.Post)('refresh-token'),
+    (0, swagger_1.ApiOperation)({ summary: 'Refresh access token' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Token refreshed successfully' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'Unauthorized' }),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "refreshToken", null);
+__decorate([
+    (0, common_1.Post)('logout'),
+    (0, swagger_1.ApiOperation)({ summary: 'Logout user' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Logged out successfully' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'Unauthorized' }),
+    __param(0, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Object]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "logout", null);
+__decorate([
+    (0, common_1.Get)('patient/profile/:id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Get patient profile' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Profile retrieved successfully' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'Unauthorized' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Patient not found' }),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "getPatientProfile", null);
+__decorate([
+    (0, common_1.Put)('patient/profile/:id'),
+    (0, common_1.UseGuards)(jwt_auth_guard_1.JwtAuthGuard),
+    (0, swagger_1.ApiBearerAuth)(),
+    (0, swagger_1.ApiOperation)({ summary: 'Update patient profile' }),
+    (0, swagger_1.ApiResponse)({ status: 200, description: 'Profile updated successfully' }),
+    (0, swagger_1.ApiResponse)({ status: 401, description: 'Unauthorized' }),
+    (0, swagger_1.ApiResponse)({ status: 404, description: 'Patient not found' }),
+    __param(0, (0, common_1.Param)('id', common_1.ParseIntPipe)),
+    __param(1, (0, common_1.Body)()),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, update_patient_profile_dto_1.UpdatePatientProfileDto]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "updatePatientProfile", null);
 __decorate([
     (0, common_1.Post)('verify-recaptcha'),
     (0, swagger_1.ApiOperation)({ summary: 'Verify reCAPTCHA token' }),

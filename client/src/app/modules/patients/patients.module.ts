@@ -15,6 +15,16 @@ import { NgxIntlTelInputModule } from 'ngx-intl-tel-input';
 
 export const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'dashboard',
+    pathMatch: 'full'
+  },
+  {
+    path: 'dashboard',
+    component: PatientProfileComponent,
+    data: { breadcrumb: 'dashboard' },
+  },
+  {
     path: 'all-patients',
     component: PatientsComponent,
   },
@@ -24,11 +34,10 @@ export const routes: Routes = [
     data: { breadcrumb: 'add-patients' },
   },
   {
-    path: 'patient-profile',
+    path: 'profile',
     component: PatientProfileComponent,
-    data: { breadcrumb: 'patient-profile' },
+    data: { breadcrumb: 'profile' },
   },
-  
   {
     path: 'patient-detail/:id',
     component: PatientDetailComponent,

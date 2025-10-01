@@ -1,6 +1,6 @@
 export interface Config {
   production: boolean;
-  apiEndPoint: string;
+    apiEndPoint: string;
   urlProfileImg: string;
   neshanBaseUrl: any;
   neshanApiKey: string;
@@ -46,7 +46,7 @@ export const environment: Config = {
   },
   production: true,
   // SERVER_API: 'https://api.example.com',
-  apiEndPoint: 'http://localhost:8080/v1/',
+  apiEndPoint: 'http://localhost:8080/v1',
   urlProfileImg: 'http://localhost:8080/images/',
   neshanBaseUrl: 'https://api.neshan.org',
   neshanApiKey: 'service.KVVe90o9etGdBaZMu1jT2tlhVuc2yXdMDcYkYded',

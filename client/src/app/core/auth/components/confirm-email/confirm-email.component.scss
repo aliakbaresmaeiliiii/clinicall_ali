@@ -85,7 +85,38 @@
 .otp-section {
   margin-bottom: 30px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.timer-section {
+  text-align: center;
+  margin: 10px 0;
+  
+  .timer-text {
+    color: #e53e3e;
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+    padding: 8px 16px;
+    background: rgba(229, 62, 62, 0.1);
+    border-radius: 8px;
+    border: 1px solid rgba(229, 62, 62, 0.2);
+    animation: pulse 2s infinite;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 
 .resend-section {

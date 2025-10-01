@@ -1,24 +1,35 @@
 import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '../prisma/prisma.service';
 import { EmailService } from '../email/email.service';
 import { RegisterClinicDto } from './dto/register-clinic.dto';
 import { RegisterPatientDto } from './dto/register-patient.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
+import { UpdatePatientProfileDto } from './dto/update-patient-profile.dto';
 export declare class AuthService {
     private prisma;
     private jwtService;
     private emailService;
-    constructor(prisma: PrismaService, jwtService: JwtService, emailService: EmailService);
+    private configService;
+    constructor(prisma: PrismaService, jwtService: JwtService, emailService: EmailService, configService: ConfigService);
     validateClinic(email: string, password: string): Promise<any>;
     validateDoctor(email: string, password: string): Promise<any>;
     validatePatient(email: string, password: string): Promise<any>;
     login(user: any, userType: string): Promise<{
         access_token: string;
+        refresh_token: string;
         user: {
             id: any;
             email: any;
             userType: string;
+            isVerified: any;
         };
+    }>;
+    refreshToken(refreshToken: string): Promise<{
+        access_token: string;
+    }>;
+    logout(refreshToken: string): Promise<{
+        message: string;
     }>;
     registerClinic(registerClinicDto: RegisterClinicDto): Promise<{
         address: string | null;
@@ -41,6 +52,7 @@ export declare class AuthService {
         description: string | null;
         password: string | null;
         phone: string | null;
+        verifyCode: string | null;
         firstName: string | null;
         lastName: string | null;
         mobile: string | null;
@@ -48,7 +60,6 @@ export declare class AuthService {
         gender: string | null;
         age: number | null;
         maritalStatus: string | null;
-        verifyCode: string | null;
         id: number;
         isVerified: boolean;
         createdAt: Date;
@@ -84,7 +95,9 @@ export declare class AuthService {
         address: string | null;
         email: string;
         description: string | null;
+        password: string | null;
         phone: string | null;
+        verifyCode: string | null;
         firstName: string | null;
         lastName: string | null;
         mobile: string | null;
@@ -92,7 +105,6 @@ export declare class AuthService {
         gender: string | null;
         age: number | null;
         maritalStatus: string | null;
-        verifyCode: string | null;
         id: number;
         isVerified: boolean;
         createdAt: Date;
@@ -109,4 +121,64 @@ export declare class AuthService {
         treatment: string | null;
         charges: string | null;
     }>;
+    updatePatientProfile(patientId: number, updatePatientProfileDto: UpdatePatientProfileDto): Promise<{
+        doctor: string | null;
+        address: string | null;
+        email: string;
+        description: string | null;
+        phone: string | null;
+        verifyCode: string | null;
+        firstName: string | null;
+        lastName: string | null;
+        mobile: string | null;
+        dateOfBirth: string | null;
+        gender: string | null;
+        age: number | null;
+        maritalStatus: string | null;
+        id: number;
+        isVerified: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+        tokenVerify: string | null;
+        patientName: string | null;
+        bloodGroup: string | null;
+        bloodPressure: string | null;
+        sugarLevel: string | null;
+        injury: string | null;
+        profileImage: string | null;
+        heartBeat: string | null;
+        haemoglobin: string | null;
+        treatment: string | null;
+        charges: string | null;
+    }>;
+    getPatientProfile(patientId: number): Promise<{
+        doctor: string | null;
+        address: string | null;
+        email: string;
+        description: string | null;
+        phone: string | null;
+        firstName: string | null;
+        lastName: string | null;
+        mobile: string | null;
+        dateOfBirth: string | null;
+        gender: string | null;
+        age: number | null;
+        maritalStatus: string | null;
+        id: number;
+        isVerified: boolean;
+        createdAt: Date;
+        updatedAt: Date;
+        tokenVerify: string | null;
+        patientName: string | null;
+        bloodGroup: string | null;
+        bloodPressure: string | null;
+        sugarLevel: string | null;
+        injury: string | null;
+        profileImage: string | null;
+        heartBeat: string | null;
+        haemoglobin: string | null;
+        treatment: string | null;
+        charges: string | null;
+    }>;
+    private generateVerificationCode;
 }

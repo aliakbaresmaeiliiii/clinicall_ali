@@ -11,6 +11,13 @@ import {
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { PatientDTO } from '../../modules/patients/model/patients.model';
+import {
+  PatientRegistrationRequest,
+  PatientLoginRequest,
+  PatientVerificationRequest,
+  PatientResponse,
+  PatientVerificationResponse,
+} from '../auth/models/patient.model';
 
 @Injectable({
   providedIn: 'root',
@@ -34,58 +41,61 @@ export class AuthService {
 
   clinicRegister(userData: any): Observable<SignupResponse> {
     return this.#http.post<SignupResponse>(
-      `${this.config}auth/clinic/register`,
+      `${this.config}/auth/clinic/register`,
       userData
     );
   }
 
-  patientRegister(userData: any): Observable<SignupResponse> {
-    return this.#http.post<SignupResponse>(
-      `${this.config}auth/patient/register`,
-      userData
-    );
+  // Patient registration - using the new API endpoint
+  patientRegister(patientData: PatientRegistrationRequest): Observable<PatientResponse> {
+    return this.#http.post<PatientResponse>(`${this.config}/auth/patient/register`, patientData);
   }
 
   clinicSignIn(userData: any): Observable<any> {
-    return this.#http.post<any>(`${this.config}auth/clinic-sign-in`, userData);
+    return this.#http.post<any>(`${this.config}/auth/clinic-sign-in`, userData);
   }
 
   confirmClinicEmail(data: any): Observable<CurrentUser> {
     return this.#http.post<CurrentUser>(
-      `${this.config}auth/verify-clinic-email`,
+      `${this.config}/auth/verify-clinic-email`,
       data
     );
   }
   confirmPatientEmail(data: any): Observable<CurrentUser> {
     return this.#http.post<CurrentUser>(
-      `${this.config}auth/verify-patient-email`,
+      `${this.config}/auth/verify-patient-email`,
       data
     );
   }
 
   confirmDoctorEmail(data: any): Observable<CurrentUser> {
     return this.#http.post<CurrentUser>(
-      `${this.config}auth/verify-doctor-email`,
+      `${this.config}/auth/verify-doctor-email`,
       data
     );
   }
 
   doctorSignIn(userData: any): Observable<any> {
-    return this.#http.post<any>(`${this.config}auth/doctor-sign-in`, userData);
+    return this.#http.post<any>(`${this.config}/auth/doctor-sign-in`, userData);
   }
 
   doctorRegister(userData: any): Observable<any> {
-    return this.#http.post<any>(`${this.config}auth/doctor-register`, userData);
+    return this.#http.post<any>(`${this.config}/auth/doctor-register`, userData);
   }
-  patientSignIn(userData: PatientDTO): Observable<User> {
-    return this.#http.post<User>(
-      `${this.config}auth/patient-sign-in`,
+  patientSignIn(userData: PatientLoginRequest): Observable<PatientResponse> {
+    return this.#http.post<PatientResponse>(
+      `${this.config}/auth/patient-sign-in`,
       userData
     );
   }
 
+  verifyPatientEmail(data: PatientVerificationRequest): Observable<PatientVerificationResponse> {
+    return this.#http.post<PatientVerificationResponse>(
+      `${this.config}/auth/verify-patient-email`,
+      data
+    );
+  }
 
-  
   fetchConfirmCode(email: string): Observable<any> {
     const param = new HttpParams().set('email', email);
     return this.#http.get<User>(`${this.config}auth/verify-email-code`, {
@@ -106,8 +116,10 @@ export class AuthService {
   }
 
   verifyCaptcha(token: string): Observable<any> {
-    return this.#http.post<any>(`${this.config}auth/verify-recaptcha`, {  token });
-  } 
+    return this.#http.post<any>(`${this.config}auth/verify-recaptcha`, {
+      token,
+    });
+  }
 
   isTokenExpired(): boolean {
     const token = this.getToken();
