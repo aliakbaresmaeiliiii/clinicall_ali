@@ -57,6 +57,96 @@ let DoctorService = class DoctorService {
             where: { id },
         });
     }
+    async search(searchDto) {
+        const { name, specialty, city, gender, specialityId, serviceId, medicalCode, page = 1, limit = 10, } = searchDto;
+        const skip = (page - 1) * limit;
+        const take = limit;
+        const where = {};
+        if (name) {
+            where.OR = [
+                { firstName: { contains: name, mode: 'insensitive' } },
+                { lastName: { contains: name, mode: 'insensitive' } },
+            ];
+        }
+        if (gender) {
+            where.gender = gender;
+        }
+        if (specialityId) {
+            where.specialityId = specialityId;
+        }
+        if (serviceId) {
+            where.serviceId = serviceId;
+        }
+        if (medicalCode) {
+            where.medicalCode = { contains: medicalCode, mode: 'insensitive' };
+        }
+        let includeAddresses = false;
+        if (city) {
+            includeAddresses = true;
+        }
+        const doctors = await this.prisma.doctor.findMany({
+            where,
+            include: {
+                addresses: includeAddresses,
+                reviews: true,
+                appointments: true,
+                clinicDoctors: {
+                    include: {
+                        clinic: true,
+                    },
+                },
+            },
+            skip,
+            take,
+            orderBy: {
+                firstName: 'asc',
+            },
+        });
+        let filteredDoctors = doctors;
+        if (city) {
+            filteredDoctors = doctors.filter(doctor => doctor.addresses.some(address => address.country === 'Malaysia' &&
+                (address.addressLine1?.toLowerCase().includes(city.toLowerCase()) ||
+                    address.addressLine2?.toLowerCase().includes(city.toLowerCase()))));
+        }
+        if (specialty) {
+            filteredDoctors = filteredDoctors.filter(doctor => {
+                const specialtyMap = {
+                    1: 'General Practice',
+                    2: 'Cardiology',
+                    3: 'Dermatology',
+                    4: 'Pediatrics',
+                    5: 'Obstetrics & Gynecology',
+                    6: 'Orthopedics',
+                    7: 'Neurology',
+                    8: 'Psychiatry',
+                    9: 'Ophthalmology',
+                    10: 'ENT (Ear, Nose, Throat)',
+                    11: 'Gastroenterology',
+                    12: 'Urology',
+                    13: 'Endocrinology',
+                    14: 'Rheumatology',
+                    15: 'Oncology',
+                    16: 'Nephrology',
+                    17: 'Pulmonology',
+                    18: 'Hematology',
+                    19: 'Infectious Diseases',
+                    20: 'Emergency Medicine',
+                };
+                const doctorSpecialty = specialtyMap[doctor.specialityId];
+                return doctorSpecialty?.toLowerCase().includes(specialty.toLowerCase());
+            });
+        }
+        const total = await this.prisma.doctor.count({ where });
+        return {
+            data: filteredDoctors,
+            pagination: {
+                page,
+                limit,
+                total,
+                totalPages: Math.ceil(total / limit),
+            },
+        };
+    }
 };
 exports.DoctorService = DoctorService;
 exports.DoctorService = DoctorService = __decorate([

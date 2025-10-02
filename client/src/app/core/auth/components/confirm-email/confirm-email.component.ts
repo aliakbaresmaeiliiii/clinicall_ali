@@ -116,7 +116,6 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
         isVerified: true,
         is_verified: true
       };
-      debugger;
       
       // Store user data in localStorage
       const dataJson = JSON.stringify(userData);

@@ -157,8 +157,11 @@ export class LoginComponent implements OnInit {
       next: (res: any) => {
         if (res.code === 200 || res.statusCode === 200) {
           // Check if user is verified before allowing login
-          if (res.isVerified || res.is_verified || res.data?.isVerified) {
-            this.handleLoginSuccess(res, '/patient/dashboard', 'Login successful');
+          // Handle different possible locations for isVerified field
+          const isVerified = res.data.user.isVerified
+          
+          if (isVerified) {
+            this.handleLoginSuccess(res, '', 'Login successful');
           } else {
             this.handleUnverifiedEmail(formValue.email, 'patient');
           }
@@ -186,7 +189,13 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('userData', dataJson);
         if (res.code === 200) {
           // Check if user is verified before allowing login
-          if (res.isVerified || res.is_verified || res.data?.isVerified) {
+          // Handle different possible locations for isVerified field
+          const isVerified = res.isVerified || 
+                           res.is_verified || 
+                           res.data?.isVerified ||
+                           res.data?.is_verified;
+          
+          if (isVerified) {
             this.handleLoginSuccess(res, '/dashboard', 'Login successful');
           } else {
             this.handleUnverifiedEmail(formValue.email, 'clinic');
@@ -213,7 +222,13 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('userData', dataJson);
         if (res.code === 200) {
           // Check if user is verified before allowing login
-          if (res.isVerified || res.is_verified || res.data?.isVerified) {
+          // Handle different possible locations for isVerified field
+          const isVerified = res.isVerified || 
+                           res.is_verified || 
+                           res.data?.isVerified ||
+                           res.data?.is_verified;
+          
+          if (isVerified) {
             this.handleLoginSuccess(res, '/dashboard', `You are now signed in as a ${res.email}`);
           } else {
             this.handleUnverifiedEmail(formValue.email, 'doctor');
@@ -227,7 +242,19 @@ export class LoginComponent implements OnInit {
   }
 
   private handleLoginSuccess(res: any, redirectRoute: string, message: string): void {
-    const dataJson = JSON.stringify(res);
+    // Ensure verification status is properly included in stored data
+    const isVerified = res.isVerified || 
+                     res.is_verified || 
+                     res.data?.isVerified ||
+                     res.data?.is_verified;
+    
+    const userDataToStore = {
+      ...res,
+      isVerified: isVerified,
+      is_verified: isVerified
+    };
+    
+    const dataJson = JSON.stringify(userDataToStore);
     localStorage.setItem('userData', dataJson);
     localStorage.setItem('isAuthenticated', 'true');
     this.toast.success(message);

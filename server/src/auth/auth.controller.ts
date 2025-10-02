@@ -17,6 +17,7 @@ import { VerifyEmailDto } from './dto/verify-email.dto';
 import { UpdatePatientProfileDto } from './dto/update-patient-profile.dto';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { PatientEmailSignInDto } from './dto/patient-email-sign-in.dto';
 
 @ApiTags('Authentication')
 @Controller('v1/auth')
@@ -73,7 +74,12 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'Login successful' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async clinicSignIn(@Request() req) {
-    return this.authService.login(req.user, 'clinic');
+    const result = await this.authService.login(req.user, 'clinic');
+    return {
+      statusCode: 200,
+      message: 'Login successful',
+      data: result
+    };
   }
 
   @Post('doctor-sign-in')
@@ -82,16 +88,25 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'Login successful' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async doctorSignIn(@Request() req) {
-    return this.authService.login(req.user, 'doctor');
+    const result = await this.authService.login(req.user, 'doctor');
+    return {
+      statusCode: 200,
+      message: 'Login successful',
+      data: result
+    };
   }
 
   @Post('patient-sign-in')
-  @UseGuards(LocalAuthGuard)
   @ApiOperation({ summary: 'Sign in as patient' })
   @ApiResponse({ status: 200, description: 'Login successful' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  async patientSignIn(@Request() req) {
-    return this.authService.login(req.user, 'patient');
+  async patientSignIn(@Body() patientEmailSignInDto: PatientEmailSignInDto) {
+    const result = await this.authService.patientEmailSignIn(patientEmailSignInDto.email);
+    return {
+      statusCode: 200,
+      message: 'Login successful',
+      data: result
+    };
   }
 
   @Post('refresh-token')
@@ -99,7 +114,12 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'Token refreshed successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async refreshToken(@Body() body: { refresh_token: string }) {
-    return this.authService.refreshToken(body.refresh_token);
+    const result = await this.authService.refreshToken(body.refresh_token);
+    return {
+      statusCode: 200,
+      message: 'Token refreshed successfully',
+      data: result
+    };
   }
 
   @Post('logout')
@@ -107,7 +127,12 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'Logged out successfully' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async logout(@Body() body: { refresh_token: string }) {
-    return this.authService.logout(body.refresh_token);
+    const result = await this.authService.logout(body.refresh_token);
+    return {
+      statusCode: 200,
+      message: 'Logged out successfully',
+      data: result
+    };
   }
 
   @Get('patient/profile/:id')

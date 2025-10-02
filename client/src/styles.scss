@@ -6,6 +6,7 @@
 
 @use 'sass:map';
 // @use '@angular/material-experimental' as matx;
+@use './app/ui/shared-ui/components/modern-titles.scss';
 
 @use '@angular/material' as mat;
 @use "tailwindcss";

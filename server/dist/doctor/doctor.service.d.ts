@@ -1,6 +1,7 @@
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
+import { SearchDoctorDto } from './dto/search-doctor.dto';
 export declare class DoctorService {
     private prisma;
     constructor(prisma: PrismaService);
@@ -32,8 +33,8 @@ export declare class DoctorService {
             createdAt: Date;
             updatedAt: Date;
             doctorId: number;
-            patientId: number;
             clinicId: number;
+            patientId: number;
             date: Date;
             time: string;
             status: string;
@@ -43,7 +44,6 @@ export declare class DoctorService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            doctorId: number;
             addressLine1: string;
             addressLine2: string | null;
             cityId: number;
@@ -52,6 +52,7 @@ export declare class DoctorService {
             latitude: string | null;
             longitude: string | null;
             isPrimary: boolean;
+            doctorId: number;
         }[];
         reviews: {
             id: number;
@@ -96,8 +97,8 @@ export declare class DoctorService {
             createdAt: Date;
             updatedAt: Date;
             doctorId: number;
-            patientId: number;
             clinicId: number;
+            patientId: number;
             date: Date;
             time: string;
             status: string;
@@ -107,7 +108,6 @@ export declare class DoctorService {
             id: number;
             createdAt: Date;
             updatedAt: Date;
-            doctorId: number;
             addressLine1: string;
             addressLine2: string | null;
             cityId: number;
@@ -116,6 +116,7 @@ export declare class DoctorService {
             latitude: string | null;
             longitude: string | null;
             isPrimary: boolean;
+            doctorId: number;
         }[];
         reviews: {
             id: number;
@@ -197,5 +198,99 @@ export declare class DoctorService {
         specialityId: number | null;
         serviceId: number | null;
         visitHistoryId: number | null;
+    }>;
+    search(searchDto: SearchDoctorDto): Promise<{
+        data: ({
+            clinicDoctors: ({
+                clinic: {
+                    address: string | null;
+                    name: string | null;
+                    email: string;
+                    description: string | null;
+                    password: string | null;
+                    phone: string | null;
+                    website: string | null;
+                    verifyCode: string | null;
+                    id: number;
+                    logo: string | null;
+                    isVerified: boolean;
+                    createdAt: Date;
+                    updatedAt: Date;
+                };
+            } & {
+                id: number;
+                createdAt: Date;
+                doctorId: number;
+                clinicId: number;
+            })[];
+            appointments: {
+                id: number;
+                createdAt: Date;
+                updatedAt: Date;
+                doctorId: number;
+                clinicId: number;
+                patientId: number;
+                date: Date;
+                time: string;
+                status: string;
+                notes: string | null;
+            }[];
+            addresses: {
+                id: number;
+                createdAt: Date;
+                updatedAt: Date;
+                addressLine1: string;
+                addressLine2: string | null;
+                cityId: number;
+                zipcode: string;
+                country: string;
+                latitude: string | null;
+                longitude: string | null;
+                isPrimary: boolean;
+                doctorId: number;
+            }[];
+            reviews: {
+                id: number;
+                createdAt: Date;
+                updatedAt: Date;
+                doctorId: number;
+                patientId: number;
+                rating: number;
+                comment: string | null;
+                recommendations: string | null;
+                professionalDemeanor: number | null;
+                sufficientTime: number | null;
+                skill: number | null;
+                staffBehavior: number | null;
+                clinicCondition: number | null;
+            }[];
+        } & {
+            email: string;
+            password: string | null;
+            phone: string | null;
+            verifyCode: string | null;
+            firstName: string | null;
+            lastName: string | null;
+            gender: string | null;
+            age: number | null;
+            id: number;
+            createdAt: Date;
+            tokenVerify: string | null;
+            profileImg: string | null;
+            medicalCode: string | null;
+            clickCount: number;
+            isLiked: boolean;
+            averageRating: number;
+            totalRatings: number;
+            specialityId: number | null;
+            serviceId: number | null;
+            visitHistoryId: number | null;
+        })[];
+        pagination: {
+            page: number;
+            limit: number;
+            total: number;
+            totalPages: number;
+        };
     }>;
 }

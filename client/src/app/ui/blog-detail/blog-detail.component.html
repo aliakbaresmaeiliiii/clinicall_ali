@@ -1,0 +1,91 @@
+<!-- Blog Detail Container -->
+<div class="blog-detail-container">
+  <!-- Loading State -->
+  <div class="loading-state" *ngIf="isLoading">
+    <div class="loading-header">
+      <div class="loading-category"></div>
+      <div class="loading-title"></div>
+      <div class="loading-meta">
+        <div class="loading-avatar"></div>
+        <div class="loading-author"></div>
+      </div>
+    </div>
+    <div class="loading-image"></div>
+    <div class="loading-content">
+      <div class="loading-line long"></div>
+      <div class="loading-line medium"></div>
+      <div class="loading-line short"></div>
+      <div class="loading-line long"></div>
+      <div class="loading-line medium"></div>
+    </div>
+  </div>
+
+  <!-- Blog Post Content -->
+  <div class="blog-post-content" *ngIf="!isLoading && blogPost">
+    <!-- Navigation -->
+    <div class="post-navigation">
+      <button class="back-button" (click)="navigateToBlog()">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+          <path d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+        </svg>
+        Back to Blog
+      </button>
+    </div>
+
+    <!-- Blog Post -->
+    <article class="full-blog-post">
+      <!-- Post Header -->
+      <header class="post-header">
+        <span 
+          class="post-category" 
+          [style.background]="getCategoryColor(blogPost.category)"
+          [style.color]="'white'">
+          {{ blogPost.category }}
+        </span>
+        <h1 class="post-title">{{ blogPost.title }}</h1>
+        <div class="post-meta">
+          <div class="author-info">
+            <div class="author-avatar">
+              {{ getAuthorInitials(blogPost.author) }}
+            </div>
+            <div class="author-details">
+              <span class="author-name">{{ blogPost.author }}</span>
+              <span class="post-date">{{ blogPost.published_date }} • {{ blogPost.readTime }}</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Featured Image -->
+      <div class="featured-image">
+        <img [src]="blogPost.img" [alt]="blogPost.title" />
+      </div>
+
+      <!-- Post Content -->
+      <div class="post-content" [innerHTML]="blogPost.fullContent"></div>
+
+      <!-- Post Footer -->
+      <footer class="post-footer">
+        <div class="share-section">
+          <h4>Share this article</h4>
+          <div class="share-buttons">
+            <button class="share-btn facebook">Facebook</button>
+            <button class="share-btn twitter">Twitter</button>
+            <button class="share-btn linkedin">LinkedIn</button>
+          </div>
+        </div>
+      </footer>
+    </article>
+  </div>
+
+  <!-- Not Found State -->
+  <div class="not-found-state" *ngIf="!isLoading && !blogPost">
+    <div class="not-found-content">
+      <h2>Blog Post Not Found</h2>
+      <p>The blog post you're looking for doesn't exist or has been moved.</p>
+      <button class="back-to-blog-btn" (click)="navigateToBlog()">
+        Back to Blog
+      </button>
+    </div>
+  </div>
+</div>

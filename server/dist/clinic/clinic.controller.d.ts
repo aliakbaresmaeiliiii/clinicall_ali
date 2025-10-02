@@ -54,8 +54,8 @@ export declare class ClinicController {
             createdAt: Date;
             updatedAt: Date;
             doctorId: number;
-            patientId: number;
             clinicId: number;
+            patientId: number;
             date: Date;
             time: string;
             status: string;
@@ -111,8 +111,8 @@ export declare class ClinicController {
             createdAt: Date;
             updatedAt: Date;
             doctorId: number;
-            patientId: number;
             clinicId: number;
+            patientId: number;
             date: Date;
             time: string;
             status: string;

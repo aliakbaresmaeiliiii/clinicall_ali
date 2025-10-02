@@ -76,6 +76,41 @@ export class FeatureSectionComponent implements OnInit, AfterViewInit {
     });
   }
 
+   doctors = [
+    {
+      name: 'Dr. Sarah Johnson',
+      specialty: 'Cardiologist',
+      rating: 4.9,
+      experience: 12,
+      location: 'Downtown Medical Center',
+      image: '../../../assets/images/ui/doctors/1.jpg'
+    },
+    {
+      name: 'Dr. Michael Chen',
+      specialty: 'Neurologist',
+      rating: 4.8,
+      experience: 15,
+      location: 'City General Hospital',
+      image: '../../../assets/images/ui/doctors/2.jpg'
+    },
+    {
+      name: 'Dr. Emily Rodriguez',
+      specialty: 'Pediatrician',
+      rating: 4.9,
+      experience: 8,
+      location: 'Childrens Health Center',
+      image: '../../../assets/images/ui/doctors/3.jpg'
+    },
+    {
+      name: 'Dr. Robert Kim',
+      specialty: 'Orthopedic Surgeon',
+      rating: 4.7,
+      experience: 20,
+      location: 'Sports Medicine Institute',
+      image: '../../../assets/images/ui/doctors/4.jpg'
+    }
+  ];
+
 
   incrementCounter(): void {
     interval(80)
@@ -83,6 +118,18 @@ export class FeatureSectionComponent implements OnInit, AfterViewInit {
       .subscribe(() => {
         this.counter++;
       });
+  }
+
+  scrollToServices(): void {
+    const element = document.getElementById('services');
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }
+
+  getServiceIcon(index: number): string {
+    const icons = ['🏥', '👨‍⚕️', '💊', '📋'];
+    return icons[index] || '🏥';
   }
 
 

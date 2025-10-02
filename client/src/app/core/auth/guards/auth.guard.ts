@@ -13,7 +13,6 @@ export const AuthGuard: CanActivateFn = (route, state): boolean => {
   }
 
   const userData = localStorage.getItem('userData');
-  
   // If no user data, redirect to login
   if (!userData) {
     router.navigate(['/auth/login']);
@@ -30,7 +29,13 @@ export const AuthGuard: CanActivateFn = (route, state): boolean => {
     }
 
     // Check if user is verified (for patient routes)
-    if (route.routeConfig?.path?.startsWith('patient/') && !parsedUserData.isVerified) {
+    // Handle different possible locations for isVerified field
+    const isVerified = parsedUserData.isVerified || 
+                      parsedUserData.is_verified || 
+                      parsedUserData.data?.isVerified ||
+                      parsedUserData.data?.is_verified;
+    
+    if (route.routeConfig?.path?.startsWith('patient/') && !isVerified) {
       router.navigate(['/auth/confirm-email']);
       return false;
     }

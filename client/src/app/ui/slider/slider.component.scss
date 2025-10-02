@@ -131,6 +131,236 @@
 
 
 
+// Enhanced Search Styles
+.search-container {
+  backdrop-filter: blur(16px);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.1),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+  
+  &:hover {
+    box-shadow: 
+      0 25px 50px rgba(0, 0, 0, 0.15),
+      0 0 0 1px rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+}
+
+// Enhanced Autocomplete Panel
+.enhanced-autocomplete {
+  .mat-autocomplete-panel {
+    border-radius: 16px;
+    margin-top: 8px;
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.15),
+      0 0 0 1px rgba(0, 0, 0, 0.05);
+    border: none;
+    max-height: 400px;
+    
+    .mat-option {
+      border-bottom: 1px solid #f3f4f6;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: #f8fafc;
+        transform: translateX(4px);
+      }
+      
+      &.mat-active {
+        background-color: #eff6ff;
+      }
+    }
+    
+    .mat-optgroup-label {
+      background: transparent;
+      padding: 0;
+      margin: 0;
+    }
+  }
+}
+
+// Loading Dots Animation
+.loading-dots {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  
+  .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #3b82f6;
+    animation: bounce 1.4s infinite ease-in-out both;
+    
+    &:nth-child(1) { animation-delay: -0.32s; }
+    &:nth-child(2) { animation-delay: -0.16s; }
+    &:nth-child(3) { animation-delay: 0s; }
+  }
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+    transform: scale(0.8);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+// Voice Recording Indicator
+.voice-recording-indicator {
+  .pulse-animation {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #3b82f6;
+    animation: pulse 1.5s infinite;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(0.8);
+    opacity: 1;
+  }
+}
+
+// Quick Suggestions
+.quick-suggestions-section {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  
+  .quick-suggestion-chip {
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      color: white;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+  }
+}
+
+// Results Groups
+.results-group {
+  .group-header {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-bottom: 1px solid #e5e7eb;
+  }
+}
+
+// Doctor Avatar with Online Indicator
+.doctor-avatar {
+  position: relative;
+  
+  .online-indicator {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #ef4444;
+    border: 2px solid white;
+    transition: all 0.3s ease;
+    
+    &.online {
+      background-color: #10b981;
+      box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
+    }
+  }
+}
+
+// Verified Badge
+.verified-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, 0.1);
+}
+
+// Rating Stars
+.rating-stars {
+  display: flex;
+  align-items: center;
+}
+
+// Clinic Icon
+.clinic-icon {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    
+    .material-symbols-outlined {
+      color: white;
+    }
+  }
+}
+
+// No Results State
+.no-results-state {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+// Loading State
+.loading-state {
+  .loading-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #e5e7eb;
+    border-top: 2px solid #3b82f6;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+// See More Option
+.see-more-option {
+  border-top: 1px solid #e5e7eb;
+  background: #f8fafc;
+  
+  &:hover {
+    background: #eff6ff;
+  }
+}
+
+// Material Form Field Overrides
+.mat-form-field-appearance-fill {
+  &.mat-focused {
+    .mat-form-field-flex {
+      background-color: transparent;
+    }
+  }
+  
+  .mat-form-field-flex {
+    background-color: transparent;
+    border-radius: 16px;
+  }
+  
+  .mat-form-field-underline {
+    display: none;
+  }
+}
+
 // loader
 /* From Uiverse.io by Praashoo7 */ 
 .load {

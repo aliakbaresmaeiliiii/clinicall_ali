@@ -136,6 +136,7 @@ export class AuthService {
         userType: userType,
         isVerified: user.isVerified,
       },
+      
     };
   }
 
@@ -340,6 +341,26 @@ export class AuthService {
 
     const { password, verifyCode, ...result } = patient;
     return result;
+  }
+
+  async patientEmailSignIn(email: string) {
+    const patient = await this.prisma.patient.findUnique({
+      where: { email },
+    });
+
+    if (!patient) {
+      throw new UnauthorizedException('Patient not found');
+    }
+
+    // Check if patient is verified
+    if (!patient.isVerified) {
+      throw new BadRequestException('Email is not verified');
+    }
+
+    // For email-only sign-in, we don't check password
+    const { password: _, verifyCode: __, ...patientWithoutSensitiveData } = patient;
+    
+    return this.login(patientWithoutSensitiveData, 'patient');
   }
 
   private generateVerificationCode(): string {

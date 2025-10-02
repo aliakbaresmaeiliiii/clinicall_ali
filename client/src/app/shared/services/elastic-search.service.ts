@@ -12,12 +12,13 @@ export class ElasticSearchService {
 
   searchDoctors(query: string): Observable<any[]> {
     return this.http
-      .get<any>(
-        `${this.config}doctors/search?query=${encodeURIComponent(query)}`
+      .post<any>(
+        `${this.config}elasticsearch/search-doctors`,
+        { query: query }
       )
-      // .pipe(
-      //   map(response => response.hits.hits.map((hit: any) => hit._source)) // Map to an array of doctor objects
-      // );
+      .pipe(
+        map(response => response.hits.hits.map((hit: any) => hit._source)) // Map to an array of doctor objects
+      );
   }
 }
 // searchDoctors(query: string): Observable<DoctorsDTO[]> {

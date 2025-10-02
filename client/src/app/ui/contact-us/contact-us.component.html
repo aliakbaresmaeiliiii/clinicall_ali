@@ -1,99 +1,203 @@
-<div class="lg:pt-3">
-  @defer {
-  <div class="breatcome-section lg:mt-28">
-    <div class="container mx-auto">
-      <div
-        class="font-semibold text-white flex justify-center items-center lg:pt-36 md:text-2xl md:pt-32 uppercase">
-        Contact Us
-      </div>
-      <div class="text-white flex justify-center items-center uppercase">
-        mediic / Contact Us
-      </div>
-    </div>
-  </div>
-  } @placeholder(minimum 3000ms) {
-  <div class="lg:pl-5 pr-5">
-    <div class="lg:mt-28">
-      <div class="animate-pulse gap-4 w-full">
-        <div class="h-[420px] bg-slate-400 rounded-3xl"></div>
-      </div>
-    </div>
-  </div>
-  }
-</div>
-
-<div class="mediic-appoinment relative mx-auto lg:pl-32 lg:pr-32 pb-10 mt-10">
-  <img
-    src="../../../assets/images/ui/appoinment.png"
-    class="md:hidden lg:block"
-    alt=""
-    width="100%" />
-
-  <div
-    class="lg:absolute top-0 md:px-4 lg:right-44 h-full lg:flex lg:items-center lg:justify-end lg:w-2/6 md:w-full">
-    <app-mediic-appointment />
+<!-- Contact Us Hero Section -->
+<div class="contact-hero">
+  <div class="hero-content">
+    <h1 class="hero-title">Get In Touch</h1>
+    <p class="hero-subtitle">We're here to help you with all your healthcare needs. Reach out to us anytime.</p>
   </div>
 </div>
 
-<div class="mt-20">
-  <div class="lg:flex gap-10 justify-center items-center relative m-auto pb-10">
-    <div class="single-services-box lg:w-[25rem] mx-4" data-aos="fade-up">
-      <div class="flex justify-between items-center pb-10">
-        <div class="services-title">
-          <span class="text-gray">MEET US</span>
-        </div>
-        <div class="services-icon">
-          <i
-            class="fa-regular fa-envelope text-2xl absolute top-3 left-3 text-blueTextLight border-2 border-x-blueTextLight rounded-full p-2"></i>
-        </div>
-      </div>
-
-      <div class="srvce-btn border-t-2 border-white pt-7">
-        <p class="text-blueDark font-medium text-xl">Email Address</p>
-        <p class="text-gray">no-replypbmadmin.com</p>
-      </div>
+<!-- Main Contact Container -->
+<div class="contact-container">
+  <!-- Contact Information Cards -->
+  <div class="contact-cards-section">
+    <div class="section-header">
+      <h2>How Can We Help You?</h2>
+      <p>Choose the best way to reach our healthcare team</p>
     </div>
-    <div class="single-services-box lg:w-[25rem] mx-4" data-aos="fade-down">
-      <div class="flex justify-between items-center pb-10">
-        <div class="services-title">
-          <span class="text-gray">MEET US</span>
+
+    <div class="contact-cards-grid">
+      <!-- Phone Card -->
+      <div class="contact-card">
+        <div class="card-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.02.24l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.59l2.2-2.21c.28-.26.36-.65.25-1C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/>
+          </svg>
         </div>
-        <div class="services-icon">
-          <i
-            class="fa-regular fa-envelope text-2xl absolute top-3 left-3 text-blueTextLight border-2 border-x-blueTextLight rounded-full p-2"></i>
+        <h3>Call Us</h3>
+        <p>Speak directly with our healthcare team</p>
+        <div class="contact-info">
+          <span class="contact-value">+60 3-1234 5678</span>
+          <span class="contact-label">Available 24/7</span>
         </div>
+        <button class="contact-action-btn">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+          </svg>
+          Call Now
+        </button>
       </div>
 
-      <div class="srvce-btn border-t-2 border-white pt-7">
-        <p class="text-blueDark font-medium text-xl">Email Address</p>
-        <p class="text-gray">no-replypbmadmin.com</p>
-      </div>
-    </div>
-    <div class="single-services-box lg:w-[25rem] mx-4" data-aos="fade-up">
-      <div class="flex justify-between items-center pb-10">
-        <div class="services-title">
-          <span class="text-gray">MEET US</span>
+      <!-- Email Card -->
+      <div class="contact-card">
+        <div class="card-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+          </svg>
         </div>
-        <div class="services-icon">
-          <i
-            class="fa-regular fa-envelope text-2xl absolute top-3 left-3 text-blueTextLight border-2 border-x-blueTextLight rounded-full p-2"></i>
+        <h3>Email Us</h3>
+        <p>Send us your questions and concerns</p>
+        <div class="contact-info">
+          <span class="contact-value">hello@clinicall.com</span>
+          <span class="contact-label">Response within 24 hours</span>
         </div>
+        <button class="contact-action-btn">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555ZM0 4.697v7.104l5.803-3.558L0 4.697ZM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757Zm3.436-.586L16 11.801V4.697l-5.803 3.546Z"/>
+          </svg>
+          Send Email
+        </button>
       </div>
 
-      <div class="srvce-btn border-t-2 border-white pt-7">
-        <p class="text-blueDark font-medium text-xl">Email Address</p>
-        <p class="text-gray">no-replypbmadmin.com</p>
+      <!-- Location Card -->
+      <div class="contact-card">
+        <div class="card-icon">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+          </svg>
+        </div>
+        <h3>Visit Us</h3>
+        <p>Come see us at our medical center</p>
+        <div class="contact-info">
+          <span class="contact-value">Kuala Lumpur City Center</span>
+          <span class="contact-label">Level 5, Medical Tower</span>
+        </div>
+        <button class="contact-action-btn">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+          </svg>
+          Get Directions
+        </button>
       </div>
     </div>
   </div>
-</div>
 
-<div class="lg:mx-auto md:mx-4 lg:pl-32 lg:pr-32 pb-10">
-  <mat-card appearance="outlined" class="mt-4" data-aos="fade-up">
-    <mat-card-content>
-      <div class="h-96">
-        <app-google-map [coordinates]="coordinates" />
+  <!-- Contact Form & Map Section -->
+  <div class="contact-form-map-section">
+    <!-- Contact Form -->
+    <div class="contact-form-section">
+      <div class="form-header">
+        <h2>Send Us a Message</h2>
+        <p>Fill out the form below and we'll get back to you as soon as possible</p>
       </div>
-    </mat-card-content>
-  </mat-card>
+
+      <form class="contact-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">First Name</label>
+            <input type="text" class="form-input" placeholder="Enter your first name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input type="text" class="form-input" placeholder="Enter your last name">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" class="form-input" placeholder="Enter your email">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input type="tel" class="form-input" placeholder="Enter your phone number">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Subject</label>
+          <select class="form-select">
+            <option value="">Select a subject</option>
+            <option value="appointment">Book an Appointment</option>
+            <option value="general">General Inquiry</option>
+            <option value="emergency">Emergency Contact</option>
+            <option value="feedback">Feedback</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea class="form-textarea" rows="5" placeholder="Tell us how we can help you..."></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          Send Message
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+
+    <!-- Map Section -->
+    <div class="map-section">
+      <div class="map-header">
+        <h2>Find Our Location</h2>
+        <p>Visit us at our conveniently located medical center</p>
+      </div>
+      
+      <div class="map-container">
+        <mat-card appearance="outlined">
+          <mat-card-content>
+            <div class="h-96">
+              <app-google-map [coordinates]="coordinates" />
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+
+      <div class="location-details">
+        <div class="location-info">
+          <div class="info-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+            <div>
+              <strong>ClinicAll Medical Center</strong>
+              <p>Level 5, Medical Tower, Kuala Lumpur City Center<br>50450 Kuala Lumpur, Malaysia</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.02.24l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.59l2.2-2.21c.28-.26.36-.65.25-1C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/>
+            </svg>
+            <div>
+              <strong>Phone</strong>
+              <p>+60 3-1234 5678</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+            <div>
+              <strong>Email</strong>
+              <p>hello@clinicall.com</p>
+            </div>
+          </div>
+
+          <div class="info-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+            </svg>
+            <div>
+              <strong>Operating Hours</strong>
+              <p>Monday - Friday: 8:00 AM - 8:00 PM<br>Saturday: 9:00 AM - 5:00 PM<br>Sunday: Emergency Only</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -1,13 +1,240 @@
-<app-service-section [title]="'Clinic Information'">
-  <div
-    class="lg:flex lg:flex-row lg:gap-10 md:flex md:flex-col md:gap-3 justify-center mt-6">
-    @for (item of cartInfo; track $index) {
-    <app-card-info
-      [title]="item.title"
-      [subtitle]="item.subtitle"
-      [description]="item.description"
-      [paragraph]="item.paragraph"
-      [image]="item.image" />
-    }
+<!-- Clinic Hero Section -->
+<div class="clinic-hero">
+  <div class="hero-content">
+    <h1 class="hero-title">ClinicAll Medical Center</h1>
+    <p class="hero-subtitle">Your trusted healthcare partner providing comprehensive medical services with compassion and excellence</p>
   </div>
-</app-service-section>
+</div>
+
+<!-- Main Clinic Container -->
+<div class="clinic-container">
+  <!-- Clinic Overview Section -->
+  <div class="clinic-overview">
+    <div class="section-header">
+      <h2>Welcome to ClinicAll</h2>
+      <p>State-of-the-art medical facility dedicated to your health and well-being</p>
+    </div>
+
+    <div class="overview-content">
+      <div class="overview-text">
+        <p>Located in the heart of the city, ClinicAll Medical Center has been serving the community since 2007. Our modern facility combines advanced medical technology with compassionate care to provide comprehensive healthcare solutions for individuals and families.</p>
+        
+        <div class="clinic-features">
+          <div class="feature-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+            </svg>
+            <span>Modern Medical Equipment</span>
+          </div>
+          <div class="feature-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+            </svg>
+            <span>Expert Medical Team</span>
+          </div>
+          <div class="feature-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+            </svg>
+            <span>Emergency Services</span>
+          </div>
+          <div class="feature-item">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+            </svg>
+            <span>Comprehensive Care</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="overview-image">
+        <img src="../../../assets/images/ui/clinic-main.jpg" alt="ClinicAll Medical Center" class="main-image">
+        <div class="image-badge">
+          <span class="badge-text">Trusted Since 2007</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clinic Services Section -->
+  <div class="clinic-services">
+    <div class="section-header">
+      <h2>Our Medical Services</h2>
+      <p>Comprehensive healthcare solutions for all your medical needs</p>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </div>
+        <h3>Primary Care</h3>
+        <p>Comprehensive health assessments, preventive care, and management of chronic conditions.</p>
+        <ul class="service-features">
+          <li>Annual Check-ups</li>
+          <li>Vaccinations</li>
+          <li>Chronic Disease Management</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+          </svg>
+        </div>
+        <h3>Specialty Care</h3>
+        <p>Expert consultations and treatments across various medical specialties.</p>
+        <ul class="service-features">
+          <li>Cardiology</li>
+          <li>Dermatology</li>
+          <li>Orthopedics</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+          </svg>
+        </div>
+        <h3>Diagnostic Services</h3>
+        <p>Advanced imaging and laboratory services for accurate diagnosis.</p>
+        <ul class="service-features">
+          <li>MRI & CT Scans</li>
+          <li>Laboratory Tests</li>
+          <li>Ultrasound</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4z"/>
+          </svg>
+        </div>
+        <h3>Emergency Care</h3>
+        <p>24/7 emergency medical services for urgent and critical conditions.</p>
+        <ul class="service-features">
+          <li>Trauma Care</li>
+          <li>Critical Care</li>
+          <li>Emergency Surgery</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Clinic Facilities Section -->
+  <div class="facilities-section">
+    <div class="section-header">
+      <h2>Our Facilities</h2>
+      <p>Modern amenities designed for your comfort and convenience</p>
+    </div>
+
+    <div class="facilities-grid">
+      <div class="facility-card">
+        <div class="facility-image">
+          <img src="../../../assets/images/ui/waiting-area.jpg" alt="Comfortable Waiting Area">
+        </div>
+        <div class="facility-info">
+          <h3>Comfortable Waiting Area</h3>
+          <p>Spacious and comfortable waiting areas with modern amenities and entertainment options.</p>
+        </div>
+      </div>
+
+      <div class="facility-card">
+        <div class="facility-image">
+          <img src="../../../assets/images/ui/consultation-room.jpg" alt="Modern Consultation Rooms">
+        </div>
+        <div class="facility-info">
+          <h3>Modern Consultation Rooms</h3>
+          <p>Private consultation rooms equipped with the latest medical technology and comfortable seating.</p>
+        </div>
+      </div>
+
+      <div class="facility-card">
+        <div class="facility-image">
+          <img src="../../../assets/images/ui/diagnostic-lab.jpg" alt="Advanced Diagnostic Lab">
+        </div>
+        <div class="facility-info">
+          <h3>Advanced Diagnostic Lab</h3>
+          <p>State-of-the-art laboratory facilities for accurate and timely diagnostic testing.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Operating Hours Section -->
+  <div class="hours-section">
+    <div class="hours-content">
+      <div class="hours-info">
+        <h2>Operating Hours</h2>
+        <p>We're here to serve you with flexible scheduling options</p>
+        
+        <div class="hours-list">
+          <div class="hour-item">
+            <span class="day">Monday - Friday</span>
+            <span class="time">8:00 AM - 8:00 PM</span>
+          </div>
+          <div class="hour-item">
+            <span class="day">Saturday</span>
+            <span class="time">9:00 AM - 6:00 PM</span>
+          </div>
+          <div class="hour-item">
+            <span class="day">Sunday</span>
+            <span class="time">10:00 AM - 4:00 PM</span>
+          </div>
+          <div class="hour-item emergency">
+            <span class="day">Emergency Services</span>
+            <span class="time">24/7 Available</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-info">
+        <h3>Contact Information</h3>
+        <div class="contact-details">
+          <div class="contact-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
+            </svg>
+            <span>info@clinicall.com</span>
+          </div>
+          <div class="contact-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
+            </svg>
+            <span>+60 3-1234 5678</span>
+          </div>
+          <div class="contact-item">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+            </svg>
+            <span>123 Medical Street, Kuala Lumpur, Malaysia</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Call to Action Section -->
+  <div class="cta-section">
+    <div class="cta-content">
+      <h2>Ready to Visit Our Clinic?</h2>
+      <p>Book your appointment today and experience world-class healthcare at ClinicAll</p>
+      <div class="cta-buttons">
+        <button class="cta-btn primary">
+          Book Appointment
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+          </svg>
+        </button>
+        <button class="cta-btn secondary">
+          Get Directions
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

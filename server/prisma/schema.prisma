@@ -211,7 +211,7 @@ model MedicalRecord {
 
 model RefreshToken {
   id        Int      @id @default(autoincrement())
-  token     String   @unique
+  token     String   @unique @db.VarChar(512)
   userId    Int
   userType  String   // 'doctor', 'patient', 'clinic', 'admin'
   expiresAt DateTime

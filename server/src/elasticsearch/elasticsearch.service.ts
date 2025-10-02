@@ -60,4 +60,27 @@ export class ElasticsearchService {
       throw new Error(`Error searching: ${error.message}`);
     }
   }
+
+  async getDocument(indexName: string, id: string) {
+    try {
+      const response = await this.esClient.get({
+        index: indexName,
+        id,
+      });
+      return response;
+    } catch (error) {
+      throw new Error(`Error getting document: ${error.message}`);
+    }
+  }
+
+  async bulkIndex(body: any[]) {
+    try {
+      const response = await this.esClient.bulk({
+        body,
+      });
+      return response;
+    } catch (error) {
+      throw new Error(`Error bulk indexing: ${error.message}`);
+    }
+  }
 }

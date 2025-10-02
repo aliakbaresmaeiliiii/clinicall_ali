@@ -22,6 +22,7 @@ const verify_email_dto_1 = require("./dto/verify-email.dto");
 const update_patient_profile_dto_1 = require("./dto/update-patient-profile.dto");
 const local_auth_guard_1 = require("./guards/local-auth.guard");
 const jwt_auth_guard_1 = require("./guards/jwt-auth.guard");
+const patient_email_sign_in_dto_1 = require("./dto/patient-email-sign-in.dto");
 let AuthController = class AuthController {
     constructor(authService) {
         this.authService = authService;
@@ -49,19 +50,44 @@ let AuthController = class AuthController {
         return this.authService.verifyPatientEmail(verifyEmailDto);
     }
     async clinicSignIn(req) {
-        return this.authService.login(req.user, 'clinic');
+        const result = await this.authService.login(req.user, 'clinic');
+        return {
+            statusCode: 200,
+            message: 'Login successful',
+            data: result
+        };
     }
     async doctorSignIn(req) {
-        return this.authService.login(req.user, 'doctor');
+        const result = await this.authService.login(req.user, 'doctor');
+        return {
+            statusCode: 200,
+            message: 'Login successful',
+            data: result
+        };
     }
-    async patientSignIn(req) {
-        return this.authService.login(req.user, 'patient');
+    async patientSignIn(patientEmailSignInDto) {
+        const result = await this.authService.patientEmailSignIn(patientEmailSignInDto.email);
+        return {
+            statusCode: 200,
+            message: 'Login successful',
+            data: result
+        };
     }
     async refreshToken(body) {
-        return this.authService.refreshToken(body.refresh_token);
+        const result = await this.authService.refreshToken(body.refresh_token);
+        return {
+            statusCode: 200,
+            message: 'Token refreshed successfully',
+            data: result
+        };
     }
     async logout(body) {
-        return this.authService.logout(body.refresh_token);
+        const result = await this.authService.logout(body.refresh_token);
+        return {
+            statusCode: 200,
+            message: 'Logged out successfully',
+            data: result
+        };
     }
     async getPatientProfile(patientId) {
         return this.authService.getPatientProfile(patientId);
@@ -140,13 +166,12 @@ __decorate([
 ], AuthController.prototype, "doctorSignIn", null);
 __decorate([
     (0, common_1.Post)('patient-sign-in'),
-    (0, common_1.UseGuards)(local_auth_guard_1.LocalAuthGuard),
     (0, swagger_1.ApiOperation)({ summary: 'Sign in as patient' }),
     (0, swagger_1.ApiResponse)({ status: 200, description: 'Login successful' }),
     (0, swagger_1.ApiResponse)({ status: 401, description: 'Unauthorized' }),
-    __param(0, (0, common_1.Request)()),
+    __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Object]),
+    __metadata("design:paramtypes", [patient_email_sign_in_dto_1.PatientEmailSignInDto]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "patientSignIn", null);
 __decorate([

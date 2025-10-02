@@ -180,5 +180,15 @@ export declare class AuthService {
         treatment: string | null;
         charges: string | null;
     }>;
+    patientEmailSignIn(email: string): Promise<{
+        access_token: string;
+        refresh_token: string;
+        user: {
+            id: any;
+            email: any;
+            userType: string;
+            isVerified: any;
+        };
+    }>;
     private generateVerificationCode;
 }

@@ -55,7 +55,6 @@ export class GoogleMapComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    debugger
     this.setCurrentLocation();
   }
 

@@ -1,5 +1,13 @@
 <app-service-section [title]="title()">
-  <div class="md:w-full lg:w-11/12 mx-auto">
+  <div class="md:w-full lg:w-11/12 mx-auto relative">
+    <!-- Progress Bar -->
+    @if (showProgress()) {
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width]="progressWidth"></div>
+    </div>
+    }
+    
+    <!-- Slider Container -->
     <div class="keen-slider flex" #sliderRef>
       @for (data of slides; track $index) {
       <div class="keen-slider__slide flex">
@@ -19,32 +27,52 @@
         </div>
       </div>
       }
-      @if (showLeftArrow) {
-      <svg
-        [attr.class]="leftArrowClass"
-        (click)="onPrevClick()"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24">
-        <path
-          d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z" />
+    </div>
+    
+    <!-- Navigation Arrows -->
+    @if (showLeftArrow) {
+    <button
+      [attr.class]="leftArrowClass"
+      (click)="onPrevClick()"
+      aria-label="Previous slide">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z" />
       </svg>
-      }
-      @if (showRightArrow) {
-      <svg
-        [attr.class]="rightArrowClass"
-        (click)="onNextClick()"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24">
+    </button>
+    }
+    
+    @if (showRightArrow) {
+    <button
+      [attr.class]="rightArrowClass"
+      (click)="onNextClick()"
+      aria-label="Next slide">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z" />
       </svg>
-      }
-    </div>
+    </button>
+    }
+    
+    <!-- Navigation Dots -->
+    @if (dotHelper.length > 1) {
     <div class="dots">
       @for (slide of dotHelper; track $index; let i = $index) {
       <button
         (click)="onDotClick(i)"
-        [attr.class]="getDotClass(i)"></button>
+        [attr.class]="getDotClass(i)"
+        [attr.aria-label]="'Go to slide ' + (i + 1)"
+        [attr.aria-current]="i === currentSlide ? 'true' : 'false'">
+      </button>
       }
     </div>
+    }
+    
+    <!-- Empty State -->
+    @if (slides.length === 0) {
+    <div class="empty-state">
+      <div class="empty-icon">📄</div>
+      <h3>No cards available</h3>
+      <p>Add some content to display in the slider</p>
+    </div>
+    }
   </div>
 </app-service-section>

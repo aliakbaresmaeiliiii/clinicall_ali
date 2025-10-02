@@ -1,119 +1,63 @@
-
-
-<app-service-section [title]="'user-reviews-of-clinic-ali'">
-  <div class="md:w-full lg:w-11/12 mx-auto">
+<app-service-section [title]="'What Our Patients Say'">
+  <div class="reviews-container">
     <div class="keen-slider" #sliderRef>
       @for (item of userReview(); track $index) {
       <div class="keen-slider__slide">
-        <div class="swiper-slide">
-          <div class="aos-init aos-animate">
-            <div class="flex gap-4 w-full">
-              <div class="notifications-container">
-                <div class="success">
-                  <div class="flex">
-                    <div class="flex-shrink-0">
-                      <svg
-                        class="succes-svg"
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
-                        >
-                        <path
-                          fill-rule="evenodd"
-                          d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                          clip-rule="evenodd"></path>
-                      </svg>
-                    </div>
-                    <div class="success-prompt-wrap">
-                      <p class="success-prompt-heading text-green-950 font-bold">{{ item.comment }}</p>
-                      <div class="text-yellow-500 flex pt-3 gap-2">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          class="bi bi-star"
-                          viewBox="0 0 16 16">
-                          <path
-                            d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792c-.197-.39-.73-.39-.927 0L5.354 4.946l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73z" />
-                        </svg>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          class="bi bi-star"
-                          viewBox="0 0 16 16">
-                          <path
-                            d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792c-.197-.39-.73-.39-.927 0L5.354 4.946l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73z" />
-                        </svg>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          class="bi bi-star"
-                          viewBox="0 0 16 16">
-                          <path
-                            d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792c-.197-.39-.73-.39-.927 0L5.354 4.946l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73z" />
-                        </svg>
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="16"
-                          height="16"
-                          fill="currentColor"
-                          class="bi bi-star"
-                          viewBox="0 0 16 16">
-                          <path
-                            d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.523-3.356c.329-.314.158-.888-.283-.95l-4.898-.696L8.465.792c-.197-.39-.73-.39-.927 0L5.354 4.946l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73z" />
-                        </svg>
-                      </div>
-                      <div class="success-prompt-prompt">
-                        <!-- <p>{{ item.description }}</p> -->
-                      </div>
-                      <div class="success-button-container text-green-950 font-bold absolute bottom-4 right-7">
-                        <!-- {{ item.date }} -->
-                        
-                      </div>
-                    </div>
-                  </div>
+        <div class="review-card">
+          <!-- Review Header -->
+          <div class="review-header">
+            <div class="reviewer-info">
+              <div class="reviewer-avatar">
+                <div class="avatar-placeholder">
+                  {{ getInitials('Anonymous Patient') }}
                 </div>
               </div>
+              <div class="reviewer-details">
+                <h4 class="reviewer-name">Anonymous Patient</h4>
+                <p class="review-date">Recently</p>
+              </div>
+            </div>
+            <div class="rating-stars">
+              @for (star of [1,2,3,4,5]; track $index) {
+                <svg class="star-icon" [class.filled]="$index < (item.rating || 5)" 
+                     width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                  <path d="M8 0L9.79611 5.52786H15.6085L10.9062 8.94427L12.7023 14.4721L8 11.0557L3.29772 14.4721L5.09383 8.94427L0.391548 5.52786H6.20389L8 0Z"/>
+                </svg>
+              }
+            </div>
+          </div>
+          
+          <!-- Review Content -->
+          <div class="review-content">
+            <p class="review-text">{{ item.comment || 'Excellent service and care. Highly recommended!' }}</p>
+          </div>
+          
+          <!-- Review Footer -->
+          <div class="review-footer">
+            <div class="treatment-info">
+              <span class="treatment-badge">General Consultation</span>
+            </div>
+            <div class="verified-badge">
+              <svg class="verified-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 16A8 8 0 1 1 8 0a8 8 0 0 1 0 16zm3.646-10.854L6.75 10.042 4.354 7.646l-.708.708 3.104 3.104 5.604-5.604-.708-.708z"/>
+              </svg>
+              <span>Verified Patient</span>
             </div>
           </div>
         </div>
       </div>
       }
-      <!-- <svg
-        [ngClass]="
-          'arrow arrow--left' + (currentSlide === 0 ? 'arrow--disabled' : '')
-        "
-        (click)="slider.prev()"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24">
-        <path
-          d="M16.67 0l2.83 2.829-9.339 9.175 9.339 9.167-2.83 2.829-12.17-11.996z" />
-      </svg>
-      <svg
-        *ngIf="slider"
-        [ngClass]="
-          'arrow arrow--right ' +
-          (slider.track.details.slides.length - 1 === currentSlide
-            ? 'arrow--disabled'
-            : '')
-        "
-        (click)="slider.next()"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24">
-        <path d="M5 3l3.057-3 11.943 12-11.943 12-3.057-3 9-9z" />
-      </svg> -->
     </div>
+    
+    <!-- Navigation Dots -->
     <div class="dots">
+      @for (slide of dotHelper; track $index; let i = $index) {
       <button
         (click)="slider.moveToIdx(i)"
-        *ngFor="let slide of dotHelper; let i = index"
-        [class]="'dot ' + (i === currentSlide ? 'active' : '')"></button>
+        [class]="'dot ' + (i === currentSlide ? 'active' : '')"
+        [attr.aria-label]="'Go to review ' + (i + 1)">
+      </button>
+      }
     </div>
   </div>
 </app-service-section>
-

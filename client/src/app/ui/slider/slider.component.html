@@ -24,183 +24,192 @@
       </span>
       <span class="font-semibold lg:!text-8xl md:!text-xl"> Doctor </span>
     </div>
-    <!-- ***** Elastic Search Section -->
-    <div class="mx-auto relative z-50 bg-slate-200 rounded-2xl w-[42rem]">
-      <mat-form-field
-        appearance="outline"
-        class="!flex !justify-center pt-4 px-2 py-2">
-        <div class="flex">
-          <input
-            type="text"
-            placeholder="Search for Doctors, Clinics, Specializations..."
-            aria-label="Search"
-            matInput
-            [formControl]="searchControl"
-            [matAutocomplete]="auto"
-            #searchInput />
-          <mat-progress-spinner
-            *ngIf="isLoading"
-            diameter="20"
-            mode="indeterminate"></mat-progress-spinner>
+    <!-- ***** Enhanced Elastic Search Section -->
+    <div class="mx-auto relative z-50 w-full max-w-2xl">
+      <div class="search-container bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/20 overflow-hidden transition-all duration-300 hover:shadow-3xl">
+        <mat-form-field appearance="fill" class="w-full !p-0 !m-0">
+          <div class="flex items-center px-4 py-2">
+            <span class="material-symbols-outlined text-blue-600 mr-3 text-xl">
+              search
+            </span>
+            <input
+              type="text"
+              placeholder="Find doctors, clinics, or specializations..."
+              aria-label="Search healthcare providers"
+              matInput
+              [formControl]="searchControl"
+              [matAutocomplete]="auto"
+              #searchInput
+              class="!text-lg !font-medium placeholder:text-gray-400" />
+            
+            <div class="flex items-center gap-2 ml-auto">
+              @if (isLoading) {
+              <div class="loading-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+              </div>
+              }
 
-          @if (isListening) {
-          <div class="overlay">
-            <!-- From Uiverse.io by Praashoo7 -->
-            <div class="load">
-              <div class="progress"></div>
-              <div class="progress"></div>
-              <div class="progress"></div>
+              @if (isListening) {
+              <div class="voice-recording-indicator flex items-center gap-2">
+                <div class="pulse-animation"></div>
+                <span class="text-sm text-blue-600 font-medium">Listening...</span>
+              </div>
+              }
+
+              <button
+                dfButton
+                appearance="solid"
+                class="!p-2 !min-w-0 hover:bg-blue-50 rounded-full transition-colors"
+                (click)="startVoiceSearch()"
+                [attr.aria-label]="'Voice search'">
+                <span class="material-symbols-outlined text-blue-600">
+                  mic
+                </span>
+              </button>
             </div>
           </div>
 
-          }
-
-          <button
-            dfButton
-            appearance="solid"
-            class="flex"
-            (click)="startVoiceSearch()">
-            <span class="material-symbols-outlined"> mic </span>
-          </button>
-        </div>
-        @if (filterDataSignal()) {
-        <div class="text-gray-600 text-sm mt-1">
-          <strong>{{ doctorDataSignal().length === 0 }}</strong> results found
-        </div>
-        } @if (isLoading) {
-        <app-loader />
-        }
-
-        <mat-autocomplete #auto="matAutocomplete">
-          <div class="pt2 pl-2">The most important expertise</div>
-          <div class="flex gap-1 p-3 flex-wrap">
-            @for (item of specializationsSignal(); track $index) {
-            <span
-              class="border-2 p-1 border-gray-600 rounded-xl text-xs hover:bg-blue-500 hover:text-white hover:border-blue-500 duration-200 cursor-pointer">
-              {{ item }}
-            </span>
+          <mat-autocomplete #auto="matAutocomplete" class="enhanced-autocomplete">
+            <!-- Quick Suggestions Section -->
+            @if (!searchControl.value?.trim() && !isLoading) {
+            <div class="quick-suggestions-section px-4 py-3 border-b border-gray-100">
+              <h3 class="text-sm font-semibold text-gray-600 mb-3">Popular Searches</h3>
+              <div class="flex flex-wrap gap-2">
+                @for (item of specializationsSignal(); track $index) {
+                <button
+                  class="quick-suggestion-chip bg-blue-50 text-blue-700 px-3 py-2 rounded-full text-sm font-medium hover:bg-blue-100 transition-colors border border-blue-200"
+                  (click)="searchControl.setValue(item)">
+                  {{ item }}
+                </button>
+                }
+              </div>
+            </div>
             }
-          </div>
-          <div></div>
-          <!-- دکترها -->
-          <mat-optgroup [label]="'Top Doctors'">
-            @for (data of doctorDataSignal(); track $index) {
-            <mat-option
-              [value]="data.id"
-              (onSelectionChange)="navigateToDetail(data)">
-              <div class="flex justify-between items-center">
-                <div class="flex space-x-4">
-                  <div
-                    class="relative flex items-center justify-center"
-                    [ngStyle]="{ width: 50 + 'px', height: 50 + 'px' }">
-                    <div
-                      class="absolute inset-0 bg-gradient-to-r rounded-full p-1 from-blue-400 via-blue-500 to-blue-600">
+
+            <!-- Search Results -->
+            @if (searchControl.value?.trim() && !isLoading) {
+            <div class="search-results-section">
+              <!-- Doctors Section -->
+              @if (doctorDataSignal().length > 0) {
+              <mat-optgroup label="Doctors" class="results-group">
+                <div class="group-header px-4 py-2 bg-gray-50 border-b border-gray-100">
+                  <div class="flex items-center justify-between">
+                    <h4 class="text-sm font-semibold text-gray-700">Top Doctors</h4>
+                    <span class="text-xs text-blue-600 bg-blue-50 px-2 py-1 rounded-full">
+                      {{ doctorDataSignal().length }} found
+                    </span>
+                  </div>
+                </div>
+                @for (data of doctorDataSignal().slice(0, 3); track $index) {
+                <mat-option [value]="data.id" (onSelectionChange)="navigateToDetail(data)" class="doctor-option">
+                  <div class="flex items-center gap-3 py-3">
+                    <div class="doctor-avatar">
                       <img
                         [src]="data.profile_img"
                         crossorigin="anonymous"
-                        class="w-full h-full object-cover object-[0_15%] rounded-full border-2 border-white shadow-lg"
-                        alt="Profile Image" />
+                        class="w-12 h-12 rounded-full object-cover border-2 border-white shadow-md"
+                        alt="{{ data.first_name }} {{ data.last_name }}" />
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center gap-2 mb-1">
+                        <h4 class="text-sm font-semibold text-gray-900 truncate">
+                          Dr. {{ data.first_name }} {{ data.last_name }}
+                        </h4>
+                      </div>
+                      <p class="text-xs text-gray-600 mb-1">{{ data.specialty_name }}</p>
+                      <div class="flex items-center gap-2">
+                        <div class="rating-stars">
+                          <ngx-stars
+                            [readonly]="true"
+                            [size]="0.8"
+                            [maxStars]="5"
+                            [initialStars]="data.average_rating"
+                            [wholeStars]="true"
+                            [color]="'#FFD700'"
+                            [customStarIcons]="urlIcon"></ngx-stars>
+                        </div>
+                        <span class="text-xs text-gray-500">({{ data.click_count || 0 }})</span>
+                      </div>
+                    </div>
+                    <div class="flex flex-col items-end">
+                      <span class="availability text-xs text-gray-500">Available Today</span>
                     </div>
                   </div>
+                </mat-option>
+                }
+                @if (doctorDataSignal().length > 3) {
+                <mat-option class="see-more-option">
+                  <div class="flex items-center justify-center py-2 text-blue-600 hover:text-blue-700">
+                    <span class="text-sm font-medium">View all {{ doctorDataSignal().length }} doctors</span>
+                    <span class="material-symbols-outlined text-sm ml-1">arrow_forward</span>
+                  </div>
+                </mat-option>
+                }
+              </mat-optgroup>
+              }
 
-                  <div>
-                    <div class="flex justify-between">
-                      <div class="flex flex-col gap-4 text-base">
-                        <span> {{ data.first_name }}{{ data.last_name }} </span>
-                        <div
-                          class="flex justify-between w-[26rem] bg-slate-400 rounded-3xl">
-                          <div>
-                            <span class="text-white pl-2">
-                              {{ data.specialty_name }}
-                            </span>
-                          </div>
-                          <div class="flex gap-2 text-yellow-400 pr-2">
-                            <ngx-stars
-                              [readonly]="true"
-                              [size]="1"
-                              [maxStars]="5"
-                              [initialStars]="data.average_rating"
-                              [wholeStars]="true"
-                              [color]="'#FFD700'"
-                              [customStarIcons]="urlIcon"></ngx-stars>
-                          </div>
-                        </div>
+              <!-- Clinics Section -->
+              @if (clinicdataSignal().length > 0) {
+              <mat-optgroup label="Clinics" class="results-group">
+                <div class="group-header px-4 py-2 bg-gray-50 border-b border-gray-100">
+                  <div class="flex items-center justify-between">
+                    <h4 class="text-sm font-semibold text-gray-700">Clinics</h4>
+                    <span class="text-xs text-green-600 bg-green-50 px-2 py-1 rounded-full">
+                      {{ clinicdataSignal().length }} found
+                    </span>
+                  </div>
+                </div>
+                @for (clinic of clinicdataSignal().slice(0, 3); track $index) {
+                <mat-option [value]="clinic.id" class="clinic-option">
+                  <div class="flex items-center gap-3 py-3">
+                    <div class="clinic-icon bg-blue-100 p-2 rounded-lg">
+                      <span class="material-symbols-outlined text-blue-600">local_hospital</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                      <h4 class="text-sm font-semibold text-gray-900 mb-1">{{ clinic.name }}</h4>
+                      <p class="text-xs text-gray-600 flex items-center gap-1">
+                        <span class="material-symbols-outlined text-xs">location_on</span>
+                        {{ clinic.city }}, {{ clinic.address }}
+                      </p>
+                      <div class="flex items-center gap-2 mt-1">
+                        <span class="text-xs text-gray-500">⭐ {{ clinic.rating || '4.5' }}</span>
+                        <span class="text-xs text-gray-500">•</span>
+                        <span class="text-xs text-gray-500">{{ clinic.review_count || '120' }} reviews</span>
                       </div>
                     </div>
                   </div>
-                </div>
+                </mat-option>
+                }
+              </mat-optgroup>
+              }
+
+              <!-- No Results State -->
+              @if (doctorDataSignal().length === 0 && clinicdataSignal().length === 0 && searchControl.value?.trim()) {
+              <div class="no-results-state px-4 py-8 text-center">
+                <span class="material-symbols-outlined text-gray-300 text-4xl mb-3">search_off</span>
+                <h4 class="text-gray-500 font-medium mb-1">No results found</h4>
+                <p class="text-gray-400 text-sm">Try searching with different keywords</p>
               </div>
-            </mat-option>
-
-            } @if(doctorDataSignal().length){
-            <mat-option>
-              <div class="flex justify-between items-center w-[30rem]">
-                <span class="font-semibold"
-                  ><strong class="text-blue-700"
-                    >+{{ doctorDataSignal().length }}</strong
-                  ><strong class="text-gray-400"> Doctors</strong>
-                </span>
-                <div class="flex items-center">
-                  <span class="text-sm text-gray-400">See more</span>
-                  <span class="material-symbols-outlined text-blue-600">
-                    arrow_forward_ios
-                  </span>
-                </div>
-              </div>
-            </mat-option>
-            }
-          </mat-optgroup>
-
-          <!-- کلینیک‌ها -->
-          <mat-optgroup label="Top Clinics">
-            @for (clinic of clinicdataSignal(); track $index) {
-
-            <mat-option [value]="clinic.id">
-              🏥 {{ clinic.name }} - {{ clinic.city }}
-            </mat-option>
-            } @if(clinicdataSignal().length){
-            <mat-option>
-              <div class="flex justify-between items-center w-[30rem]">
-                <span class="font-semibold"
-                  ><strong class="text-blue-700"
-                    >+{{ clinicdataSignal().length }}</strong
-                  ><strong class="text-gray-400"> Clinics</strong>
-                </span>
-                <div class="flex items-center">
-                  <span class="text-sm text-gray-400">See more</span>
-                  <span class="material-symbols-outlined text-blue-600">
-                    arrow_forward_ios
-                  </span>
-                </div>
-              </div>
-            </mat-option>
-            }
-          </mat-optgroup>
-
-          <!-- تخصص‌ها -->
-          <!-- <mat-optgroup
-            *ngIf="filterDataSignal()?.specializations?.length"
-            label="Specializations">
-            <mat-option
-              *ngFor="let specialization of filterDataSignal()?.specializations"
-              [value]="specialization.name">
-              🔬 {{ specialization?.details?.name }}
-            </mat-option>
-          </mat-optgroup> -->
-          <!-- @if (filterDataSignal().specializations.length === 0 && !isLoading) {
-          <mat-option disabled>
-            <div class="flex items-center justify-center p-4">
-              <span class="material-symbols-outlined"> search_off </span>
-              <span class="text-gray-500 italic text-sm mt-2">
-                No results found. Try searching for something else.
-              </span>
+              }
             </div>
-          </mat-option>
-          } -->
-        </mat-autocomplete>
-      </mat-form-field>
+            }
+
+            <!-- Loading State -->
+            @if (isLoading) {
+            <div class="loading-state px-4 py-6">
+              <div class="flex items-center justify-center gap-3">
+                <div class="loading-spinner"></div>
+                <span class="text-gray-500 text-sm">Searching...</span>
+              </div>
+            </div>
+            }
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
     </div>
-    <!-- ***** Elastic Search Section -->
+    <!-- ***** Enhanced Elastic Search Section -->
 
     <div
       class="absolute top-6 md:hidden lg:block opacity-25 flex justify-center items-center w-full h-full">

@@ -14,17 +14,6 @@ export class PatientProfileComponent {
   patientService = inject(PatientsService);
 
   ngOnInit(): void {
-    // if (typeof localStorage !== 'undefined') {
-    //   const getStoreItem = localStorage.getItem('userData');
-    //   console.log(getStoreItem);
-
-    //   debugger;
-    //   if (getStoreItem) {
-    //     const getItem = JSON.parse(getStoreItem);
-    //     this.userData = getItem.userName;
-    //   }
-    // }
-
     this.fetchPatients();
   }
 

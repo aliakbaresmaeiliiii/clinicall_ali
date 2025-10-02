@@ -1,8 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { DoctorService } from './doctor.service';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
+import { SearchDoctorDto } from './dto/search-doctor.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('Doctors')
@@ -20,9 +21,18 @@ export class DoctorController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get all doctors' })
+  @ApiOperation({ summary: 'Get all doctors or search doctors' })
   @ApiResponse({ status: 200, description: 'List of doctors' })
-  findAll() {
+  findAll(@Query() searchDto: SearchDoctorDto) {
+    // If any search parameters are provided, use search method
+    const hasSearchParams = Object.values(searchDto).some(value => 
+      value !== undefined && value !== null && value !== ''
+    );
+    
+    if (hasSearchParams) {
+      return this.doctorService.search(searchDto);
+    }
+    
     return this.doctorService.findAll();
   }
 

@@ -64,20 +64,23 @@ export async function syncDoctorsToElasticsearch() {
       }
     ]);
 
-    // Process in chunks
-    const chunkSize = 100;
+    // Process in chunks using bulk indexing
+    const chunkSize = 50; // Process 50 doctors at a time
+    let processedCount = 0;
+    
     for (let i = 0; i < body.length; i += chunkSize * 2) {
       const chunk = body.slice(i, i + chunkSize * 2);
       
       try {
-        // Note: This would need bulk method in ElasticsearchService
-        console.log(`✅ Batch of ${chunkSize} doctors processed`);
+        await esService.bulkIndex(chunk);
+        processedCount += chunkSize;
+        console.log(`✅ Batch of ${chunkSize} doctors processed (${processedCount}/${doctors.length})`);
       } catch (error) {
         console.error(`❌ Error processing batch:`, error);
       }
     }
 
-    console.log("✅ All doctors synced successfully");
+    console.log(`✅ All ${doctors.length} doctors synced successfully to Elasticsearch`);
   } catch (error) {
     console.error("❌ Sync failed:", error);
   }

@@ -291,6 +291,19 @@ let AuthService = class AuthService {
         const { password, verifyCode, ...result } = patient;
         return result;
     }
+    async patientEmailSignIn(email) {
+        const patient = await this.prisma.patient.findUnique({
+            where: { email },
+        });
+        if (!patient) {
+            throw new common_1.UnauthorizedException('Patient not found');
+        }
+        if (!patient.isVerified) {
+            throw new common_1.BadRequestException('Email is not verified');
+        }
+        const { password: _, verifyCode: __, ...patientWithoutSensitiveData } = patient;
+        return this.login(patientWithoutSensitiveData, 'patient');
+    }
     generateVerificationCode() {
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         let result = '';

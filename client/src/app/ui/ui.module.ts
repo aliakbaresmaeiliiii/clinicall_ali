@@ -1,18 +1,14 @@
-import { CommonModule, DatePipe } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireFunctionsModule } from '@angular/fire/compat/functions';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatExpansionModule } from '@angular/material/expansion';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatRadioModule } from '@angular/material/radio';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule, RouterOutlet, Routes } from '@angular/router';
 import { NgxStarsModule } from 'ngx-stars';
 import { environment } from '../environments/environment';
 import { ButtonComponent } from '../shared/components/button/button.component';
 import { ChatbotComponent } from '../shared/components/chatbot/chatbot.component';
+import { GoogleMapComponent } from '../shared/components/google-map/google-map.component';
 import { LoaderComponent } from '../shared/components/loader/loader.component';
 import { SocialMediaIconComponent } from '../shared/components/social-media-icon/social-media-icon.component';
 import { CounterDirective } from '../shared/directives/counter-number/counter.directive';
@@ -21,6 +17,7 @@ import { ToBooleanPipe } from '../shared/pipes/to-boolean.pipe';
 import { SharedModule } from '../shared/shared.module';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { BestDoctorsComponent } from './best-doctors/best-doctors.component';
+import { BlogDetailComponent } from './blog-detail/blog-detail.component';
 import { BlogComponent } from './blog/blog.component';
 import { BookAppointmentComponent } from './book-appointment/book-appointment.component';
 import { CitiesSupportComponent } from './cities-support/cities-support.component';
@@ -31,7 +28,6 @@ import { DermatologyHairComponent } from './dermatology-hair/dermatology-hair.co
 import { DetailDrProjectComponent } from './detail-dr-project/detail-dr-project.component';
 import { DoctorRequestComponent } from './doctors/components/doctor-request/doctor-request.component';
 import { DoctorsComponent } from './doctors/components/doctors.component';
-import { DrProjectsComponent } from './dr-projects/dr-projects.component';
 import { FeatureSectionComponent } from './feature-section/feature-section.component';
 import { ChoosingAppointmentComponent } from './filter-layout/choosing-appointment/choosing-appointment.component';
 import { FilterLayoutComponent } from './filter-layout/filter-layout.component';
@@ -62,7 +58,7 @@ import { SuggestionsComponent } from './suggestions/suggestions.component';
 import { SuggustionsServiceComponent } from './suggustions-service/suggustions-service.component';
 import { UserReviewsOfClinicAliComponent } from './user-reviews-of-clinic-ali/user-reviews-of-clinic-ali.component';
 import { YoursDoctorComponent } from './yours-doctor/yours-doctor.component';
-import { GoogleMapComponent } from '../shared/components/google-map/google-map.component';
+import { MedicalProjectsComponent } from './medical-projects/medical-projects.component';
 
 const routes: Routes = [
   {
@@ -93,12 +89,24 @@ const routes: Routes = [
       { path: 'services', component: ServicesDoctorComponent },
       { path: 'contact-us', component: ContactUsComponent },
       { path: 'about-us', component: AboutUsComponent },
-      { path: 'dr-projects', component: DrProjectsComponent },
+      { path: 'medical-projects', component: MedicalProjectsComponent },
       { path: 'detail-dr-project', component: DetailDrProjectComponent },
       { path: 'speciality', component: SpecialityComponent },
       {
         path: 'doctor/:name/:id',
         component: GetDoctorApointmentComponent,
+      },
+      {
+        path:'clinic-info',
+        component:ClinicInfoComponent
+      },
+      {
+        path: 'blog',
+        component: BlogComponent,
+      },
+      {
+        path: 'blog/:id',
+        component: BlogDetailComponent,
       },
       // {
       //   path: 'speciality',
@@ -115,11 +123,12 @@ const routes: Routes = [
     FeatureSectionComponent,
     BestDoctorsComponent,
     BlogComponent,
+    BlogDetailComponent,
     FooterComponent,
     ServicesDoctorComponent,
     MediicAppointmentComponent,
     ContactUsComponent,
-    DrProjectsComponent,
+    MedicalProjectsComponent,
     DetailDrProjectComponent,
     MenuComponent,
     CitiesSupportComponent,

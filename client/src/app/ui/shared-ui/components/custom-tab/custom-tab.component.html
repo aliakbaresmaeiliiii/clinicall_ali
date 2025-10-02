@@ -1,101 +1,233 @@
-<div class="grid grid-rows-9 grid-cols-9 grid-flow-col gap-4 w-10/12 mx-auto mt-36">
-  <div class="row-span-9 col-span-2 bg-white rounded-2xl p-4">
-    <h2 class="pb-2">Filters</h2>
-    <ng-content></ng-content>
-    <mat-tab-group>
-      <mat-tab>
-        <div class="mx-4">
-          @if (valueFiltering) {
-          <span class="bg-gray-300 rounded-2xl w-fit max-w-56 flex items-center gap-4 my-3 px-3"
-            (click)="deleteFilter(valueFiltering)">{{ valueFiltering }}
-            <i class="fa-solid fa-xmark"></i>
-          </span>
-          <mat-divider></mat-divider>
-          }
-        </div>
-        <ng-template mat-tab-label>
-          <div class="flex gap-1">
-            <img src="../../../../assets/images/ui/svg/clinic-appointment.svg" alt="" />
-            <span class="text-xs"> Clinic Appointment </span>
-          </div>
-        </ng-template>
-
-        <!-- tettgeneric -->
-        <form [formGroup]="form">
-          <app-generic-auto-compelete [label]="'Specialty and Super-specialty'" [placeHolder]="'Test Placeholder'"
-            [parentForm]="form" [formCrName]="'speciality'" [filterOption]="filteredSpeciality"
-            (valueInput)="handleInputChange('speciality',$event)" />
-          <mat-divider></mat-divider>
-
-          <app-generic-auto-compelete [label]="'Services'" [placeHolder]="'Please choose the service you need.'"
-            [parentForm]="form" [formCrName]="'services'" [filterOption]="filteredServices"
-            (valueInput)="handleInputChange('services',$event)" />
-          <mat-divider></mat-divider>
-          <app-generic-auto-compelete [label]="'City'" [placeHolder]="'City'" [parentForm]="form" [formCrName]="'city'"
-            [filterOption]="filteredCity" (valueInput)="handleInputChange('city',$event)" />
-          <mat-divider></mat-divider>
-
-          <!-- <app-generic-auto-compelete
-            [label]="'Neighborhood'"
-            [placeHolder]="'Neighborhood'"
-            [parentForm]="form"
-            [formCrName]="'neighborhoodForm'"
-            [filterOption]="filteredNeighborhood"
-            (valueInput)="handleInputChange('neighborhoodForm',$event)" />
-          <mat-divider></mat-divider> -->
-
-          <app-generic-auto-compelete [label]="'Insurance'" [placeHolder]="'Insurance'" [parentForm]="form"
-            [formCrName]="'insurance'" [filterOption]="filteredInsurance"
-            (valueInput)="handleInputChange('insurance',$event)" />
-        </form>
-      </mat-tab>
-
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <div class="flex gap-1">
-            <img src="../../../../assets/images/ui/svg/phone-consultaion.svg" alt="" />
-            <span class="text-xs"> Phone Consultation </span>
-          </div>
-        </ng-template>
-        Content 2
-      </mat-tab>
-
-      <mat-tab>
-        <ng-template mat-tab-label>
-          <div class="flex gap-1">
-            <img src="../../../../assets/images/ui/svg/text-consultaion.svg" alt="" />
-            <span class="text-xs"> Text Consultation </span>
-          </div>
-        </ng-template>
-
-        Content 3
-      </mat-tab>
-    </mat-tab-group>
+<!-- Book Appointment Hero Section -->
+<!-- <div class="book-appointment-hero">
+  <div class="hero-content">
+    <h1 class="hero-title">Book Your Appointment</h1>
+    <p class="hero-subtitle">Connect with Malaysia's top healthcare professionals</p>
   </div>
+</div> -->
 
-  <div class="bg-slate-100 col-span-7 font-bold p-4 rounded-2xl">
-    Online appointment of the best doctors in Malaysia
-  </div>
+<!-- Main Appointment Container -->
+<div class="appointment-container">
+  <!-- Appointment Type Tabs -->
+  <div class="appointment-type-tabs">
+    <!-- <div class="tab-header">
+      <h2 class="tab-title">Choose Your Appointment Type</h2>
+      <p class="tab-subtitle">Select the consultation method that works best for you</p>
+    </div> -->
+    
+    <div class="tab-navigation">
+      <div class="tab-buttons">
+        <button class="tab-button active" data-tab="clinic">
+          <div class="tab-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+            </svg>
+          </div>
+          <div class="tab-content">
+            <h3>Clinic Appointment</h3>
+            <p>In-person consultation</p>
+          </div>
+        </button>
 
-  <div class="row-span-8 col-span-7 bg-slate-100 p-4 rounded-2xl">
-    <div class="grid grid-cols-8 my-auto">
-      <span class="flex items-center gap-1 opacity-55">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" width="24" height="24">
-          <path
-            d="M17.5 6.458h-15a.63.63 0 0 1-.625-.625.63.63 0 0 1 .625-.625h15a.63.63 0 0 1 .625.625.63.63 0 0 1-.625.625M15 10.625H5A.63.63 0 0 1 4.375 10 .63.63 0 0 1 5 9.375h10a.63.63 0 0 1 .625.625.63.63 0 0 1-.625.625M11.665 14.792H8.332a.63.63 0 0 1-.625-.625.63.63 0 0 1 .625-.625h3.333a.63.63 0 0 1 .625.625.63.63 0 0 1-.625.625"
-            stroke="black" stroke-width="2" stroke-linecap="round" />
-        </svg>
-        Sort by:</span>
-      @for (option of filterOptions; track $index) {
-      <button mat-button class="filter-item" (click)="setActiveFilter(option)"
-        [class.active]="option.key === activeFilter">
-        <span class="text-xs">{{ option.label }}</span>
-      </button>
-      }
+        <button class="tab-button" data-tab="phone">
+          <div class="tab-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 15.5c-1.25 0-2.45-.2-3.57-.57-.35-.11-.74-.03-1.02.24l-2.2 2.2c-2.83-1.44-5.15-3.75-6.59-6.59l2.2-2.21c.28-.26.36-.65.25-1C8.7 6.45 8.5 5.25 8.5 4c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1 0 9.39 7.61 17 17 17 .55 0 1-.45 1-1v-3.5c0-.55-.45-1-1-1z"/>
+            </svg>
+          </div>
+          <div class="tab-content">
+            <h3>Phone Consultation</h3>
+            <p>Remote medical advice</p>
+          </div>
+        </button>
+
+        <button class="tab-button" data-tab="text">
+          <div class="tab-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 9h12v2H6V9zm8 5H6v-2h8v2zm4-6H6V6h12v2z"/>
+            </svg>
+          </div>
+          <div class="tab-content">
+            <h3>Text Consultation</h3>
+            <p>Messaging with doctors</p>
+          </div>
+        </button>
+      </div>
     </div>
-    <div
-      class="flex flex-wrap justify-center mt-6 overflow-auto border-2 rounded-xl p-2 border-gray-300 max-h-[35rem] min-h-[35rem]">
-      <ng-content></ng-content>
+  </div>
+
+  <!-- Main Content Area -->
+  <div class="main-content-area">
+    <!-- Filters Sidebar -->
+    <div class="filters-sidebar">
+      <div class="sidebar-header">
+        <h3>Find Your Doctor</h3>
+        <p>Refine your search</p>
+      </div>
+
+      <div class="filter-section">
+        <div class="filter-group">
+          <label class="filter-label">Specialty & Super-specialty</label>
+          <div class="search-input-wrapper">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+            </svg>
+            <input type="text" placeholder="Search specialties..." class="search-input">
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Services</label>
+          <div class="search-input-wrapper">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+            </svg>
+            <input type="text" placeholder="Choose services..." class="search-input">
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Location</label>
+          <div class="search-input-wrapper">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+            </svg>
+            <input type="text" placeholder="Enter city..." class="search-input">
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-label">Insurance</label>
+          <div class="search-input-wrapper">
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 0C3.582 0 0 3.582 0 8s3.582 8 8 8 8-3.582 8-8-3.582-8-8-8zm0 14.5c-3.59 0-6.5-2.91-6.5-6.5S4.41 1.5 8 1.5s6.5 2.91 6.5 6.5-2.91 6.5-6.5 6.5z"/>
+            </svg>
+            <input type="text" placeholder="Select insurance..." class="search-input">
+          </div>
+        </div>
+
+        <div class="filter-actions">
+          <button class="filter-btn primary">Apply Filters</button>
+          <button class="filter-btn secondary">Reset</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Doctors Listing -->
+    <div class="doctors-listing">
+      <div class="listing-header">
+        <h2>Available Doctors</h2>
+        <div class="sort-options">
+          <span class="sort-label">Sort by:</span>
+          <div class="sort-buttons">
+            <button class="sort-btn active">Default</button>
+            <button class="sort-btn">Most Popular</button>
+            <button class="sort-btn">Nearest</button>
+            <button class="sort-btn">Available Soon</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="doctors-grid">
+        <!-- Doctor Card 1 -->
+        <div class="doctor-card">
+          <div class="doctor-image">
+            <img src="../../../../assets/images/ui/doctors/doctor1.jpg" alt="Dr. Sarah Johnson">
+            <div class="availability-badge available">Available Today</div>
+          </div>
+          <div class="doctor-info">
+            <h3 class="doctor-name">Dr. Sarah Johnson</h3>
+            <p class="doctor-specialty">Cardiologist</p>
+            <div class="doctor-rating">
+              <div class="stars">
+                <span class="star filled">★</span>
+                <span class="star filled">★</span>
+                <span class="star filled">★</span>
+                <span class="star filled">★</span>
+                <span class="star">★</span>
+                <span class="rating-text">4.8 (124 reviews)</span>
+              </div>
+            </div>
+            <div class="doctor-location">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+              </svg>
+              <span>Kuala Lumpur Medical Center</span>
+            </div>
+            <div class="doctor-price">
+              <span class="price">RM 150</span>
+              <span class="price-label">per consultation</span>
+            </div>
+            <button class="book-btn">Book Appointment</button>
+          </div>
+        </div>
+
+        <!-- Doctor Card 2 -->
+        <div class="doctor-card">
+          <div class="doctor-image">
+            <img src="../../../../assets/images/ui/doctors/doctor2.jpg" alt="Dr. Michael Chen">
+            <div class="availability-badge available">Available Tomorrow</div>
+          </div>
+          <div class="doctor-info">
+            <h3 class="doctor-name">Dr. Michael Chen</h3>
+            <p class="doctor-specialty">Dermatologist</p>
+            <div class="doctor-rating">
+              <div class="stars">
+                <span class="star filled">★</span>
+                <span class="star filled">★</span>
+                <span class="star filled">★</span>
+                <span class="star filled">★</span>
+                <span class="star filled">★</span>
+                <span class="rating-text">5.0 (89 reviews)</span>
+              </div>
+            </div>
+            <div class="doctor-location">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+              </svg>
+              <span>Sunway Medical Center</span>
+            </div>
+            <div class="doctor-price">
+              <span class="price">RM 180</span>
+              <span class="price-label">per consultation</span>
+            </div>
+            <button class="book-btn">Book Appointment</button>
+          </div>
+        </div>
+
+        <!-- Doctor Card 3 -->
+        <div class="doctor-card">
+          <div class="doctor-image">
+            <img src="../../../../assets/images/ui/doctors/doctor3.jpg" alt="Dr. Lisa Wong">
+            <div class="availability-badge available">Available Now</div>
+          </div>
+          <div class="doctor-info">
+            <h3 class="doctor-name">Dr. Lisa Wong</h3>
+            <p class="doctor-specialty">Pediatrician</p>
+            <div class="doctor-rating">
+              <div class="stars">
+                <span class="star filled">★</span>
+                <span class="star filled">★</span>
+                <span class="star filled">★</span>
+                <span class="star filled">★</span>
+                <span class="star">★</span>
+                <span class="rating-text">4.7 (156 reviews)</span>
+              </div>
+            </div>
+            <div class="doctor-location">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+              </svg>
+              <span>Gleneagles Hospital</span>
+            </div>
+            <div class="doctor-price">
+              <span class="price">RM 120</span>
+              <span class="price-label">per consultation</span>
+            </div>
+            <button class="book-btn">Book Appointment</button>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

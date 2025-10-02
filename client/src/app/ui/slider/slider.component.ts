@@ -184,6 +184,7 @@ export class SliderComponent implements OnInit {
             // return of([]);
           }
           this.isLoading = true;
+          debugger;
           return this.elasticSearchService.searchDoctors(trimedQuery).pipe(
             finalize(() => (this.isLoading = false)),
             catchError(() =>
@@ -198,6 +199,7 @@ export class SliderComponent implements OnInit {
         })
       )
       .subscribe((res: any) => {
+        debugger;
         if (res) {
           const doctors =
             res.data.doctors?.map((doctor: any) => ({
@@ -218,7 +220,6 @@ export class SliderComponent implements OnInit {
 
   navigateToDetail(selectedDoctor: any): void {
     if (!selectedDoctor) return;
-    debugger;
 
     const payload = {
       id: selectedDoctor.id,

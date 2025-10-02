@@ -3,6 +3,7 @@ import { RegisterClinicDto } from './dto/register-clinic.dto';
 import { RegisterPatientDto } from './dto/register-patient.dto';
 import { VerifyEmailDto } from './dto/verify-email.dto';
 import { UpdatePatientProfileDto } from './dto/update-patient-profile.dto';
+import { PatientEmailSignInDto } from './dto/patient-email-sign-in.dto';
 export declare class AuthController {
     private readonly authService;
     constructor(authService: AuthService);
@@ -105,44 +106,64 @@ export declare class AuthController {
         charges: string | null;
     }>;
     clinicSignIn(req: any): Promise<{
-        access_token: string;
-        refresh_token: string;
-        user: {
-            id: any;
-            email: any;
-            userType: string;
-            isVerified: any;
+        statusCode: number;
+        message: string;
+        data: {
+            access_token: string;
+            refresh_token: string;
+            user: {
+                id: any;
+                email: any;
+                userType: string;
+                isVerified: any;
+            };
         };
     }>;
     doctorSignIn(req: any): Promise<{
-        access_token: string;
-        refresh_token: string;
-        user: {
-            id: any;
-            email: any;
-            userType: string;
-            isVerified: any;
+        statusCode: number;
+        message: string;
+        data: {
+            access_token: string;
+            refresh_token: string;
+            user: {
+                id: any;
+                email: any;
+                userType: string;
+                isVerified: any;
+            };
         };
     }>;
-    patientSignIn(req: any): Promise<{
-        access_token: string;
-        refresh_token: string;
-        user: {
-            id: any;
-            email: any;
-            userType: string;
-            isVerified: any;
+    patientSignIn(patientEmailSignInDto: PatientEmailSignInDto): Promise<{
+        statusCode: number;
+        message: string;
+        data: {
+            access_token: string;
+            refresh_token: string;
+            user: {
+                id: any;
+                email: any;
+                userType: string;
+                isVerified: any;
+            };
         };
     }>;
     refreshToken(body: {
         refresh_token: string;
     }): Promise<{
-        access_token: string;
+        statusCode: number;
+        message: string;
+        data: {
+            access_token: string;
+        };
     }>;
     logout(body: {
         refresh_token: string;
     }): Promise<{
+        statusCode: number;
         message: string;
+        data: {
+            message: string;
+        };
     }>;
     getPatientProfile(patientId: number): Promise<{
         doctor: string | null;
