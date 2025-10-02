@@ -1,0 +1,111 @@
+<div class="support-container">
+  <!-- Header Section -->
+  <div class="header-section" *ngIf="!supportType">
+    <div class="header-content">
+      <div class="icon-wrapper">
+        <svg class="support-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z" fill="currentColor"/>
+        </svg>
+      </div>
+      <h1 class="main-title">Patient Support Center</h1>
+      <p class="subtitle">
+        Comprehensive support services to help you navigate your healthcare journey with confidence
+      </p>
+    </div>
+  </div>
+
+  <!-- Individual Support Detail -->
+  <div *ngIf="supportType && currentSupport" class="support-detail">
+    <div class="support-header">
+      <div class="support-icon">{{ currentSupport.icon }}</div>
+      <div class="support-info">
+        <h1>{{ currentSupport.title }}</h1>
+        <p>{{ currentSupport.description }}</p>
+      </div>
+    </div>
+
+    <div class="support-content">
+      <div class="features-section">
+        <h3>What You Can Do</h3>
+        <div class="features-grid">
+          <div *ngFor="let feature of currentSupport.features" class="feature-card">
+            <div class="feature-icon">✓</div>
+            <span>{{ feature }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions-section">
+        <h3>Quick Actions</h3>
+        <div class="actions-grid">
+          <a *ngFor="let action of currentSupport.actions" 
+             [routerLink]="action.link"
+             class="action-button"
+             [class.primary]="action.type === 'primary'"
+             [class.secondary]="action.type === 'secondary'">
+            {{ action.label }}
+          </a>
+        </div>
+      </div>
+
+      <div class="contact-section">
+        <h3>Need More Help?</h3>
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-icon">📞</div>
+            <div class="contact-details">
+              <h4>Phone Support</h4>
+              <p>+60 3-1234 5678</p>
+              <span>Available Monday-Friday, 8AM-6PM</span>
+            </div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">✉️</div>
+            <div class="contact-details">
+              <h4>Email Support</h4>
+              <p>support@clinicall.com</p>
+              <span>Response within 24 hours</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- All Support Items Grid -->
+  <div *ngIf="!supportType" class="support-grid">
+    <div *ngFor="let item of allSupportItems" class="support-card" [routerLink]="['/support', item.key]">
+      <div class="support-card-icon">{{ item.icon }}</div>
+      <h3>{{ item.title }}</h3>
+      <p>{{ item.description }}</p>
+      <div class="support-features">
+        <div *ngFor="let feature of item.features.slice(0, 3)" class="feature-tag">
+          {{ feature }}
+        </div>
+        <div *ngIf="item.features.length > 3" class="feature-more">
+          +{{ item.features.length - 3 }} more
+        </div>
+      </div>
+      <div class="support-arrow">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Emergency Contact Section -->
+  <div *ngIf="!supportType" class="emergency-section">
+    <div class="emergency-content">
+      <div class="emergency-icon">🚨</div>
+      <div class="emergency-info">
+        <h2>Emergency Contact</h2>
+        <p>For urgent medical situations requiring immediate attention</p>
+        <div class="emergency-contact">
+          <div class="emergency-phone">+60 3-9999 9999</div>
+          <span>Available 24/7 for emergencies</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
