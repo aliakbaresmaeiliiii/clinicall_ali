@@ -1,19 +1,20 @@
 <div class="px-5">
-  <div class="lg:flex lg:w-11/12 mx-auto justify-between items-center md:w-full lg:pt-28 md:pt-12">
-    <div class="text-gray-100">
-      <div class="md:text-2xl md:font-semibold lg:text-2xl text-blue-950">
-        {{ title() }}
-      </div>
-    </div>
-
-    <div class="flex justify-end md:pt-4 md:pb-4">
-      @if (isShowBtn()) {
-      <button dfButton appearance="solid" class="flex">
-        View All
-        <i class="fa-solid fa-arrow-trend-up text-2xl"></i>
-      </button>
-      }
+  <!-- <div class="lg:flex lg:w-11/12 mx-auto justify-between items-center md:w-full lg:pt-28 md:pt-12"> -->
+  <div class="text-gray-100">
+    <div class="section-header">
+      <h2>Our Facilities</h2>
+      <p>Modern amenities designed for your comfort and convenience</p>
     </div>
   </div>
+
+  <div class="flex justify-end md:pt-4 md:pb-4">
+    @if (isShowBtn()) {
+    <button dfButton appearance="solid" class="flex">
+      View All
+      <i class="fa-solid fa-arrow-trend-up text-2xl"></i>
+    </button>
+    }
+  </div>
+  <!-- </div> -->
   <ng-content></ng-content>
 </div>

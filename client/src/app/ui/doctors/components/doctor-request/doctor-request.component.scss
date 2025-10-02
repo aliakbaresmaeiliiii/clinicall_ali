@@ -1,0 +1,471 @@
+@use '../../../../../styles.scss' as global;
+
+.doctor-request-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  font-family: 'CustomFont', sans-serif;
+
+  @media (min-width: 768px) {
+    padding: 3rem 2rem;
+  }
+}
+
+// Header Section
+.header-section {
+  text-align: center;
+  margin-bottom: 3rem;
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+  border-radius: 24px;
+  padding: 3rem 2rem;
+  color: white;
+  box-shadow: 0 20px 40px rgba(25, 118, 210, 0.15);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+    opacity: 0.3;
+  }
+}
+
+.header-content {
+  position: relative;
+  z-index: 2;
+}
+
+.icon-wrapper {
+  margin-bottom: 1.5rem;
+}
+
+.doctor-icon {
+  width: 80px;
+  height: 80px;
+  color: rgba(255, 255, 255, 0.9);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+}
+
+.main-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #ffffff 0%, #e3f2fd 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+
+  @media (min-width: 768px) {
+    font-size: 3rem;
+  }
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+// Information Card
+.info-card {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  background: white;
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 3rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e3f2fd;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+  }
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.info-icon {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, var(--primary-blue-light) 0%, var(--secondary-blue-light) 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 8px 20px rgba(66, 165, 245, 0.3);
+
+  svg {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.info-content {
+  flex: 1;
+
+  h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-blue-dark);
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    color: #64748b;
+    line-height: 1.6;
+    font-size: 1.1rem;
+  }
+}
+
+// Success Message
+.success-message {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 3rem;
+  box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+  animation: slideIn 0.5s ease-out;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.success-icon {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+
+  svg {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+.success-content {
+  flex: 1;
+
+  h4 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    opacity: 0.9;
+    line-height: 1.6;
+    font-size: 1.1rem;
+  }
+}
+
+// Registration Form
+.registration-form {
+  background: white;
+  border-radius: 24px;
+  padding: 3rem;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f1f5f9;
+  transition: all 0.3s ease;
+
+  &.form-submitting {
+    opacity: 0.7;
+    pointer-events: none;
+  }
+
+  @media (max-width: 768px) {
+    padding: 2rem 1.5rem;
+  }
+}
+
+.form-grid {
+  display: grid;
+  gap: 3rem;
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+  }
+}
+
+.form-section {
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--primary-blue-dark);
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e3f2fd;
+
+    .section-icon {
+      font-size: 1.75rem;
+    }
+  }
+}
+
+.form-row {
+  display: grid;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.form-field {
+  width: 100%;
+
+  &.full-width {
+    grid-column: 1 / -1;
+  }
+
+  // Custom styling for Material form fields
+  ::ng-deep {
+    .mat-form-field-outline {
+      border-radius: 12px !important;
+    }
+
+    .mat-form-field-flex {
+      background: #f8fafc;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .mat-form-field-outline-thick {
+      border-width: 2px !important;
+    }
+
+    .mat-form-field.mat-focused .mat-form-field-flex {
+      background: white;
+      box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+    }
+
+    .mat-form-field-appearance-outline.mat-form-field-invalid .mat-form-field-outline-thick {
+      color: #ef4444 !important;
+    }
+
+    .mat-input-element {
+      padding: 0.75rem 0;
+      font-size: 1rem;
+      color: #1e293b;
+    }
+
+    .mat-form-field-label {
+      color: #64748b !important;
+      font-weight: 500;
+    }
+
+    .mat-form-field.mat-focused .mat-form-field-label {
+      color: var(--primary-blue) !important;
+    }
+
+    .mat-icon {
+      color: #94a3b8;
+      transition: color 0.3s ease;
+    }
+
+    .mat-form-field.mat-focused .mat-icon {
+      color: var(--primary-blue);
+    }
+  }
+}
+
+// Submit Section
+.submit-section {
+  text-align: center;
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid #e3f2fd;
+}
+
+.submit-button {
+  position: relative;
+  background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 1.25rem 3rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  min-width: 240px;
+  box-shadow: 0 10px 30px rgba(25, 118, 210, 0.3);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(25, 118, 210, 0.4);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  &.submitting {
+    .button-content {
+      opacity: 0.7;
+    }
+  }
+}
+
+.button-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  position: relative;
+  z-index: 2;
+}
+
+.button-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.button-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  ::ng-deep .mat-spinner {
+    circle {
+      stroke: white;
+    }
+  }
+}
+
+.button-background {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--primary-blue-dark) 0%, var(--secondary-blue-dark) 100%);
+  transition: left 0.3s ease;
+  z-index: 1;
+}
+
+.submit-button:hover:not(:disabled) .button-background {
+  left: 0;
+}
+
+.form-note {
+  margin-top: 1rem;
+  color: #64748b;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+// Animations
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Responsive Design
+@media (max-width: 640px) {
+  .doctor-request-container {
+    padding: 1rem 0.5rem;
+  }
+
+  .header-section {
+    padding: 2rem 1rem;
+  }
+
+  .main-title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .registration-form {
+    padding: 1.5rem 1rem;
+  }
+
+  .form-section .section-title {
+    font-size: 1.25rem;
+  }
+
+  .submit-button {
+    min-width: 200px;
+    padding: 1rem 2rem;
+  }
+}
+
+// Dark mode support
+@media (prefers-color-scheme: dark) {
+  .info-card,
+  .registration-form {
+    background: #1e293b;
+    border-color: #334155;
+  }
+
+  .form-note {
+    color: #94a3b8;
+  }
+
+  ::ng-deep {
+    .mat-form-field-flex {
+      background: #334155;
+    }
+
+    .mat-input-element {
+      color: #f1f5f9;
+    }
+
+    .mat-form-field-label {
+      color: #94a3b8 !important;
+    }
+  }
+}

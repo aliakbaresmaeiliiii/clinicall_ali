@@ -42,6 +42,8 @@ import { HomeComponent } from './home/home.component';
 import { MediicAppointmentComponent } from './mediic-appointment/mediic-appointment.component';
 import { MenuComponent } from './mobile/menu/menu.component';
 import { ServicesDoctorComponent } from './services-doctor/services-doctor.component';
+import { ServicesComponent } from './services/services.component';
+import { SupportComponent } from './support/support.component';
 import { CardInfoComponent } from './shared-ui/components/card-info/card-info.component';
 import { SharedUiModule } from './shared-ui/shared-ui.module';
 import { SliderComponent } from './slider/slider.component';
@@ -86,7 +88,10 @@ const routes: Routes = [
           ),
       },
 
-      { path: 'services', component: ServicesDoctorComponent },
+      { path: 'services', component: ServicesComponent },
+      { path: 'services/:type', component: ServicesComponent },
+      { path: 'support', component: SupportComponent },
+      { path: 'support/:type', component: SupportComponent },
       { path: 'contact-us', component: ContactUsComponent },
       { path: 'about-us', component: AboutUsComponent },
       { path: 'medical-projects', component: MedicalProjectsComponent },
@@ -126,6 +131,8 @@ const routes: Routes = [
     BlogDetailComponent,
     FooterComponent,
     ServicesDoctorComponent,
+    ServicesComponent,
+    SupportComponent,
     MediicAppointmentComponent,
     ContactUsComponent,
     MedicalProjectsComponent,

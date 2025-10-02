@@ -1,12 +1,10 @@
-import { Component, OnInit, OnDestroy, inject } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { catchError, EMPTY, of, switchMap } from 'rxjs';
-import { UserService } from '../../../services/user.service';
-import { ShareAuthService } from '../../../services/share.service';
 import { AuthService } from '../../../services/auth.service';
-import { PatientVerificationResponse } from '../../models/patient.model';
+import { ShareAuthService } from '../../../services/share.service';
+import { UserService } from '../../../services/user.service';
 
 @Component({
   selector: 'app-confirm-email',

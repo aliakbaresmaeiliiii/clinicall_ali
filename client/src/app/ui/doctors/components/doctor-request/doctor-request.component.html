@@ -1,105 +1,246 @@
-<div class="w-[92rem] mx-auto">
-  <div class="!text-sm bg-white shadow-lg p-2 rounded-md">
-    <h2 class="!text-base">
-      <strong>
-        Only if you are a doctor or therapist with a valid medical license code,
-        please fill out the form below to register on the website. Our team will
-        contact you as soon as possible to complete the information and display
-        it on the platform.
-      </strong>
-    </h2>
+<div class="doctor-request-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <div class="header-content">
+      <div class="icon-wrapper">
+        <svg class="doctor-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M8 14V16M8 10V12M16 14V16M16 10V12M12 16V18M12 10V12M6 20H18C19.1046 20 20 19.1046 20 18V6C20 4.89543 19.1046 4 18 4H6C4.89543 4 4 4.89543 4 6V18C4 19.1046 4.89543 20 6 20Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h1 class="main-title">Join Our Medical Network</h1>
+      <p class="subtitle">
+        Register as a healthcare professional and connect with patients seeking your expertise
+      </p>
+    </div>
   </div>
 
-  <form
-    action=""
-    [formGroup]="form"
-    (ngSubmit)="sendRequest()"
-    class="flex flex-col w-96 mt-10">
-    <mat-form-field appearance="outline">
-      <mat-label>Medical system code</mat-label>
-      <input
-        class="w-full"
-        matInput
-        placeholder="Enter your medical license code"
-        formControlName="medicalCode"
-        [errorStateMatcher]="matcher"
-        #input />
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>First Name</mat-label>
-      <input
-        class="w-full"
-        matInput
-        placeholder="Enter your First Name"
-        formControlName="firstName"
-        [errorStateMatcher]="matcher"
-        #input />
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Last Name</mat-label>
-      <input
-        class="w-full"
-        matInput
-        placeholder="Enter your Last Name"
-        formControlName="lastName"
-        [errorStateMatcher]="matcher"
-        #input />
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>National code</mat-label>
-      <input
-        class="w-full"
-        matInput
-        [errorStateMatcher]="matcher"
-        placeholder="Enter your National code"
-        formControlName="nationalCode"
-        #input />
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Email</mat-label>
-      <input
-        class="w-full"
-        formControlName="email"
-        [errorStateMatcher]="matcher"
-        matInput
-        placeholder="Enter your Email"
-        #input />
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Gender</mat-label>
-      <input
-        class="w-full"
-        formControlName="gender"
-        matInput
-        [errorStateMatcher]="matcher"
-        placeholder="Enter your Gender"
-        #input />
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>Expertise</mat-label>
-      <input
-        class="w-full"
-        formControlName="expertise"
-        matInput
-        placeholder="Enter your Expertise "
-        [errorStateMatcher]="matcher"
-        #input />
-    </mat-form-field>
-    <div class="flex justify-center items-center">
-      <button
-        type="submit"
-        [disabled]="!form.valid"
-        class="flex justify-center gap-2 items-center mx-auto shadow-xl text-base bg-gray-50 backdrop-blur-md lg:font-semibold isolation-auto border-gray-50 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-blue-800 hover:text-gray-600 before:-z-10 before:aspect-square before:hover:scale-150 before:hover:duration-700 relative z-10 px-4 py-2 overflow-hidden border-2 rounded-full group">
-        sendRequest
-        <svg
-          class="w-8 h-8 justify-end group-hover:rotate-90 group-hover:bg-gray-50 text-gray-50 ease-linear duration-300 rounded-full border border-gray-700 group-hover:border-none p-2 rotate-45"
-          viewBox="0 0 16 19"
-          xmlns="http://www.w3.org/2000/svg">
-          <path
-            d="M7 18C7 18.5523 7.44772 19 8 19C8.55228 19 9 18.5523 9 18H7ZM8.70711 0.292893C8.31658 -0.0976311 7.68342 -0.0976311 7.29289 0.292893L0.928932 6.65685C0.538408 7.04738 0.538408 7.68054 0.928932 8.07107C1.31946 8.46159 1.95262 8.46159 2.34315 8.07107L8 2.41421L13.6569 8.07107C14.0474 8.46159 14.6805 8.46159 15.0711 8.07107C15.4616 7.68054 15.4616 7.04738 15.0711 6.65685L8.70711 0.292893ZM9 18L9 1H7L7 18H9Z"
-            class="fill-gray-800 group-hover:fill-gray-800"></path>
-        </svg>
+  <!-- Information Card -->
+  <div class="info-card">
+    <div class="info-icon">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12 16V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M12 8H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="info-content">
+      <h3>Registration Requirements</h3>
+      <p>
+        Only licensed medical professionals with valid credentials are eligible to register. 
+        Our team will verify your information and contact you within 24-48 hours to complete your profile setup.
+      </p>
+    </div>
+  </div>
+
+  <!-- Success Message -->
+  <div *ngIf="showSuccessMessage" class="success-message">
+    <div class="success-icon">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M22 11.08V12C21.9988 14.1564 21.3005 16.2547 20.0093 17.9818C18.7182 19.709 16.9033 20.9725 14.8354 21.5839C12.7674 22.1953 10.5573 22.1219 8.53447 21.3746C6.51168 20.6273 4.78465 19.2461 3.61096 17.4371C2.43727 15.628 1.87979 13.4881 2.02168 11.3363C2.16356 9.18455 2.99721 7.13631 4.39828 5.49706C5.79935 3.85781 7.69279 2.71537 9.79619 2.24013C11.8996 1.7649 14.1003 1.98232 16.07 2.85999" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M22 4L12 14.01L9 11.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="success-content">
+      <h4>Registration Submitted Successfully!</h4>
+      <p>Our team will review your application and contact you shortly. Thank you for joining our medical network.</p>
+    </div>
+  </div>
+
+  <!-- Main Form -->
+  <form 
+    [formGroup]="form" 
+    (ngSubmit)="sendRequest()" 
+    class="registration-form"
+    [class.form-submitting]="isSubmitting">
+    
+    <div class="form-grid">
+      <!-- Personal Information Section -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <span class="section-icon">👤</span>
+          Personal Information
+        </h3>
+        
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>First Name</mat-label>
+            <input 
+              matInput 
+              formControlName="firstName"
+              placeholder="Enter your first name"
+              [errorStateMatcher]="matcher">
+            <mat-icon matSuffix>person</mat-icon>
+            <mat-error *ngIf="getFieldError('firstName')">
+              {{ getFieldError('firstName') }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Last Name</mat-label>
+            <input 
+              matInput 
+              formControlName="lastName"
+              placeholder="Enter your last name"
+              [errorStateMatcher]="matcher">
+            <mat-icon matSuffix>person_outline</mat-icon>
+            <mat-error *ngIf="getFieldError('lastName')">
+              {{ getFieldError('lastName') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Email Address</mat-label>
+            <input 
+              matInput 
+              type="email"
+              formControlName="email"
+              placeholder="your.email@example.com"
+              [errorStateMatcher]="matcher">
+            <mat-icon matSuffix>email</mat-icon>
+            <mat-error *ngIf="getFieldError('email')">
+              {{ getFieldError('email') }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Phone Number</mat-label>
+            <input 
+              matInput 
+              type="tel"
+              formControlName="phone"
+              placeholder="+1 (555) 123-4567"
+              [errorStateMatcher]="matcher">
+            <mat-icon matSuffix>phone</mat-icon>
+            <mat-error *ngIf="getFieldError('phone')">
+              {{ getFieldError('phone') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Gender</mat-label>
+            <mat-select formControlName="gender" [errorStateMatcher]="matcher">
+              <mat-option *ngFor="let gender of genderOptions" [value]="gender">
+                {{ gender }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>wc</mat-icon>
+            <mat-error *ngIf="getFieldError('gender')">
+              {{ getFieldError('gender') }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>National Code</mat-label>
+            <input 
+              matInput 
+              formControlName="nationalCode"
+              placeholder="10-digit national code"
+              [errorStateMatcher]="matcher">
+            <mat-icon matSuffix>badge</mat-icon>
+            <mat-error *ngIf="getFieldError('nationalCode')">
+              {{ getFieldError('nationalCode') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <!-- Professional Information Section -->
+      <div class="form-section">
+        <h3 class="section-title">
+          <span class="section-icon">💼</span>
+          Professional Information
+        </h3>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Medical License Code</mat-label>
+            <input 
+              matInput 
+              formControlName="medicalCode"
+              placeholder="Enter your medical license code"
+              [errorStateMatcher]="matcher">
+            <mat-icon matSuffix>medical_services</mat-icon>
+            <mat-error *ngIf="getFieldError('medicalCode')">
+              {{ getFieldError('medicalCode') }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Area of Expertise</mat-label>
+            <mat-select formControlName="expertise" [errorStateMatcher]="matcher">
+              <mat-option *ngFor="let expertise of expertiseOptions" [value]="expertise">
+                {{ expertise }}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>work</mat-icon>
+            <mat-error *ngIf="getFieldError('expertise')">
+              {{ getFieldError('expertise') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="form-field">
+            <mat-label>Years of Experience</mat-label>
+            <input 
+              matInput 
+              type="number"
+              formControlName="yearsOfExperience"
+              placeholder="Number of years"
+              [errorStateMatcher]="matcher"
+              min="1"
+              max="50">
+            <mat-icon matSuffix>schedule</mat-icon>
+            <mat-error *ngIf="getFieldError('yearsOfExperience')">
+              {{ getFieldError('yearsOfExperience') }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="form-field full-width">
+          <mat-label>Additional Information</mat-label>
+          <textarea 
+            matInput 
+            formControlName="additionalInfo"
+            placeholder="Any additional details about your practice, specialties, or availability..."
+            rows="4"
+            [errorStateMatcher]="matcher"></textarea>
+          <mat-icon matSuffix>note</mat-icon>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div class="submit-section">
+      <button 
+        type="submit" 
+        [disabled]="!form.valid || isSubmitting"
+        class="submit-button"
+        [class.submitting]="isSubmitting">
+        
+        <span class="button-content">
+          <span class="button-text">
+            {{ isSubmitting ? 'Processing...' : 'Submit Registration' }}
+          </span>
+          <span class="button-icon">
+            <svg *ngIf="!isSubmitting" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <mat-spinner *ngIf="isSubmitting" diameter="20"></mat-spinner>
+          </span>
+        </span>
+        
+        <div class="button-background"></div>
       </button>
+
+      <p class="form-note">
+        By submitting this form, you agree to our terms of service and privacy policy.
+      </p>
     </div>
   </form>
 </div>

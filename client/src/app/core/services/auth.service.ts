@@ -41,46 +41,46 @@ export class AuthService {
 
   clinicRegister(userData: any): Observable<SignupResponse> {
     return this.#http.post<SignupResponse>(
-      `${this.config}/auth/clinic/register`,
+      `${this.config}auth/clinic/register`,
       userData
     );
   }
 
   // Patient registration - using the new API endpoint
   patientRegister(patientData: PatientRegistrationRequest): Observable<PatientResponse> {
-    return this.#http.post<PatientResponse>(`${this.config}/auth/patient/register`, patientData);
+    return this.#http.post<PatientResponse>(`${this.config}auth/patient/register`, patientData);
   }
 
   clinicSignIn(userData: any): Observable<any> {
-    return this.#http.post<any>(`${this.config}/auth/clinic-sign-in`, userData);
+    return this.#http.post<any>(`${this.config}auth/clinic-sign-in`, userData);
   }
 
   confirmClinicEmail(data: any): Observable<CurrentUser> {
     return this.#http.post<CurrentUser>(
-      `${this.config}/auth/verify-clinic-email`,
+      `${this.config}auth/verify-clinic-email`,
       data
     );
   }
   confirmPatientEmail(data: any): Observable<CurrentUser> {
     return this.#http.post<CurrentUser>(
-      `${this.config}/auth/verify-patient-email`,
+      `${this.config}auth/verify-patient-email`,
       data
     );
   }
 
   confirmDoctorEmail(data: any): Observable<CurrentUser> {
     return this.#http.post<CurrentUser>(
-      `${this.config}/auth/verify-doctor-email`,
+      `${this.config}auth/verify-doctor-email`,
       data
     );
   }
 
   doctorSignIn(userData: any): Observable<any> {
-    return this.#http.post<any>(`${this.config}/auth/doctor-sign-in`, userData);
+    return this.#http.post<any>(`${this.config}auth/doctor-sign-in`, userData);
   }
 
   doctorRegister(userData: any): Observable<any> {
-    return this.#http.post<any>(`${this.config}/auth/doctor-register`, userData);
+    return this.#http.post<any>(`${this.config}auth/doctor-register`, userData);
   }
   patientSignIn(userData: PatientLoginRequest): Observable<PatientResponse> {
     debugger
@@ -92,7 +92,7 @@ export class AuthService {
 
   verifyPatientEmail(data: PatientVerificationRequest): Observable<PatientVerificationResponse> {
     return this.#http.post<PatientVerificationResponse>(
-      `${this.config}/auth/verify-patient-email`,
+      `${this.config}auth/verify-patient-email`,
       data
     );
   }
