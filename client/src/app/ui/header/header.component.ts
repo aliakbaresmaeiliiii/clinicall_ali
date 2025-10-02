@@ -319,19 +319,49 @@ export class HeaderComponent {
   ];
 
   ngOnInit(): void {
-    if (typeof window !== 'undefined') {
-      window.addEventListener('scroll', this.onWindowScroll.bind(this));
+    // if (typeof window !== 'undefined') {
+    //   window.addEventListener('scroll', this.onWindowScroll.bind(this));
+    //   this.loadUserData();
+      
+    //   // Listen for storage changes to update user data when login/logout happens
+    //   window.addEventListener('storage', this.handleStorageChange.bind(this));
+    // }
+    // this.loadUserData()
+  }
 
-      if (typeof localStorage !== 'undefined') {
-        const getStoreItem = localStorage.getItem('userData');
-        if (getStoreItem) {
+  loadUserData(): void {
+    debugger;
+    if (typeof localStorage !== 'undefined') {
+      const getStoreItem = localStorage.getItem('userData');
+      if (getStoreItem) {
+        try {
           const getItem = JSON.parse(getStoreItem);
-          this.userData = getItem.first_name;
+          this.userData = getItem.first_name || getItem.firstName || getItem.name || getItem.email || 'User';
+          
+          // Update signal service with user data
+          this.signalService.setData({
+            firstName: getItem.first_name || getItem.firstName || '',
+            lastName: getItem.last_name || getItem.lastName || '',
+            email: getItem.email || '',
+            fullName: getItem.first_name && getItem.last_name 
+              ? `${getItem.first_name} ${getItem.last_name}`
+              : getItem.name || getItem.email || 'User'
+          });
+        } catch (error) {
+          console.error('Error parsing user data:', error);
+          this.userData = '';
         }
+      } else {
+        this.userData = '';
+        this.signalService.setData({});
       }
     }
+  }
 
- 
+  handleStorageChange(event: StorageEvent): void {
+    if (event.key === 'userData') {
+      this.loadUserData();
+    }
   }
 
 
@@ -411,6 +441,7 @@ export class HeaderComponent {
   ngOnDestroy(): void {
     if (typeof window !== 'undefined') {
       window.removeEventListener('scroll', this.onWindowScroll.bind(this));
+      window.removeEventListener('storage', this.handleStorageChange.bind(this));
     }
   }
 }
