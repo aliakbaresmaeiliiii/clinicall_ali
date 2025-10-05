@@ -32,7 +32,7 @@ let AuthController = class AuthController {
         return {
             statusCode: 201,
             message: 'Clinic registered successfully',
-            data: result
+            data: result,
         };
     }
     async registerPatient(registerPatientDto) {
@@ -40,7 +40,7 @@ let AuthController = class AuthController {
         return {
             statusCode: 201,
             message: 'Patient registered successfully',
-            data: result
+            data: result,
         };
     }
     async verifyClinicEmail(verifyEmailDto) {
@@ -54,7 +54,7 @@ let AuthController = class AuthController {
         return {
             statusCode: 200,
             message: 'Login successful',
-            data: result
+            data: result,
         };
     }
     async doctorSignIn(req) {
@@ -62,7 +62,7 @@ let AuthController = class AuthController {
         return {
             statusCode: 200,
             message: 'Login successful',
-            data: result
+            data: result,
         };
     }
     async patientSignIn(patientEmailSignInDto) {
@@ -70,7 +70,7 @@ let AuthController = class AuthController {
         return {
             statusCode: 200,
             message: 'Login successful',
-            data: result
+            data: result,
         };
     }
     async refreshToken(body) {
@@ -78,7 +78,7 @@ let AuthController = class AuthController {
         return {
             statusCode: 200,
             message: 'Token refreshed successfully',
-            data: result
+            data: result,
         };
     }
     async logout(body) {
@@ -86,7 +86,7 @@ let AuthController = class AuthController {
         return {
             statusCode: 200,
             message: 'Logged out successfully',
-            data: result
+            data: result,
         };
     }
     async getPatientProfile(patientId) {

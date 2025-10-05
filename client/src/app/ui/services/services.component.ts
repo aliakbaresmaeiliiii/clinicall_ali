@@ -13,9 +13,9 @@ export class ServicesComponent {
   constructor(private route: ActivatedRoute) {}
 
   ngOnInit() {
-    this.route.params.subscribe(params => {
-      this.serviceType = params['type'] || '';
-    });
+    // this.route.params.subscribe(params => {
+    //   this.serviceType = params['type'] || '';
+    // });
   }
 
   // Service data

@@ -1,3 +1,5 @@
+// ElasticSearch Service Test - Commented out for future use when Elasticsearch is purchased
+/*
 import { TestBed } from '@angular/core/testing';
 
 import { ElasticSearchService } from './elastic-search.service';
@@ -14,3 +16,4 @@ describe('ElasticSearchService', () => {
     expect(service).toBeTruthy();
   });
 });
+*/

@@ -48,6 +48,8 @@ model Doctor {
   reviews        Review[]
   appointments   Appointment[]
   clinicDoctors  ClinicDoctor[]
+  specialty      Specialty? @relation(fields: [specialityId], references: [id])
+  service        Service?   @relation(fields: [serviceId], references: [id])
 
   @@map("doctors")
 }
@@ -231,6 +233,56 @@ model PrescriptionMedicine {
   updatedAt    DateTime @updatedAt
 
   @@map("prescription_medicines")
+}
+
+model Specialty {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  image       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  doctors     Doctor[]
+  services    Service[]
+
+  @@map("specialties")
+}
+
+model Service {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  specialtyId Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  specialty   Specialty @relation(fields: [specialtyId], references: [id], onDelete: Cascade)
+  doctors     Doctor[]
+
+  @@map("services")
+}
+
+model Disease {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("diseases")
+}
+
+model Keyword {
+  id        Int      @id @default(autoincrement())
+  term      String   @unique
+  synonyms  String   // JSON array of synonyms
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("keywords")
 }
 
 model User {

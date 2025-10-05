@@ -9,7 +9,7 @@ import { PatientModule } from './patient/patient.module';
 import { ClinicModule } from './clinic/clinic.module';
 import { AppointmentModule } from './appointment/appointment.module';
 import { ReviewModule } from './review/review.module';
-import { ElasticsearchModule } from './elasticsearch/elasticsearch.module';
+// import { ElasticsearchModule } from './elasticsearch/elasticsearch.module';
 import { AiModule } from './ai/ai.module';
 import { CitiesModule } from './cities/cities.module';
 import { CountriesModule } from './countries/countries.module';
@@ -20,16 +20,19 @@ import { NavItemsModule } from './nav-items/nav-items.module';
 import { PrescriptionMedicineModule } from './prescription-medicine/prescription-medicine.module';
 import { RefreshTokenModule } from './refresh-token/refresh-token.module';
 import { UserModule } from './user/user.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    ThrottlerModule.forRoot([{
-      ttl: 60000,
-      limit: 10,
-    }]),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 10,
+      },
+    ]),
     PrismaModule,
     AuthModule,
     AdminModule,
@@ -38,7 +41,7 @@ import { UserModule } from './user/user.module';
     ClinicModule,
     AppointmentModule,
     ReviewModule,
-    ElasticsearchModule,
+    // ElasticsearchModule,
     AiModule,
     CitiesModule,
     CountriesModule,
@@ -49,6 +52,7 @@ import { UserModule } from './user/user.module';
     PrescriptionMedicineModule,
     RefreshTokenModule,
     UserModule,
+    SearchModule,
   ],
 })
 export class AppModule {}

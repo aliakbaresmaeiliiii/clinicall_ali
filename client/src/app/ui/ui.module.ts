@@ -39,11 +39,11 @@ import { GetDoctorApointmentComponent } from './get-doctor-apointment/get-doctor
 import { AppScrollProgressBarComponent } from './header/app-scroll-progress-bar/app-scroll-progress-bar.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
+import { MedicalProjectsComponent } from './medical-projects/medical-projects.component';
 import { MediicAppointmentComponent } from './mediic-appointment/mediic-appointment.component';
 import { MenuComponent } from './mobile/menu/menu.component';
 import { ServicesDoctorComponent } from './services-doctor/services-doctor.component';
 import { ServicesComponent } from './services/services.component';
-import { SupportComponent } from './support/support.component';
 import { CardInfoComponent } from './shared-ui/components/card-info/card-info.component';
 import { SharedUiModule } from './shared-ui/shared-ui.module';
 import { SliderComponent } from './slider/slider.component';
@@ -58,9 +58,9 @@ import { SuggestionsSkinHairComponent } from './suggestions-skin-hair/suggestion
 import { SuggestionsUrologyTipsComponent } from './suggestions-urology-tips/suggestions-urology-tips.component';
 import { SuggestionsComponent } from './suggestions/suggestions.component';
 import { SuggustionsServiceComponent } from './suggustions-service/suggustions-service.component';
+import { SupportComponent } from './support/support.component';
 import { UserReviewsOfClinicAliComponent } from './user-reviews-of-clinic-ali/user-reviews-of-clinic-ali.component';
 import { YoursDoctorComponent } from './yours-doctor/yours-doctor.component';
-import { MedicalProjectsComponent } from './medical-projects/medical-projects.component';
 
 const routes: Routes = [
   {
@@ -183,7 +183,7 @@ const routes: Routes = [
     ToBooleanPipe,
     SharedModule,
     ChatbotComponent,
-    GoogleMapComponent
+    GoogleMapComponent,
   ],
   exports: [BlogComponent, MatToolbarModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

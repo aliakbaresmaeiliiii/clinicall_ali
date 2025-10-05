@@ -1,8 +1,8 @@
-import { 
-  Injectable, 
-  UnauthorizedException, 
+import {
+  Injectable,
+  UnauthorizedException,
   BadRequestException,
-  NotFoundException 
+  NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
@@ -88,7 +88,9 @@ export class AuthService {
 
     // Check if password is set
     if (!patient.password) {
-      throw new BadRequestException('Password not set. Please set your password first.');
+      throw new BadRequestException(
+        'Password not set. Please set your password first.',
+      );
     }
 
     const isPasswordValid = await bcrypt.compare(password, patient.password);
@@ -101,20 +103,22 @@ export class AuthService {
   }
 
   async login(user: any, userType: string) {
-    const payload = { 
-      email: user.email, 
-      sub: user.id, 
-      userType: userType 
+    const payload = {
+      email: user.email,
+      sub: user.id,
+      userType: userType,
     };
-    
+
     const accessToken = this.jwtService.sign(payload, {
       secret: this.configService.get<string>('JWT_SECRET_ACCESS_TOKEN'),
-      expiresIn: this.configService.get<string>('JWT_ACCESS_TOKEN_EXPIRED') || '1d',
+      expiresIn:
+        this.configService.get<string>('JWT_ACCESS_TOKEN_EXPIRED') || '1d',
     });
 
     const refreshToken = this.jwtService.sign(payload, {
       secret: this.configService.get<string>('JWT_SECRET_REFRESH_TOKEN'),
-      expiresIn: this.configService.get<string>('JWT_REFRESH_TOKEN_EXPIRED') || '7d',
+      expiresIn:
+        this.configService.get<string>('JWT_REFRESH_TOKEN_EXPIRED') || '7d',
     });
 
     // Store refresh token in database
@@ -136,7 +140,6 @@ export class AuthService {
         userType: userType,
         isVerified: user.isVerified,
       },
-      
     };
   }
 
@@ -166,15 +169,16 @@ export class AuthService {
 
       // Generate new access token
       const newAccessToken = this.jwtService.sign(
-        { 
-          email: payload.email, 
-          sub: payload.sub, 
-          userType: payload.userType 
+        {
+          email: payload.email,
+          sub: payload.sub,
+          userType: payload.userType,
         },
         {
           secret: this.configService.get<string>('JWT_SECRET_ACCESS_TOKEN'),
-          expiresIn: this.configService.get<string>('JWT_ACCESS_TOKEN_EXPIRED') || '1d',
-        }
+          expiresIn:
+            this.configService.get<string>('JWT_ACCESS_TOKEN_EXPIRED') || '1d',
+        },
       );
 
       return {
@@ -196,7 +200,7 @@ export class AuthService {
 
   async registerClinic(registerClinicDto: RegisterClinicDto) {
     const { email, password, name, phone, address } = registerClinicDto;
-    
+
     // Check if clinic already exists
     const existingClinic = await this.prisma.clinic.findUnique({
       where: { email },
@@ -208,7 +212,7 @@ export class AuthService {
 
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
-    
+
     // Generate verification code - 4 characters with numbers and letters
     const verifyCode = this.generateVerificationCode();
 
@@ -232,7 +236,7 @@ export class AuthService {
 
   async registerPatient(registerPatientDto: RegisterPatientDto) {
     const { email } = registerPatientDto;
-    
+
     // Check if patient already exists
     const existingPatient = await this.prisma.patient.findUnique({
       where: { email },
@@ -251,7 +255,7 @@ export class AuthService {
         verifyCode,
       },
     });
-  
+
     // Send verification email
     await this.emailService.sendVerificationEmail(email, verifyCode);
 
@@ -275,7 +279,7 @@ export class AuthService {
 
     const updatedClinic = await this.prisma.clinic.update({
       where: { email },
-      data: { 
+      data: {
         isVerified: true,
         verifyCode: null,
       },
@@ -302,7 +306,7 @@ export class AuthService {
 
     const updatedPatient = await this.prisma.patient.update({
       where: { email },
-      data: { 
+      data: {
         isVerified: true,
         verifyCode: null,
       },
@@ -311,9 +315,12 @@ export class AuthService {
     return updatedPatient;
   }
 
-  async updatePatientProfile(patientId: number, updatePatientProfileDto: UpdatePatientProfileDto) {
+  async updatePatientProfile(
+    patientId: number,
+    updatePatientProfileDto: UpdatePatientProfileDto,
+  ) {
     const { password, ...otherData } = updatePatientProfileDto;
-    
+
     const updateData: any = { ...otherData };
 
     // Hash password if provided
@@ -358,8 +365,12 @@ export class AuthService {
     }
 
     // For email-only sign-in, we don't check password
-    const { password: _, verifyCode: __, ...patientWithoutSensitiveData } = patient;
-    
+    const {
+      password: _,
+      verifyCode: __,
+      ...patientWithoutSensitiveData
+    } = patient;
+
     return this.login(patientWithoutSensitiveData, 'patient');
   }
 

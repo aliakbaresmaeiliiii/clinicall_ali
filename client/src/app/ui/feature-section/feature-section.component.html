@@ -28,12 +28,121 @@
                   placeholder="Find doctors, clinics, or specializations..."
                   aria-label="Search healthcare providers"
                   matInput
-                  class="clean-search-input" />
+                  class="clean-search-input"
+                  [formControl]="searchControl"
+                  (focus)="onSearchFocus()"
+                  (blur)="onSearchBlur()" />
+                @if (searchControl.value) {
+                  <button class="clear-search-btn" aria-label="Clear search" (click)="clearSearch()">
+                    <span class="material-symbols-outlined">close</span>
+                  </button>
+                }
                 <button class="voice-search-btn" aria-label="Voice search">
                   <span class="material-symbols-outlined">mic</span>
                 </button>
               </div>
             </mat-form-field>
+
+            <!-- Search Suggestions Dropdown -->
+            @if (showSuggestions) {
+              <div class="search-suggestions-portal">
+                <!-- Loading State -->
+                @if (isSearching) {
+                  <div class="suggestion-item loading">
+                    <div class="loading-spinner"></div>
+                    <span>Searching...</span>
+                  </div>
+                }
+
+                <!-- Enhanced Search Results -->
+                @if (!isSearching && searchResults.length > 0) {
+                  <div class="suggestions-section">
+                    <div class="section-header">
+                      <span>Search Results</span>
+                      <span class="results-count">{{ searchResults.length }} found</span>
+                    </div>
+                    
+                    <!-- Group results by type -->
+                    @for (type of getGroupedResults(searchResults); track type.name) {
+                      <div class="result-group">
+                        <div class="group-header">
+                          <div class="group-icon" [style.background-color]="getTypeColor(type.name)">
+                            {{ getTypeIcon(type.name) }}
+                          </div>
+                          <div class="group-title">{{ getTypeDisplayName(type.name) }}</div>
+                          <div class="group-count">{{ type.results.length }}</div>
+                        </div>
+                        
+                        @for (result of type.results; track result.id) {
+                          <div class="suggestion-item enhanced" (click)="selectSearchResult(result)">
+                            <div class="result-icon" [style.background-color]="getTypeColor(result.type)">
+                              {{ result.icon }}
+                            </div>
+                            <div class="result-content">
+                              <div class="result-name">{{ result.name }}</div>
+                              @if (result.specialty) {
+                                <div class="result-specialty">{{ result.specialty }}</div>
+                              }
+                              @if (result.medicalCode) {
+                                <div class="result-medical-code">ID: {{ result.medicalCode }}</div>
+                              }
+                              <div class="result-description">{{ result.description || getDefaultDescription(result) }}</div>
+                              @if (result.rating) {
+                                <div class="result-rating">
+                                  <span class="stars">{{ getStarRating(result.rating) }}</span>
+                                  <span class="rating">{{ result.rating }}</span>
+                                </div>
+                              }
+                              @if (result.experience) {
+                                <div class="result-experience">
+                                  <span class="material-symbols-outlined">work</span>
+                                  {{ result.experience }} years experience
+                                </div>
+                              }
+                            </div>
+                            <div class="result-type-badge" [style.background-color]="getTypeColor(result.type)" [style.color]="'white'">
+                              {{ getTypeDisplayName(result.type) }}
+                            </div>
+                          </div>
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+
+                <!-- Popular Searches -->
+                @if (!isSearching && (!searchControl.value || searchResults.length === 0) && popularSearches.length > 0) {
+                  <div class="suggestions-section">
+                    <div class="section-header">Popular Searches</div>
+                    @for (result of popularSearches; track result.id) {
+                      <div class="suggestion-item" (click)="selectSearchResult(result)">
+                        <div class="result-icon" [style.background-color]="getTypeColor(result.type)">
+                          {{ result.icon }}
+                        </div>
+                        <div class="result-content">
+                          <div class="result-name">{{ result.name }}</div>
+                          <div class="result-description">{{ result.description }}</div>
+                        </div>
+                        <div class="result-type" [style.color]="getTypeColor(result.type)">
+                          {{ result.type | titlecase }}
+                        </div>
+                      </div>
+                    }
+                  </div>
+                }
+
+                <!-- No Results -->
+                @if (!isSearching && searchControl.value && searchControl.value.length > 0 && searchResults.length === 0) {
+                  <div class="no-results">
+                    <span class="material-symbols-outlined">search_off</span>
+                    <div class="no-results-text">
+                      <div class="no-results-title">No results found for "{{ searchControl.value }}"</div>
+                      <div class="no-results-subtitle">Try searching for doctors, specialties, or conditions</div>
+                    </div>
+                  </div>
+                }
+              </div>
+            }
           </div>
         </div>
 
@@ -41,7 +150,7 @@
           <button class="btn-primary" (click)="scrollToServices()">
             Explore Services
           </button>
-          <button class="btn-secondary">Book Appointment</button>
+          <button class="btn-secondary" routerLink="/doctors">Book Appointment</button>
         </div>
       </div>
       <div class="hero-visual" data-aos="fade-left" data-aos-delay="400">

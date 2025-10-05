@@ -17,7 +17,7 @@ async function bootstrap() {
     app.use((0, cookie_parser_1.default)());
     app.enableCors({
         origin: process.env.NODE_ENV === 'production'
-            ? (process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000'])
+            ? process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000']
             : true,
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
         credentials: true,

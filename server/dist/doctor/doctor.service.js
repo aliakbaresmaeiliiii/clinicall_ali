@@ -104,12 +104,12 @@ let DoctorService = class DoctorService {
         });
         let filteredDoctors = doctors;
         if (city) {
-            filteredDoctors = doctors.filter(doctor => doctor.addresses.some(address => address.country === 'Malaysia' &&
+            filteredDoctors = doctors.filter((doctor) => doctor.addresses.some((address) => address.country === 'Malaysia' &&
                 (address.addressLine1?.toLowerCase().includes(city.toLowerCase()) ||
                     address.addressLine2?.toLowerCase().includes(city.toLowerCase()))));
         }
         if (specialty) {
-            filteredDoctors = filteredDoctors.filter(doctor => {
+            filteredDoctors = filteredDoctors.filter((doctor) => {
                 const specialtyMap = {
                     1: 'General Practice',
                     2: 'Cardiology',

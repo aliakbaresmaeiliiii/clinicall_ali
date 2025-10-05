@@ -83,7 +83,6 @@ export class AuthService {
     return this.#http.post<any>(`${this.config}auth/doctor-register`, userData);
   }
   patientSignIn(userData: PatientLoginRequest): Observable<PatientResponse> {
-    debugger
     return this.#http.post<PatientResponse>(
       `${this.config}auth/patient-sign-in`,
       userData

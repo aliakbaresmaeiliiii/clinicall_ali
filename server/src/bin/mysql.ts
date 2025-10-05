@@ -1,7 +1,7 @@
-import * as dotenv from "dotenv";
-import { ResultSetHeader, RowDataPacket } from "mysql2";
-import * as mysql from "mysql2/promise";
-import { PoolConnection } from "mysql2/promise";
+import * as dotenv from 'dotenv';
+import { ResultSetHeader, RowDataPacket } from 'mysql2';
+import * as mysql from 'mysql2/promise';
+import { PoolConnection } from 'mysql2/promise';
 
 dotenv.config();
 const coreSchema = process.env.DB_DATABASE;
@@ -15,11 +15,11 @@ const pool = mysql.createPool({
   database: process.env.DB_DATABASE,
   connectionLimit: 50,
   queueLimit: 0,
-  charset: "utf8",
+  charset: 'utf8',
   timezone: process.env.DB_TIMEZONE,
 });
 
-pool.on("connection", (connection: PoolConnection): void => {
+pool.on('connection', (connection: PoolConnection): void => {
   connection.config.namedPlaceholders = true;
 });
 
@@ -32,7 +32,7 @@ export async function query<T extends RowDataPacket[] | ResultSetHeader | any>(
     nestTables?: boolean;
     values?: any[] | any;
   } = {},
-  attempt: number = 0
+  attempt: number = 0,
 ): Promise<T> {
   const useExternalConnection = Boolean(options.connection);
   const connection: PoolConnection =

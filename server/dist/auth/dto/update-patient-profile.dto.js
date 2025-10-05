@@ -66,7 +66,10 @@ __decorate([
 ], UpdatePatientProfileDto.prototype, "age", void 0);
 __decorate([
     (0, class_validator_1.IsOptional)(),
-    (0, swagger_1.ApiProperty)({ example: 'Single', enum: ['Single', 'Married', 'Divorced', 'Widowed'] }),
+    (0, swagger_1.ApiProperty)({
+        example: 'Single',
+        enum: ['Single', 'Married', 'Divorced', 'Widowed'],
+    }),
     (0, class_validator_1.IsEnum)(['Single', 'Married', 'Divorced', 'Widowed']),
     __metadata("design:type", String)
 ], UpdatePatientProfileDto.prototype, "maritalStatus", void 0);

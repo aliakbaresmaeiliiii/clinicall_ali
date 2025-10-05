@@ -117,7 +117,7 @@ let AuthService = class AuthService {
         const payload = {
             email: user.email,
             sub: user.id,
-            userType: userType
+            userType: userType,
         };
         const accessToken = this.jwtService.sign(payload, {
             secret: this.configService.get('JWT_SECRET_ACCESS_TOKEN'),
@@ -166,7 +166,7 @@ let AuthService = class AuthService {
             const newAccessToken = this.jwtService.sign({
                 email: payload.email,
                 sub: payload.sub,
-                userType: payload.userType
+                userType: payload.userType,
             }, {
                 secret: this.configService.get('JWT_SECRET_ACCESS_TOKEN'),
                 expiresIn: this.configService.get('JWT_ACCESS_TOKEN_EXPIRED') || '1d',

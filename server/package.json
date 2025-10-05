@@ -24,6 +24,9 @@
   },
   "author": "Aliakbar_Esmaeili",
   "license": "ISC",
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "dependencies": {
     "@elastic/elasticsearch": "^8.17.1",
     "@google/generative-ai": "^0.24.0",

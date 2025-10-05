@@ -1,4 +1,11 @@
-import { IsEmail, IsString, IsInt, IsOptional, MinLength, IsEnum } from 'class-validator';
+import {
+  IsEmail,
+  IsString,
+  IsInt,
+  IsOptional,
+  MinLength,
+  IsEnum,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePatientDto {
@@ -43,7 +50,10 @@ export class CreatePatientDto {
   @IsEnum(['Male', 'Female', 'Other'])
   gender: string;
 
-  @ApiProperty({ example: 'Single', enum: ['Single', 'Married', 'Divorced', 'Widowed'] })
+  @ApiProperty({
+    example: 'Single',
+    enum: ['Single', 'Married', 'Divorced', 'Widowed'],
+  })
   @IsEnum(['Single', 'Married', 'Divorced', 'Widowed'])
   maritalStatus: string;
 
@@ -52,7 +62,11 @@ export class CreatePatientDto {
   @IsString()
   address?: string;
 
-  @ApiProperty({ example: 'A+', enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'], required: false })
+  @ApiProperty({
+    example: 'A+',
+    enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+    required: false,
+  })
   @IsOptional()
   @IsEnum(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'])
   bloodGroup?: string;

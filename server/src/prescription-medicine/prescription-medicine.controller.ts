@@ -1,5 +1,10 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { PrescriptionMedicineService } from './prescription-medicine.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
@@ -8,7 +13,9 @@ import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 export class PrescriptionMedicineController {
-  constructor(private readonly prescriptionMedicineService: PrescriptionMedicineService) {}
+  constructor(
+    private readonly prescriptionMedicineService: PrescriptionMedicineService,
+  ) {}
 
   @Get()
   @ApiOperation({ summary: 'Get all prescription medicines' })

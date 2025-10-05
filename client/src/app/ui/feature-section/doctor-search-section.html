@@ -1,0 +1,183 @@
+<!-- 
+  DOCTOR SEARCH SECTION COMPONENT
+  This component provides an advanced search interface for finding healthcare providers
+  including doctors, specialties, clinics, and medical conditions.
+-->
+
+<!-- Doctor Search Section -->
+<div
+  class="doctor-search-section"
+  data-aos="fade-up"
+  data-aos-delay="200">
+  
+  <!-- Section Header -->
+  <h3 class="search-title">Find Your Perfect Doctor</h3>
+  <p class="search-subtitle">Search by name, specialty, or location</p>
+  
+  <!-- Search Container -->
+  <div class="clean-search-container">
+    
+    <!-- Angular Material Form Field -->
+    <mat-form-field appearance="outline" class="w-full">
+      
+      <!-- Search Input Wrapper -->
+      <div class="search-input-wrapper">
+        
+        <!-- Search Icon -->
+        <span class="material-symbols-outlined search-icon">search</span>
+        
+        <!-- Search Input Field -->
+        <input
+          type="text"
+          placeholder="Find doctors, clinics, or specializations..."
+          aria-label="Search healthcare providers"
+          matInput
+          class="clean-search-input"
+          [formControl]="searchControl"
+          (focus)="onSearchFocus()"
+          (blur)="onSearchBlur()" />
+        
+        <!-- Clear Search Button (shown when input has value) -->
+        @if (searchControl.value) {
+          <button class="clear-search-btn" aria-label="Clear search" (click)="clearSearch()">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        }
+        
+        <!-- Voice Search Button (placeholder for future feature) -->
+        <button class="voice-search-btn" aria-label="Voice search">
+          <span class="material-symbols-outlined">mic</span>
+        </button>
+        
+      </div>
+    </mat-form-field>
+
+    <!-- Search Suggestions Dropdown -->
+    @if (showSuggestions) {
+      <div class="search-suggestions-portal">
+        
+        <!-- Loading State -->
+        @if (isSearching) {
+          <div class="suggestion-item loading">
+            <div class="loading-spinner"></div>
+            <span>Searching...</span>
+          </div>
+        }
+
+        <!-- Enhanced Search Results -->
+        @if (!isSearching && searchResults.length > 0) {
+          <div class="suggestions-section">
+            
+            <!-- Results Header -->
+            <div class="section-header">
+              <span>Search Results</span>
+              <span class="results-count">{{ searchResults.length }} found</span>
+            </div>
+            
+            <!-- Group results by type (doctors, specialties, conditions, clinics) -->
+            @for (type of getGroupedResults(searchResults); track type.name) {
+              <div class="result-group">
+                
+                <!-- Group Header -->
+                <div class="group-header">
+                  <div class="group-icon" [style.background-color]="getTypeColor(type.name)">
+                    {{ getTypeIcon(type.name) }}
+                  </div>
+                  <div class="group-title">{{ getTypeDisplayName(type.name) }}</div>
+                  <div class="group-count">{{ type.results.length }}</div>
+                </div>
+                
+                <!-- Individual Results in Group -->
+                @for (result of type.results; track result.id) {
+                  <div class="suggestion-item enhanced" (click)="selectSearchResult(result)">
+                    
+                    <!-- Result Icon with Type Color -->
+                    <div class="result-icon" [style.background-color]="getTypeColor(result.type)">
+                      {{ result.icon }}
+                    </div>
+                    
+                    <!-- Result Content -->
+                    <div class="result-content">
+                      
+                      <!-- Primary Information -->
+                      <div class="result-name">{{ result.name }}</div>
+                      
+                      <!-- Specialty (for doctors) -->
+                      @if (result.specialty) {
+                        <div class="result-specialty">{{ result.specialty }}</div>
+                      }
+                      
+                      <!-- Medical Code/ID -->
+                      @if (result.medicalCode) {
+                        <div class="result-medical-code">ID: {{ result.medicalCode }}</div>
+                      }
+                      
+                      <!-- Description -->
+                      <div class="result-description">{{ result.description || getDefaultDescription(result) }}</div>
+                      
+                      <!-- Rating (for doctors) -->
+                      @if (result.rating) {
+                        <div class="result-rating">
+                          <span class="stars">{{ getStarRating(result.rating) }}</span>
+                          <span class="rating">{{ result.rating }}</span>
+                        </div>
+                      }
+                      
+                      <!-- Experience (for doctors) -->
+                      @if (result.experience) {
+                        <div class="result-experience">
+                          <span class="material-symbols-outlined">work</span>
+                          {{ result.experience }} years experience
+                        </div>
+                      }
+                      
+                    </div>
+                    
+                    <!-- Type Badge -->
+                    <div class="result-type-badge" [style.background-color]="getTypeColor(result.type)" [style.color]="'white'">
+                      {{ getTypeDisplayName(result.type) }}
+                    </div>
+                    
+                  </div>
+                }
+              </div>
+            }
+          </div>
+        }
+
+        <!-- Popular Searches (shown when no search query or no results) -->
+        @if (!isSearching && (!searchControl.value || searchResults.length === 0) && popularSearches.length > 0) {
+          <div class="suggestions-section">
+            <div class="section-header">Popular Searches</div>
+            @for (result of popularSearches; track result.id) {
+              <div class="suggestion-item" (click)="selectSearchResult(result)">
+                <div class="result-icon" [style.background-color]="getTypeColor(result.type)">
+                  {{ result.icon }}
+                </div>
+                <div class="result-content">
+                  <div class="result-name">{{ result.name }}</div>
+                  <div class="result-description">{{ result.description }}</div>
+                </div>
+                <div class="result-type" [style.color]="getTypeColor(result.type)">
+                  {{ result.type | titlecase }}
+                </div>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- No Results State -->
+        @if (!isSearching && searchControl.value && searchControl.value.length > 0 && searchResults.length === 0) {
+          <div class="no-results">
+            <span class="material-symbols-outlined">search_off</span>
+            <div class="no-results-text">
+              <div class="no-results-title">No results found for "{{ searchControl.value }}"</div>
+              <div class="no-results-subtitle">Try searching for doctors, specialties, or conditions</div>
+            </div>
+          </div>
+        }
+        
+      </div>
+    }
+  </div>
+</div>

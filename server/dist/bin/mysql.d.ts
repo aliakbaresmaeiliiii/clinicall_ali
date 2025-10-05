@@ -1,6 +1,6 @@
-import { ResultSetHeader, RowDataPacket } from "mysql2";
-import * as mysql from "mysql2/promise";
-import { PoolConnection } from "mysql2/promise";
+import { ResultSetHeader, RowDataPacket } from 'mysql2';
+import * as mysql from 'mysql2/promise';
+import { PoolConnection } from 'mysql2/promise';
 declare const coreSchema: string;
 export { ResultSetHeader, RowDataPacket, coreSchema };
 declare const pool: mysql.Pool;

@@ -146,6 +146,13 @@ export class HeaderComponent {
   filteredOptions!: Observable<any>;
   searchVisible = true;
 
+  // New Search Functionality
+  searchControl = new FormControl('');
+  showSuggestions = false;
+  isSearching = false;
+  searchResults: any[] = [];
+  popularSearches: any[] = [];
+
   // Search Section
 
   private lastScrollPosition = 0;
@@ -327,10 +334,71 @@ export class HeaderComponent {
     //   window.addEventListener('storage', this.handleStorageChange.bind(this));
     // }
     // this.loadUserData()
+
+    // Setup search functionality
+    this.setupSearch();
+  }
+
+  setupSearch(): void {
+    this.searchControl.valueChanges.pipe(
+      debounceTime(300)
+    ).subscribe(value => {
+      if (value && value.length > 0) {
+        this.performSearch(value);
+      } else {
+        this.searchResults = [];
+        this.isSearching = false;
+      }
+    });
+  }
+
+  performSearch(query: string): void {
+    this.isSearching = true;
+    
+    // Simulate search results
+    setTimeout(() => {
+      this.searchResults = [
+        {
+          id: 1,
+          name: 'Dr. James Wilson',
+          type: 'doctor',
+          specialty: 'Dentist',
+          description: 'Specializes in cosmetic dentistry and dental implants',
+          rating: '4.9',
+          icon: '👨‍⚕️'
+        },
+        {
+          id: 2,
+          name: 'Dentistry',
+          type: 'specialty',
+          description: 'Oral health and dental care specialists',
+          icon: '🦷'
+        },
+        {
+          id: 3,
+          name: 'Dental Care Center',
+          type: 'clinic',
+          description: 'Modern dental clinic with advanced equipment',
+          icon: '🏥'
+        },
+        {
+          id: 4,
+          name: 'Cavity',
+          type: 'condition',
+          description: 'Tooth decay requiring dental treatment',
+          icon: '🦷'
+        }
+      ].filter(item => 
+        item.name.toLowerCase().includes(query.toLowerCase()) ||
+        (item.specialty && item.specialty.toLowerCase().includes(query.toLowerCase())) ||
+        item.description.toLowerCase().includes(query.toLowerCase())
+      );
+      
+      this.isSearching = false;
+    }, 500);
   }
 
   loadUserData(): void {
-    debugger;
     if (typeof localStorage !== 'undefined') {
       const getStoreItem = localStorage.getItem('userData');
       if (getStoreItem) {
@@ -438,6 +506,91 @@ export class HeaderComponent {
   loginDoctor() {
     this.router.navigate(['doctors/request']);
   }
+
+  // Search Methods
+  onSearchFocus(): void {
+    this.showSuggestions = true;
+    this.loadPopularSearches();
+  }
+
+  onSearchBlur(): void {
+    // Delay hiding to allow for click events
+    setTimeout(() => {
+      this.showSuggestions = false;
+    }, 200);
+  }
+
+  clearSearch(): void {
+    this.searchControl.setValue('');
+    this.searchResults = [];
+    this.showSuggestions = false;
+  }
+
+  selectSearchResult(result: any): void {
+    this.searchControl.setValue(result.name);
+    this.showSuggestions = false;
+    
+    // Navigate based on result type
+    switch (result.type) {
+      case 'doctor':
+        this.router.navigate(['/doctors'], { queryParams: { search: result.name } });
+        break;
+      case 'specialty':
+        this.router.navigate(['/services'], { queryParams: { specialty: result.name } });
+        break;
+      case 'clinic':
+        this.router.navigate(['/clinics'], { queryParams: { search: result.name } });
+        break;
+      case 'condition':
+        this.router.navigate(['/services'], { queryParams: { condition: result.name } });
+        break;
+    }
+  }
+
+  getTypeColor(type: string): string {
+    const colors: { [key: string]: string } = {
+      doctor: '#4f46e5',
+      specialty: '#10b981',
+      clinic: '#f59e0b',
+      condition: '#ef4444'
+    };
+    return colors[type] || '#6b7280';
+  }
+
+  loadPopularSearches(): void {
+    this.popularSearches = [
+      {
+        id: 1,
+        name: 'Dentistry',
+        type: 'specialty',
+        description: 'Oral health and dental care specialists',
+        icon: '🦷'
+      },
+      {
+        id: 2,
+        name: 'Cardiology',
+        type: 'specialty',
+        description: 'Heart and cardiovascular specialists',
+        icon: '❤️'
+      },
+      {
+        id: 3,
+        name: 'Dermatology',
+        type: 'specialty',
+        description: 'Skin, hair, and nail specialists',
+        icon: '🧴'
+      },
+      {
+        id: 4,
+        name: 'Dr. Sarah Johnson',
+        type: 'doctor',
+        description: 'Cardiologist with 15 years experience',
+        rating: '4.9',
+        icon: '👩‍⚕️'
+      }
+    ];
+  }
+
   ngOnDestroy(): void {
     if (typeof window !== 'undefined') {
       window.removeEventListener('scroll', this.onWindowScroll.bind(this));

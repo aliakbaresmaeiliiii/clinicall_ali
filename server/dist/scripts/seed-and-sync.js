@@ -1,45 +1,3 @@
-"use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.main = main;
-const client_1 = require("@prisma/client");
-const syncDoctors_1 = require("./syncDoctors");
-const elasticsearch_service_1 = require("../elasticsearch/elasticsearch.service");
-const bcrypt = __importStar(require("bcrypt"));
-const prisma = new client_1.PrismaClient();
-const esService = new elasticsearch_service_1.ElasticsearchService();
 const malaysianCities = [
     { name: 'Kuala Lumpur', state: 'Federal Territory' },
     { name: 'Petaling Jaya', state: 'Selangor' },
@@ -93,20 +51,84 @@ const services = [
 ];
 const malaysianFirstNames = {
     male: [
-        'Ahmad', 'Mohammad', 'Muhammad', 'Abdul', 'Ali', 'Hassan', 'Ibrahim', 'Ismail',
-        'Kamal', 'Rahman', 'Zainal', 'Farid', 'Hafiz', 'Rizal', 'Syed', 'Wan', 'Azman',
-        'Firdaus', 'Hakim', 'Johan', 'Khalid', 'Luqman', 'Nazri', 'Osman', 'Rashid'
+        'Ahmad',
+        'Mohammad',
+        'Muhammad',
+        'Abdul',
+        'Ali',
+        'Hassan',
+        'Ibrahim',
+        'Ismail',
+        'Kamal',
+        'Rahman',
+        'Zainal',
+        'Farid',
+        'Hafiz',
+        'Rizal',
+        'Syed',
+        'Wan',
+        'Azman',
+        'Firdaus',
+        'Hakim',
+        'Johan',
+        'Khalid',
+        'Luqman',
+        'Nazri',
+        'Osman',
+        'Rashid',
     ],
     female: [
-        'Aishah', 'Fatimah', 'Zainab', 'Nurul', 'Siti', 'Mariam', 'Rohani', 'Salma',
-        'Yasmin', 'Zahra', 'Amina', 'Farah', 'Hana', 'Intan', 'Jasmine', 'Khadijah',
-        'Laila', 'Maimunah', 'Nor', 'Rahmah', 'Sofia', 'Tengku', 'Umi', 'Wan'
+        'Aishah',
+        'Fatimah',
+        'Zainab',
+        'Nurul',
+        'Siti',
+        'Mariam',
+        'Rohani',
+        'Salma',
+        'Yasmin',
+        'Zahra',
+        'Amina',
+        'Farah',
+        'Hana',
+        'Intan',
+        'Jasmine',
+        'Khadijah',
+        'Laila',
+        'Maimunah',
+        'Nor',
+        'Rahmah',
+        'Sofia',
+        'Tengku',
+        'Umi',
+        'Wan',
     ],
     lastNames: [
-        'Abdullah', 'Ali', 'Hassan', 'Ibrahim', 'Ismail', 'Mohammad', 'Rahman',
-        'Salleh', 'Yusof', 'Zainal', 'Ahmad', 'Bakar', 'Chin', 'Kumar', 'Lee', 'Lim',
-        'Ng', 'Tan', 'Wong', 'Goh', 'Teh', 'Ong', 'Chan', 'Cheah'
-    ]
+        'Abdullah',
+        'Ali',
+        'Hassan',
+        'Ibrahim',
+        'Ismail',
+        'Mohammad',
+        'Rahman',
+        'Salleh',
+        'Yusof',
+        'Zainal',
+        'Ahmad',
+        'Bakar',
+        'Chin',
+        'Kumar',
+        'Lee',
+        'Lim',
+        'Ng',
+        'Tan',
+        'Wong',
+        'Goh',
+        'Teh',
+        'Ong',
+        'Chan',
+        'Cheah',
+    ],
 };
 function generateMalaysianDoctors(count) {
     const doctors = [];
@@ -137,194 +159,5 @@ function generateMalaysianDoctors(count) {
         });
     }
     return doctors;
-}
-async function runSeed() {
-    console.log('Starting database seed...');
-    const patient1 = await prisma.patient.create({
-        data: {
-            email: 'patient1@example.com',
-            firstName: 'John',
-            lastName: 'Doe',
-            phone: '+1234567890',
-            isVerified: true,
-        },
-    });
-    const patient2 = await prisma.patient.create({
-        data: {
-            email: 'patient2@example.com',
-            firstName: 'Jane',
-            lastName: 'Smith',
-            phone: '+1234567891',
-            isVerified: true,
-        },
-    });
-    const hashedPassword = await bcrypt.hash('password123', 10);
-    const clinic = await prisma.clinic.create({
-        data: {
-            name: 'Kuala Lumpur General Hospital',
-            email: 'klgh@medical.my',
-            password: hashedPassword,
-            phone: '+60312345678',
-            address: 'Jalan Pahang, 53000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur',
-            description: 'Leading government hospital in Kuala Lumpur providing comprehensive healthcare services',
-            isVerified: true,
-        },
-    });
-    const clinic2 = await prisma.clinic.create({
-        data: {
-            name: 'Penang Medical Center',
-            email: 'penangmc@medical.my',
-            password: hashedPassword,
-            phone: '+6049876543',
-            address: 'Jalan Macalister, 10450 George Town, Penang',
-            description: 'Private medical center specializing in various medical specialties',
-            isVerified: true,
-        },
-    });
-    const malaysianDoctors = generateMalaysianDoctors(100);
-    console.log('Creating 100 Malaysian doctors...');
-    for (const doctorData of malaysianDoctors) {
-        const doctor = await prisma.doctor.create({
-            data: {
-                firstName: doctorData.firstName,
-                lastName: doctorData.lastName,
-                gender: doctorData.gender,
-                age: doctorData.age,
-                email: doctorData.email,
-                password: hashedPassword,
-                phone: doctorData.phone,
-                medicalCode: doctorData.medicalCode,
-                specialityId: doctorData.specialityId,
-                serviceId: doctorData.serviceId,
-                profileImg: doctorData.profileImg,
-            },
-        });
-        await prisma.address.create({
-            data: {
-                addressLine1: `${Math.floor(Math.random() * 100) + 1} Jalan ${doctorData.lastName}`,
-                addressLine2: `Medical Center ${Math.floor(Math.random() * 5) + 1}`,
-                cityId: Math.floor(Math.random() * 100) + 1,
-                zipcode: `${Math.floor(Math.random() * 90000) + 10000}`,
-                country: 'Malaysia',
-                latitude: (Math.random() * 4) + 1 + '',
-                longitude: (Math.random() * 4) + 100 + '',
-                isPrimary: true,
-                doctorId: doctor.id,
-            },
-        });
-        await prisma.clinicDoctor.create({
-            data: {
-                clinicId: Math.random() > 0.5 ? clinic.id : clinic2.id,
-                doctorId: doctor.id,
-            },
-        });
-    }
-    console.log('Sample data created:');
-    console.log('- Patients:', patient1.email, patient2.email);
-    console.log('- Clinics:', clinic.email, clinic2.email);
-    console.log(`- ${malaysianDoctors.length} Malaysian doctors created`);
-    console.log('- Specialties:', specialties.map(s => s.name).join(', '));
-    console.log('- Services:', services.map(s => s.name).join(', '));
-}
-async function createElasticsearchIndex() {
-    try {
-        const indexExists = await esService.ping();
-        if (!indexExists) {
-            console.log('❌ Elasticsearch is not running or not accessible');
-            return false;
-        }
-        const indexBody = {
-            mappings: {
-                properties: {
-                    id: { type: 'integer' },
-                    first_name: { type: 'text' },
-                    last_name: { type: 'text' },
-                    name: { type: 'text' },
-                    gender: { type: 'keyword' },
-                    age: { type: 'integer' },
-                    email: { type: 'keyword' },
-                    phone: { type: 'keyword' },
-                    profile_img: { type: 'keyword' },
-                    medical_code: { type: 'keyword' },
-                    click_count: { type: 'integer' },
-                    is_liked: { type: 'boolean' },
-                    average_rating: { type: 'float' },
-                    total_ratings: { type: 'integer' },
-                    speciality_id: { type: 'integer' },
-                    service_id: { type: 'integer' },
-                    addresses: {
-                        type: 'nested',
-                        properties: {
-                            address_line1: { type: 'text' },
-                            address_line2: { type: 'text' },
-                            city_id: { type: 'integer' },
-                            zipcode: { type: 'keyword' },
-                            country: { type: 'keyword' },
-                            latitude: { type: 'keyword' },
-                            longitude: { type: 'keyword' },
-                            is_primary: { type: 'boolean' }
-                        }
-                    },
-                    clinics: {
-                        type: 'nested',
-                        properties: {
-                            id: { type: 'integer' },
-                            name: { type: 'text' },
-                            address: { type: 'text' }
-                        }
-                    },
-                    reviews_count: { type: 'integer' },
-                    created_at: { type: 'date' },
-                    updated_at: { type: 'date' }
-                }
-            }
-        };
-        try {
-            await esService.createIndex('doctors', indexBody);
-            console.log('✅ Doctors index created successfully');
-        }
-        catch (error) {
-            if (error.message.includes('resource_already_exists_exception')) {
-                console.log('✅ Doctors index already exists');
-            }
-            else {
-                throw error;
-            }
-        }
-        return true;
-    }
-    catch (error) {
-        console.error('❌ Error creating Elasticsearch index:', error);
-        return false;
-    }
-}
-async function main() {
-    console.log('🚀 Starting seed and sync process...');
-    try {
-        console.log('📊 Checking Elasticsearch connection...');
-        const esAvailable = await createElasticsearchIndex();
-        if (!esAvailable) {
-            console.log('⚠️  Elasticsearch not available, continuing with database seed only');
-        }
-        console.log('🌱 Running database seed...');
-        await runSeed();
-        if (esAvailable) {
-            console.log('🔄 Syncing doctors to Elasticsearch...');
-            await (0, syncDoctors_1.syncDoctorsToElasticsearch)();
-        }
-        console.log('🎉 Seed and sync process completed successfully!');
-    }
-    catch (error) {
-        console.error('❌ Seed and sync process failed:', error);
-        process.exit(1);
-    }
-    finally {
-        await prisma.$disconnect();
-    }
-}
-if (require.main === module) {
-    main()
-        .catch(console.error)
-        .finally(() => process.exit(0));
 }
 //# sourceMappingURL=seed-and-sync.js.map

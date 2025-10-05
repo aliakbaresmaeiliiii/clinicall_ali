@@ -47,7 +47,7 @@ export class AppointmentService {
 
   async update(id: number, updateAppointmentDto: UpdateAppointmentDto) {
     const appointment = await this.findOne(id);
-    
+
     return this.prisma.appointment.update({
       where: { id },
       data: updateAppointmentDto,
@@ -61,7 +61,7 @@ export class AppointmentService {
 
   async remove(id: number) {
     const appointment = await this.findOne(id);
-    
+
     return this.prisma.appointment.delete({
       where: { id },
     });

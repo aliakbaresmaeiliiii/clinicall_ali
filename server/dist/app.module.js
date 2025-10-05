@@ -18,7 +18,6 @@ const patient_module_1 = require("./patient/patient.module");
 const clinic_module_1 = require("./clinic/clinic.module");
 const appointment_module_1 = require("./appointment/appointment.module");
 const review_module_1 = require("./review/review.module");
-const elasticsearch_module_1 = require("./elasticsearch/elasticsearch.module");
 const ai_module_1 = require("./ai/ai.module");
 const cities_module_1 = require("./cities/cities.module");
 const countries_module_1 = require("./countries/countries.module");
@@ -29,6 +28,7 @@ const nav_items_module_1 = require("./nav-items/nav-items.module");
 const prescription_medicine_module_1 = require("./prescription-medicine/prescription-medicine.module");
 const refresh_token_module_1 = require("./refresh-token/refresh-token.module");
 const user_module_1 = require("./user/user.module");
+const search_module_1 = require("./search/search.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -38,10 +38,12 @@ exports.AppModule = AppModule = __decorate([
             config_1.ConfigModule.forRoot({
                 isGlobal: true,
             }),
-            throttler_1.ThrottlerModule.forRoot([{
+            throttler_1.ThrottlerModule.forRoot([
+                {
                     ttl: 60000,
                     limit: 10,
-                }]),
+                },
+            ]),
             prisma_module_1.PrismaModule,
             auth_module_1.AuthModule,
             admin_module_1.AdminModule,
@@ -50,7 +52,6 @@ exports.AppModule = AppModule = __decorate([
             clinic_module_1.ClinicModule,
             appointment_module_1.AppointmentModule,
             review_module_1.ReviewModule,
-            elasticsearch_module_1.ElasticsearchModule,
             ai_module_1.AiModule,
             cities_module_1.CitiesModule,
             countries_module_1.CountriesModule,
@@ -61,6 +62,7 @@ exports.AppModule = AppModule = __decorate([
             prescription_medicine_module_1.PrescriptionMedicineModule,
             refresh_token_module_1.RefreshTokenModule,
             user_module_1.UserModule,
+            search_module_1.SearchModule,
         ],
     })
 ], AppModule);

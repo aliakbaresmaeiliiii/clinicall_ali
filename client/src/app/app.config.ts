@@ -11,6 +11,7 @@ import {
   withFetch,
   withInterceptorsFromDi
 } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';

@@ -26,26 +26,27 @@ const malaysianCities = [
 
 // Medical specialties with Malaysian context
 const specialties = [
-  { id: 1, name: 'General Practice', code: 'GP' },
-  { id: 2, name: 'Cardiology', code: 'CARD' },
-  { id: 3, name: 'Dermatology', code: 'DERM' },
-  { id: 4, name: 'Pediatrics', code: 'PED' },
-  { id: 5, name: 'Obstetrics & Gynecology', code: 'OBGYN' },
-  { id: 6, name: 'Orthopedics', code: 'ORTHO' },
-  { id: 7, name: 'Neurology', code: 'NEURO' },
-  { id: 8, name: 'Psychiatry', code: 'PSY' },
-  { id: 9, name: 'Ophthalmology', code: 'OPHTH' },
-  { id: 10, name: 'ENT (Ear, Nose, Throat)', code: 'ENT' },
-  { id: 11, name: 'Gastroenterology', code: 'GASTRO' },
-  { id: 12, name: 'Urology', code: 'URO' },
-  { id: 13, name: 'Endocrinology', code: 'ENDO' },
-  { id: 14, name: 'Rheumatology', code: 'RHEUM' },
-  { id: 15, name: 'Oncology', code: 'ONCO' },
-  { id: 16, name: 'Nephrology', code: 'NEPH' },
-  { id: 17, name: 'Pulmonology', code: 'PULM' },
-  { id: 18, name: 'Hematology', code: 'HEMA' },
-  { id: 19, name: 'Infectious Diseases', code: 'ID' },
-  { id: 20, name: 'Emergency Medicine', code: 'EM' },
+  { id: 1, name: 'General Practice', code: 'GP', description: 'Primary healthcare and general medical services' },
+  { id: 2, name: 'Cardiology', code: 'CARD', description: 'Heart and cardiovascular system specialists' },
+  { id: 3, name: 'Dermatology', code: 'DERM', description: 'Skin, hair, and nail conditions specialists' },
+  { id: 4, name: 'Pediatrics', code: 'PED', description: 'Child healthcare and development specialists' },
+  { id: 5, name: 'Obstetrics & Gynecology', code: 'OBGYN', description: 'Women\'s health and reproductive system specialists' },
+  { id: 6, name: 'Orthopedics', code: 'ORTHO', description: 'Bones, joints, and musculoskeletal system specialists' },
+  { id: 7, name: 'Neurology', code: 'NEURO', description: 'Brain and nervous system specialists' },
+  { id: 8, name: 'Psychiatry', code: 'PSY', description: 'Mental health and behavioral disorders specialists' },
+  { id: 9, name: 'Ophthalmology', code: 'OPHTH', description: 'Eye and vision care specialists' },
+  { id: 10, name: 'ENT (Ear, Nose, Throat)', code: 'ENT', description: 'Ear, nose, throat, and head/neck specialists' },
+  { id: 11, name: 'Gastroenterology', code: 'GASTRO', description: 'Digestive system and gastrointestinal specialists' },
+  { id: 12, name: 'Urology', code: 'URO', description: 'Urinary system and male reproductive health specialists' },
+  { id: 13, name: 'Endocrinology', code: 'ENDO', description: 'Hormone and metabolic disorders specialists' },
+  { id: 14, name: 'Rheumatology', code: 'RHEUM', description: 'Arthritis and autoimmune diseases specialists' },
+  { id: 15, name: 'Oncology', code: 'ONCO', description: 'Cancer diagnosis and treatment specialists' },
+  { id: 16, name: 'Nephrology', code: 'NEPH', description: 'Kidney diseases and renal system specialists' },
+  { id: 17, name: 'Pulmonology', code: 'PULM', description: 'Lung and respiratory system specialists' },
+  { id: 18, name: 'Hematology', code: 'HEMA', description: 'Blood disorders and blood-related diseases specialists' },
+  { id: 19, name: 'Infectious Diseases', code: 'ID', description: 'Infectious diseases and tropical medicine specialists' },
+  { id: 20, name: 'Emergency Medicine', code: 'EM', description: 'Emergency and critical care specialists' },
+  { id: 21, name: 'Dentistry', code: 'DENT', description: 'Oral health, teeth, and dental care specialists' },
 ];
 
 // Medical services
@@ -119,6 +120,40 @@ function generateMalaysianDoctors(count: number) {
 
 async function main() {
   console.log('Starting database seed...');
+
+  // Create specialties
+  console.log('Creating specialties...');
+  for (const specialtyData of specialties) {
+    await prisma.specialty.upsert({
+      where: { id: specialtyData.id },
+      update: {
+        name: specialtyData.name,
+        description: specialtyData.description,
+      },
+      create: {
+        id: specialtyData.id,
+        name: specialtyData.name,
+        description: specialtyData.description,
+      },
+    });
+  }
+
+  // Create services
+  console.log('Creating services...');
+  for (const serviceData of services) {
+    await prisma.service.upsert({
+      where: { id: serviceData.id },
+      update: {
+        name: serviceData.name,
+        specialtyId: 1, // Associate with General Practice by default
+      },
+      create: {
+        id: serviceData.id,
+        name: serviceData.name,
+        specialtyId: 1, // Associate with General Practice by default
+      },
+    });
+  }
 
   // Create sample patients
   const patient1 = await prisma.patient.create({

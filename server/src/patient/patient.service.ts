@@ -42,7 +42,7 @@ export class PatientService {
 
   async update(id: number, updatePatientDto: UpdatePatientDto) {
     const patient = await this.findOne(id);
-    
+
     return this.prisma.patient.update({
       where: { id },
       data: updatePatientDto,
@@ -51,7 +51,7 @@ export class PatientService {
 
   async remove(id: number) {
     const patient = await this.findOne(id);
-    
+
     return this.prisma.patient.delete({
       where: { id },
     });

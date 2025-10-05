@@ -1,3 +1,5 @@
+// ElasticSearch Service - Commented out for future use when Elasticsearch is purchased
+/*
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
@@ -21,6 +23,7 @@ export class ElasticSearchService {
       );
   }
 }
+*/
 // searchDoctors(query: string): Observable<DoctorsDTO[]> {
 //   return this.#http.get<DoctorsDTO[]>(
 //     `${this.config}doctors/search?query=${query}`

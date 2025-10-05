@@ -90,20 +90,84 @@ const services = [
 ];
 const malaysianFirstNames = {
     male: [
-        'Ahmad', 'Mohammad', 'Muhammad', 'Abdul', 'Ali', 'Hassan', 'Ibrahim', 'Ismail',
-        'Kamal', 'Rahman', 'Zainal', 'Farid', 'Hafiz', 'Rizal', 'Syed', 'Wan', 'Azman',
-        'Firdaus', 'Hakim', 'Johan', 'Khalid', 'Luqman', 'Nazri', 'Osman', 'Rashid'
+        'Ahmad',
+        'Mohammad',
+        'Muhammad',
+        'Abdul',
+        'Ali',
+        'Hassan',
+        'Ibrahim',
+        'Ismail',
+        'Kamal',
+        'Rahman',
+        'Zainal',
+        'Farid',
+        'Hafiz',
+        'Rizal',
+        'Syed',
+        'Wan',
+        'Azman',
+        'Firdaus',
+        'Hakim',
+        'Johan',
+        'Khalid',
+        'Luqman',
+        'Nazri',
+        'Osman',
+        'Rashid',
     ],
     female: [
-        'Aishah', 'Fatimah', 'Zainab', 'Nurul', 'Siti', 'Mariam', 'Rohani', 'Salma',
-        'Yasmin', 'Zahra', 'Amina', 'Farah', 'Hana', 'Intan', 'Jasmine', 'Khadijah',
-        'Laila', 'Maimunah', 'Nor', 'Rahmah', 'Sofia', 'Tengku', 'Umi', 'Wan'
+        'Aishah',
+        'Fatimah',
+        'Zainab',
+        'Nurul',
+        'Siti',
+        'Mariam',
+        'Rohani',
+        'Salma',
+        'Yasmin',
+        'Zahra',
+        'Amina',
+        'Farah',
+        'Hana',
+        'Intan',
+        'Jasmine',
+        'Khadijah',
+        'Laila',
+        'Maimunah',
+        'Nor',
+        'Rahmah',
+        'Sofia',
+        'Tengku',
+        'Umi',
+        'Wan',
     ],
     lastNames: [
-        'Abdullah', 'Ali', 'Hassan', 'Ibrahim', 'Ismail', 'Mohammad', 'Rahman',
-        'Salleh', 'Yusof', 'Zainal', 'Ahmad', 'Bakar', 'Chin', 'Kumar', 'Lee', 'Lim',
-        'Ng', 'Tan', 'Wong', 'Goh', 'Teh', 'Ong', 'Chan', 'Cheah'
-    ]
+        'Abdullah',
+        'Ali',
+        'Hassan',
+        'Ibrahim',
+        'Ismail',
+        'Mohammad',
+        'Rahman',
+        'Salleh',
+        'Yusof',
+        'Zainal',
+        'Ahmad',
+        'Bakar',
+        'Chin',
+        'Kumar',
+        'Lee',
+        'Lim',
+        'Ng',
+        'Tan',
+        'Wong',
+        'Goh',
+        'Teh',
+        'Ong',
+        'Chan',
+        'Cheah',
+    ],
 };
 function generateMalaysianDoctors(count) {
     const doctors = [];
@@ -218,8 +282,8 @@ async function main() {
                         cityId: Math.floor(Math.random() * 100) + 1,
                         zipcode: `${Math.floor(Math.random() * 90000) + 10000}`,
                         country: 'Malaysia',
-                        latitude: (Math.random() * 4) + 1 + '',
-                        longitude: (Math.random() * 4) + 100 + '',
+                        latitude: Math.random() * 4 + 1 + '',
+                        longitude: Math.random() * 4 + 100 + '',
                         isPrimary: true,
                         doctorId: doctor.id,
                     },
@@ -245,8 +309,8 @@ async function main() {
         console.log('- Patients:', patient1.email, patient2.email);
         console.log('- Clinics:', clinic.email, clinic2.email);
         console.log(`- ${doctorsCreated} Malaysian doctors created`);
-        console.log('- Specialties:', specialties.map(s => s.name).join(', '));
-        console.log('- Services:', services.map(s => s.name).join(', '));
+        console.log('- Specialties:', specialties.map((s) => s.name).join(', '));
+        console.log('- Services:', services.map((s) => s.name).join(', '));
         console.log('\n📋 Search Examples:');
         console.log('- GET /doctors?name=Ahmad&specialty=Cardiology&city=Kuala Lumpur');
         console.log('- GET /doctors?gender=Female&specialityId=5');

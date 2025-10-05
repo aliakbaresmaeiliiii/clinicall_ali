@@ -31,7 +31,7 @@ export class AdminService {
 
   async update(id: number, updateAdminDto: UpdateAdminDto) {
     const admin = await this.findOne(id);
-    
+
     return this.prisma.admin.update({
       where: { id },
       data: updateAdminDto,
@@ -40,7 +40,7 @@ export class AdminService {
 
   async remove(id: number) {
     const admin = await this.findOne(id);
-    
+
     return this.prisma.admin.delete({
       where: { id },
     });

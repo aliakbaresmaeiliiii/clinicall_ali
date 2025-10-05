@@ -1,10 +1,10 @@
-import { PrismaClient } from '@prisma/client';
-import { syncDoctorsToElasticsearch } from './syncDoctors';
-import { ElasticsearchService } from '../elasticsearch/elasticsearch.service';
-import * as bcrypt from 'bcrypt';
+// import { PrismaClient } from '@prisma/client';
+// import { syncDoctorsToElasticsearch } from './syncDoctors';
+// import { ElasticsearchService } from '../elasticsearch/elasticsearch.service';
+// import * as bcrypt from 'bcrypt';
 
-const prisma = new PrismaClient();
-const esService = new ElasticsearchService();
+// const prisma = new PrismaClient();
+// const esService = new ElasticsearchService();
 
 // Malaysian cities and states
 const malaysianCities = [
@@ -66,39 +66,113 @@ const services = [
 // Common Malaysian names
 const malaysianFirstNames = {
   male: [
-    'Ahmad', 'Mohammad', 'Muhammad', 'Abdul', 'Ali', 'Hassan', 'Ibrahim', 'Ismail', 
-    'Kamal', 'Rahman', 'Zainal', 'Farid', 'Hafiz', 'Rizal', 'Syed', 'Wan', 'Azman',
-    'Firdaus', 'Hakim', 'Johan', 'Khalid', 'Luqman', 'Nazri', 'Osman', 'Rashid'
+    'Ahmad',
+    'Mohammad',
+    'Muhammad',
+    'Abdul',
+    'Ali',
+    'Hassan',
+    'Ibrahim',
+    'Ismail',
+    'Kamal',
+    'Rahman',
+    'Zainal',
+    'Farid',
+    'Hafiz',
+    'Rizal',
+    'Syed',
+    'Wan',
+    'Azman',
+    'Firdaus',
+    'Hakim',
+    'Johan',
+    'Khalid',
+    'Luqman',
+    'Nazri',
+    'Osman',
+    'Rashid',
   ],
   female: [
-    'Aishah', 'Fatimah', 'Zainab', 'Nurul', 'Siti', 'Mariam', 'Rohani', 'Salma',
-    'Yasmin', 'Zahra', 'Amina', 'Farah', 'Hana', 'Intan', 'Jasmine', 'Khadijah',
-    'Laila', 'Maimunah', 'Nor', 'Rahmah', 'Sofia', 'Tengku', 'Umi', 'Wan'
+    'Aishah',
+    'Fatimah',
+    'Zainab',
+    'Nurul',
+    'Siti',
+    'Mariam',
+    'Rohani',
+    'Salma',
+    'Yasmin',
+    'Zahra',
+    'Amina',
+    'Farah',
+    'Hana',
+    'Intan',
+    'Jasmine',
+    'Khadijah',
+    'Laila',
+    'Maimunah',
+    'Nor',
+    'Rahmah',
+    'Sofia',
+    'Tengku',
+    'Umi',
+    'Wan',
   ],
   lastNames: [
-    'Abdullah', 'Ali', 'Hassan', 'Ibrahim', 'Ismail', 'Mohammad', 'Rahman',
-    'Salleh', 'Yusof', 'Zainal', 'Ahmad', 'Bakar', 'Chin', 'Kumar', 'Lee', 'Lim',
-    'Ng', 'Tan', 'Wong', 'Goh', 'Teh', 'Ong', 'Chan', 'Cheah'
-  ]
+    'Abdullah',
+    'Ali',
+    'Hassan',
+    'Ibrahim',
+    'Ismail',
+    'Mohammad',
+    'Rahman',
+    'Salleh',
+    'Yusof',
+    'Zainal',
+    'Ahmad',
+    'Bakar',
+    'Chin',
+    'Kumar',
+    'Lee',
+    'Lim',
+    'Ng',
+    'Tan',
+    'Wong',
+    'Goh',
+    'Teh',
+    'Ong',
+    'Chan',
+    'Cheah',
+  ],
 };
 
 // Generate random Malaysian doctor data
 function generateMalaysianDoctors(count: number) {
   const doctors = [];
-  
+
   for (let i = 1; i <= count; i++) {
     const gender = Math.random() > 0.5 ? 'Male' : 'Female';
-    const firstName = gender === 'Male' 
-      ? malaysianFirstNames.male[Math.floor(Math.random() * malaysianFirstNames.male.length)]
-      : malaysianFirstNames.female[Math.floor(Math.random() * malaysianFirstNames.female.length)];
-    
-    const lastName = malaysianFirstNames.lastNames[Math.floor(Math.random() * malaysianFirstNames.lastNames.length)];
-    
-    const specialty = specialties[Math.floor(Math.random() * specialties.length)];
+    const firstName =
+      gender === 'Male'
+        ? malaysianFirstNames.male[
+            Math.floor(Math.random() * malaysianFirstNames.male.length)
+          ]
+        : malaysianFirstNames.female[
+            Math.floor(Math.random() * malaysianFirstNames.female.length)
+          ];
+
+    const lastName =
+      malaysianFirstNames.lastNames[
+        Math.floor(Math.random() * malaysianFirstNames.lastNames.length)
+      ];
+
+    const specialty =
+      specialties[Math.floor(Math.random() * specialties.length)];
     const service = services[Math.floor(Math.random() * services.length)];
-    
-    const city = malaysianCities[Math.floor(Math.random() * malaysianCities.length)];
-    
+
+    const city =
+      malaysianCities[Math.floor(Math.random() * malaysianCities.length)];
+
     doctors.push({
       firstName: `Dr. ${firstName}`,
       lastName: lastName,
@@ -116,228 +190,232 @@ function generateMalaysianDoctors(count: number) {
       serviceName: service.name,
     });
   }
-  
+
   return doctors;
 }
 
-async function runSeed() {
-  console.log('Starting database seed...');
+// async function runSeed() {
+//   console.log('Starting database seed...');
 
-  // Create sample patients
-  const patient1 = await prisma.patient.create({
-    data: {
-      email: 'patient1@example.com',
-      firstName: 'John',
-      lastName: 'Doe',
-      phone: '+1234567890',
-      isVerified: true,
-    },
-  });
+//   // Create sample patients
+//   const patient1 = await prisma.patient.create({
+//     data: {
+//       email: 'patient1@example.com',
+//       firstName: 'John',
+//       lastName: 'Doe',
+//       phone: '+1234567890',
+//       isVerified: true,
+//     },
+//   });
 
-  const patient2 = await prisma.patient.create({
-    data: {
-      email: 'patient2@example.com',
-      firstName: 'Jane',
-      lastName: 'Smith',
-      phone: '+1234567891',
-      isVerified: true,
-    },
-  });
+//   const patient2 = await prisma.patient.create({
+//     data: {
+//       email: 'patient2@example.com',
+//       firstName: 'Jane',
+//       lastName: 'Smith',
+//       phone: '+1234567891',
+//       isVerified: true,
+//     },
+//   });
 
-  // Create sample clinic
-  const hashedPassword = await bcrypt.hash('password123', 10);
-  const clinic = await prisma.clinic.create({
-    data: {
-      name: 'Kuala Lumpur General Hospital',
-      email: 'klgh@medical.my',
-      password: hashedPassword,
-      phone: '+60312345678',
-      address: 'Jalan Pahang, 53000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur',
-      description: 'Leading government hospital in Kuala Lumpur providing comprehensive healthcare services',
-      isVerified: true,
-    },
-  });
+//   // Create sample clinic
+//   const hashedPassword = await bcrypt.hash('password123', 10);
+//   const clinic = await prisma.clinic.create({
+//     data: {
+//       name: 'Kuala Lumpur General Hospital',
+//       email: 'klgh@medical.my',
+//       password: hashedPassword,
+//       phone: '+60312345678',
+//       address:
+//         'Jalan Pahang, 53000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur',
+//       description:
+//         'Leading government hospital in Kuala Lumpur providing comprehensive healthcare services',
+//       isVerified: true,
+//     },
+//   });
 
-  const clinic2 = await prisma.clinic.create({
-    data: {
-      name: 'Penang Medical Center',
-      email: 'penangmc@medical.my',
-      password: hashedPassword,
-      phone: '+6049876543',
-      address: 'Jalan Macalister, 10450 George Town, Penang',
-      description: 'Private medical center specializing in various medical specialties',
-      isVerified: true,
-    },
-  });
+//   const clinic2 = await prisma.clinic.create({
+//     data: {
+//       name: 'Penang Medical Center',
+//       email: 'penangmc@medical.my',
+//       password: hashedPassword,
+//       phone: '+6049876543',
+//       address: 'Jalan Macalister, 10450 George Town, Penang',
+//       description:
+//         'Private medical center specializing in various medical specialties',
+//       isVerified: true,
+//     },
+//   });
 
-  // Generate 100 Malaysian doctors
-  const malaysianDoctors = generateMalaysianDoctors(100);
-  
-  console.log('Creating 100 Malaysian doctors...');
-  
-  for (const doctorData of malaysianDoctors) {
-    const doctor = await prisma.doctor.create({
-      data: {
-        firstName: doctorData.firstName,
-        lastName: doctorData.lastName,
-        gender: doctorData.gender,
-        age: doctorData.age,
-        email: doctorData.email,
-        password: hashedPassword,
-        phone: doctorData.phone,
-        medicalCode: doctorData.medicalCode,
-        specialityId: doctorData.specialityId,
-        serviceId: doctorData.serviceId,
-        profileImg: doctorData.profileImg,
-      },
-    });
+//   // Generate 100 Malaysian doctors
+//   const malaysianDoctors = generateMalaysianDoctors(100);
 
-    // Create address for doctor
-    await prisma.address.create({
-      data: {
-        addressLine1: `${Math.floor(Math.random() * 100) + 1} Jalan ${doctorData.lastName}`,
-        addressLine2: `Medical Center ${Math.floor(Math.random() * 5) + 1}`,
-        cityId: Math.floor(Math.random() * 100) + 1, // Using random city ID
-        zipcode: `${Math.floor(Math.random() * 90000) + 10000}`,
-        country: 'Malaysia',
-        latitude: (Math.random() * 4) + 1 + '', // Rough Malaysia coordinates
-        longitude: (Math.random() * 4) + 100 + '',
-        isPrimary: true,
-        doctorId: doctor.id,
-      },
-    });
+//   console.log('Creating 100 Malaysian doctors...');
 
-    // Associate doctor with clinic
-    await prisma.clinicDoctor.create({
-      data: {
-        clinicId: Math.random() > 0.5 ? clinic.id : clinic2.id,
-        doctorId: doctor.id,
-      },
-    });
-  }
+//   for (const doctorData of malaysianDoctors) {
+//     const doctor = await prisma.doctor.create({
+//       data: {
+//         firstName: doctorData.firstName,
+//         lastName: doctorData.lastName,
+//         gender: doctorData.gender,
+//         age: doctorData.age,
+//         email: doctorData.email,
+//         password: hashedPassword,
+//         phone: doctorData.phone,
+//         medicalCode: doctorData.medicalCode,
+//         specialityId: doctorData.specialityId,
+//         serviceId: doctorData.serviceId,
+//         profileImg: doctorData.profileImg,
+//       },
+//     });
 
-  console.log('Sample data created:');
-  console.log('- Patients:', patient1.email, patient2.email);
-  console.log('- Clinics:', clinic.email, clinic2.email);
-  console.log(`- ${malaysianDoctors.length} Malaysian doctors created`);
-  console.log('- Specialties:', specialties.map(s => s.name).join(', '));
-  console.log('- Services:', services.map(s => s.name).join(', '));
-}
+//     // Create address for doctor
+//     await prisma.address.create({
+//       data: {
+//         addressLine1: `${Math.floor(Math.random() * 100) + 1} Jalan ${doctorData.lastName}`,
+//         addressLine2: `Medical Center ${Math.floor(Math.random() * 5) + 1}`,
+//         cityId: Math.floor(Math.random() * 100) + 1, // Using random city ID
+//         zipcode: `${Math.floor(Math.random() * 90000) + 10000}`,
+//         country: 'Malaysia',
+//         latitude: Math.random() * 4 + 1 + '', // Rough Malaysia coordinates
+//         longitude: Math.random() * 4 + 100 + '',
+//         isPrimary: true,
+//         doctorId: doctor.id,
+//       },
+//     });
 
-async function createElasticsearchIndex() {
-  try {
-    // Check if doctors index exists, create if not
-    const indexExists = await esService.ping();
-    if (!indexExists) {
-      console.log('❌ Elasticsearch is not running or not accessible');
-      return false;
-    }
+//     // Associate doctor with clinic
+//     await prisma.clinicDoctor.create({
+//       data: {
+//         clinicId: Math.random() > 0.5 ? clinic.id : clinic2.id,
+//         doctorId: doctor.id,
+//       },
+//     });
+//   }
 
-    // Create doctors index with proper mapping
-    const indexBody = {
-      mappings: {
-        properties: {
-          id: { type: 'integer' },
-          first_name: { type: 'text' },
-          last_name: { type: 'text' },
-          name: { type: 'text' },
-          gender: { type: 'keyword' },
-          age: { type: 'integer' },
-          email: { type: 'keyword' },
-          phone: { type: 'keyword' },
-          profile_img: { type: 'keyword' },
-          medical_code: { type: 'keyword' },
-          click_count: { type: 'integer' },
-          is_liked: { type: 'boolean' },
-          average_rating: { type: 'float' },
-          total_ratings: { type: 'integer' },
-          speciality_id: { type: 'integer' },
-          service_id: { type: 'integer' },
-          addresses: {
-            type: 'nested',
-            properties: {
-              address_line1: { type: 'text' },
-              address_line2: { type: 'text' },
-              city_id: { type: 'integer' },
-              zipcode: { type: 'keyword' },
-              country: { type: 'keyword' },
-              latitude: { type: 'keyword' },
-              longitude: { type: 'keyword' },
-              is_primary: { type: 'boolean' }
-            }
-          },
-          clinics: {
-            type: 'nested',
-            properties: {
-              id: { type: 'integer' },
-              name: { type: 'text' },
-              address: { type: 'text' }
-            }
-          },
-          reviews_count: { type: 'integer' },
-          created_at: { type: 'date' },
-          updated_at: { type: 'date' }
-        }
-      }
-    };
+//   console.log('Sample data created:');
+//   console.log('- Patients:', patient1.email, patient2.email);
+//   console.log('- Clinics:', clinic.email, clinic2.email);
+//   console.log(`- ${malaysianDoctors.length} Malaysian doctors created`);
+//   console.log('- Specialties:', specialties.map((s) => s.name).join(', '));
+//   console.log('- Services:', services.map((s) => s.name).join(', '));
+// }
 
-    try {
-      await esService.createIndex('doctors', indexBody);
-      console.log('✅ Doctors index created successfully');
-    } catch (error) {
-      if (error.message.includes('resource_already_exists_exception')) {
-        console.log('✅ Doctors index already exists');
-      } else {
-        throw error;
-      }
-    }
+// async function createElasticsearchIndex() {
+//   try {
+//     // Check if doctors index exists, create if not
+//     const indexExists = await esService.ping();
+//     if (!indexExists) {
+//       console.log('❌ Elasticsearch is not running or not accessible');
+//       return false;
+//     }
 
-    return true;
-  } catch (error) {
-    console.error('❌ Error creating Elasticsearch index:', error);
-    return false;
-  }
-}
+//     // Create doctors index with proper mapping
+//     const indexBody = {
+//       mappings: {
+//         properties: {
+//           id: { type: 'integer' },
+//           first_name: { type: 'text' },
+//           last_name: { type: 'text' },
+//           name: { type: 'text' },
+//           gender: { type: 'keyword' },
+//           age: { type: 'integer' },
+//           email: { type: 'keyword' },
+//           phone: { type: 'keyword' },
+//           profile_img: { type: 'keyword' },
+//           medical_code: { type: 'keyword' },
+//           click_count: { type: 'integer' },
+//           is_liked: { type: 'boolean' },
+//           average_rating: { type: 'float' },
+//           total_ratings: { type: 'integer' },
+//           speciality_id: { type: 'integer' },
+//           service_id: { type: 'integer' },
+//           addresses: {
+//             type: 'nested',
+//             properties: {
+//               address_line1: { type: 'text' },
+//               address_line2: { type: 'text' },
+//               city_id: { type: 'integer' },
+//               zipcode: { type: 'keyword' },
+//               country: { type: 'keyword' },
+//               latitude: { type: 'keyword' },
+//               longitude: { type: 'keyword' },
+//               is_primary: { type: 'boolean' },
+//             },
+//           },
+//           clinics: {
+//             type: 'nested',
+//             properties: {
+//               id: { type: 'integer' },
+//               name: { type: 'text' },
+//               address: { type: 'text' },
+//             },
+//           },
+//           reviews_count: { type: 'integer' },
+//           created_at: { type: 'date' },
+//           updated_at: { type: 'date' },
+//         },
+//       },
+//     };
 
-async function main() {
-  console.log('🚀 Starting seed and sync process...');
+//     try {
+//       await esService.createIndex('doctors', indexBody);
+//       console.log('✅ Doctors index created successfully');
+//     } catch (error) {
+//       if (error.message.includes('resource_already_exists_exception')) {
+//         console.log('✅ Doctors index already exists');
+//       } else {
+//         throw error;
+//       }
+//     }
 
-  try {
-    // Step 1: Check if Elasticsearch is available
-    console.log('📊 Checking Elasticsearch connection...');
-    const esAvailable = await createElasticsearchIndex();
-    
-    if (!esAvailable) {
-      console.log('⚠️  Elasticsearch not available, continuing with database seed only');
-    }
+//     return true;
+//   } catch (error) {
+//     console.error('❌ Error creating Elasticsearch index:', error);
+//     return false;
+//   }
+// }
 
-    // Step 2: Run the seed data
-    console.log('🌱 Running database seed...');
-    
-    // Run the seed function directly
-    await runSeed();
+// async function main() {
+//   console.log('🚀 Starting seed and sync process...');
 
-    // Step 3: Sync to Elasticsearch if available
-    if (esAvailable) {
-      console.log('🔄 Syncing doctors to Elasticsearch...');
-      await syncDoctorsToElasticsearch();
-    }
+//   try {
+//     // Step 1: Check if Elasticsearch is available
+//     console.log('📊 Checking Elasticsearch connection...');
+//     const esAvailable = await createElasticsearchIndex();
 
-    console.log('🎉 Seed and sync process completed successfully!');
-    
-  } catch (error) {
-    console.error('❌ Seed and sync process failed:', error);
-    process.exit(1);
-  } finally {
-    await prisma.$disconnect();
-  }
-}
+//     if (!esAvailable) {
+//       console.log(
+//         '⚠️  Elasticsearch not available, continuing with database seed only',
+//       );
+//     }
 
-// Run the script
-if (require.main === module) {
-  main()
-    .catch(console.error)
-    .finally(() => process.exit(0));
-}
+//     // Step 2: Run the seed data
+//     console.log('🌱 Running database seed...');
 
-export { main };
+//     // Run the seed function directly
+//     await runSeed();
+
+//     // Step 3: Sync to Elasticsearch if available
+//     if (esAvailable) {
+//       console.log('🔄 Syncing doctors to Elasticsearch...');
+//       await syncDoctorsToElasticsearch();
+//     }
+
+//     console.log('🎉 Seed and sync process completed successfully!');
+//   } catch (error) {
+//     console.error('❌ Seed and sync process failed:', error);
+//     process.exit(1);
+//   } finally {
+//     await prisma.$disconnect();
+//   }
+// }
+
+// // Run the script
+// if (require.main === module) {
+//   main()
+//     .catch(console.error)
+//     .finally(() => process.exit(0));
+// }
+
+// export { main };

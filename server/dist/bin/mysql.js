@@ -48,11 +48,11 @@ const pool = mysql.createPool({
     database: process.env.DB_DATABASE,
     connectionLimit: 50,
     queueLimit: 0,
-    charset: "utf8",
+    charset: 'utf8',
     timezone: process.env.DB_TIMEZONE,
 });
 exports.pool = pool;
-pool.on("connection", (connection) => {
+pool.on('connection', (connection) => {
     connection.config.namedPlaceholders = true;
 });
 async function query(sql, options = {}, attempt = 0) {

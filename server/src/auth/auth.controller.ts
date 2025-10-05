@@ -1,15 +1,20 @@
-import { 
-  Body, 
-  Controller, 
-  Post, 
-  Request, 
-  UseGuards, 
-  Get, 
+import {
+  Body,
+  Controller,
+  Post,
+  Request,
+  UseGuards,
+  Get,
   Put,
   Param,
-  ParseIntPipe 
+  ParseIntPipe,
 } from '@nestjs/common';
-import { ApiOperation, ApiResponse, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { RegisterClinicDto } from './dto/register-clinic.dto';
 import { RegisterPatientDto } from './dto/register-patient.dto';
@@ -33,7 +38,7 @@ export class AuthController {
     return {
       statusCode: 201,
       message: 'Clinic registered successfully',
-      data: result
+      data: result,
     };
   }
 
@@ -46,7 +51,7 @@ export class AuthController {
     return {
       statusCode: 201,
       message: 'Patient registered successfully',
-      data: result
+      data: result,
     };
   }
 
@@ -78,7 +83,7 @@ export class AuthController {
     return {
       statusCode: 200,
       message: 'Login successful',
-      data: result
+      data: result,
     };
   }
 
@@ -92,7 +97,7 @@ export class AuthController {
     return {
       statusCode: 200,
       message: 'Login successful',
-      data: result
+      data: result,
     };
   }
 
@@ -101,11 +106,13 @@ export class AuthController {
   @ApiResponse({ status: 200, description: 'Login successful' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
   async patientSignIn(@Body() patientEmailSignInDto: PatientEmailSignInDto) {
-    const result = await this.authService.patientEmailSignIn(patientEmailSignInDto.email);
+    const result = await this.authService.patientEmailSignIn(
+      patientEmailSignInDto.email,
+    );
     return {
       statusCode: 200,
       message: 'Login successful',
-      data: result
+      data: result,
     };
   }
 
@@ -118,7 +125,7 @@ export class AuthController {
     return {
       statusCode: 200,
       message: 'Token refreshed successfully',
-      data: result
+      data: result,
     };
   }
 
@@ -131,7 +138,7 @@ export class AuthController {
     return {
       statusCode: 200,
       message: 'Logged out successfully',
-      data: result
+      data: result,
     };
   }
 
@@ -155,9 +162,12 @@ export class AuthController {
   @ApiResponse({ status: 404, description: 'Patient not found' })
   async updatePatientProfile(
     @Param('id', ParseIntPipe) patientId: number,
-    @Body() updatePatientProfileDto: UpdatePatientProfileDto
+    @Body() updatePatientProfileDto: UpdatePatientProfileDto,
   ) {
-    return this.authService.updatePatientProfile(patientId, updatePatientProfileDto);
+    return this.authService.updatePatientProfile(
+      patientId,
+      updatePatientProfileDto,
+    );
   }
 
   @Post('verify-recaptcha')

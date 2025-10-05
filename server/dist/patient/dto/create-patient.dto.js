@@ -67,7 +67,10 @@ __decorate([
     __metadata("design:type", String)
 ], CreatePatientDto.prototype, "gender", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'Single', enum: ['Single', 'Married', 'Divorced', 'Widowed'] }),
+    (0, swagger_1.ApiProperty)({
+        example: 'Single',
+        enum: ['Single', 'Married', 'Divorced', 'Widowed'],
+    }),
     (0, class_validator_1.IsEnum)(['Single', 'Married', 'Divorced', 'Widowed']),
     __metadata("design:type", String)
 ], CreatePatientDto.prototype, "maritalStatus", void 0);
@@ -78,7 +81,11 @@ __decorate([
     __metadata("design:type", String)
 ], CreatePatientDto.prototype, "address", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: 'A+', enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'], required: false }),
+    (0, swagger_1.ApiProperty)({
+        example: 'A+',
+        enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+        required: false,
+    }),
     (0, class_validator_1.IsOptional)(),
     (0, class_validator_1.IsEnum)(['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']),
     __metadata("design:type", String)

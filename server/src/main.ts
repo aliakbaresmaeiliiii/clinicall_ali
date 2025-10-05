@@ -16,9 +16,10 @@ async function bootstrap() {
 
   // CORS configuration
   app.enableCors({
-    origin: process.env.NODE_ENV === 'production' 
-      ? (process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000'])
-      : true, // Allow all origins in development
+    origin:
+      process.env.NODE_ENV === 'production'
+        ? process.env.ALLOWED_ORIGINS?.split(',') || ['http://localhost:3000']
+        : true, // Allow all origins in development
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
@@ -45,7 +46,9 @@ async function bootstrap() {
   const port = process.env.PORT || 8000;
   await app.listen(port);
   console.log(`🚀 Server is running on http://localhost:${port}`);
-  console.log(`📚 API Documentation available at http://localhost:${port}/api-docs`);
+  console.log(
+    `📚 API Documentation available at http://localhost:${port}/api-docs`,
+  );
 }
 
 bootstrap();

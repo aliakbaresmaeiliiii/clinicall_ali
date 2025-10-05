@@ -63,39 +63,113 @@ const services = [
 // Common Malaysian names
 const malaysianFirstNames = {
   male: [
-    'Ahmad', 'Mohammad', 'Muhammad', 'Abdul', 'Ali', 'Hassan', 'Ibrahim', 'Ismail', 
-    'Kamal', 'Rahman', 'Zainal', 'Farid', 'Hafiz', 'Rizal', 'Syed', 'Wan', 'Azman',
-    'Firdaus', 'Hakim', 'Johan', 'Khalid', 'Luqman', 'Nazri', 'Osman', 'Rashid'
+    'Ahmad',
+    'Mohammad',
+    'Muhammad',
+    'Abdul',
+    'Ali',
+    'Hassan',
+    'Ibrahim',
+    'Ismail',
+    'Kamal',
+    'Rahman',
+    'Zainal',
+    'Farid',
+    'Hafiz',
+    'Rizal',
+    'Syed',
+    'Wan',
+    'Azman',
+    'Firdaus',
+    'Hakim',
+    'Johan',
+    'Khalid',
+    'Luqman',
+    'Nazri',
+    'Osman',
+    'Rashid',
   ],
   female: [
-    'Aishah', 'Fatimah', 'Zainab', 'Nurul', 'Siti', 'Mariam', 'Rohani', 'Salma',
-    'Yasmin', 'Zahra', 'Amina', 'Farah', 'Hana', 'Intan', 'Jasmine', 'Khadijah',
-    'Laila', 'Maimunah', 'Nor', 'Rahmah', 'Sofia', 'Tengku', 'Umi', 'Wan'
+    'Aishah',
+    'Fatimah',
+    'Zainab',
+    'Nurul',
+    'Siti',
+    'Mariam',
+    'Rohani',
+    'Salma',
+    'Yasmin',
+    'Zahra',
+    'Amina',
+    'Farah',
+    'Hana',
+    'Intan',
+    'Jasmine',
+    'Khadijah',
+    'Laila',
+    'Maimunah',
+    'Nor',
+    'Rahmah',
+    'Sofia',
+    'Tengku',
+    'Umi',
+    'Wan',
   ],
   lastNames: [
-    'Abdullah', 'Ali', 'Hassan', 'Ibrahim', 'Ismail', 'Mohammad', 'Rahman',
-    'Salleh', 'Yusof', 'Zainal', 'Ahmad', 'Bakar', 'Chin', 'Kumar', 'Lee', 'Lim',
-    'Ng', 'Tan', 'Wong', 'Goh', 'Teh', 'Ong', 'Chan', 'Cheah'
-  ]
+    'Abdullah',
+    'Ali',
+    'Hassan',
+    'Ibrahim',
+    'Ismail',
+    'Mohammad',
+    'Rahman',
+    'Salleh',
+    'Yusof',
+    'Zainal',
+    'Ahmad',
+    'Bakar',
+    'Chin',
+    'Kumar',
+    'Lee',
+    'Lim',
+    'Ng',
+    'Tan',
+    'Wong',
+    'Goh',
+    'Teh',
+    'Ong',
+    'Chan',
+    'Cheah',
+  ],
 };
 
 // Generate random Malaysian doctor data
 function generateMalaysianDoctors(count: number) {
   const doctors = [];
-  
+
   for (let i = 1; i <= count; i++) {
     const gender = Math.random() > 0.5 ? 'Male' : 'Female';
-    const firstName = gender === 'Male' 
-      ? malaysianFirstNames.male[Math.floor(Math.random() * malaysianFirstNames.male.length)]
-      : malaysianFirstNames.female[Math.floor(Math.random() * malaysianFirstNames.female.length)];
-    
-    const lastName = malaysianFirstNames.lastNames[Math.floor(Math.random() * malaysianFirstNames.lastNames.length)];
-    
-    const specialty = specialties[Math.floor(Math.random() * specialties.length)];
+    const firstName =
+      gender === 'Male'
+        ? malaysianFirstNames.male[
+            Math.floor(Math.random() * malaysianFirstNames.male.length)
+          ]
+        : malaysianFirstNames.female[
+            Math.floor(Math.random() * malaysianFirstNames.female.length)
+          ];
+
+    const lastName =
+      malaysianFirstNames.lastNames[
+        Math.floor(Math.random() * malaysianFirstNames.lastNames.length)
+      ];
+
+    const specialty =
+      specialties[Math.floor(Math.random() * specialties.length)];
     const service = services[Math.floor(Math.random() * services.length)];
-    
-    const city = malaysianCities[Math.floor(Math.random() * malaysianCities.length)];
-    
+
+    const city =
+      malaysianCities[Math.floor(Math.random() * malaysianCities.length)];
+
     doctors.push({
       firstName: `Dr. ${firstName}`,
       lastName: lastName,
@@ -113,7 +187,7 @@ function generateMalaysianDoctors(count: number) {
       serviceName: service.name,
     });
   }
-  
+
   return doctors;
 }
 
@@ -150,8 +224,10 @@ async function main() {
         email: 'klgh@medical.my',
         password: hashedPassword,
         phone: '+60312345678',
-        address: 'Jalan Pahang, 53000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur',
-        description: 'Leading government hospital in Kuala Lumpur providing comprehensive healthcare services',
+        address:
+          'Jalan Pahang, 53000 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur',
+        description:
+          'Leading government hospital in Kuala Lumpur providing comprehensive healthcare services',
         isVerified: true,
       },
     });
@@ -163,16 +239,17 @@ async function main() {
         password: hashedPassword,
         phone: '+6049876543',
         address: 'Jalan Macalister, 10450 George Town, Penang',
-        description: 'Private medical center specializing in various medical specialties',
+        description:
+          'Private medical center specializing in various medical specialties',
         isVerified: true,
       },
     });
 
     // Generate 100 Malaysian doctors
     const malaysianDoctors = generateMalaysianDoctors(100);
-    
+
     console.log('Creating 100 Malaysian doctors...');
-    
+
     for (const doctorData of malaysianDoctors) {
       const doctor = await prisma.doctor.create({
         data: {
@@ -198,8 +275,8 @@ async function main() {
           cityId: Math.floor(Math.random() * 100) + 1, // Using random city ID
           zipcode: `${Math.floor(Math.random() * 90000) + 10000}`,
           country: 'Malaysia',
-          latitude: (Math.random() * 4) + 1 + '', // Rough Malaysia coordinates
-          longitude: (Math.random() * 4) + 100 + '',
+          latitude: Math.random() * 4 + 1 + '', // Rough Malaysia coordinates
+          longitude: Math.random() * 4 + 100 + '',
           isPrimary: true,
           doctorId: doctor.id,
         },
@@ -218,13 +295,14 @@ async function main() {
     console.log('- Patients:', patient1.email, patient2.email);
     console.log('- Clinics:', clinic.email, clinic2.email);
     console.log(`- ${malaysianDoctors.length} Malaysian doctors created`);
-    console.log('- Specialties:', specialties.map(s => s.name).join(', '));
-    console.log('- Services:', services.map(s => s.name).join(', '));
+    console.log('- Specialties:', specialties.map((s) => s.name).join(', '));
+    console.log('- Services:', services.map((s) => s.name).join(', '));
     console.log('\n📋 Search Examples:');
-    console.log('- GET /doctors?name=Ahmad&specialty=Cardiology&city=Kuala Lumpur');
+    console.log(
+      '- GET /doctors?name=Ahmad&specialty=Cardiology&city=Kuala Lumpur',
+    );
     console.log('- GET /doctors?gender=Female&specialityId=5');
     console.log('- GET /doctors?medicalCode=MYCARD');
-    
   } catch (error) {
     console.error('❌ Seed process failed:', error);
     process.exit(1);

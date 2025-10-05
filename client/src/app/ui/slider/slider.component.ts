@@ -24,6 +24,7 @@ import {
   distinctUntilChanged,
   finalize,
   interval,
+  map,
   Observable,
   of,
   switchMap,
@@ -31,7 +32,8 @@ import {
 } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { DoctorsService } from '../../modules/doctors/services/doctors.service';
-import { ElasticSearchService } from '../../shared/services/elastic-search.service';
+// import { ElasticSearchService } from '../../shared/services/elastic-search.service'; // Commented out for future Elasticsearch use
+import { SearchService } from '../feature-section/search.service'; // Using simple search service instead
 import { DoctorsDTO, ReviewsDTO } from '../../modules/doctors/models/doctors';
 import { User } from '../../core/auth/models/user';
 
@@ -75,7 +77,8 @@ export class SliderComponent implements OnInit {
   options: string[] = ['One', 'Two', 'Three'];
   filteredOptions!: Observable<any>;
   doctorService = inject(DoctorsService);
-  elasticSearchService = inject(ElasticSearchService);
+  // elasticSearchService = inject(ElasticSearchService); // Commented out for future Elasticsearch use
+  searchService = inject(SearchService); // Using simple search service instead
   searchControl = new FormControl('');
   selectedStore = signal<any>('');
   doctorResultLabel = signal<any>(0);
@@ -184,22 +187,38 @@ export class SliderComponent implements OnInit {
             // return of([]);
           }
           this.isLoading = true;
-          debugger;
-          return this.elasticSearchService.searchDoctors(trimedQuery).pipe(
+          // Using simple search service instead of Elasticsearch
+          return this.searchService.search(trimedQuery).pipe(
             finalize(() => (this.isLoading = false)),
+            map((searchResults: any[]) => {
+              // Transform search results to match the expected format
+              const doctors = searchResults.filter(result => result.type === 'doctor');
+              const clinics = searchResults.filter(result => result.type === 'clinic');
+              const specializations = searchResults.filter(result => result.type === 'specialty');
+              
+              return {
+                data: {
+                  doctors: doctors,
+                  clinics: clinics,
+                  services: [], // Empty for now, can be populated if needed
+                  specializations: specializations
+                }
+              };
+            }),
             catchError(() =>
               of({
-                doctors: [],
-                clinics: [],
-                services: [],
-                specializations: [],
+                data: {
+                  doctors: [],
+                  clinics: [],
+                  services: [],
+                  specializations: [],
+                }
               })
             )
           );
         })
       )
       .subscribe((res: any) => {
-        debugger;
         if (res) {
           const doctors =
             res.data.doctors?.map((doctor: any) => ({

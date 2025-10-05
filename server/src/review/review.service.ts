@@ -44,7 +44,7 @@ export class ReviewService {
 
   async update(id: number, updateReviewDto: UpdateReviewDto) {
     const review = await this.findOne(id);
-    
+
     return this.prisma.review.update({
       where: { id },
       data: updateReviewDto,
@@ -57,7 +57,7 @@ export class ReviewService {
 
   async remove(id: number) {
     const review = await this.findOne(id);
-    
+
     return this.prisma.review.delete({
       where: { id },
     });

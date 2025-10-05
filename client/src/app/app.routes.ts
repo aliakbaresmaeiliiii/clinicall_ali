@@ -7,6 +7,7 @@ export const routes: Routes = [
     path: '',
     loadChildren: () => import('./ui/ui.module').then(u => u.UiModule),
   },
+
   {
     path: 'auth',
     loadChildren: () =>
@@ -32,10 +33,10 @@ export const routes: Routes = [
   },
   {
     path: 'home',
-    redirectTo: ''
+    redirectTo: '',
   },
   {
     path: '**',
-    redirectTo: 'not-found'
-  }
+    redirectTo: 'not-found',
+  },
 ];

@@ -1,4 +1,10 @@
-import { IsString, MinLength, IsOptional, IsEnum, IsInt } from 'class-validator';
+import {
+  IsString,
+  MinLength,
+  IsOptional,
+  IsEnum,
+  IsInt,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class UpdatePatientProfileDto {
@@ -44,7 +50,10 @@ export class UpdatePatientProfileDto {
   age?: number;
 
   @IsOptional()
-  @ApiProperty({ example: 'Single', enum: ['Single', 'Married', 'Divorced', 'Widowed'] })
+  @ApiProperty({
+    example: 'Single',
+    enum: ['Single', 'Married', 'Divorced', 'Widowed'],
+  })
   @IsEnum(['Single', 'Married', 'Divorced', 'Widowed'])
   maritalStatus?: string;
 

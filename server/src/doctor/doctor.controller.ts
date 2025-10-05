@@ -1,5 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  Query,
+} from '@nestjs/common';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 import { DoctorService } from './doctor.service';
 import { CreateDoctorDto } from './dto/create-doctor.dto';
 import { UpdateDoctorDto } from './dto/update-doctor.dto';
@@ -25,14 +40,14 @@ export class DoctorController {
   @ApiResponse({ status: 200, description: 'List of doctors' })
   findAll(@Query() searchDto: SearchDoctorDto) {
     // If any search parameters are provided, use search method
-    const hasSearchParams = Object.values(searchDto).some(value => 
-      value !== undefined && value !== null && value !== ''
+    const hasSearchParams = Object.values(searchDto).some(
+      (value) => value !== undefined && value !== null && value !== '',
     );
-    
+
     if (hasSearchParams) {
       return this.doctorService.search(searchDto);
     }
-    
+
     return this.doctorService.findAll();
   }
 

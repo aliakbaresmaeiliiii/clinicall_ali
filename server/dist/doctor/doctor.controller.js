@@ -28,7 +28,7 @@ let DoctorController = class DoctorController {
         return this.doctorService.create(createDoctorDto);
     }
     findAll(searchDto) {
-        const hasSearchParams = Object.values(searchDto).some(value => value !== undefined && value !== null && value !== '');
+        const hasSearchParams = Object.values(searchDto).some((value) => value !== undefined && value !== null && value !== '');
         if (hasSearchParams) {
             return this.doctorService.search(searchDto);
         }

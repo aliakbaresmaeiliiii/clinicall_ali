@@ -43,7 +43,7 @@ export class DoctorService {
 
   async update(id: number, updateDoctorDto: UpdateDoctorDto) {
     const doctor = await this.findOne(id);
-    
+
     return this.prisma.doctor.update({
       where: { id },
       data: updateDoctorDto,
@@ -52,7 +52,7 @@ export class DoctorService {
 
   async remove(id: number) {
     const doctor = await this.findOne(id);
-    
+
     return this.prisma.doctor.delete({
       where: { id },
     });
@@ -128,12 +128,13 @@ export class DoctorService {
     // Filter by city if provided
     let filteredDoctors = doctors;
     if (city) {
-      filteredDoctors = doctors.filter(doctor =>
-        doctor.addresses.some(address =>
-          address.country === 'Malaysia' && 
-          (address.addressLine1?.toLowerCase().includes(city.toLowerCase()) ||
-           address.addressLine2?.toLowerCase().includes(city.toLowerCase()))
-        )
+      filteredDoctors = doctors.filter((doctor) =>
+        doctor.addresses.some(
+          (address) =>
+            address.country === 'Malaysia' &&
+            (address.addressLine1?.toLowerCase().includes(city.toLowerCase()) ||
+              address.addressLine2?.toLowerCase().includes(city.toLowerCase())),
+        ),
       );
     }
 
@@ -141,7 +142,7 @@ export class DoctorService {
     if (specialty) {
       // This would require a specialties table join, but for now we'll use the specialityId mapping
       // You can enhance this by creating a specialties table and joining with it
-      filteredDoctors = filteredDoctors.filter(doctor => {
+      filteredDoctors = filteredDoctors.filter((doctor) => {
         // Map specialityId to specialty names (you should create a proper specialties table)
         const specialtyMap = {
           1: 'General Practice',

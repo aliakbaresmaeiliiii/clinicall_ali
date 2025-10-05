@@ -16,18 +16,27 @@ export class EmailService {
       port: this.configService.get('SMTP_PORT', 587),
       secure: false, // true for 465, false for other ports
       auth: {
-
         user: this.configService.get('MAIL_USERNAME'),
         pass: this.configService.get('MAIL_PASSWORD'),
       },
     });
   }
 
-  async sendVerificationEmail(email: string, verifyCode: string, fullName?: string) {
+  async sendVerificationEmail(
+    email: string,
+    verifyCode: string,
+    fullName?: string,
+  ) {
     try {
       // Use different templates based on whether we have a name
       const templateName = fullName ? 'register.html' : 'verify-email.html';
-      const templatePath = path.join(process.cwd(), 'public', 'template', 'email', templateName);
+      const templatePath = path.join(
+        process.cwd(),
+        'public',
+        'template',
+        'email',
+        templateName,
+      );
       const templateContent = fs.readFileSync(templatePath, 'utf8');
 
       // Compile the template
@@ -62,10 +71,19 @@ export class EmailService {
     }
   }
 
-  async sendPasswordResetEmail(email: string, resetToken: string, fullName?: string) {
+  async sendPasswordResetEmail(
+    email: string,
+    resetToken: string,
+    fullName?: string,
+  ) {
     try {
       // Read the reset password template
-      const templatePath = path.join(process.cwd(), 'public', 'template', 'reset-password.html');
+      const templatePath = path.join(
+        process.cwd(),
+        'public',
+        'template',
+        'reset-password.html',
+      );
       const templateContent = fs.readFileSync(templatePath, 'utf8');
 
       // Compile the template
