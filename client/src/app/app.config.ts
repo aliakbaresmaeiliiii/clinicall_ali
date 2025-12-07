@@ -11,15 +11,14 @@ import {
   withFetch,
   withInterceptorsFromDi
 } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { provideClientHydration } from '@angular/platform-browser';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideNgProgressOptions } from 'ngx-progressbar';
 import { provideToastr } from 'ngx-toastr';
 import { routes } from './app.routes';
 import { AuthInterceptor } from './core/interceptors/auth-interceptor';
-import { BrowserAnimationsModule, provideAnimations } from '@angular/platform-browser/animations';
-import { provideNgProgressOptions } from 'ngx-progressbar';
 
 export const appConfig: ApplicationConfig = {
   providers: [

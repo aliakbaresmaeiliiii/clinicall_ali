@@ -61,6 +61,7 @@ import { SuggustionsServiceComponent } from './suggustions-service/suggustions-s
 import { SupportComponent } from './support/support.component';
 import { UserReviewsOfClinicAliComponent } from './user-reviews-of-clinic-ali/user-reviews-of-clinic-ali.component';
 import { YoursDoctorComponent } from './yours-doctor/yours-doctor.component';
+import { ChangeThemeButtonComponent } from './shared-ui/components/change-theme-button/change-theme-button.component';
 
 const routes: Routes = [
   {
@@ -184,6 +185,7 @@ const routes: Routes = [
     SharedModule,
     ChatbotComponent,
     GoogleMapComponent,
+    ChangeThemeButtonComponent
   ],
   exports: [BlogComponent, MatToolbarModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
