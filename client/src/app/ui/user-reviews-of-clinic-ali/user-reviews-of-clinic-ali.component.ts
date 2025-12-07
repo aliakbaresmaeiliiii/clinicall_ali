@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   ElementRef,
   inject,
@@ -7,8 +6,9 @@ import {
   OnInit,
   signal,
   ViewChild,
+  AfterViewInit,
+  OnDestroy,
 } from '@angular/core';
-import KeenSlider, { KeenSliderInstance } from 'keen-slider';
 import { DoctorsService } from '../../modules/doctors/services/doctors.service';
 import { ReviewsDTO } from '../../modules/doctors/models/doctors';
 import { Subject, takeUntil } from 'rxjs';
@@ -19,7 +19,7 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrl: './user-reviews-of-clinic-ali.component.scss',
   standalone: false,
 })
-export class UserReviewsOfClinicAliComponent implements OnInit, AfterViewInit {
+export class UserReviewsOfClinicAliComponent implements OnInit, AfterViewInit, OnDestroy {
   name = input<string>();
   star = input<number>();
   description = input<string>();
@@ -27,20 +27,27 @@ export class UserReviewsOfClinicAliComponent implements OnInit, AfterViewInit {
   service = inject(DoctorsService);
   userReview = signal<ReviewsDTO[]>([]);
 
-  urlIcon = {
-    empty: '../../../assets/images/ui/svg/star-empty.svg',
-    half: '../../../assets/images/ui/svg/star-half.svg',
-    full: '../../../assets/images/ui/svg/star-full.svg',
-  };
-
-  currentSlide: number = 1;
-  dotHelper: Array<Number> = [];
-  @ViewChild('sliderRef') sliderRef!: ElementRef<HTMLElement>;
+  @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLElement>;
   private destroy$ = new Subject<void>();
-  slider!: KeenSliderInstance;
+  
+  // Scroll state
+  currentPage = 0;
+  cardWidth = 280; // w-64 (256) + gap-8 (24) = 280 (but we'll use 280 for calculation)
+  cardsPerView = 4;
 
   ngOnInit(): void {
     this.fetchData();
+    this.updateCardsPerView();
+  }
+
+  ngAfterViewInit() {
+    // Update cards per view based on container width
+    this.updateCardsPerView();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   fetchData() {
@@ -64,51 +71,77 @@ export class UserReviewsOfClinicAliComponent implements OnInit, AfterViewInit {
       });
   }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
-      this.slider = new KeenSlider(this.sliderRef.nativeElement, {
-        initial: this.currentSlide,
-        slideChanged: s => {
-          this.currentSlide = s.track.details.rel;
-        },
-        slides: {
-          perView: 4,
-          spacing: 15,
-        },
-        breakpoints: {
-          '(max-width: 1024px)': {
-            slides: {
-              perView: 3,
-              spacing: 12,
-            },
-          },
-          '(max-width: 768px)': {
-            slides: {
-              perView: 2,
-              spacing: 10,
-            },
-          },
-          '(max-width: 480px)': {
-            slides: {
-              perView: 1,
-              spacing: 8,
-            },
-          },
-        },
-      });
-
-      if (this.slider?.track?.details?.slides) {
-        this.dotHelper = [...Array(this.slider.track.details.slides.length).keys()];
-      } else {
-        this.dotHelper = [];
-      }
-    }, 100);
+  // Scroll methods
+  scrollLeft() {
+    if (this.scrollContainer) {
+      const container = this.scrollContainer.nativeElement;
+      const scrollAmount = this.cardWidth * this.cardsPerView;
+      container.scrollLeft -= scrollAmount;
+      this.updateCurrentPage();
+    }
   }
 
-  ngOnDestroy() {
-    if (this.slider) this.slider.destroy();
-    this.destroy$.next();
-    this.destroy$.complete();
+  scrollRight() {
+    if (this.scrollContainer) {
+      const container = this.scrollContainer.nativeElement;
+      const scrollAmount = this.cardWidth * this.cardsPerView;
+      container.scrollLeft += scrollAmount;
+      this.updateCurrentPage();
+    }
+  }
+
+  canScrollLeft(): boolean {
+    if (!this.scrollContainer) return false;
+    return this.scrollContainer.nativeElement.scrollLeft > 0;
+  }
+
+  canScrollRight(): boolean {
+    if (!this.scrollContainer) return false;
+    const container = this.scrollContainer.nativeElement;
+    return container.scrollLeft < (container.scrollWidth - container.clientWidth - 1);
+  }
+
+  goToPage(page: number) {
+    if (this.scrollContainer) {
+      const container = this.scrollContainer.nativeElement;
+      const scrollAmount = page * this.cardWidth * this.cardsPerView;
+      container.scrollLeft = scrollAmount;
+      this.currentPage = page;
+    }
+  }
+
+  getPageIndicators(): number[] {
+    if (!this.scrollContainer || this.userReview().length === 0) return [];
+    const totalCards = this.userReview().length;
+    const pages = Math.ceil(totalCards / this.cardsPerView);
+    return Array.from({ length: pages }, (_, i) => i);
+  }
+
+  private updateCurrentPage() {
+    if (!this.scrollContainer) return;
+    const container = this.scrollContainer.nativeElement;
+    const scrollPosition = container.scrollLeft;
+    this.currentPage = Math.round(scrollPosition / (this.cardWidth * this.cardsPerView));
+  }
+
+  private updateCardsPerView() {
+    // Update cards per view based on screen size
+    if (typeof window !== 'undefined') {
+      const width = window.innerWidth;
+      if (width < 640) {
+        this.cardsPerView = 1;
+        this.cardWidth = 280; // w-64 on mobile
+      } else if (width < 768) {
+        this.cardsPerView = 2;
+        this.cardWidth = 280;
+      } else if (width < 1024) {
+        this.cardsPerView = 3;
+        this.cardWidth = 280;
+      } else {
+        this.cardsPerView = 4;
+        this.cardWidth = 280;
+      }
+    }
   }
 
   getInitials(name: string): string {
