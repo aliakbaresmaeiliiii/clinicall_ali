@@ -9,11 +9,11 @@ export declare class DoctorController {
         email: string;
         password: string | null;
         phone: string | null;
-        verifyCode: string | null;
         firstName: string | null;
         lastName: string | null;
         gender: string | null;
         age: number | null;
+        verifyCode: string | null;
         id: number;
         createdAt: Date;
         tokenVerify: string | null;
@@ -64,6 +64,7 @@ export declare class DoctorController {
                 notes: string | null;
             }[];
             addresses: {
+                country: string;
                 id: number;
                 createdAt: Date;
                 updatedAt: Date;
@@ -71,7 +72,6 @@ export declare class DoctorController {
                 addressLine2: string | null;
                 cityId: number;
                 zipcode: string;
-                country: string;
                 latitude: string | null;
                 longitude: string | null;
                 isPrimary: boolean;
@@ -96,11 +96,11 @@ export declare class DoctorController {
             email: string;
             password: string | null;
             phone: string | null;
-            verifyCode: string | null;
             firstName: string | null;
             lastName: string | null;
             gender: string | null;
             age: number | null;
+            verifyCode: string | null;
             id: number;
             createdAt: Date;
             tokenVerify: string | null;
@@ -134,6 +134,7 @@ export declare class DoctorController {
             notes: string | null;
         }[];
         addresses: {
+            country: string;
             id: number;
             createdAt: Date;
             updatedAt: Date;
@@ -141,7 +142,6 @@ export declare class DoctorController {
             addressLine2: string | null;
             cityId: number;
             zipcode: string;
-            country: string;
             latitude: string | null;
             longitude: string | null;
             isPrimary: boolean;
@@ -166,11 +166,11 @@ export declare class DoctorController {
         email: string;
         password: string | null;
         phone: string | null;
-        verifyCode: string | null;
         firstName: string | null;
         lastName: string | null;
         gender: string | null;
         age: number | null;
+        verifyCode: string | null;
         id: number;
         createdAt: Date;
         tokenVerify: string | null;
@@ -198,6 +198,7 @@ export declare class DoctorController {
             notes: string | null;
         }[];
         addresses: {
+            country: string;
             id: number;
             createdAt: Date;
             updatedAt: Date;
@@ -205,7 +206,6 @@ export declare class DoctorController {
             addressLine2: string | null;
             cityId: number;
             zipcode: string;
-            country: string;
             latitude: string | null;
             longitude: string | null;
             isPrimary: boolean;
@@ -230,11 +230,11 @@ export declare class DoctorController {
         email: string;
         password: string | null;
         phone: string | null;
-        verifyCode: string | null;
         firstName: string | null;
         lastName: string | null;
         gender: string | null;
         age: number | null;
+        verifyCode: string | null;
         id: number;
         createdAt: Date;
         tokenVerify: string | null;
@@ -252,11 +252,11 @@ export declare class DoctorController {
         email: string;
         password: string | null;
         phone: string | null;
-        verifyCode: string | null;
         firstName: string | null;
         lastName: string | null;
         gender: string | null;
         age: number | null;
+        verifyCode: string | null;
         id: number;
         createdAt: Date;
         tokenVerify: string | null;
@@ -274,11 +274,11 @@ export declare class DoctorController {
         email: string;
         password: string | null;
         phone: string | null;
-        verifyCode: string | null;
         firstName: string | null;
         lastName: string | null;
         gender: string | null;
         age: number | null;
+        verifyCode: string | null;
         id: number;
         createdAt: Date;
         tokenVerify: string | null;

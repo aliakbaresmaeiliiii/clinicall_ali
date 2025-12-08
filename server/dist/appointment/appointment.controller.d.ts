@@ -9,11 +9,11 @@ export declare class AppointmentController {
             email: string;
             password: string | null;
             phone: string | null;
-            verifyCode: string | null;
             firstName: string | null;
             lastName: string | null;
             gender: string | null;
             age: number | null;
+            verifyCode: string | null;
             id: number;
             createdAt: Date;
             tokenVerify: string | null;
@@ -34,7 +34,6 @@ export declare class AppointmentController {
             description: string | null;
             password: string | null;
             phone: string | null;
-            verifyCode: string | null;
             firstName: string | null;
             lastName: string | null;
             mobile: string | null;
@@ -42,6 +41,7 @@ export declare class AppointmentController {
             gender: string | null;
             age: number | null;
             maritalStatus: string | null;
+            verifyCode: string | null;
             id: number;
             isVerified: boolean;
             createdAt: Date;
@@ -90,11 +90,11 @@ export declare class AppointmentController {
             email: string;
             password: string | null;
             phone: string | null;
-            verifyCode: string | null;
             firstName: string | null;
             lastName: string | null;
             gender: string | null;
             age: number | null;
+            verifyCode: string | null;
             id: number;
             createdAt: Date;
             tokenVerify: string | null;
@@ -115,7 +115,6 @@ export declare class AppointmentController {
             description: string | null;
             password: string | null;
             phone: string | null;
-            verifyCode: string | null;
             firstName: string | null;
             lastName: string | null;
             mobile: string | null;
@@ -123,6 +122,7 @@ export declare class AppointmentController {
             gender: string | null;
             age: number | null;
             maritalStatus: string | null;
+            verifyCode: string | null;
             id: number;
             isVerified: boolean;
             createdAt: Date;
@@ -171,11 +171,11 @@ export declare class AppointmentController {
             email: string;
             password: string | null;
             phone: string | null;
-            verifyCode: string | null;
             firstName: string | null;
             lastName: string | null;
             gender: string | null;
             age: number | null;
+            verifyCode: string | null;
             id: number;
             createdAt: Date;
             tokenVerify: string | null;
@@ -196,7 +196,6 @@ export declare class AppointmentController {
             description: string | null;
             password: string | null;
             phone: string | null;
-            verifyCode: string | null;
             firstName: string | null;
             lastName: string | null;
             mobile: string | null;
@@ -204,6 +203,7 @@ export declare class AppointmentController {
             gender: string | null;
             age: number | null;
             maritalStatus: string | null;
+            verifyCode: string | null;
             id: number;
             isVerified: boolean;
             createdAt: Date;
@@ -252,11 +252,11 @@ export declare class AppointmentController {
             email: string;
             password: string | null;
             phone: string | null;
-            verifyCode: string | null;
             firstName: string | null;
             lastName: string | null;
             gender: string | null;
             age: number | null;
+            verifyCode: string | null;
             id: number;
             createdAt: Date;
             tokenVerify: string | null;
@@ -277,7 +277,6 @@ export declare class AppointmentController {
             description: string | null;
             password: string | null;
             phone: string | null;
-            verifyCode: string | null;
             firstName: string | null;
             lastName: string | null;
             mobile: string | null;
@@ -285,6 +284,7 @@ export declare class AppointmentController {
             gender: string | null;
             age: number | null;
             maritalStatus: string | null;
+            verifyCode: string | null;
             id: number;
             isVerified: boolean;
             createdAt: Date;

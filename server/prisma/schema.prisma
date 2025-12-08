@@ -1,13 +1,10 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "mysql"
-  url = env("DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model Admin {
@@ -22,94 +19,96 @@ model Admin {
 }
 
 model Doctor {
-  id             Int      @id @default(autoincrement())
+  id             Int            @id @default(autoincrement())
   firstName      String?
   lastName       String?
   gender         String?
   age            Int?
-  email          String   @unique
+  email          String         @unique
   password       String?
   tokenVerify    String?
   verifyCode     String?
   phone          String?
   profileImg     String?
   medicalCode    String?
-  clickCount     Int      @default(0)
-  isLiked        Boolean  @default(false)
-  averageRating  Float    @default(0)
-  totalRatings   Int      @default(0)
+  clickCount     Int            @default(0)
+  isLiked        Boolean        @default(false)
+  averageRating  Float          @default(0)
+  totalRatings   Int            @default(0)
   specialityId   Int?
   serviceId      Int?
   visitHistoryId Int?
-  createdAt      DateTime @default(now())
-
-  // Relations
+  createdAt      DateTime       @default(now())
   addresses      Address[]
-  reviews        Review[]
   appointments   Appointment[]
   clinicDoctors  ClinicDoctor[]
-  specialty      Specialty? @relation(fields: [specialityId], references: [id])
-  service        Service?   @relation(fields: [serviceId], references: [id])
+  service        Service?       @relation(fields: [serviceId], references: [id])
+  specialty      Specialty?     @relation(fields: [specialityId], references: [id])
+  reviews        Review[]
 
+  @@index([serviceId], map: "doctors_serviceId_fkey")
+  @@index([specialityId], map: "doctors_specialityId_fkey")
   @@map("doctors")
 }
 
 model Patient {
-  id            Int       @id @default(autoincrement())
-  firstName     String?   
-  lastName      String?   
-  phone         String?   
-  patientName   String?   
-  gender        String?   
-  mobile        String?   
-  dateOfBirth   String?   
-  age           Int?      
-  email         String    @unique
-  password      String?   
-  tokenVerify   String?
-  verifyCode    String?
-  maritalStatus String?   
-  address       String?
-  bloodGroup    String?
-  bloodPressure String?
-  sugarLevel    String?
-  injury        String?
-  profileImage  String?
-  heartBeat     String?
-  haemoglobin   String?
-  isVerified    Boolean   @default(false)   
-  doctor        String?
-  treatment     String?
-  charges       String?
-  description   String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id             Int             @id @default(autoincrement())
+  firstName      String?
+  lastName       String?
+  phone          String?
+  patientName    String?
+  gender         String?
+  mobile         String?
+  dateOfBirth    String?
+  age            Int?
+  email          String          @unique
+  password       String?
+  tokenVerify    String?
+  verifyCode     String?
+  maritalStatus  String?
+  address        String?
+  bloodGroup     String?
+  bloodPressure  String?
+  sugarLevel     String?
+  injury         String?
+  profileImage   String?
+  heartBeat      String?
+  haemoglobin    String?
+  isVerified     Boolean         @default(false)
+  doctor         String?
+  treatment      String?
+  charges        String?
+  description    String?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
   appointments   Appointment[]
-  reviews        Review[]
   medicalRecords MedicalRecord[]
+  reviews        Review[]
 
   @@map("patients")
 }
 
-
 model Clinic {
-  id          Int      @id @default(autoincrement())
-  name        String?
-  email       String   @unique
-  password    String?
-  phone       String?
-  address     String?
-  description String?
-  website     String?
-  logo        String?
-  verifyCode  String?
-  isVerified  Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  // Relations
-  clinicDoctors ClinicDoctor[]
+  id            Int            @id @default(autoincrement())
+  name          String?
+  ownerName     String?        @map("owner_name")
+  email         String         @unique
+  password      String?
+  phone         String?
+  address       String
+  city          String?
+  state         String?
+  zipCode       String?        @map("zip_code")
+  country       String?
+  description   String?
+  website       String?
+  logo          String?
+  verifyCode    String?
+  isVerified    Boolean        @default(false)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
   appointments  Appointment[]
+  clinicDoctors ClinicDoctor[]
 
   @@map("clinics")
 }
@@ -127,52 +126,52 @@ model Address {
   doctorId     Int
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-
-  // Relations
   doctor       Doctor   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
 
+  @@index([doctorId], map: "addresses_doctorId_fkey")
   @@map("addresses")
 }
 
 model Review {
-  id                Int      @id @default(autoincrement())
-  doctorId          Int
-  patientId         Int
-  rating            Int
-  comment           String?
-  recommendations   String?
+  id                   Int      @id @default(autoincrement())
+  doctorId             Int
+  patientId            Int
+  rating               Int
+  comment              String?
+  recommendations      String?
   professionalDemeanor Int?
-  sufficientTime    Int?
-  skill             Int?
-  staffBehavior     Int?
-  clinicCondition   Int?
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
+  sufficientTime       Int?
+  skill                Int?
+  staffBehavior        Int?
+  clinicCondition      Int?
+  createdAt            DateTime @default(now())
+  updatedAt            DateTime @updatedAt
+  doctor               Doctor   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  patient              Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
-  // Relations
-  doctor            Doctor   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
-  patient           Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
-
+  @@index([doctorId], map: "reviews_doctorId_fkey")
+  @@index([patientId], map: "reviews_patientId_fkey")
   @@map("reviews")
 }
 
 model Appointment {
-  id          Int      @id @default(autoincrement())
-  doctorId    Int
-  patientId   Int
-  clinicId    Int
-  date        DateTime
-  time        String
-  status      String   @default("pending")
-  notes       String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id        Int      @id @default(autoincrement())
+  doctorId  Int
+  patientId Int
+  clinicId  Int
+  date      DateTime
+  time      String
+  status    String   @default("pending")
+  notes     String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  clinic    Clinic   @relation(fields: [clinicId], references: [id], onDelete: Cascade)
+  doctor    Doctor   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
+  patient   Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
-  // Relations
-  doctor      Doctor   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
-  patient     Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
-  clinic      Clinic   @relation(fields: [clinicId], references: [id], onDelete: Cascade)
-
+  @@index([clinicId], map: "appointments_clinicId_fkey")
+  @@index([doctorId], map: "appointments_doctorId_fkey")
+  @@index([patientId], map: "appointments_patientId_fkey")
   @@map("appointments")
 }
 
@@ -181,12 +180,11 @@ model ClinicDoctor {
   clinicId  Int
   doctorId  Int
   createdAt DateTime @default(now())
-
-  // Relations
   clinic    Clinic   @relation(fields: [clinicId], references: [id], onDelete: Cascade)
   doctor    Doctor   @relation(fields: [doctorId], references: [id], onDelete: Cascade)
 
   @@unique([clinicId, doctorId])
+  @@index([doctorId], map: "clinic_doctors_doctorId_fkey")
   @@map("clinic_doctors")
 }
 
@@ -204,10 +202,9 @@ model MedicalRecord {
   description   String?
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-
-  // Relations
   patient       Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
 
+  @@index([patientId], map: "medical_records_patientId_fkey")
   @@map("medical_records")
 }
 
@@ -215,7 +212,7 @@ model RefreshToken {
   id        Int      @id @default(autoincrement())
   token     String   @unique @db.VarChar(512)
   userId    Int
-  userType  String   // 'doctor', 'patient', 'clinic', 'admin'
+  userType  String
   expiresAt DateTime
   createdAt DateTime @default(now())
 
@@ -236,14 +233,12 @@ model PrescriptionMedicine {
 }
 
 model Specialty {
-  id          Int      @id @default(autoincrement())
-  name        String   @unique
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
   description String?
   image       String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  // Relations
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   doctors     Doctor[]
   services    Service[]
 
@@ -251,38 +246,17 @@ model Specialty {
 }
 
 model Service {
-  id          Int      @id @default(autoincrement())
-  name        String   @unique
+  id          Int       @id @default(autoincrement())
+  name        String    @unique
   description String?
   specialtyId Int
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  // Relations
-  specialty   Specialty @relation(fields: [specialtyId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
   doctors     Doctor[]
+  specialty   Specialty @relation(fields: [specialtyId], references: [id], onDelete: Cascade)
 
+  @@index([specialtyId], map: "services_specialtyId_fkey")
   @@map("services")
-}
-
-model Disease {
-  id          Int      @id @default(autoincrement())
-  name        String   @unique
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@map("diseases")
-}
-
-model Keyword {
-  id        Int      @id @default(autoincrement())
-  term      String   @unique
-  synonyms  String   // JSON array of synonyms
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("keywords")
 }
 
 model User {

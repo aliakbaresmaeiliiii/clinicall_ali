@@ -152,14 +152,14 @@ export class LoginComponent implements OnInit {
     const patientLoginData = {
       email: formValue.email,
     };
-    
+
     this.#authService.patientSignIn(patientLoginData).subscribe({
       next: (res: any) => {
         if (res.code === 200 || res.statusCode === 200) {
           // Check if user is verified before allowing login
           // Handle different possible locations for isVerified field
-          const isVerified = res.data.user.isVerified
-          
+          const isVerified = res.data.user.isVerified;
+
           if (isVerified) {
             this.handleLoginSuccess(res, '', 'Login successful');
           } else {
@@ -181,20 +181,16 @@ export class LoginComponent implements OnInit {
       password: formValue.password,
       email: formValue.email,
     };
-    
+
     this.#authService.clinicSignIn(clinicLoginData).subscribe({
       next: (res: any) => {
         this.storeDataUser = res;
         const dataJson = JSON.stringify(this.storeDataUser);
         localStorage.setItem('userData', dataJson);
-        if (res.code === 200) {
+        if (res.statusCode === 200) {
           // Check if user is verified before allowing login
           // Handle different possible locations for isVerified field
-          const isVerified = res.isVerified || 
-                           res.is_verified || 
-                           res.data?.isVerified ||
-                           res.data?.is_verified;
-          
+          const isVerified = res.data.user.isVerified;
           if (isVerified) {
             this.handleLoginSuccess(res, '/dashboard', 'Login successful');
           } else {
@@ -214,7 +210,7 @@ export class LoginComponent implements OnInit {
       password: formValue.password,
       email: formValue.email,
     };
-    
+
     this.#authService.doctorSignIn(doctorLoginData).subscribe({
       next: (res: any) => {
         const storeDataUser = res;
@@ -223,13 +219,18 @@ export class LoginComponent implements OnInit {
         if (res.code === 200) {
           // Check if user is verified before allowing login
           // Handle different possible locations for isVerified field
-          const isVerified = res.isVerified || 
-                           res.is_verified || 
-                           res.data?.isVerified ||
-                           res.data?.is_verified;
-          
+          const isVerified =
+            res.isVerified ||
+            res.is_verified ||
+            res.data?.isVerified ||
+            res.data?.is_verified;
+
           if (isVerified) {
-            this.handleLoginSuccess(res, '/dashboard', `You are now signed in as a ${res.email}`);
+            this.handleLoginSuccess(
+              res,
+              '/dashboard',
+              `You are now signed in as a ${res.email}`
+            );
           } else {
             this.handleUnverifiedEmail(formValue.email, 'doctor');
           }
@@ -241,19 +242,17 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  private handleLoginSuccess(res: any, redirectRoute: string, message: string): void {
+  private handleLoginSuccess(
+    res: any,
+    redirectRoute: string,
+    message: string
+  ): void {
     // Ensure verification status is properly included in stored data
-    const isVerified = res.isVerified || 
-                     res.is_verified || 
-                     res.data?.isVerified ||
-                     res.data?.is_verified;
-    
+
     const userDataToStore = {
       ...res,
-      isVerified: isVerified,
-      is_verified: isVerified
     };
-    
+
     const dataJson = JSON.stringify(userDataToStore);
     localStorage.setItem('userData', dataJson);
     localStorage.setItem('isAuthenticated', 'true');
@@ -276,7 +275,6 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  
   resolved(captchaResponse: any) {
     console.log(`Captcha resolved with response: ${captchaResponse}`);
     // Send token to backend for verification

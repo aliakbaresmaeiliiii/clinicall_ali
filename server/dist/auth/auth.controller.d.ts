@@ -35,7 +35,6 @@ export declare class AuthController {
             description: string | null;
             password: string | null;
             phone: string | null;
-            verifyCode: string | null;
             firstName: string | null;
             lastName: string | null;
             mobile: string | null;
@@ -43,6 +42,7 @@ export declare class AuthController {
             gender: string | null;
             age: number | null;
             maritalStatus: string | null;
+            verifyCode: string | null;
             id: number;
             isVerified: boolean;
             createdAt: Date;
@@ -81,7 +81,6 @@ export declare class AuthController {
         description: string | null;
         password: string | null;
         phone: string | null;
-        verifyCode: string | null;
         firstName: string | null;
         lastName: string | null;
         mobile: string | null;
@@ -89,6 +88,7 @@ export declare class AuthController {
         gender: string | null;
         age: number | null;
         maritalStatus: string | null;
+        verifyCode: string | null;
         id: number;
         isVerified: boolean;
         createdAt: Date;
@@ -200,7 +200,6 @@ export declare class AuthController {
         email: string;
         description: string | null;
         phone: string | null;
-        verifyCode: string | null;
         firstName: string | null;
         lastName: string | null;
         mobile: string | null;
@@ -208,6 +207,7 @@ export declare class AuthController {
         gender: string | null;
         age: number | null;
         maritalStatus: string | null;
+        verifyCode: string | null;
         id: number;
         isVerified: boolean;
         createdAt: Date;

@@ -1,5 +1,6 @@
-import { IsEmail, IsString, MinLength, IsOptional } from 'class-validator';
+import { IsEmail, IsString, MinLength, IsOptional, IsNotEmpty } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Match } from '../decorators/match.decorator';
 
 export class RegisterClinicDto {
   @ApiProperty({ example: 'clinic@example.com' })
@@ -11,17 +12,48 @@ export class RegisterClinicDto {
   @MinLength(6)
   password: string;
 
+  @ApiProperty({ example: 'password123' })
+  @IsString()
+  @MinLength(6)
+  @Match('password', { message: 'Password and confirm password do not match' })
+  confirmPassword: string;
+
   @ApiProperty({ example: 'City Medical Center' })
   @IsString()
   name: string;
+
+  @ApiProperty({ example: 'Owner Name' })
+  @IsString()
+  @IsOptional()
+  owner_name?: string;
 
   @ApiProperty({ example: '+1234567890' })
   @IsString()
   phone: string;
 
-  @ApiProperty({ example: '123 Main St, City, State' })
+  @ApiProperty({ example: '123 Main St' })
   @IsString()
   address: string;
+
+  @ApiProperty({ example: 'City Name' })
+  @IsString()
+  @IsOptional()
+  city?: string;
+
+  @ApiProperty({ example: 'State Name' })
+  @IsString()
+  @IsOptional()
+  state?: string;
+
+  @ApiProperty({ example: '47650' })
+  @IsString()
+  @IsOptional()
+  zip_code?: string;
+
+  @ApiProperty({ example: 'Country Name' })
+  @IsString()
+  @IsOptional()
+  country?: string;
 
   @ApiProperty({ example: 'Medical clinic description', required: false })
   @IsOptional()

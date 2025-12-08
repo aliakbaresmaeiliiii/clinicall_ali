@@ -9,11 +9,11 @@ export declare class ReviewController {
             email: string;
             password: string | null;
             phone: string | null;
-            verifyCode: string | null;
             firstName: string | null;
             lastName: string | null;
             gender: string | null;
             age: number | null;
+            verifyCode: string | null;
             id: number;
             createdAt: Date;
             tokenVerify: string | null;
@@ -34,7 +34,6 @@ export declare class ReviewController {
             description: string | null;
             password: string | null;
             phone: string | null;
-            verifyCode: string | null;
             firstName: string | null;
             lastName: string | null;
             mobile: string | null;
@@ -42,6 +41,7 @@ export declare class ReviewController {
             gender: string | null;
             age: number | null;
             maritalStatus: string | null;
+            verifyCode: string | null;
             id: number;
             isVerified: boolean;
             createdAt: Date;
@@ -78,11 +78,11 @@ export declare class ReviewController {
             email: string;
             password: string | null;
             phone: string | null;
-            verifyCode: string | null;
             firstName: string | null;
             lastName: string | null;
             gender: string | null;
             age: number | null;
+            verifyCode: string | null;
             id: number;
             createdAt: Date;
             tokenVerify: string | null;
@@ -103,7 +103,6 @@ export declare class ReviewController {
             description: string | null;
             password: string | null;
             phone: string | null;
-            verifyCode: string | null;
             firstName: string | null;
             lastName: string | null;
             mobile: string | null;
@@ -111,6 +110,7 @@ export declare class ReviewController {
             gender: string | null;
             age: number | null;
             maritalStatus: string | null;
+            verifyCode: string | null;
             id: number;
             isVerified: boolean;
             createdAt: Date;
@@ -147,11 +147,11 @@ export declare class ReviewController {
             email: string;
             password: string | null;
             phone: string | null;
-            verifyCode: string | null;
             firstName: string | null;
             lastName: string | null;
             gender: string | null;
             age: number | null;
+            verifyCode: string | null;
             id: number;
             createdAt: Date;
             tokenVerify: string | null;
@@ -172,7 +172,6 @@ export declare class ReviewController {
             description: string | null;
             password: string | null;
             phone: string | null;
-            verifyCode: string | null;
             firstName: string | null;
             lastName: string | null;
             mobile: string | null;
@@ -180,6 +179,7 @@ export declare class ReviewController {
             gender: string | null;
             age: number | null;
             maritalStatus: string | null;
+            verifyCode: string | null;
             id: number;
             isVerified: boolean;
             createdAt: Date;
@@ -216,11 +216,11 @@ export declare class ReviewController {
             email: string;
             password: string | null;
             phone: string | null;
-            verifyCode: string | null;
             firstName: string | null;
             lastName: string | null;
             gender: string | null;
             age: number | null;
+            verifyCode: string | null;
             id: number;
             createdAt: Date;
             tokenVerify: string | null;
@@ -241,7 +241,6 @@ export declare class ReviewController {
             description: string | null;
             password: string | null;
             phone: string | null;
-            verifyCode: string | null;
             firstName: string | null;
             lastName: string | null;
             mobile: string | null;
@@ -249,6 +248,7 @@ export declare class ReviewController {
             gender: string | null;
             age: number | null;
             maritalStatus: string | null;
+            verifyCode: string | null;
             id: number;
             isVerified: boolean;
             createdAt: Date;

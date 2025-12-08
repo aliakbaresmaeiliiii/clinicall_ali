@@ -23,17 +23,15 @@ export const AuthGuard: CanActivateFn = (route, state): boolean => {
     const parsedUserData = JSON.parse(userData);
     
     // Check if token exists and is not expired
-    if (!parsedUserData.token || authService.isTokenExpired()) {
+    if (!parsedUserData.data.access_token || authService.isTokenExpired()) {
       authService.logout();
       return false;
     }
+  debugger;
 
     // Check if user is verified (for patient routes)
     // Handle different possible locations for isVerified field
-    const isVerified = parsedUserData.isVerified || 
-                      parsedUserData.is_verified || 
-                      parsedUserData.data?.isVerified ||
-                      parsedUserData.data?.is_verified;
+    const isVerified = parsedUserData.data.isVerified
     
     if (route.routeConfig?.path?.startsWith('patient/') && !isVerified) {
       router.navigate(['/auth/confirm-email']);

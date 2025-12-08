@@ -44,11 +44,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
-const jwt_1 = require("@nestjs/jwt");
 const config_1 = require("@nestjs/config");
-const prisma_service_1 = require("../prisma/prisma.service");
-const email_service_1 = require("../email/email.service");
+const jwt_1 = require("@nestjs/jwt");
 const bcrypt = __importStar(require("bcrypt"));
+const email_service_1 = require("../email/email.service");
+const prisma_service_1 = require("../prisma/prisma.service");
 let AuthService = class AuthService {
     constructor(prisma, jwtService, emailService, configService) {
         this.prisma = prisma;
@@ -186,7 +186,7 @@ let AuthService = class AuthService {
         return { message: 'Logged out successfully' };
     }
     async registerClinic(registerClinicDto) {
-        const { email, password, name, phone, address } = registerClinicDto;
+        const { email, password, confirmPassword, name, owner_name, phone, address, city, state, zip_code, country, description, website } = registerClinicDto;
         const existingClinic = await this.prisma.clinic.findUnique({
             where: { email },
         });
@@ -195,17 +195,35 @@ let AuthService = class AuthService {
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         const verifyCode = this.generateVerificationCode();
+        let fullAddress = address;
+        if (city || state || zip_code || country) {
+            const addressParts = [];
+            if (address)
+                addressParts.push(address);
+            if (city)
+                addressParts.push(city);
+            if (state)
+                addressParts.push(state);
+            if (zip_code)
+                addressParts.push(zip_code);
+            if (country)
+                addressParts.push(country);
+            fullAddress = addressParts.join(', ');
+        }
+        const clinicName = name || owner_name || 'Clinic';
         const clinic = await this.prisma.clinic.create({
             data: {
                 email,
                 password: hashedPassword,
-                name,
+                name: clinicName,
                 phone,
-                address,
+                address: fullAddress,
+                description,
+                website,
                 verifyCode,
             },
         });
-        await this.emailService.sendVerificationEmail(email, verifyCode, name);
+        await this.emailService.sendVerificationEmail(email, verifyCode, clinicName);
         const { password: _, ...result } = clinic;
         return result;
     }

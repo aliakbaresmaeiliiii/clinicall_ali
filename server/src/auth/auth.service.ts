@@ -1,19 +1,18 @@
 import {
-  Injectable,
-  UnauthorizedException,
   BadRequestException,
+  Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { PrismaService } from '../prisma/prisma.service';
-import { EmailService } from '../email/email.service';
+import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { LoginDto } from './dto/login.dto';
+import { EmailService } from '../email/email.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { RegisterClinicDto } from './dto/register-clinic.dto';
 import { RegisterPatientDto } from './dto/register-patient.dto';
-import { VerifyEmailDto } from './dto/verify-email.dto';
 import { UpdatePatientProfileDto } from './dto/update-patient-profile.dto';
+import { VerifyEmailDto } from './dto/verify-email.dto';
 
 @Injectable()
 export class AuthService {
@@ -199,7 +198,21 @@ export class AuthService {
   }
 
   async registerClinic(registerClinicDto: RegisterClinicDto) {
-    const { email, password, name, phone, address } = registerClinicDto;
+    const { 
+      email, 
+      password, 
+      confirmPassword, // This is validated by DTO, not used here
+      name, 
+      owner_name,
+      phone, 
+      address,
+      city,
+      state,
+      zip_code,
+      country,
+      description,
+      website
+    } = registerClinicDto;
 
     // Check if clinic already exists
     const existingClinic = await this.prisma.clinic.findUnique({
@@ -216,19 +229,36 @@ export class AuthService {
     // Generate verification code - 4 characters with numbers and letters
     const verifyCode = this.generateVerificationCode();
 
+    // Build comprehensive address if additional location fields are provided
+    let fullAddress = address;
+    if (city || state || zip_code || country) {
+      const addressParts = [];
+      if (address) addressParts.push(address);
+      if (city) addressParts.push(city);
+      if (state) addressParts.push(state);
+      if (zip_code) addressParts.push(zip_code);
+      if (country) addressParts.push(country);
+      fullAddress = addressParts.join(', ');
+    }
+
+    // Use owner_name as name if provided and name is not provided
+    const clinicName = name || owner_name || 'Clinic';
+
     const clinic = await this.prisma.clinic.create({
       data: {
         email,
         password: hashedPassword,
-        name,
+        name: clinicName,
         phone,
-        address,
+        address: fullAddress,
+        description,
+        website,
         verifyCode,
       },
     });
 
     // Send verification email
-    await this.emailService.sendVerificationEmail(email, verifyCode, name);
+    await this.emailService.sendVerificationEmail(email, verifyCode, clinicName);
 
     const { password: _, ...result } = clinic;
     return result;

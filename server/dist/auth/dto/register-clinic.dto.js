@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RegisterClinicDto = void 0;
 const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
+const match_decorator_1 = require("../decorators/match.decorator");
 class RegisterClinicDto {
 }
 exports.RegisterClinicDto = RegisterClinicDto;
@@ -27,20 +28,57 @@ __decorate([
     __metadata("design:type", String)
 ], RegisterClinicDto.prototype, "password", void 0);
 __decorate([
+    (0, swagger_1.ApiProperty)({ example: 'password123' }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.MinLength)(6),
+    (0, match_decorator_1.Match)('password', { message: 'Password and confirm password do not match' }),
+    __metadata("design:type", String)
+], RegisterClinicDto.prototype, "confirmPassword", void 0);
+__decorate([
     (0, swagger_1.ApiProperty)({ example: 'City Medical Center' }),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], RegisterClinicDto.prototype, "name", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 'Owner Name' }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], RegisterClinicDto.prototype, "owner_name", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: '+1234567890' }),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], RegisterClinicDto.prototype, "phone", void 0);
 __decorate([
-    (0, swagger_1.ApiProperty)({ example: '123 Main St, City, State' }),
+    (0, swagger_1.ApiProperty)({ example: '123 Main St' }),
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], RegisterClinicDto.prototype, "address", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 'City Name' }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], RegisterClinicDto.prototype, "city", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 'State Name' }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], RegisterClinicDto.prototype, "state", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: '47650' }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], RegisterClinicDto.prototype, "zip_code", void 0);
+__decorate([
+    (0, swagger_1.ApiProperty)({ example: 'Country Name' }),
+    (0, class_validator_1.IsString)(),
+    (0, class_validator_1.IsOptional)(),
+    __metadata("design:type", String)
+], RegisterClinicDto.prototype, "country", void 0);
 __decorate([
     (0, swagger_1.ApiProperty)({ example: 'Medical clinic description', required: false }),
     (0, class_validator_1.IsOptional)(),

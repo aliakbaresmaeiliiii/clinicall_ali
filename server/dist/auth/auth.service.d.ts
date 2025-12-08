@@ -1,11 +1,11 @@
-import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { PrismaService } from '../prisma/prisma.service';
+import { JwtService } from '@nestjs/jwt';
 import { EmailService } from '../email/email.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { RegisterClinicDto } from './dto/register-clinic.dto';
 import { RegisterPatientDto } from './dto/register-patient.dto';
-import { VerifyEmailDto } from './dto/verify-email.dto';
 import { UpdatePatientProfileDto } from './dto/update-patient-profile.dto';
+import { VerifyEmailDto } from './dto/verify-email.dto';
 export declare class AuthService {
     private prisma;
     private jwtService;
@@ -52,7 +52,6 @@ export declare class AuthService {
         description: string | null;
         password: string | null;
         phone: string | null;
-        verifyCode: string | null;
         firstName: string | null;
         lastName: string | null;
         mobile: string | null;
@@ -60,6 +59,7 @@ export declare class AuthService {
         gender: string | null;
         age: number | null;
         maritalStatus: string | null;
+        verifyCode: string | null;
         id: number;
         isVerified: boolean;
         createdAt: Date;
@@ -97,7 +97,6 @@ export declare class AuthService {
         description: string | null;
         password: string | null;
         phone: string | null;
-        verifyCode: string | null;
         firstName: string | null;
         lastName: string | null;
         mobile: string | null;
@@ -105,6 +104,7 @@ export declare class AuthService {
         gender: string | null;
         age: number | null;
         maritalStatus: string | null;
+        verifyCode: string | null;
         id: number;
         isVerified: boolean;
         createdAt: Date;
@@ -127,7 +127,6 @@ export declare class AuthService {
         email: string;
         description: string | null;
         phone: string | null;
-        verifyCode: string | null;
         firstName: string | null;
         lastName: string | null;
         mobile: string | null;
@@ -135,6 +134,7 @@ export declare class AuthService {
         gender: string | null;
         age: number | null;
         maritalStatus: string | null;
+        verifyCode: string | null;
         id: number;
         isVerified: boolean;
         createdAt: Date;

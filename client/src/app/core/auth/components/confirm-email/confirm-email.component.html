@@ -1,83 +1,90 @@
-  <div class="confirm-email-container">
-    <div class="confirm-email-card">
-      <!-- Header -->
-      <div class="confirm-email-header">
-        <div class="logo-icon">
-          <mat-icon>mark_email_read</mat-icon>
-        </div>
-        <h1 class="app-title">Email Verification</h1>
-        <p class="welcome-text">
-          {{ userData ? 'We\'ve sent a new verification code to your email address' : 'We\'ve sent a verification code to your email address' }}
-        </p>
+<div class="confirm-email-container">
+  <div class="confirm-email-card">
+    <!-- Header -->
+    <div class="confirm-email-header">
+      <div class="logo-icon">
+        <mat-icon>mark_email_read</mat-icon>
       </div>
+      <h1 class="app-title">Email Verification</h1>
+      <p class="welcome-text">
+        {{
+          userData
+            ? "We've sent a new verification code to your email address"
+            : "We've sent a verification code to your email address"
+        }}
+      </p>
+    </div>
 
-      <!-- Instructions -->
-      <div class="instructions-section">
-        <div class="instruction-step">
-          <mat-icon class="step-icon">email</mat-icon>
-          <span>Check your email inbox</span>
-        </div>
-        <div class="instruction-step">
-          <mat-icon class="step-icon">key</mat-icon>
-          <span>Enter the 4-digit code below</span>
-        </div>
-        <div class="instruction-step">
-          <mat-icon class="step-icon">verified</mat-icon>
-          <span>Complete your registration</span>
-        </div>
+    <!-- Instructions -->
+    <div class="instructions-section">
+      <div class="instruction-step">
+        <mat-icon class="step-icon">email</mat-icon>
+        <span>Check your email inbox</span>
       </div>
-
-      <!-- OTP Input -->
-      <div class="otp-section">
-        <app-otp-input
-          #ngOtpInput
-          (onInputChange)="onOtpChange($event)"
-          [config]="config">
-        </app-otp-input>
-        
-        <!-- Timer Display -->
-        <div class="timer-section" *ngIf="timeLeft > 0">
-          <p class="timer-text">Code expires in: {{ formatTime(timeLeft) }}</p>
-        </div>
-        
-        <!-- Fallback OTP Input -->
-        <div class="fallback-otp" *ngIf="!showOtpComponent">
-          <mat-form-field appearance="outline" class="otp-input-field">
-            <mat-label>Enter Verification Code</mat-label>
-            <input
-              matInput
-              type="text"
-              maxlength="4"
-              [(ngModel)]="otp"
-              placeholder="0000"
-              (input)="onOtpChange($event)"
-              class="otp-fallback-input">
-          </mat-form-field>
-        </div>
+      <div class="instruction-step">
+        <mat-icon class="step-icon">key</mat-icon>
+        <span>Enter the 4-digit code below</span>
       </div>
-
-      <!-- Resend Section -->
-      <div class="resend-section">
-        <p class="resend-text">Didn't receive the code?</p>
-        <button 
-          mat-button 
-          color="primary" 
-          (click)="getOtp()"
-          class="resend-button">
-          <mat-icon>refresh</mat-icon>
-          Resend Code
-        </button>
-      </div>
-
-      <!-- Back to Register -->
-      <div class="back-to-register-section">
-        <p class="back-text">Need to change your email?</p>
-        <a
-          routerLink="/auth/register"
-          class="back-link">
-          <mat-icon>arrow_back</mat-icon>
-          Back to Registration
-        </a>
+      <div class="instruction-step">
+        <mat-icon class="step-icon">verified</mat-icon>
+        <span>Complete your registration</span>
       </div>
     </div>
+
+    <!-- OTP Input -->
+    <div class="otp-section">
+      <app-otp-input
+        #ngOtpInput
+        (onInputChange)="onOtpChange($event)"
+        [config]="config">
+      </app-otp-input>
+
+      <!-- Timer Display -->
+      @if(timeLeft>0){
+      <div class="timer-section">
+        <p class="timer-text">Code expires in: {{ formatTime(timeLeft) }}</p>
+      </div>
+      }
+
+      <!-- Fallback OTP Input -->
+       @if(!showOtpComponent){
+      <div class="fallback-otp" >
+        <mat-form-field appearance="outline" class="otp-input-field">
+          <mat-label>Enter Verification Code</mat-label>
+          <input
+            matInput
+            type="text"
+            maxlength="4"
+            [(ngModel)]="otp"
+            placeholder="0000"
+            (input)="onOtpChange($event)"
+            class="otp-fallback-input" />
+        </mat-form-field>
+      </div>
+       }
+
+    </div>
+
+    <!-- Resend Section -->
+    <div class="resend-section">
+      <p class="resend-text">Didn't receive the code?</p>
+      <button
+        mat-button
+        color="primary"
+        (click)="getOtp()"
+        class="resend-button">
+        <mat-icon>refresh</mat-icon>
+        Resend Code
+      </button>
+    </div>
+
+    <!-- Back to Register -->
+    <div class="back-to-register-section">
+      <p class="back-text">Need to change your email?</p>
+      <a routerLink="/auth/register" class="back-link">
+        <mat-icon>arrow_back</mat-icon>
+        Back to Registration
+      </a>
+    </div>
   </div>
+</div>

@@ -6,7 +6,8 @@ import {
   AfterViewInit,
   Input,
   Output,
-  EventEmitter
+  EventEmitter,
+  ChangeDetectionStrategy
 } from '@angular/core';
 import { Config } from '../../models/config';
 import { KeysPipe } from '../../pipes/keys.pipe';
@@ -16,7 +17,8 @@ import { FormControl, FormGroup } from '@angular/forms';
     selector: 'app-otp-input',
     templateUrl: './otp-input.component.html',
     styleUrl: './otp-input.component.scss',
-    standalone: false
+    standalone: false,
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OtpInputComponent implements OnInit, AfterViewInit {
   @Input() config: Config = { length: 4 };
@@ -37,7 +39,6 @@ export class OtpInputComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit() {
-    console.log('OTP Component initialized with config:', this.config);
     this.otpForm = new FormGroup({});
     const configLength = this.config.length;
     this.inputControls = new Array(configLength);
@@ -47,7 +48,6 @@ export class OtpInputComponent implements OnInit, AfterViewInit {
       this.otpForm.addControl(this.getControlName(index), control);
     }
     this.inputType = this.getInputType();
-    console.log('OTP Form created:', this.otpForm);
   }
   ngAfterViewInit(): void {
     // Auto-focus the first input if not disabled

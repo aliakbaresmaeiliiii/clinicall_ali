@@ -1,7 +1,16 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnDestroy,
+  OnInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+} from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { interval, Subscription } from 'rxjs';
+import { takeWhile } from 'rxjs/operators';
 import { AuthService } from '../../../services/auth.service';
 import { ShareAuthService } from '../../../services/share.service';
 import { UserService } from '../../../services/user.service';
@@ -11,12 +20,14 @@ import { UserService } from '../../../services/user.service';
   standalone: false,
   templateUrl: './confirm-email.component.html',
   styleUrl: './confirm-email.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ConfirmEmailComponent implements OnInit, OnDestroy {
   #userService = inject(UserService);
   authService = inject(AuthService);
   #toastrService = inject(ToastrService);
   #shareSerivce = inject(ShareAuthService);
+  #cdr = inject(ChangeDetectorRef);
   userData: any;
   form!: FormGroup;
   #router = inject(Router);
@@ -24,7 +35,7 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
   showOtpComponent = true;
   selectedRole: string = '';
   timeLeft: number = 0; // Timer in seconds
-  timerInterval: any;
+  timerSubscription: Subscription | null = null;
   config = {
     allowNumbersOnly: true,
     length: 4,
@@ -37,28 +48,28 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
   };
 
   ngOnInit(): void {
-    console.log('Confirm Email Component initialized');
     this.form = new FormGroup({
       verify_code: new FormControl('', [
         Validators.required,
         Validators.minLength(4),
       ]),
     });
-    
+
     // Get user data and role from shared service
     this.userData = this.#shareSerivce.getEmail();
     this.selectedRole = this.#shareSerivce.getSelectedRole();
+    debugger;
 
     // Check if we have the required data
     if (!this.userData || !this.selectedRole) {
-      console.warn('User data or role is missing. User may have navigated directly to this page.');
+      console.warn(
+        'User data or role is missing. User may have navigated directly to this page.'
+      );
       this.#toastrService.warning('Please complete registration first.');
       // Don't automatically resend OTP if data is missing
       return;
     }
 
-    console.log('User data available:', { email: this.userData, role: this.selectedRole });
-    
     // Start the timer immediately when component loads with valid data
     this.startTimer(120); // 2 minutes = 120 seconds
   }
@@ -72,7 +83,9 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
   onSubmit() {
     // Validate that we have the required data
     if (!this.userData || !this.selectedRole) {
-      this.#toastrService.error('Missing user data or role. Please complete registration first.');
+      this.#toastrService.error(
+        'Missing user data or role. Please complete registration first.'
+      );
       return;
     }
 
@@ -112,9 +125,9 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
       const userData = {
         ...res,
         isVerified: true,
-        is_verified: true
+        is_verified: true,
       };
-      
+
       // Store user data in localStorage
       const dataJson = JSON.stringify(userData);
       localStorage.setItem('userData', dataJson);
@@ -138,18 +151,19 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
       },
       error: (err: any) => {
         this.handleVerificationError(err);
-      }
+      },
     });
   }
 
   private handleClinicVerification(payload: any): void {
+    debugger;
     this.authService.confirmClinicEmail(payload).subscribe({
       next: (res: any) => {
         this.handleVerificationSuccess(res, '/dashboard');
       },
       error: (err: any) => {
         this.handleVerificationError(err);
-      }
+      },
     });
   }
 
@@ -160,7 +174,7 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
       },
       error: (err: any) => {
         this.handleVerificationError(err);
-      }
+      },
     });
   }
 
@@ -171,40 +185,54 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Start timer with specified seconds
+  // Start timer with specified seconds using RxJS interval
   private startTimer(seconds: number): void {
-    console.log('Starting timer with', seconds, 'seconds');
-    this.timeLeft = seconds;
-    
-    // Clear any existing timer
-    if (this.timerInterval) {
-      clearInterval(this.timerInterval);
+    // Clear any existing timer subscription
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+      this.timerSubscription = null;
     }
-    
-    // Start new timer
-    this.timerInterval = setInterval(() => {
-      this.timeLeft--;
-      console.log('Timer tick:', this.timeLeft, 'seconds remaining');
-      
-      if (this.timeLeft <= 0) {
-        console.log('Timer expired');
-        clearInterval(this.timerInterval);
-        this.#toastrService.warning('Verification code has expired. Please request a new one.');
-      }
-    }, 1000);
+
+    this.timeLeft = seconds;
+    this.#cdr.markForCheck(); 
+
+    // Create a new timer using RxJS interval
+    this.timerSubscription = interval(1000)
+      .pipe(takeWhile(() => this.timeLeft > 0))
+      .subscribe({
+        next: () => {
+          this.timeLeft--;
+          this.#cdr.markForCheck();
+          if (this.timeLeft <= 0) {
+            this.#toastrService.warning(
+              'Verification code has expired. Please request a new one.'
+            );
+            if (this.timerSubscription) {
+              this.timerSubscription.unsubscribe();
+              this.timerSubscription = null;
+            }
+          }
+        },
+        error: err => {
+          console.error('Timer error:', err);
+        },
+      });
   }
 
   // Format time from seconds to MM:SS format
   formatTime(seconds: number): string {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+    return `${minutes.toString().padStart(2, '0')}:${remainingSeconds
+      .toString()
+      .padStart(2, '0')}`;
   }
 
   // Clean up timer when component is destroyed
   ngOnDestroy(): void {
-    if (this.timerInterval) {
-      clearInterval(this.timerInterval);
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+      this.timerSubscription = null;
     }
   }
 

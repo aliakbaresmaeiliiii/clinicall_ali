@@ -152,7 +152,7 @@ export class RegisterComponent extends BaseComponent implements OnInit {
           this.handleRegistrationSuccess(payload.email, this.selectedRole, res);
         }
       },
-      error: (error) => {
+      error: error => {
         this.handleRegistrationError(error, 'Patient registration failed');
       },
       complete: () => console.log('complete'),
@@ -160,16 +160,29 @@ export class RegisterComponent extends BaseComponent implements OnInit {
   }
 
   private handleClinicRegistration(payload: any): void {
-    this.authService.clinicRegister(payload).subscribe({
+    const { confirmPassword, password } = payload.password;
+    const finalPayload = {
+      ...payload,
+      password,
+      confirmPassword,
+    };
+
+    this.authService.clinicRegister(finalPayload).subscribe({
       next: (res: any) => {
         if (res.code === 201) {
-          this.handleRegistrationSuccess(res.newUser.email, this.selectedRole, res);
+          this.handleRegistrationSuccess(
+            res.data.email,
+            this.selectedRole,
+            res
+          );
         }
       },
-      error: (error) => {
+      error: error => {
         this.handleRegistrationError(error, 'Clinic registration failed');
       },
-      complete: () => console.log('complete'),
+      complete: () => {
+        this.router.navigate(['auth/confirm-email']);
+      },
     });
   }
 
@@ -177,27 +190,37 @@ export class RegisterComponent extends BaseComponent implements OnInit {
     this.authService.doctorRegister(payload).subscribe({
       next: (res: any) => {
         if (res.code === 200) {
-          this.handleRegistrationSuccess(res.newUser.email, this.selectedRole, res);
+          this.handleRegistrationSuccess(
+            res.newUser.email,
+            this.selectedRole,
+            res
+          );
         }
       },
-      error: (error) => {
+      error: error => {
         this.handleRegistrationError(error, 'Doctor registration failed');
       },
       complete: () => console.log('complete'),
     });
   }
 
-  private handleRegistrationSuccess(email: string, role: string, response: any): void {
+  private handleRegistrationSuccess(
+    email: string,
+    role: string,
+    response: any
+  ): void {
     this.toastrService.success(
       `Please check your email box to confirm ${email}`
     );
-    
+
     if (role === 'patient') {
       localStorage.setItem('patientInfo', JSON.stringify(response));
     }
-    
+    debugger;
     this.shareSerivce.setEmail(email);
     this.shareSerivce.setSelectedRole(role);
+    localStorage.setItem('userInfo', JSON.stringify(email));
+
     this.router.navigate(['auth/confirm-email']);
   }
 
