@@ -10,6 +10,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { RouterModule, Routes } from '@angular/router';
 import { NgOtpInputModule } from 'ali';
 import { AuthLayoutComponent } from './components/auth-layout/auth-layout.component';
@@ -67,6 +68,7 @@ const routes: Routes = [
     MatFormFieldModule,
     MatIconModule,
     MatCheckboxModule,
+    MatProgressSpinnerModule,
     SocialLoginModule,
     NgOtpInputModule,
   ],
@@ -79,6 +81,7 @@ const routes: Routes = [
     MatFormFieldModule,
     MatIconModule,
     MatCheckboxModule,
+    MatProgressSpinnerModule,
     SocialLoginModule,
     NgOtpInputModule,
   ],

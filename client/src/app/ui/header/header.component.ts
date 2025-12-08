@@ -6,22 +6,21 @@ import {
   trigger,
 } from '@angular/animations';
 import { Component, computed, inject, output, signal } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { PermissionService } from '../../core/services/permission.service';
-import { SignalService } from '../shared-ui/services/signal.service';
-import { FormControl } from '@angular/forms';
 import {
-  catchError,
   debounceTime,
-  map,
-  Observable,
-  of,
-  startWith,
-  switchMap,
+  Observable
 } from 'rxjs';
+import { PermissionService } from '../../core/services/permission.service';
 import { DoctorsService } from '../../modules/doctors/services/doctors.service';
+import { ThemeManagerService } from '../../shared/client-services/theme-manager.service';
+import { ChatbotComponent } from '../../shared/components/chatbot/chatbot.component';
+import { SignalService } from '../shared-ui/services/signal.service';
+import { AppScrollProgressBarComponent } from './app-scroll-progress-bar/app-scroll-progress-bar.component';
 
 interface MenuItem {
   label: string;
@@ -31,6 +30,14 @@ interface MenuItem {
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
+  standalone: true,
+
+  imports: [
+    MatIconModule,
+    ChatbotComponent,
+
+    AppScrollProgressBarComponent,
+  ],
   animations: [
     trigger('openClose', [
       state(
@@ -69,7 +76,6 @@ interface MenuItem {
       transition('scrolled => default', [animate('1s ease')]),
     ]),
   ],
-  standalone: false,
 })
 export class HeaderComponent {
   navbarVisible = signal(true);
@@ -80,6 +86,12 @@ export class HeaderComponent {
   permissionService = inject(PermissionService);
   signalService = inject(SignalService);
   doctorService = inject(DoctorsService);
+
+  private themeManager = inject(ThemeManagerService);
+  theme = this.themeManager.theme;
+  toggleTheme() {
+    this.themeManager.toggleTheme();
+  }
 
   signalData = computed(() => this.signalService.getData());
   userMenu: MenuItem[] = [
@@ -329,7 +341,7 @@ export class HeaderComponent {
     // if (typeof window !== 'undefined') {
     //   window.addEventListener('scroll', this.onWindowScroll.bind(this));
     //   this.loadUserData();
-      
+
     //   // Listen for storage changes to update user data when login/logout happens
     //   window.addEventListener('storage', this.handleStorageChange.bind(this));
     // }
@@ -340,9 +352,7 @@ export class HeaderComponent {
   }
 
   setupSearch(): void {
-    this.searchControl.valueChanges.pipe(
-      debounceTime(300)
-    ).subscribe(value => {
+    this.searchControl.valueChanges.pipe(debounceTime(300)).subscribe(value => {
       if (value && value.length > 0) {
         this.performSearch(value);
       } else {
@@ -354,7 +364,7 @@ export class HeaderComponent {
 
   performSearch(query: string): void {
     this.isSearching = true;
-    
+
     // Simulate search results
     setTimeout(() => {
       this.searchResults = [
@@ -365,35 +375,37 @@ export class HeaderComponent {
           specialty: 'Dentist',
           description: 'Specializes in cosmetic dentistry and dental implants',
           rating: '4.9',
-          icon: '👨‍⚕️'
+          icon: '👨‍⚕️',
         },
         {
           id: 2,
           name: 'Dentistry',
           type: 'specialty',
           description: 'Oral health and dental care specialists',
-          icon: '🦷'
+          icon: '🦷',
         },
         {
           id: 3,
           name: 'Dental Care Center',
           type: 'clinic',
           description: 'Modern dental clinic with advanced equipment',
-          icon: '🏥'
+          icon: '🏥',
         },
         {
           id: 4,
           name: 'Cavity',
           type: 'condition',
           description: 'Tooth decay requiring dental treatment',
-          icon: '🦷'
-        }
-      ].filter(item => 
-        item.name.toLowerCase().includes(query.toLowerCase()) ||
-        (item.specialty && item.specialty.toLowerCase().includes(query.toLowerCase())) ||
-        item.description.toLowerCase().includes(query.toLowerCase())
+          icon: '🦷',
+        },
+      ].filter(
+        item =>
+          item.name.toLowerCase().includes(query.toLowerCase()) ||
+          (item.specialty &&
+            item.specialty.toLowerCase().includes(query.toLowerCase())) ||
+          item.description.toLowerCase().includes(query.toLowerCase())
       );
-      
+
       this.isSearching = false;
     }, 500);
   }
@@ -404,16 +416,22 @@ export class HeaderComponent {
       if (getStoreItem) {
         try {
           const getItem = JSON.parse(getStoreItem);
-          this.userData = getItem.first_name || getItem.firstName || getItem.name || getItem.email || 'User';
-          
+          this.userData =
+            getItem.first_name ||
+            getItem.firstName ||
+            getItem.name ||
+            getItem.email ||
+            'User';
+
           // Update signal service with user data
           this.signalService.setData({
             firstName: getItem.first_name || getItem.firstName || '',
             lastName: getItem.last_name || getItem.lastName || '',
             email: getItem.email || '',
-            fullName: getItem.first_name && getItem.last_name 
-              ? `${getItem.first_name} ${getItem.last_name}`
-              : getItem.name || getItem.email || 'User'
+            fullName:
+              getItem.first_name && getItem.last_name
+                ? `${getItem.first_name} ${getItem.last_name}`
+                : getItem.name || getItem.email || 'User',
           });
         } catch (error) {
           console.error('Error parsing user data:', error);
@@ -431,8 +449,6 @@ export class HeaderComponent {
       this.loadUserData();
     }
   }
-
-
 
   searchDoctor(searchValue: any): void {
     // this.router.navigate(['doctors'], { queryParams: { search: searchValue } });
@@ -529,20 +545,28 @@ export class HeaderComponent {
   selectSearchResult(result: any): void {
     this.searchControl.setValue(result.name);
     this.showSuggestions = false;
-    
+
     // Navigate based on result type
     switch (result.type) {
       case 'doctor':
-        this.router.navigate(['/doctors'], { queryParams: { search: result.name } });
+        this.router.navigate(['/doctors'], {
+          queryParams: { search: result.name },
+        });
         break;
       case 'specialty':
-        this.router.navigate(['/services'], { queryParams: { specialty: result.name } });
+        this.router.navigate(['/services'], {
+          queryParams: { specialty: result.name },
+        });
         break;
       case 'clinic':
-        this.router.navigate(['/clinics'], { queryParams: { search: result.name } });
+        this.router.navigate(['/clinics'], {
+          queryParams: { search: result.name },
+        });
         break;
       case 'condition':
-        this.router.navigate(['/services'], { queryParams: { condition: result.name } });
+        this.router.navigate(['/services'], {
+          queryParams: { condition: result.name },
+        });
         break;
     }
   }
@@ -552,7 +576,7 @@ export class HeaderComponent {
       doctor: '#4f46e5',
       specialty: '#10b981',
       clinic: '#f59e0b',
-      condition: '#ef4444'
+      condition: '#ef4444',
     };
     return colors[type] || '#6b7280';
   }
@@ -564,21 +588,21 @@ export class HeaderComponent {
         name: 'Dentistry',
         type: 'specialty',
         description: 'Oral health and dental care specialists',
-        icon: '🦷'
+        icon: '🦷',
       },
       {
         id: 2,
         name: 'Cardiology',
         type: 'specialty',
         description: 'Heart and cardiovascular specialists',
-        icon: '❤️'
+        icon: '❤️',
       },
       {
         id: 3,
         name: 'Dermatology',
         type: 'specialty',
         description: 'Skin, hair, and nail specialists',
-        icon: '🧴'
+        icon: '🧴',
       },
       {
         id: 4,
@@ -586,15 +610,18 @@ export class HeaderComponent {
         type: 'doctor',
         description: 'Cardiologist with 15 years experience',
         rating: '4.9',
-        icon: '👩‍⚕️'
-      }
+        icon: '👩‍⚕️',
+      },
     ];
   }
 
   ngOnDestroy(): void {
     if (typeof window !== 'undefined') {
       window.removeEventListener('scroll', this.onWindowScroll.bind(this));
-      window.removeEventListener('storage', this.handleStorageChange.bind(this));
+      window.removeEventListener(
+        'storage',
+        this.handleStorageChange.bind(this)
+      );
     }
   }
 }

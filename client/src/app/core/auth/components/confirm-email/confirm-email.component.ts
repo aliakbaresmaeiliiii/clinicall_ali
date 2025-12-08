@@ -58,8 +58,6 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
     // Get user data and role from shared service
     this.userData = this.#shareSerivce.getEmail();
     this.selectedRole = this.#shareSerivce.getSelectedRole();
-    debugger;
-
     // Check if we have the required data
     if (!this.userData || !this.selectedRole) {
       console.warn(
@@ -156,7 +154,6 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy {
   }
 
   private handleClinicVerification(payload: any): void {
-    debugger;
     this.authService.confirmClinicEmail(payload).subscribe({
       next: (res: any) => {
         this.handleVerificationSuccess(res, '/dashboard');

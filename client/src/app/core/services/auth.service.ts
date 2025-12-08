@@ -47,8 +47,13 @@ export class AuthService {
   }
 
   // Patient registration - using the new API endpoint
-  patientRegister(patientData: PatientRegistrationRequest): Observable<PatientResponse> {
-    return this.#http.post<PatientResponse>(`${this.config}auth/patient/register`, patientData);
+  patientRegister(
+    patientData: PatientRegistrationRequest
+  ): Observable<PatientResponse> {
+    return this.#http.post<PatientResponse>(
+      `${this.config}auth/patient/register`,
+      patientData
+    );
   }
 
   clinicSignIn(userData: any): Observable<any> {
@@ -89,7 +94,9 @@ export class AuthService {
     );
   }
 
-  verifyPatientEmail(data: PatientVerificationRequest): Observable<PatientVerificationResponse> {
+  verifyPatientEmail(
+    data: PatientVerificationRequest
+  ): Observable<PatientVerificationResponse> {
     return this.#http.post<PatientVerificationResponse>(
       `${this.config}auth/verify-patient-email`,
       data
@@ -106,8 +113,8 @@ export class AuthService {
   getToken(): string | null {
     const userData = localStorage.getItem('userData');
     if (userData) {
-      const getItem = JSON.parse(userData);
-      return getItem.token || null;
+      const parsedUserData = JSON.parse(userData);
+      return parsedUserData.data.access_token || null;
     }
     return null;
   }

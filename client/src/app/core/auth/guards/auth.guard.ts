@@ -27,11 +27,8 @@ export const AuthGuard: CanActivateFn = (route, state): boolean => {
       authService.logout();
       return false;
     }
-  debugger;
 
-    // Check if user is verified (for patient routes)
-    // Handle different possible locations for isVerified field
-    const isVerified = parsedUserData.data.isVerified
+    const isVerified = parsedUserData.data.user.isVerified
     
     if (route.routeConfig?.path?.startsWith('patient/') && !isVerified) {
       router.navigate(['/auth/confirm-email']);

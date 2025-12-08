@@ -216,7 +216,6 @@ export class RegisterComponent extends BaseComponent implements OnInit {
     if (role === 'patient') {
       localStorage.setItem('patientInfo', JSON.stringify(response));
     }
-    debugger;
     this.shareSerivce.setEmail(email);
     this.shareSerivce.setSelectedRole(role);
     localStorage.setItem('userInfo', JSON.stringify(email));

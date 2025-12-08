@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
   theme = this.themeManager.theme;
   title = signal<string>('');
   storeDataUser: any;
+  isLoading = signal<boolean>(false);
   toggleTheme() {
     this.themeManager.toggleTheme();
   }
@@ -125,8 +126,9 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    if (this.form.value) {
+    if (this.form.value && !this.isLoading()) {
       const formValue = this.form.value;
+      this.isLoading.set(true);
       this.handleRoleBasedLogin(formValue);
     }
   }
@@ -155,6 +157,7 @@ export class LoginComponent implements OnInit {
 
     this.#authService.patientSignIn(patientLoginData).subscribe({
       next: (res: any) => {
+        this.isLoading.set(false);
         if (res.code === 200 || res.statusCode === 200) {
           // Check if user is verified before allowing login
           // Handle different possible locations for isVerified field
@@ -170,6 +173,7 @@ export class LoginComponent implements OnInit {
         }
       },
       error: (e: any) => {
+        this.isLoading.set(false);
         this.handleLoginError(e, formValue.email, 'patient');
       },
     });
@@ -184,6 +188,7 @@ export class LoginComponent implements OnInit {
 
     this.#authService.clinicSignIn(clinicLoginData).subscribe({
       next: (res: any) => {
+        this.isLoading.set(false);
         this.storeDataUser = res;
         const dataJson = JSON.stringify(this.storeDataUser);
         localStorage.setItem('userData', dataJson);
@@ -199,6 +204,7 @@ export class LoginComponent implements OnInit {
         }
       },
       error: (e: any) => {
+        this.isLoading.set(false);
         this.handleLoginError(e, formValue.email, 'clinic');
       },
     });
@@ -213,6 +219,7 @@ export class LoginComponent implements OnInit {
 
     this.#authService.doctorSignIn(doctorLoginData).subscribe({
       next: (res: any) => {
+        this.isLoading.set(false);
         const storeDataUser = res;
         const dataJson = JSON.stringify(storeDataUser);
         localStorage.setItem('userData', dataJson);
@@ -237,6 +244,7 @@ export class LoginComponent implements OnInit {
         }
       },
       error: (e: any) => {
+        this.isLoading.set(false);
         this.handleLoginError(e, formValue.email, 'doctor');
       },
     });

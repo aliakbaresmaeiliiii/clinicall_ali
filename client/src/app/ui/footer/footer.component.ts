@@ -1,11 +1,14 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
     selector: 'app-footer',
     templateUrl: './footer.component.html',
     styleUrl: './footer.component.scss',
-    standalone: false
+    standalone: true,
+    imports:[FormsModule,CommonModule,ReactiveFormsModule]
+
 })
 export class FooterComponent {
   form = new FormGroup({

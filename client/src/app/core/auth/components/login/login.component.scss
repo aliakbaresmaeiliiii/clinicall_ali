@@ -242,6 +242,15 @@
       width: 20px;
       height: 20px;
     }
+
+    .button-spinner {
+      display: inline-block;
+      margin-right: 4px;
+
+      ::ng-deep circle {
+        stroke: white;
+      }
+    }
   }
 }
 

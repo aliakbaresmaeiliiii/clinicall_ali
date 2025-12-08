@@ -95,10 +95,14 @@
         <button
           class="login-button"
           mat-flat-button
-          [disabled]="!form.valid"
+          [disabled]="!form.valid || isLoading()"
           color="primary"
           type="submit">
-          <mat-icon>{{ selectedRole === 'patient' ? 'send' : 'login' }}</mat-icon>
+          @if (isLoading()) {
+            <mat-spinner diameter="20" class="button-spinner"></mat-spinner>
+          } @else {
+            <mat-icon>{{ selectedRole === 'patient' ? 'send' : 'login' }}</mat-icon>
+          }
           <span>{{ selectedRole === 'patient' ? 'Send Login Link' : 'Sign In' }}</span>
         </button>
       </form>

@@ -1,9 +1,17 @@
 <div class="header-container" [@bgColorChange]="bgColor">
   <div class="header-content">
     <!-- Logo Section -->
-    <div>
-      <app-change-theme-button />
-    </div>
+    <button
+      class="theme-switch"
+      type="button"
+      aria-label="Toggle theme"
+      mat-icon-button
+      (click)="toggleTheme()"
+      matTooltip="Toggle theme">
+      <mat-icon>
+        {{ theme() === 'blue-light' ? 'light_mode' : 'dark_mode' }}
+      </mat-icon>
+    </button>
     <div class="logo-section">
       <a href="/" class="logo-link">
         @if (navbarVisible()) {
@@ -24,7 +32,8 @@
     </div>
 
     <!-- Navigation Menu -->
-    <nav class="navigation-menu" *ngIf="searchVisible">
+    @if (searchVisible) {
+    <nav class="navigation-menu">
       <!-- Categories Dropdown -->
       <div class="nav-item dropdown">
         <button class="nav-link dropdown-toggle">
@@ -59,7 +68,9 @@
 
             <!-- Treatments Preview -->
             <div class="treatments-preview">
-              <ng-container *ngIf="hoveredCategoryIndex !== null">
+              @if(hoveredCategoryIndex !== null){
+
+              <ng-container>
                 <div class="treatments-grid">
                   @for (treatment of
                   dentistryCategories[hoveredCategoryIndex].treatments; track
@@ -75,7 +86,9 @@
                   </p>
                 </div>
               </ng-container>
-              <ng-container *ngIf="hoveredCategoryIndex === null">
+              } @if(hoveredCategoryIndex == null){
+
+              <ng-container>
                 <div class="empty-state">
                   <svg
                     class="empty-icon"
@@ -87,6 +100,7 @@
                   <p>Hover over a category to see available treatments</p>
                 </div>
               </ng-container>
+              }
             </div>
           </div>
         </div>
@@ -117,6 +131,7 @@
         </svg>
       </a>
     </nav>
+    }
 
     <!-- User Actions -->
     <div class="user-actions">

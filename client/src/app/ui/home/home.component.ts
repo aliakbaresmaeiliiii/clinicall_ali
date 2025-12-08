@@ -17,6 +17,12 @@ import {
 import { FormBuilder } from '@angular/forms';
 import { MatSidenav } from '@angular/material/sidenav';
 import { map, Observable, shareReplay } from 'rxjs';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { AsyncPipe } from '@angular/common';
+import { MenuComponent } from '../mobile/menu/menu.component';
+import { HeaderComponent } from '../header/header.component';
+import { RouterOutlet } from '@angular/router';
+import { FooterComponent } from '../footer/footer.component';
 
 const style1 = style({
   opacity: 1,
@@ -32,6 +38,14 @@ const style2 = style({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
+  imports: [
+    MatSidenavModule,
+    AsyncPipe,
+    MenuComponent,
+    HeaderComponent,
+    RouterOutlet,
+    FooterComponent,
+  ],
   animations: [
     trigger('foobar', [
       state('show', style1),
@@ -40,7 +54,6 @@ const style2 = style({
       transition('hide => show', animate('1.2s ease-in')),
     ]),
   ],
-  standalone: false,
 })
 export class HomeComponent {
   state = 'hide';
@@ -65,7 +78,7 @@ export class HomeComponent {
     school: [''],
   });
 
-  @HostListener('window:scroll', ['$event'])
+  @HostListener('window:scroll')
   checkScroll() {
     const componentPosition = this.el.nativeElement.offsetTop;
     const scrollPosition = window.scrollY;

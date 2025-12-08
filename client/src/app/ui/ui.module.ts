@@ -32,12 +32,10 @@ import { FeatureSectionComponent } from './feature-section/feature-section.compo
 import { ChoosingAppointmentComponent } from './filter-layout/choosing-appointment/choosing-appointment.component';
 import { FilterLayoutComponent } from './filter-layout/filter-layout.component';
 import { OnlineConsultaionDialogComponent } from './filter-layout/online-consultaion-dialog/online-consultaion-dialog.component';
-import { FooterComponent } from './footer/footer.component';
 import { DialogLocationDrComponent } from './get-doctor-apointment/dialog-location-dr/dialog-location-dr.component';
 import { DilogDotorAppointmentComponent } from './get-doctor-apointment/dilog-dotor-appointment/dilog-dotor-appointment.component';
 import { GetDoctorApointmentComponent } from './get-doctor-apointment/get-doctor-apointment.component';
 import { AppScrollProgressBarComponent } from './header/app-scroll-progress-bar/app-scroll-progress-bar.component';
-import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { MedicalProjectsComponent } from './medical-projects/medical-projects.component';
 import { MediicAppointmentComponent } from './mediic-appointment/mediic-appointment.component';
@@ -61,7 +59,6 @@ import { SuggustionsServiceComponent } from './suggustions-service/suggustions-s
 import { SupportComponent } from './support/support.component';
 import { UserReviewsOfClinicAliComponent } from './user-reviews-of-clinic-ali/user-reviews-of-clinic-ali.component';
 import { YoursDoctorComponent } from './yours-doctor/yours-doctor.component';
-import { ChangeThemeButtonComponent } from './shared-ui/components/change-theme-button/change-theme-button.component';
 
 const routes: Routes = [
   {
@@ -124,13 +121,11 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    HeaderComponent,
     SliderComponent,
     FeatureSectionComponent,
     BestDoctorsComponent,
     BlogComponent,
     BlogDetailComponent,
-    FooterComponent,
     ServicesDoctorComponent,
     ServicesComponent,
     SupportComponent,
@@ -138,11 +133,9 @@ const routes: Routes = [
     ContactUsComponent,
     MedicalProjectsComponent,
     DetailDrProjectComponent,
-    MenuComponent,
     CitiesSupportComponent,
     UserReviewsOfClinicAliComponent,
     CardInfoComponent,
-    HomeComponent,
     StepBookAppointmentComponent,
     SpecialityComponent,
     SuggustionsServiceComponent,
@@ -185,7 +178,6 @@ const routes: Routes = [
     SharedModule,
     ChatbotComponent,
     GoogleMapComponent,
-    ChangeThemeButtonComponent
   ],
   exports: [BlogComponent, MatToolbarModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
